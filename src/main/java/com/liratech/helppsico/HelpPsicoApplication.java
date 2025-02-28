@@ -1,13 +1,13 @@
-package com.liratech.helppsico.HelpPsico;
+package com.liratech.helppsico;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class HelpPsicoApplication {
+public class HelppsicoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(HelpPsicoApplication.class, args);
+		SpringApplication.run(HelppsicoApplication.class, args);
 	}
 
 }
