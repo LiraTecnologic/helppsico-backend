@@ -36,4 +36,7 @@ public class DocumentoEntity {
 
     @Column(name = "data_validade")
     private LocalDate dataValidade;
+
+    @Column(name = "assinatura_psicologo")
+    private String assinaturaPsicologo;
 }

@@ -38,6 +38,6 @@ public class PsicologoEntity {
     @Enumerated(EnumType.STRING)
     private TipoGeneroEntity genero;
 
-    @Column(name = "foto_path")
-    private String fotoPath;
+    @Column(name = "foto_url")
+    private String fotoUrl;
 }
