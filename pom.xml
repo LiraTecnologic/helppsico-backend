@@ -8,10 +8,10 @@
 		<version>3.4.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.liratech.helppsico</groupId>
-	<artifactId>HelpPsico</artifactId>
+	<groupId>com.liratech</groupId>
+	<artifactId>helppsico</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>HelpPsico</name>
+	<name>helppsico</name>
 	<description>Aplicação web para gerenciamento de consutlas entre pacientes e psicólogos</description>
 	<url/>
 	<licenses>
