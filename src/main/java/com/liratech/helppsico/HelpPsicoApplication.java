@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class HelpPsicoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(HelppsicoApplication.class, args);
+		SpringApplication.run(HelpPsicoApplication.class, args);
 	}
 
 }
