@@ -7,17 +7,16 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Builder
-public record Paciente (
-        UUID id,
-        String nome,
-        String cpf,
-        String email,
-        String telefone,
-        LocalDate dataNascimento,
-        String senha,
-        TipoGenero genero,
-        EnderecoDto endereco,
-        String fotoUrl,
-        MultipartFile foto
-) {
+public class Paciente {
+    private UUID i;
+    private String nome;
+    private String cpf;
+    private String email;
+    private String telefone;
+    private LocalDate dataNascimento;
+    private String senha;
+    private TipoGenero genero;
+    private EnderecoDto endereco;
+    private String fotoUrl;
+    private MultipartFile foto;
 }
