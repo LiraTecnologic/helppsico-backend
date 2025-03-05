@@ -5,12 +5,11 @@ import lombok.Builder;
 import java.util.UUID;
 
 @Builder
-public record EnderecoDto(
-        UUID id,
-        String rua,
-        Integer numero,
-        String cep,
-        String cidade,
-        String estado
-) {
+public class EnderecoDto{
+    private UUID id;
+    private String rua;
+    private Integer numero;
+    private String cep;
+    private String cidade;
+    private String estado;
 }

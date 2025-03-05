@@ -3,9 +3,8 @@ package com.liratech.helppsico.entrypoint.dto;
 import lombok.Builder;
 
 @Builder
-public record LoginDto(
-        String email,
-        String senha,
-        String token
-) {
+public class LoginDto {
+    private String email;
+    private String senha;
+    private String token;
 }
