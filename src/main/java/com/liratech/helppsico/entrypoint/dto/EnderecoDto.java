@@ -1,9 +1,13 @@
 package com.liratech.helppsico.entrypoint.dto;
 
-import lombok.Builder;
+import lombok.*;
 
 import java.util.UUID;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Builder
 public class EnderecoDto{
     private UUID id;

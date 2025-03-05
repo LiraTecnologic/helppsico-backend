@@ -1,5 +1,5 @@
 package com.liratech.helppsico.entrypoint.dto;
 
-public enum StatusVinculo {
+public enum StatusVinculoDto {
     PENDENTE, ATIVO, INATIVO
 }
