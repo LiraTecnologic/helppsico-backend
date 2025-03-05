@@ -25,5 +25,5 @@ public class Psicologo {
     private BigDecimal nota;
     private TipoGenero genero;
     private Endereco enderedoAtendimento;
-    private String fotoPath;
+    private String fotoUrl;
 }

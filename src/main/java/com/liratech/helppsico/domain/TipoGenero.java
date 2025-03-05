@@ -1,5 +1,5 @@
 package com.liratech.helppsico.domain;
 
 public enum TipoGenero {
-    MASCULINO, FEMININO, OUTROS
+    MASCULINO, FEMININO, OUTRO
 }

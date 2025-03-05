@@ -22,5 +22,5 @@ public class Paciente {
     private String senha;
     private TipoGenero genero;
     private Endereco enderedo;
-    private String fotoPath;
+    private String fotoUrl;
 }
