@@ -28,6 +28,6 @@ public class ResponseDto<T> {
     @Setter
     @Builder
     public static class ErroDto {
-        private List<String> menssage;
+        private List<String> message;
     }
 }

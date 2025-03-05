@@ -1,5 +1,5 @@
 package com.liratech.helppsico.entrypoint.dto;
 
-public enum TipoGenero {
+public enum TipoGeneroDto {
     MASCULINO, FEMININO, OUTRO
 }

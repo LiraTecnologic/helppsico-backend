@@ -1,14 +1,18 @@
 package com.liratech.helppsico.entrypoint.dto;
 
-import com.liratech.helppsico.entrypoint.dto.psicologo.Psicologo;
-import lombok.Builder;
+import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
+import lombok.*;
 
 import java.util.UUID;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Builder
 public class VinculoDto {
     private UUID id;
-    private Psicologo psicologo;
-    private Paciente paciente;
-    private StatusVinculo status;
+    private PsicologoDto psicologo;
+    private PacienteDto paciente;
+    private StatusVinculoDto status;
 }
