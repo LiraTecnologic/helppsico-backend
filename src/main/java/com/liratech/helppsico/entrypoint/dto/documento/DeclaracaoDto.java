@@ -1,8 +1,8 @@
 package com.liratech.helppsico.entrypoint.dto.documento;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.liratech.helppsico.entrypoint.dto.PacienteDto;
 import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,10 +12,15 @@ import java.util.UUID;
 
 @NoArgsConstructor
 @Getter
-@Setter
 public class DeclaracaoDto extends DocumentoDto{
+
+    @JsonProperty("motivo")
     private String motivo;
+
+    @JsonProperty("descricao")
     private String descricao;
+
+    @JsonProperty("finalidade")
     private String finalidade;
 
     public DeclaracaoDto (UUID id, PacienteDto paciente, PsicologoDto psicologo, LocalDate dataEmissao, LocalDate dataValidade, String assinaturaPsicologo, String motivo, String descricao, String finalidade){
