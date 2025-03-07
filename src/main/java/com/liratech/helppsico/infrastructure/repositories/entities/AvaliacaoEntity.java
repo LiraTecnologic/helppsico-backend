@@ -26,6 +26,6 @@ public class AvaliacaoEntity {
     @JoinColumn(name = "id_paciente")
     private PacienteEntity paciente;
 
-    public BigDecimal nota;
+    public Double nota;
     public String comentario;
 }

@@ -32,9 +32,6 @@ public class PacienteEntity {
     @JoinColumn(name = "id_endereco")
     private EnderecoEntity endereco;
 
-    @Column(name = "foto_perfil")
-    private String fotoPerfil;
-
     @Enumerated(EnumType.STRING)
     private TipoGeneroEntity genero;
 

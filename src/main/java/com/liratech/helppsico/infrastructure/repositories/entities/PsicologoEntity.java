@@ -29,7 +29,6 @@ public class PsicologoEntity {
     private LocalDate dataNascimento;
 
     private String senha;
-    private BigDecimal nota;
 
     @ManyToOne
     @JoinColumn(name = "id_endereco")
@@ -40,4 +39,6 @@ public class PsicologoEntity {
 
     @Column(name = "foto_url")
     private String fotoUrl;
+
+    private String biografia;
 }
