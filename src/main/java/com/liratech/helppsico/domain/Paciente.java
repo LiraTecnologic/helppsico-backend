@@ -14,11 +14,11 @@ public class Paciente {
     private UUID id;
     private String nome;
     private String cpf;
-    private String emial;
+    private String email;
     private String telefone;
     private LocalDate dataNascimento;
     private String senha;
     private TipoGenero genero;
-    private Endereco enderedo;
+    private Endereco endereco;
     private String fotoUrl;
 }
