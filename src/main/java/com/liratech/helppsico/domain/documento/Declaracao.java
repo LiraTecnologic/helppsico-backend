@@ -3,12 +3,10 @@ package com.liratech.helppsico.domain.documento;
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.Psicologo;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
-@NoArgsConstructor
 @Getter
 public class Declaracao extends Documento{
     private String motivo;
