@@ -2,7 +2,6 @@ package com.liratech.helppsico.domain;
 
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -21,7 +20,7 @@ public class Psicologo {
     private LocalDate dataNascimento;
     private String senha;
     private TipoGenero genero;
-    private Endereco enderedoAtendimento;
+    private Endereco enderecoAtendimento;
     private String fotoUrl;
     private String biografia;
 }

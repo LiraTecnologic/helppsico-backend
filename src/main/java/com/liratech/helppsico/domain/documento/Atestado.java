@@ -15,7 +15,7 @@ public class Atestado extends Documento{
     private LocalDate dataAtendimento;
     private Endereco local;
     private String descricao;
-    private String descricaoEstadoPsicoloco;
+    private String descricaoEstadoPsicologico;
     private String periodoAfastamento;
     private String finalidade;
 
@@ -23,13 +23,13 @@ public class Atestado extends Documento{
                      LocalDate dataEmissao, LocalDate dataValidade,
                      String assinaturaPsicologo, LocalDate dataAtendimento,
                      Endereco local, String descricao,
-                     String descricaoEstadoPsicoloco, String periodoAfastamento,
+                     String descricaoEstadoPsicologico, String periodoAfastamento,
                      String finalidade){
         super(id, paciente, psicologo, dataEmissao, dataValidade, assinaturaPsicologo);
         this.dataAtendimento = dataAtendimento;
         this.local = local;
         this.descricao = descricao;
-        this.descricaoEstadoPsicoloco = descricaoEstadoPsicoloco;
+        this.descricaoEstadoPsicologico = descricaoEstadoPsicologico;
         this.periodoAfastamento = periodoAfastamento;
         this.finalidade = finalidade;
     }
