@@ -16,27 +16,26 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Builder
-public class DocumentoEntity {
+public abstract class DocumentoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_documento")
-    private UUID id;
-
-    @ManyToOne
-    @JoinColumn(name = "id_psicologo")
-    private PsicologoEntity psicologo;
+    protected UUID id;
 
     @ManyToOne
     @JoinColumn(name = "id_paciente")
-    private PacienteEntity paciente;
+    protected PacienteEntity paciente;
+
+    @ManyToOne
+    @JoinColumn(name = "id_psicologo")
+    protected PsicologoEntity psicologo;
 
     @Column(name = "data_emissao")
-    private LocalDate dataEmissao;
+    protected LocalDate dataEmissao;
 
     @Column(name = "data_validade")
-    private LocalDate dataValidade;
+    protected LocalDate dataValidade;
 
     @Column(name = "assinatura_psicologo")
-    private String assinaturaPsicologo;
+    protected String assinaturaPsicologo;
 }
