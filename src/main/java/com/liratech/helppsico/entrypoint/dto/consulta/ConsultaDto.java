@@ -5,13 +5,11 @@ import com.liratech.helppsico.entrypoint.dto.EnderecoDto;
 import com.liratech.helppsico.entrypoint.dto.PacienteDto;
 import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
 import lombok.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Builder

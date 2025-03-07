@@ -4,13 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.liratech.helppsico.entrypoint.dto.PacienteDto;
 import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.time.LocalDate;
 import java.util.UUID;
 
-@NoArgsConstructor
 @Getter
 public class DeclaracaoDto extends DocumentoDto{
 
