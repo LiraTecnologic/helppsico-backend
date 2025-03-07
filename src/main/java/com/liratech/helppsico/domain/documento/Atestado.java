@@ -4,12 +4,10 @@ import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.Psicologo;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
-@NoArgsConstructor
 @Getter
 public class Atestado extends Documento{
     private LocalDate dataAtendimento;
