@@ -3,11 +3,9 @@ package com.liratech.helppsico.entrypoint.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
 import lombok.*;
-
 import java.util.UUID;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Builder

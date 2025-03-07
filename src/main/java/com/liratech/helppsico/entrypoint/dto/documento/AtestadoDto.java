@@ -9,8 +9,6 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
-
-@NoArgsConstructor
 @Getter
 public class AtestadoDto extends DocumentoDto{
     @JsonProperty("dataAtendimento")
