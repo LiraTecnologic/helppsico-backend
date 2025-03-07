@@ -1,20 +1,36 @@
 package com.liratech.helppsico.domain.documento;
 
 import com.liratech.helppsico.domain.Endereco;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.liratech.helppsico.domain.Paciente;
+import com.liratech.helppsico.domain.Psicologo;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
-@AllArgsConstructor
+@NoArgsConstructor
 @Getter
-@Builder
-public class Atestado {
+public class Atestado extends Documento{
     private LocalDate dataAtendimento;
     private Endereco local;
     private String descricao;
     private String descricaoEstadoPsicoloco;
     private String periodoAfastamento;
     private String finalidade;
+
+    public Atestado (UUID id, Paciente paciente, Psicologo psicologo,
+                     LocalDate dataEmissao, LocalDate dataValidade,
+                     String assinaturaPsicologo, LocalDate dataAtendimento,
+                     Endereco local, String descricao,
+                     String descricaoEstadoPsicoloco, String periodoAfastamento,
+                     String finalidade){
+        super(id, paciente, psicologo, dataEmissao, dataValidade, assinaturaPsicologo);
+        this.dataAtendimento = dataAtendimento;
+        this.local = local;
+        this.descricao = descricao;
+        this.descricaoEstadoPsicoloco = descricaoEstadoPsicoloco;
+        this.periodoAfastamento = periodoAfastamento;
+        this.finalidade = finalidade;
+    }
 }
