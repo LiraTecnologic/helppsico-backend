@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Entity(name = "Documento")
+@MappedSuperclass
 @Table(name = "documentos")
 @AllArgsConstructor
 @NoArgsConstructor
