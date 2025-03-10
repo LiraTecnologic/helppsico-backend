@@ -35,6 +35,7 @@ public class PacienteDto {
     @JsonProperty("telefone")
     private String telefone;
 
+    @NotNull(message = "A nota é obrigatória")
     @Past(message = "A data obrigatóriamente tem que ser do passado")
     @JsonProperty("dataNascimento")
     private LocalDate dataNascimento;
