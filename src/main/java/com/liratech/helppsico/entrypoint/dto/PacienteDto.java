@@ -23,6 +23,10 @@ public class PacienteDto {
     private String nome;
 
     @NotBlank(message = "O cpf é obrigatório")
+    @Pattern(
+            regexp = "^\\d{11}$",
+            message = "O CPF deve conter exatamente 11 dígitos numéricos, sem formatação"
+    )
     @JsonProperty("cpf")
     private String cpf;
 

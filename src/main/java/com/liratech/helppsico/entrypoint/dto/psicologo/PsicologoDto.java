@@ -24,9 +24,19 @@ public class PsicologoDto {
     @JsonProperty("nome")
     private String nome;
 
+    @NotBlank(message = "O crp é obrigatório")
+    @Pattern(
+            regexp = "^[A-Za-z0-9]{6,10}$",
+            message = "O CRP deve conter entre 6 e 10 caracteres alfanuméricos, sem formatação"
+    )
     @JsonProperty("crp")
     private String crp;
 
+    @NotBlank(message = "O cpf é obrigatório")
+    @Pattern(
+            regexp = "^\\d{11}$",
+            message = "O CPF deve conter exatamente 11 dígitos numéricos, sem formatação"
+    )
     @JsonProperty("cpf")
     private String cpf;
 
