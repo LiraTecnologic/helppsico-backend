@@ -3,10 +3,7 @@ package com.liratech.helppsico.entrypoint.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
@@ -30,6 +27,7 @@ public class PacienteDto {
     private String cpf;
 
     @NotBlank(message = "O email é obrigatório")
+    @Email(message = "Email inválido")
     @JsonProperty("email")
     private String email;
 
@@ -37,7 +35,7 @@ public class PacienteDto {
     @JsonProperty("telefone")
     private String telefone;
 
-    @Past
+    @Past(message = "A data obrigatóriamente tem que ser do passado")
     @JsonProperty("dataNascimento")
     private LocalDate dataNascimento;
 
@@ -48,7 +46,7 @@ public class PacienteDto {
     @JsonProperty("senha")
     private String senha;
 
-    @NotBlank(message = "O gênero é obrigatório")
+    @NotNull(message = "O gênero é obrigatório")
     @JsonProperty("genero")
     @Enumerated(EnumType.STRING)
     private TipoGeneroDto genero;
@@ -60,7 +58,7 @@ public class PacienteDto {
     @JsonProperty("fotoUrl")
     private String fotoUrl;
 
-    @NotBlank(message = "A foto é obrigatória")
+    @NotNull(message = "A foto é obrigatória")
     @JsonProperty("foto")
     private MultipartFile foto;
 }
