@@ -16,6 +16,7 @@ public class AvaliacaoDto {
     @JsonProperty("id")
     private UUID id;
 
+    @NotNull(message = "O psicologo é obrigatório")
     @JsonProperty("psicologo")
     private PsicologoDto psicologo;
 

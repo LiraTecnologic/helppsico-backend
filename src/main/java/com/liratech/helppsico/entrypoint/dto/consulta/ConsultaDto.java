@@ -20,9 +20,11 @@ public class ConsultaDto {
     @JsonProperty("id")
     private UUID id;
 
+    @NotNull(message = "O psicologo é obrigatório")
     @JsonProperty("psicologo")
     private PsicologoDto psicologo;
 
+    @NotNull(message = "O paciente é obrigatório")
     @JsonProperty("paciente")
     private PacienteDto paciente;
 
@@ -35,6 +37,7 @@ public class ConsultaDto {
     @JsonProperty("dataHora")
     private LocalDateTime dataHora;
 
+    @NotNull(message = "O endereço é obrigatório")
     @JsonProperty("endereco")
     private EnderecoDto endereco;
 

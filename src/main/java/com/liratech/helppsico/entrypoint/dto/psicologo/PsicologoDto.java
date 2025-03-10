@@ -56,12 +56,13 @@ public class PsicologoDto {
     @Enumerated(EnumType.STRING)
     private TipoGeneroDto genero;
 
+    @NotNull(message = "O endereço é obrigatório")
     @JsonProperty("endereco")
     private EnderecoDto enderecoAtendimento;
 
     @NotBlank(message = "A url da foto é obrigatória")
     @JsonProperty("fotoUrl")
-    private EnderecoDto fotoUrl;
+    private String fotoUrl;
 
     @NotNull(message = "A foto é obrigatória")
     @JsonProperty("foto")

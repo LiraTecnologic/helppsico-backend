@@ -52,6 +52,7 @@ public class PacienteDto {
     @Enumerated(EnumType.STRING)
     private TipoGeneroDto genero;
 
+    @NotNull(message = "O endereco é obrigatório")
     @JsonProperty("endereco")
     private EnderecoDto endereco;
 

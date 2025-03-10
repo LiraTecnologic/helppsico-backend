@@ -3,6 +3,7 @@ package com.liratech.helppsico.entrypoint.dto.documento;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.liratech.helppsico.entrypoint.dto.PacienteDto;
 import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -10,12 +11,15 @@ import java.util.UUID;
 @Getter
 public class DeclaracaoDto extends DocumentoDto{
 
+    @NotBlank(message = "O motivo é obrigatório")
     @JsonProperty("motivo")
     private String motivo;
 
+    @NotBlank(message = "A descricao é obrigatória")
     @JsonProperty("descricao")
     private String descricao;
 
+    @NotBlank(message = "A finalidade é obrigatória")
     @JsonProperty("finalidade")
     private String finalidade;
 
