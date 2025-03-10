@@ -18,9 +18,11 @@ public class VinculoDto {
     @JsonProperty("id")
     private UUID id;
 
+    @NotNull(message = "O psicologo é obrigatório")
     @JsonProperty("psicologo")
     private PsicologoDto psicologo;
 
+    @NotNull(message = "O paciente é obrigatório")
     @JsonProperty("paciente")
     private PacienteDto paciente;
 
