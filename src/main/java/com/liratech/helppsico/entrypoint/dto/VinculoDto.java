@@ -5,6 +5,7 @@ import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ public class VinculoDto {
     @JsonProperty("paciente")
     private PacienteDto paciente;
 
-    @NotBlank(message = "O status é obrigatório")
+    @NotNull(message = "O status é obrigatório")
     @JsonProperty("status")
     @Enumerated(EnumType.STRING)
     private StatusVinculoDto status;

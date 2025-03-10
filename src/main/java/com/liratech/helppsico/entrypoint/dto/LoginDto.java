@@ -1,6 +1,7 @@
 package com.liratech.helppsico.entrypoint.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -13,6 +14,7 @@ import lombok.*;
 public class LoginDto {
 
     @NotBlank(message = "O email é obrigatório")
+    @Email(message = "Email inválido")
     @JsonProperty("email")
     private String email;
 
