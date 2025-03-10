@@ -1,10 +1,7 @@
 package com.liratech.helppsico.entrypoint.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import java.util.UUID;
 
@@ -28,6 +25,10 @@ public class EnderecoDto{
 
 
     @NotBlank(message = "O cep é obrigatório")
+    @Pattern(
+            regexp = "^\\d{8}$",
+            message = "O cep deve conter exatamente 8 dígitos numéricos, sem formatação"
+    )
     @JsonProperty("cep")
     private String cep;
 
