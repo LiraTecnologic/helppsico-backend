@@ -1,0 +1,12 @@
+package com.liratech.helppsico.mapper;
+
+import com.liratech.helppsico.domain.Endereco;
+import com.liratech.helppsico.entrypoint.dto.EnderecoDto;
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
+public interface EnderecoMapper {
+    Endereco paraDomain (EnderecoDto enderecoDto);
+    EnderecoDto paraDto (Endereco endereco);
+}
