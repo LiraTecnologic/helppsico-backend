@@ -11,5 +11,5 @@ import java.util.List;
 public interface PsicologoMapper {
     PsicologoEntity paraEntity (Psicologo psicologo);
     Psicologo paraDomain (PsicologoEntity psicologoEntity);
-    List<Psicologo> praDomains (List<PsicologoEntity> psicologoEntities);
+    List<Psicologo> paraDomains (List<PsicologoEntity> psicologoEntities);
 }
