@@ -64,7 +64,6 @@ public class PacienteDto {
     @JsonProperty("fotoUrl")
     private String fotoUrl;
 
-    @NotNull(message = "A foto é obrigatória")
     @JsonProperty("foto")
     private MultipartFile foto;
 }
