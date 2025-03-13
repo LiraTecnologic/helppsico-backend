@@ -25,7 +25,6 @@ public class LoginDto {
     @JsonProperty("senha")
     private String senha;
 
-    @NotBlank(message = "O token é obrigatório")
     @JsonProperty("token")
     private String token;
 }
