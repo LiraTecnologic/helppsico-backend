@@ -10,14 +10,14 @@ CREATE TABLE enderecos (
 
 
 CREATE TABLE psicologos (
-                id CHAR(36) NOT NULL,
+                id_psicologo CHAR(36) NOT NULL,
                 nome VARCHAR(100) NOT NULL,
                 crp VARCHAR(20) NOT NULL,
                 cpf VARCHAR(14) NOT NULL,
                 email VARCHAR(70) NOT NULL,
                 telefone VARCHAR(20) NOT NULL,
                 data_nascimento DATE NOT NULL,
-                biografia VARCHAR(255) NOT NULL,
+                biografia TEXT NOT NULL,
                 senha VARCHAR(50) NOT NULL,
                 foto_url VARCHAR(100) NOT NULL,
                 genero VARCHAR(20) NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE psicologos (
 
 
 CREATE TABLE horarios_psicologos (
-                id CHAR(36) NOT NULL,
+                id_horario_psicologo CHAR(36) NOT NULL,
                 id_psicologo CHAR(36) NOT NULL,
                 data DATE NOT NULL,
                 hora TIME NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE horarios_psicologos (
 
 
 CREATE TABLE pacientes (
-                id CHAR(36) NOT NULL,
+                id_paciente CHAR(36) NOT NULL,
                 nome VARCHAR(150) NOT NULL,
                 cpf VARCHAR(14) NOT NULL,
                 email VARCHAR(150) NOT NULL,
@@ -125,7 +125,7 @@ CREATE TABLE atestados (
 
 
 CREATE TABLE solicitacoes (
-                id CHAR(36) NOT NULL,
+                id_solicitacao CHAR(36) NOT NULL,
                 id_paciente CHAR(36) NOT NULL,
                 id_psicologo CHAR(36) NOT NULL,
                 tipo_documento VARCHAR(27) NOT NULL,
@@ -134,7 +134,7 @@ CREATE TABLE solicitacoes (
 
 
 CREATE TABLE prontuarios (
-                id CHAR(36) NOT NULL,
+                id_prontuario CHAR(36) NOT NULL,
                 id_psicologo CHAR(36) NOT NULL,
                 id_paciente CHAR(36) NOT NULL,
                 titulo VARCHAR(50) NOT NULL,
@@ -144,7 +144,7 @@ CREATE TABLE prontuarios (
 
 
 CREATE TABLE avaliacoes (
-                id CHAR(36) NOT NULL,
+                id_avaliacao CHAR(36) NOT NULL,
                 id_psicologo CHAR(36) NOT NULL,
                 id_paciente CHAR(36) NOT NULL,
                 nota DECIMAL NOT NULL,
@@ -154,7 +154,7 @@ CREATE TABLE avaliacoes (
 
 
 CREATE TABLE vinculos (
-                id CHAR(36) NOT NULL,
+                id_vinculo CHAR(36) NOT NULL,
                 id_paciente CHAR(36) NOT NULL,
                 id_psicologo CHAR(36) NOT NULL,
                 status VARCHAR(8) NOT NULL,
@@ -163,7 +163,7 @@ CREATE TABLE vinculos (
 
 
 CREATE TABLE consultas (
-                id CHAR(36) NOT NULL,
+                id_consulta CHAR(36) NOT NULL,
                 id_psicologo CHAR(36) NOT NULL,
                 id_paciente CHAR(36) NOT NULL,
                 data_hora DATETIME NOT NULL,
