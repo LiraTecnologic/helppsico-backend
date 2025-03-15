@@ -124,8 +124,8 @@ CREATE TABLE atestados (
 );
 
 
-CREATE TABLE solicitacoes (
-                id_solicitacao CHAR(36) NOT NULL,
+CREATE TABLE solicitacoes_documento (
+                id_solicitacao_documento CHAR(36) NOT NULL,
                 id_paciente CHAR(36) NOT NULL,
                 id_psicologo CHAR(36) NOT NULL,
                 tipo_documento VARCHAR(27) NOT NULL,
