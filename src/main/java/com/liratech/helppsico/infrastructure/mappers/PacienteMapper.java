@@ -1,4 +1,4 @@
-package com.liratech.helppsico.mappers;
+package com.liratech.helppsico.infrastructure.mappers;
 
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.infrastructure.repositories.entities.PacienteEntity;
