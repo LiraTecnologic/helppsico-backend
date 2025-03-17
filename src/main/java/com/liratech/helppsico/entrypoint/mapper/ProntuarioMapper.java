@@ -1,4 +1,4 @@
-package com.liratech.helppsico.mapper;
+package com.liratech.helppsico.entrypoint.mapper;
 
 import com.liratech.helppsico.domain.Prontuario;
 import com.liratech.helppsico.entrypoint.dto.psicologo.ProntuarioDto;

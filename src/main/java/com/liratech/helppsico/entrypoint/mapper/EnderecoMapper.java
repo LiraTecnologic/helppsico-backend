@@ -1,4 +1,4 @@
-package com.liratech.helppsico.mapper;
+package com.liratech.helppsico.entrypoint.mapper;
 
 import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.entrypoint.dto.EnderecoDto;
