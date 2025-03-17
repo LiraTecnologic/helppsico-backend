@@ -1,4 +1,4 @@
-package com.liratech.helppsico.mapper;
+package com.liratech.helppsico.entrypoint.mapper;
 
 import com.liratech.helppsico.domain.Vinculo;
 import com.liratech.helppsico.entrypoint.dto.VinculoDto;
