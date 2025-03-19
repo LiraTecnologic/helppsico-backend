@@ -21,12 +21,14 @@ public class PsicologoUseCase {
     private final PsicologoGateway gateway;
     private final CriptografiaUseCase criptografiaUseCase;
     private final FotoUseCase fotoUseCase;
+    public static final String MENSAGEM_PSICOLOGO_JA_EXISTE = "Psicologo já está cadastrado";
+    public static final String MENSAGEM_PSICOLOGO_NAO_ENCONTRADO = "Psicologo não encontrado";
 
     public Psicologo cadastrar(Psicologo novoPsicologo) {
         log.info("Cadastrando psicólogo. Novo psicólogo: {}", novoPsicologo);
 
         Optional<Psicologo> psicologoExistente = gateway.consultarPorCrp(novoPsicologo.getCrp());
-        psicologoExistente.ifPresent(psicologo -> {throw new PsicologoExistenteException();});
+        psicologoExistente.ifPresent(psicologo -> {throw new PsicologoExistenteException(MENSAGEM_PSICOLOGO_JA_EXISTE);});
 
         /*
             * Criar e valida crp
@@ -55,7 +57,7 @@ public class PsicologoUseCase {
         Optional<Psicologo> psicologo = gateway.consultarPorId(id);
 
         if(psicologo.isEmpty()) {
-            throw new PsicologoNaoEncontradoException();
+            throw new PsicologoNaoEncontradoException(MENSAGEM_PSICOLOGO_NAO_ENCONTRADO);
         }
 
         Psicologo psicologoEncontrado = psicologo.get();
@@ -72,7 +74,7 @@ public class PsicologoUseCase {
         Optional<Psicologo> psicologo = gateway.consultarPorNome(nome);
 
         if(psicologo.isEmpty()) {
-            throw new PsicologoNaoEncontradoException();
+            throw new PsicologoNaoEncontradoException(MENSAGEM_PSICOLOGO_NAO_ENCONTRADO);
         }
 
         Psicologo psicologoEncontrado = psicologo.get();
@@ -100,7 +102,7 @@ public class PsicologoUseCase {
         Optional<Psicologo> psicologo = gateway.consultarPorCrp(crp);
 
         if(psicologo.isEmpty()) {
-            throw new PsicologoNaoEncontradoException();
+            throw new PsicologoNaoEncontradoException(MENSAGEM_PSICOLOGO_NAO_ENCONTRADO);
         }
 
         Psicologo psicologoExistente = psicologo.get();
