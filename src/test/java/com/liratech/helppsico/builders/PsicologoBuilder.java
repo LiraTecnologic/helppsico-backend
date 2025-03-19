@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class PsicologoBuilder {
     
-    public Psicologo gerarPsicologo() {
+    public static Psicologo gerarPsicologo() {
         return Psicologo.builder()
                 .id(UUID.randomUUID())
                 .nome("Psicologo teste")
