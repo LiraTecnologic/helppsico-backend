@@ -24,15 +24,18 @@ public class PsicologoController {
 
     @PostMapping
     public ResponseEntity<ResponseDto<PsicologoDto>> cadastrar (@RequestBody PsicologoDto psicologo){
+        PsicologoDto psicologoSalvo = mapper.paraDto(useCase.cadastrar(mapper.paraDomain(psicologo)));
+        ResponseDto<PsicologoDto> resposta = new ResponseDto<>(psicologoSalvo);
+
         return ResponseEntity
                 .created(
                         UriComponentsBuilder
                                 .newInstance()
                                 .path("/psicologos/{id}")
-                                .buildAndExpand()
+                                .buildAndExpand(psicologoSalvo.getId())
                                 .toUri()
                 )
-                .body();
+                .body(resposta);
     }
 
     @GetMapping
@@ -42,19 +45,29 @@ public class PsicologoController {
             @RequestParam(defaultValue = "nome,asc") String sort){
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
 
-        return ResponseEntity.ok();
+        Page<PsicologoDto> psicologos = useCase.listar(pageable);
+        //Ver como utilizar o mapper nesta situação
+
+        ResponseDto<Page<PsicologoDto>> resposta = new ResponseDto<>(psicologos);
+
+        return ResponseEntity.ok(resposta);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDto<PsicologoDto>> consultarPorId (@PathVariable UUID id){
+        PsicologoDto psicologo = mapper.paraDto(useCase.consultarPorId(id));
+        ResponseDto<PsicologoDto> resposta = new ResponseDto<>(psicologo);
 
-        return ResponseEntity.ok();
+        return ResponseEntity.ok(resposta);
     }
 
     @GetMapping("/nome")
     public ResponseEntity<ResponseDto<List<PsicologoDto>>> consultarPorNome (@RequestParam String nome){
+        List<PsicologoDto> psicologos = mapper.paraDtos(useCase.consultarPorNome(nome));
+        ResponseDto<List<PsicologoDto>> resposta = new ResponseDto<>(psicologos);
+        //Ver como utilizar o mapper nesta situação
 
-        return ResponseEntity.ok();
+        return ResponseEntity.ok(resposta);
     }
 
     @GetMapping("/melhores-avaliados")
@@ -64,19 +77,26 @@ public class PsicologoController {
             @RequestParam(defaultValue = "nome,asc") String sort){
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
 
-        return ResponseEntity.ok();
+        Page<PsicologoDto> psicologos = useCase.consultarMelhoresAvaliados(pageable);
+        ResponseDto<Page<PsicologoDto>> resposta = new ResponseDto<>(psicologos);
+        //Ver como utilizar o mapper nesta situação
+
+        return ResponseEntity.ok(resposta);
     }
 
     @GetMapping("/crp")
     public ResponseEntity<ResponseDto<PsicologoDto>> consultarPorCrp (@RequestParam String crp){
+        PsicologoDto psicologo = mapper.paraDto(useCase.consultarPorCrp(crp));
+        ResponseDto<PsicologoDto> resposta = new ResponseDto<>(psicologo);
 
-        return ResponseEntity.ok();
+        return ResponseEntity.ok(resposta);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDto<PsicologoDto>> alterar (@RequestBody PsicologoDto, @PathVariable UUID id){
-
-        return ResponseEntity.ok();
+    public ResponseEntity<ResponseDto<PsicologoDto>> alterar (@RequestBody PsicologoDto psicologo, @PathVariable UUID id){
+        PsicologoDto psicologoNovo = mapper.paraDto(useCase.alterar(psicologo, id));
+        ResponseDto<PsicologoDto> resposta = new ResponseDto<>(psicologoNovo);
+        return ResponseEntity.ok(resposta);
     }
 
 }
