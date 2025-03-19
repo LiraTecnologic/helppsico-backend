@@ -1,11 +1,14 @@
 package com.liratech.helppsico.builders;
 
+import com.liratech.helppsico.entrypoint.dto.TipoGeneroDto;
+import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
 public class PsicologoDtoBuilder {
 
-    public static PsicologoDTO criarPsicologoDto() {
+    public static PsicologoDto criarPsicologoDto() {
         return PsicologoDto.builder()
                 .id(UUID.randomUUID())
                 .nome("Dr. João Silva")

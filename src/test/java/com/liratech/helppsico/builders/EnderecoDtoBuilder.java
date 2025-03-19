@@ -1,10 +1,12 @@
 package com.liratech.helppsico.builders;
 
+import com.liratech.helppsico.entrypoint.dto.EnderecoDto;
+
 import java.util.UUID;
 
 public class EnderecoDtoBuilder {
     public static EnderecoDto criarEnderecoDto(){
-        return EndercoDto.builder()
+        return EnderecoDto.builder()
                 .id(UUID.randomUUID())
                 .rua("Rua Teste")
                 .numero(123)
