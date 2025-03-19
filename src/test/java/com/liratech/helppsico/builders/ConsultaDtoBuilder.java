@@ -1,5 +1,7 @@
 package com.liratech.helppsico.builders;
 
+import com.liratech.helppsico.entrypoint.dto.consulta.ConsultaDto;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
