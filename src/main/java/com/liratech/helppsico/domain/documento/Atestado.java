@@ -31,4 +31,7 @@ public class Atestado extends Documento{
         this.periodoAfastamento = periodoAfastamento;
         this.finalidade = finalidade;
     }
+
+    public Atestado() {
+    }
 }
