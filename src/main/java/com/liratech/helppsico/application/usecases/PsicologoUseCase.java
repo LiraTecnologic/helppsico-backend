@@ -6,9 +6,10 @@ import com.liratech.helppsico.application.exceptions.PsicologoNaoEncontradoExcep
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -67,21 +68,16 @@ public class PsicologoUseCase {
         return psicologoEncontrado;
     }
 
-    public Psicologo consultarPorNome(String nome) {
+    public List<Psicologo> consultarPorNome(String nome) {
 
-        log.info("Consultando psicólogo pelo nome. Nome a ser buscado: {}", nome);
+        log.info("Consultando psicólogos pelo nome. Nome a ser buscado: {}", nome);
 
-        Optional<Psicologo> psicologo = gateway.consultarPorNome(nome);
+        List<Psicologo> psicologoList = gateway.consultarPorNome(nome);
 
-        if(psicologo.isEmpty()) {
-            throw new PsicologoNaoEncontradoException(MENSAGEM_PSICOLOGO_NAO_ENCONTRADO);
-        }
 
-        Psicologo psicologoEncontrado = psicologo.get();
+        log.info("Psicólogo consultados com sucesso. Psicólogos: {}", psicologoList);
 
-        log.info("Psicólogo consultado com sucesso. Psicólogo: {}", psicologo);
-
-        return psicologoEncontrado;
+        return psicologoList;
     }
 
     public Page<Psicologo> consultarMelhoresAvaliados(Pageable pageable) {
