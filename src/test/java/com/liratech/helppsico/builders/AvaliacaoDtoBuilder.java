@@ -9,6 +9,7 @@ public class AvaliacaoDtoBuilder {
         return AvaliacaoDto.builder()
                 .id(UUID.randomUUID())
                 .psicologo(PsicologoDtoBuilder.criarPsicologoDto())
+                .paciente(PacienteDtoBuilder.criarPacienteDto())
                 .nota(4.5)
                 .comentario("Mau psicologo")
                 .build();

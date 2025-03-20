@@ -9,6 +9,7 @@ public class AvaliacaoBuilder {
         return Avaliacao.builder()
                 .id(UUID.randomUUID())
                 .psicologo(PsicologoBuilder.criarPsicologo())
+                .paciente(PacienteBuilder.criarPaciente())
                 .nota(4.5)
                 .comentario("Bom psicologo")
                 .build();
