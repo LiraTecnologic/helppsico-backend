@@ -1,6 +1,7 @@
 package com.liratech.helppsico.entrypoint.dto.psicologo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.liratech.helppsico.entrypoint.dto.PacienteDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -19,6 +20,10 @@ public class AvaliacaoDto {
     @NotNull(message = "O psicologo é obrigatório")
     @JsonProperty("psicologo")
     private PsicologoDto psicologo;
+
+    @NotNull(message = "O paciente é obrigatório")
+    @JsonProperty("paciente")
+    private PacienteDto paciente;
 
     @NotNull(message = "A nota é obrigatória")
     @PositiveOrZero(message = "O número precisa ser maior ou igual a zero")
