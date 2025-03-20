@@ -4,11 +4,13 @@ import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.Psicologo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public abstract class Documento {
     protected UUID id;
