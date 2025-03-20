@@ -5,20 +5,18 @@ import com.liratech.helppsico.domain.Psicologo;
 import org.junit.jupiter.api.Assertions;
 
 public class PsicologoValidator {
-    public static void validaPsicologo(Psicologo psicologoCadastrado) {
-        Psicologo psicologo = PsicologoBuilder.gerarPsicologo();
-
-        Assertions.assertEquals(psicologo.getId(), psicologoCadastrado.getId());
-        Assertions.assertEquals(psicologo.getNome(), psicologoCadastrado.getNome());
-        Assertions.assertEquals(psicologo.getCrp(), psicologoCadastrado.getCrp());
-        Assertions.assertEquals(psicologo.getCpf(), psicologoCadastrado.getCpf());
-        Assertions.assertEquals(psicologo.getEmail(), psicologoCadastrado.getEmail());
-        Assertions.assertEquals(psicologo.getTelefone(), psicologoCadastrado.getTelefone());
-        Assertions.assertEquals(psicologo.getDataNascimento(), psicologoCadastrado.getDataNascimento());
-        Assertions.assertEquals(psicologo.getSenha(), psicologoCadastrado.getSenha());
-        Assertions.assertEquals(psicologo.getGenero(), psicologoCadastrado.getGenero());
-        Assertions.assertEquals(psicologo.getEnderecoAtendimento(), psicologoCadastrado.getEnderecoAtendimento());
-        Assertions.assertEquals(psicologo.getFotoUrl(), psicologoCadastrado.getFotoUrl());
-        Assertions.assertEquals(psicologo.getBiografia(), psicologoCadastrado.getBiografia());
+    public static void validaPsicologo(Psicologo comparacao1, Psicologo comparacao2) {
+        Assertions.assertEquals(comparacao1.getId(), comparacao2.getId());
+        Assertions.assertEquals(comparacao1.getNome(), comparacao2.getNome());
+        Assertions.assertEquals(comparacao1.getCrp(), comparacao2.getCrp());
+        Assertions.assertEquals(comparacao1.getCpf(), comparacao2.getCpf());
+        Assertions.assertEquals(comparacao1.getEmail(), comparacao2.getEmail());
+        Assertions.assertEquals(comparacao1.getTelefone(), comparacao2.getTelefone());
+        Assertions.assertEquals(comparacao1.getDataNascimento(), comparacao2.getDataNascimento());
+        Assertions.assertEquals(comparacao1.getSenha(), comparacao2.getSenha());
+        Assertions.assertEquals(comparacao1.getGenero(), comparacao2.getGenero());
+        Assertions.assertEquals(comparacao1.getEnderecoAtendimento(), comparacao2.getEnderecoAtendimento());
+        Assertions.assertEquals(comparacao1.getFotoUrl(), comparacao2.getFotoUrl());
+        Assertions.assertEquals(comparacao1.getBiografia(), comparacao2.getBiografia());
     }
 }
