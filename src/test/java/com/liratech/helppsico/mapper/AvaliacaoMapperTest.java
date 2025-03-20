@@ -27,8 +27,13 @@ class AvaliacaoMapperTest {
 
         Assertions.assertNotNull(avaliacao);
         Assertions.assertEquals(avaliacaoDto.getId(), avaliacao.getId());
-        Assertions.assertEquals(avaliacaoDto.getPsicologo(), avaliacao.getPsicologo());
-        Assertions.assertEquals(avaliacaoDto.getPaciente(), avaliacao.getPaciente());
+
+        Assertions.assertNotNull(avaliacao.getPsicologo());
+        Assertions.assertEquals(avaliacaoDto.getPsicologo().getId(), avaliacao.getPsicologo().getId());
+
+        Assertions.assertNotNull(avaliacao.getPaciente());
+        Assertions.assertEquals(avaliacaoDto.getPaciente().getId(), avaliacao.getPaciente().getId());
+
         Assertions.assertEquals(avaliacaoDto.getNota(), avaliacao.getNota());
         Assertions.assertEquals(avaliacaoDto.getComentario(), avaliacao.getComentario());
     }
@@ -55,8 +60,13 @@ class AvaliacaoMapperTest {
 
         Assertions.assertNotNull(avaliacaoDto);
         Assertions.assertEquals(avaliacao.getId(),avaliacaoDto.getId());
-        Assertions.assertEquals(avaliacao.getPsicologo(), avaliacaoDto.getPsicologo());
-        Assertions.assertEquals(avaliacao.getPaciente(), avaliacaoDto.getPaciente());
+
+        Assertions.assertNotNull(avaliacaoDto.getPsicologo());
+        Assertions.assertEquals(avaliacao.getPsicologo().getId(), avaliacaoDto.getPsicologo().getId());
+
+        Assertions.assertNotNull(avaliacaoDto.getPaciente());
+        Assertions.assertEquals(avaliacao.getPaciente().getId(), avaliacaoDto.getPaciente().getId());
+
         Assertions.assertEquals(avaliacao.getNota(), avaliacaoDto.getNota());
         Assertions.assertEquals(avaliacao.getComentario(), avaliacaoDto.getComentario());
     }
