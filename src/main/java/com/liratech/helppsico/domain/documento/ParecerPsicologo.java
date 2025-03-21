@@ -1,6 +1,5 @@
 package com.liratech.helppsico.domain.documento;
 
-
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.Psicologo;
 import lombok.Getter;
@@ -21,12 +20,7 @@ public class ParecerPsicologo extends Documento{
     public ParecerPsicologo (UUID id, Paciente paciente, Psicologo psicologo, LocalDate dataEmissao,
                              LocalDate dataValidade, String assinaturaPsicologo, String solicitante, String objetivo,
                              String conclusao, String sigilo, String contextualizacao, String fundamentacao, String analiseDoCaso){
-        this.id = id;
-        this.paciente = paciente;
-        this.psicologo = psicologo;
-        this.dataEmissao = dataEmissao;
-        this.dataValidade = dataValidade;
-        this.assinaturaPsicologo = assinaturaPsicologo;
+        super(id, paciente, psicologo, dataEmissao, dataValidade, assinaturaPsicologo);
         this.solicitante = solicitante;
         this.objetivo = objetivo;
         this.conclusao = conclusao;

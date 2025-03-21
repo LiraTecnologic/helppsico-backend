@@ -43,12 +43,7 @@ public class RelatorioPsicologicoDto extends DocumentoDto{
     private String sigilo;
 
     public RelatorioPsicologicoDto (UUID id, PacienteDto paciente, PsicologoDto psicologo, LocalDate dataEmissao, LocalDate dataValidade, String assinaturaPsicologo, String solicitante, String objetivo, String historico, String procedimentosUtilizados, String descricaoResultados, String conclusao, String recomendacoes, String sigilo){
-        this.id = id;
-        this.paciente = paciente;
-        this.psicologo = psicologo;
-        this.dataEmissao = dataEmissao;
-        this.dataValidade = dataValidade;
-        this.assinaturaPsicologo = assinaturaPsicologo;
+        super(id, paciente, psicologo, dataEmissao, dataValidade, assinaturaPsicologo);
         this.solicitante = solicitante;
         this.objetivo = objetivo;
         this.historico = historico;

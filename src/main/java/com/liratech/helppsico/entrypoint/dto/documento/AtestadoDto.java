@@ -38,12 +38,7 @@ public class AtestadoDto extends DocumentoDto{
     private String finalidade;
 
     public AtestadoDto (UUID id, PacienteDto paciente, PsicologoDto psicologo, LocalDate dataEmissao, LocalDate dataValidade, String assinaturaPsicologo, LocalDate dataAtendimento, EnderecoDto local, String descricao, String descricaoEstadoPsicologico, String periodoAfastamento, String finalidade){
-        this.id = id;
-        this.paciente = paciente;
-        this.psicologo = psicologo;
-        this.dataEmissao = dataEmissao;
-        this.dataValidade = dataValidade;
-        this.assinaturaPsicologo = assinaturaPsicologo;
+        super(id, paciente, psicologo, dataEmissao, dataValidade, assinaturaPsicologo);
         this.dataAtendimento = dataAtendimento;
         this.local = local;
         this.descricao = descricao;

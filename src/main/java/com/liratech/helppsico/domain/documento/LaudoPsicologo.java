@@ -25,12 +25,7 @@ public class LaudoPsicologo extends Documento{
                            String objetivo, String historico, String procedimentosUtilizados,
                            String descricaoResultados, String conclusao, String respostaDemanda,
                            String recomendacoes, String sigilo){
-        this.id = id;
-        this.paciente = paciente;
-        this.psicologo = psicologo;
-        this.dataEmissao = dataEmissao;
-        this.dataValidade = dataValidade;
-        this.assinaturaPsicologo = assinaturaPsicologo;
+        super(id, paciente, psicologo, dataEmissao, dataValidade, assinaturaPsicologo);
         this.solicitante = solicitante;
         this.objetivo = objetivo;
         this.historico = historico;
