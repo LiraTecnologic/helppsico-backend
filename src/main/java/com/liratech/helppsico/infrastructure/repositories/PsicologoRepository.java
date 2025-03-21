@@ -7,13 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.awt.print.Pageable;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface PsicologoRepository extends JpaRepository<PsicologoEntity, UUID> {
 
-    Optional<PsicologoEntity> findByNome(String nome);
+    List<PsicologoEntity> findByNome(String nome);
 
     @Query("""
             SELECT p
@@ -25,6 +26,4 @@ public interface PsicologoRepository extends JpaRepository<PsicologoEntity, UUID
     Page<PsicologoEntity> consultarMelhoresAvaliados(Pageable pageable);
 
     Optional<PsicologoEntity> findByCrp(String crp);
-
-    Page<PsicologoEntity> findAllPsicologos(Pageable pageable);
 }
