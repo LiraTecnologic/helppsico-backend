@@ -9,5 +9,7 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface HorarioPsicologoMapper {
     HorarioPsicologo paraDomain (HorarioPsicologoDto horarioPsicologoDto);
+
+    @Mapping(target = "psicologo.foto", ignore = true)
     HorarioPsicologoDto paraDto (HorarioPsicologo horarioPsicologo);
 }
