@@ -33,6 +33,9 @@ class PsicologoUseCaseTest {
     @Mock
     private FotoUseCase fotoUseCase;
 
+    @Mock
+    private EderecoUseCase enderecoUseCase;
+
     @Captor
     ArgumentCaptor<Psicologo> captor;
 
@@ -47,6 +50,7 @@ class PsicologoUseCaseTest {
         Mockito.when(gateway.salvar(psicologoNovo)).thenReturn(psicologoNovo);
 
         Mockito.when(fotoUseCase.salvarImagem(psicologoNovo.getFoto())).thenReturn(psicologoNovo.getFotoUrl());
+        Mockito.when(enderecoUseCase.cadastrar(psicologoNovo.getEnderecoAtendimento())).thenReturn(psicologoNovo.getEnderecoAtendimento());
 
         Psicologo psicologoCadastrado = useCase.cadastrar(psicologoNovo);
 

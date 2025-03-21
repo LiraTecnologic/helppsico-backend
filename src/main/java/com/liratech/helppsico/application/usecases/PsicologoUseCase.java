@@ -1,5 +1,6 @@
 package com.liratech.helppsico.application.usecases;
 
+import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.application.exceptions.PsicologoExistenteException;
 import com.liratech.helppsico.application.exceptions.PsicologoNaoEncontradoException;
@@ -22,6 +23,7 @@ public class PsicologoUseCase {
     private final PsicologoGateway gateway;
     private final CriptografiaUseCase criptografiaUseCase;
     private final FotoUseCase fotoUseCase;
+    private final EnderecoUseCase enderecoUseCase;
     public static final String MENSAGEM_PSICOLOGO_JA_EXISTE = "Psicologo já está cadastrado";
     public static final String MENSAGEM_PSICOLOGO_NAO_ENCONTRADO = "Psicologo não encontrado";
 
@@ -38,12 +40,12 @@ public class PsicologoUseCase {
         String urlFoto = fotoUseCase.salvarImagem(novoPsicologo.getFoto());
         novoPsicologo.setFotoUrl(urlFoto);
 
-        String senhaCriptografa = criptografiaUseCase.criptografar(novoPsicologo.getSenha());
-        novoPsicologo.setSenha(senhaCriptografa);
+        String senhaCriptografada = criptografiaUseCase.criptografar(novoPsicologo.getSenha());
+        novoPsicologo.setSenha(senhaCriptografada);
 
-        /*
-            Salvar endereço
-         */
+        Endereco endereco = enderecoUseCase.cadastrar(novoPsicologo.getEnderecoAtendimento());
+
+        novoPsicologo.setEnderecoAtendimento(endereco);
 
         Psicologo psicologoSalvo = gateway.salvar(novoPsicologo);
 
