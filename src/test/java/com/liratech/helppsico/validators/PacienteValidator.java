@@ -4,15 +4,15 @@ import com.liratech.helppsico.domain.Paciente;
 import org.junit.jupiter.api.Assertions;
 
 public class PacienteValidator {
-    public static void validaPaciente(Paciente paciente1, Paciente paciente2) {
-        Assertions.assertEquals(paciente1.getNome(), paciente2.getNome());
-        Assertions.assertEquals(paciente1.getCpf(), paciente2.getCpf());
-        Assertions.assertEquals(paciente1.getEmail(), paciente2.getEmail());
-        Assertions.assertEquals(paciente1.getTelefone(), paciente2.getTelefone());
-        Assertions.assertEquals(paciente1.getDataNascimento(), paciente2.getDataNascimento());
-        Assertions.assertEquals(paciente1.getSenha(), paciente2.getSenha());
-        Assertions.assertEquals(paciente1.getGenero(), paciente2.getGenero());
-        Assertions.assertEquals(paciente1.getEndereco(), paciente2.getEndereco());
-        Assertions.assertEquals(paciente1.getFotoUrl(), paciente2.getFotoUrl());
+    public static void validaPaciente(Paciente comparacao1, Paciente comparacao2) {
+        Assertions.assertEquals(comparacao1.getNome(), comparacao2.getNome());
+        Assertions.assertEquals(comparacao1.getCpf(), comparacao2.getCpf());
+        Assertions.assertEquals(comparacao1.getEmail(), comparacao2.getEmail());
+        Assertions.assertEquals(comparacao1.getTelefone(), comparacao2.getTelefone());
+        Assertions.assertEquals(comparacao1.getDataNascimento(), comparacao2.getDataNascimento());
+        Assertions.assertEquals(comparacao1.getSenha(), comparacao2.getSenha());
+        Assertions.assertEquals(comparacao1.getGenero(), comparacao2.getGenero());
+        Assertions.assertEquals(comparacao1.getEndereco(), comparacao2.getEndereco());
+        Assertions.assertEquals(comparacao1.getFotoUrl(), comparacao2.getFotoUrl());
     }
 }
