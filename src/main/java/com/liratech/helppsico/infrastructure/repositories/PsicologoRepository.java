@@ -1,5 +1,6 @@
-package com.liratech.helppsico.infrastructure.repositories.entities;
+package com.liratech.helppsico.infrastructure.repositories;
 
+import com.liratech.helppsico.infrastructure.repositories.entities.PsicologoEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
