@@ -9,5 +9,8 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface AvaliacaoMapper {
     Avaliacao paraDomain (AvaliacaoDto avaliacaoDto);
+
+    @Mapping(target = "psicologo.foto", ignore = true)
+    @Mapping(target = "paciente.foto", ignore = true)
     AvaliacaoDto paraDto (Avaliacao avaliacao);
 }

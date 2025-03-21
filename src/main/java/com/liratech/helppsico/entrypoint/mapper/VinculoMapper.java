@@ -9,5 +9,8 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface VinculoMapper {
     Vinculo paraDomain (VinculoDto vinculoDto);
+
+    @Mapping(target = "psicologo.foto", ignore = true)
+    @Mapping(target = "paciente.foto", ignore = true)
     VinculoDto paraDto (Vinculo vinculo);
 }
