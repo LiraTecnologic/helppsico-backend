@@ -21,7 +21,12 @@ public class ParecerPsicologo extends Documento{
     public ParecerPsicologo (UUID id, Paciente paciente, Psicologo psicologo, LocalDate dataEmissao,
                              LocalDate dataValidade, String assinaturaPsicologo, String solicitante, String objetivo,
                              String conclusao, String sigilo, String contextualizacao, String fundamentacao, String analiseDoCaso){
-        super(id, paciente, psicologo, dataEmissao, dataValidade, assinaturaPsicologo);
+        this.id = id;
+        this.paciente = paciente;
+        this.psicologo = psicologo;
+        this.dataEmissao = dataEmissao;
+        this.dataValidade = dataValidade;
+        this.assinaturaPsicologo = assinaturaPsicologo;
         this.solicitante = solicitante;
         this.objetivo = objetivo;
         this.conclusao = conclusao;
