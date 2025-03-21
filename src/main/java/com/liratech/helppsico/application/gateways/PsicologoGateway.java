@@ -4,6 +4,7 @@ import com.liratech.helppsico.domain.Psicologo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -12,7 +13,7 @@ public interface PsicologoGateway {
 
         Optional<Psicologo> consultarPorId(UUID id);
 
-        Optional<Psicologo> consultarPorNome(String nome);
+        Optional<List<Psicologo>> consultarPorNome(String nome);
 
         Page<Psicologo> consultarMelhoresAvaliados(Pageable pageable);
 
