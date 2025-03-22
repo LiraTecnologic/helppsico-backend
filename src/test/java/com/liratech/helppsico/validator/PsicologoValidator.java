@@ -1,6 +1,8 @@
 package com.liratech.helppsico.validator;
 
 import com.liratech.helppsico.domain.Psicologo;
+import com.liratech.helppsico.domain.TipoGenero;
+import com.liratech.helppsico.entrypoint.dto.TipoGeneroDto;
 import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,7 +16,7 @@ public class PsicologoValidator {
         Assertions.assertEquals(esperado.getTelefone(), resultado.getTelefone());
         Assertions.assertEquals(esperado.getDataNascimento(), resultado.getDataNascimento());
         Assertions.assertEquals(esperado.getSenha(), resultado.getSenha());
-        TipoGeneroValidator.validaTipoGenero(esperado.getGenero(), resultado.getGenero());
+        Assertions.assertEquals(esperado, resultado);
         Assertions.assertEquals(esperado.getEnderecoAtendimento(), resultado.getEnderecoAtendimento());
         Assertions.assertEquals(esperado.getFotoUrl(), resultado.getFotoUrl());
         Assertions.assertEquals(esperado.getBiografia(), resultado.getBiografia());
@@ -29,7 +31,7 @@ public class PsicologoValidator {
         Assertions.assertEquals(esperado.getTelefone(), resultado.getTelefone());
         Assertions.assertEquals(esperado.getDataNascimento(), resultado.getDataNascimento());
         Assertions.assertEquals(esperado.getSenha(), resultado.getSenha());
-        TipoGeneroValidator.validaTipoGeneroDto(esperado.getGenero(), resultado.getGenero());
+        Assertions.assertEquals(esperado, resultado);
         Assertions.assertEquals(esperado.getEnderecoAtendimento(), resultado.getEnderecoAtendimento());
         Assertions.assertEquals(esperado.getFotoUrl(), resultado.getFotoUrl());
         Assertions.assertEquals(esperado.getFoto(), resultado.getFoto());
@@ -45,7 +47,7 @@ public class PsicologoValidator {
         Assertions.assertEquals(esperado.getTelefone(), resultado.getTelefone());
         Assertions.assertEquals(esperado.getDataNascimento(), resultado.getDataNascimento());
         Assertions.assertEquals(esperado.getSenha(), resultado.getSenha());
-        TipoGeneroValidator.validaTipoGeneroDtoParaDomain(esperado.getGenero(), resultado.getGenero());
+        Assertions.assertEquals(TipoGenero.valueOf(esperado.getGenero().name()), resultado.getGenero());
         EnderecoValidator.validaEnderecoDtoParaDomain(esperado.getEnderecoAtendimento(), resultado.getEnderecoAtendimento());
         Assertions.assertEquals(esperado.getFotoUrl(), resultado.getFotoUrl());
         Assertions.assertEquals(esperado.getBiografia(), resultado.getBiografia());
@@ -60,7 +62,7 @@ public class PsicologoValidator {
         Assertions.assertEquals(esperado.getTelefone(), resultado.getTelefone());
         Assertions.assertEquals(esperado.getDataNascimento(), resultado.getDataNascimento());
         Assertions.assertEquals(esperado.getSenha(), resultado.getSenha());
-        TipoGeneroValidator.validaTipoGeneroDomainParaDto(esperado.getGenero(), resultado.getGenero());
+        Assertions.assertEquals(TipoGeneroDto.valueOf(esperado.getGenero().name()), resultado.getGenero());
         EnderecoValidator.validaEnderecoDomainParaDto(esperado.getEnderecoAtendimento(), resultado.getEnderecoAtendimento());
         Assertions.assertEquals(esperado.getFotoUrl(), resultado.getFotoUrl());
         Assertions.assertEquals(esperado.getBiografia(), resultado.getBiografia());
