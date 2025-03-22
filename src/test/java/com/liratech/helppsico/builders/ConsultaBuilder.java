@@ -1,6 +1,7 @@
 package com.liratech.helppsico.builders;
 
 import com.liratech.helppsico.domain.Consulta;
+import com.liratech.helppsico.entrypoint.dto.consulta.ConsultaDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,6 +16,18 @@ public class ConsultaBuilder {
                 .dataHora(LocalDateTime.now())
                 .valor(new BigDecimal(150.5))
                 .endereco(EnderecoBuilder.criarEndereco())
+                .finalizada(false)
+                .build();
+    }
+
+    public static ConsultaDto criarConsultaDto(){
+        return ConsultaDto.builder()
+                .id(UUID.randomUUID())
+                .psicologo(PsicologoBuilder.criarPsicologoDto())
+                .paciente(PacienteBuilder.criarPacienteDto())
+                .dataHora(LocalDateTime.now())
+                .valor(new BigDecimal(150.5))
+                .endereco(EnderecoBuilder.criarEnderecoDto())
                 .finalizada(false)
                 .build();
     }

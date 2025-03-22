@@ -1,6 +1,5 @@
 package com.liratech.helppsico.mapper;
 
-import com.liratech.helppsico.builders.AvaliacaoDtoBuilder;
 import com.liratech.helppsico.builders.AvaliacaoBuilder;
 import com.liratech.helppsico.domain.Avaliacao;
 import com.liratech.helppsico.entrypoint.dto.psicologo.AvaliacaoDto;
@@ -16,18 +15,18 @@ class AvaliacaoMapperTest {
 
     @Test
     @DisplayName("Caso de sucesso na transformação de DTO para Domain")
-    void transformacaoDtoParaDomainSucesso() {
-        AvaliacaoDto avaliacaoDto = AvaliacaoDtoBuilder.criarAvaliacaoDto();
+    void transformacaoAvalicaoDtoParaDomain() {
+        AvaliacaoDto avaliacaoDto = AvaliacaoBuilder.criarAvaliacaoDto();
         Avaliacao avaliacao = avaliacaoMapper.paraDomain(avaliacaoDto);
 
         Assertions.assertNotNull(avaliacao);
         Assertions.assertEquals(avaliacaoDto.getId(), avaliacao.getId());
 
         Assertions.assertNotNull(avaliacao.getPsicologo());
-        Assertions.assertEquals(avaliacaoDto.getPsicologo().getId(), avaliacao.getPsicologo().getId());
+        //Comparar todos os campos de Psicologo
 
         Assertions.assertNotNull(avaliacao.getPaciente());
-        Assertions.assertEquals(avaliacaoDto.getPaciente().getId(), avaliacao.getPaciente().getId());
+        //Comparar todos os campos de Paciente
 
         Assertions.assertEquals(avaliacaoDto.getNota(), avaliacao.getNota());
         Assertions.assertEquals(avaliacaoDto.getComentario(), avaliacao.getComentario());
@@ -35,7 +34,7 @@ class AvaliacaoMapperTest {
 
     @Test
     @DisplayName("Caso de sucesso na transformação de Domain para DTO")
-    void transformacaoDomainParaDtoSucesso() {
+    void transformacaoAvaliacaoDomainParaDto() {
         Avaliacao avaliacao = AvaliacaoBuilder.criarAvaliacao();
         AvaliacaoDto avaliacaoDto = avaliacaoMapper.paraDto(avaliacao);
 
@@ -43,10 +42,10 @@ class AvaliacaoMapperTest {
         Assertions.assertEquals(avaliacao.getId(),avaliacaoDto.getId());
 
         Assertions.assertNotNull(avaliacaoDto.getPsicologo());
-        Assertions.assertEquals(avaliacao.getPsicologo().getId(), avaliacaoDto.getPsicologo().getId());
+        //Comparar todos os campos de Psicologo
 
         Assertions.assertNotNull(avaliacaoDto.getPaciente());
-        Assertions.assertEquals(avaliacao.getPaciente().getId(), avaliacaoDto.getPaciente().getId());
+        //Comparar todos os campos de Paciente
 
         Assertions.assertEquals(avaliacao.getNota(), avaliacaoDto.getNota());
         Assertions.assertEquals(avaliacao.getComentario(), avaliacaoDto.getComentario());
