@@ -4,6 +4,8 @@ import com.liratech.helppsico.builders.AvaliacaoBuilder;
 import com.liratech.helppsico.domain.Avaliacao;
 import com.liratech.helppsico.entrypoint.dto.psicologo.AvaliacaoDto;
 import com.liratech.helppsico.entrypoint.mapper.AvaliacaoMapper;
+import com.liratech.helppsico.validator.PacienteValidator;
+import com.liratech.helppsico.validator.PsicologoValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,13 +23,10 @@ class AvaliacaoMapperTest {
 
         Assertions.assertNotNull(avaliacao);
         Assertions.assertEquals(avaliacaoDto.getId(), avaliacao.getId());
-
         Assertions.assertNotNull(avaliacao.getPsicologo());
-        //Comparar todos os campos de Psicologo
-
+        PsicologoValidator.validaPsicologoDtoParaDomain(avaliacaoDto.getPsicologo(), avaliacao.getPsicologo());
         Assertions.assertNotNull(avaliacao.getPaciente());
-        //Comparar todos os campos de Paciente
-
+        PacienteValidator.validaPacienteDtoParaDomain(avaliacaoDto.getPaciente(), avaliacao.getPaciente());
         Assertions.assertEquals(avaliacaoDto.getNota(), avaliacao.getNota());
         Assertions.assertEquals(avaliacaoDto.getComentario(), avaliacao.getComentario());
     }
@@ -40,13 +39,10 @@ class AvaliacaoMapperTest {
 
         Assertions.assertNotNull(avaliacaoDto);
         Assertions.assertEquals(avaliacao.getId(),avaliacaoDto.getId());
-
         Assertions.assertNotNull(avaliacaoDto.getPsicologo());
-        //Comparar todos os campos de Psicologo
-
+        PsicologoValidator.validaPsicologoDomainParaDto(avaliacao.getPsicologo(), avaliacaoDto.getPsicologo());
         Assertions.assertNotNull(avaliacaoDto.getPaciente());
-        //Comparar todos os campos de Paciente
-
+        PacienteValidator.validaPacienteDomainParaDto(avaliacao.getPaciente(),avaliacaoDto.getPaciente());
         Assertions.assertEquals(avaliacao.getNota(), avaliacaoDto.getNota());
         Assertions.assertEquals(avaliacao.getComentario(), avaliacaoDto.getComentario());
     }
