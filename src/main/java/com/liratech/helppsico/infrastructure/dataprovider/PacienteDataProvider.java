@@ -13,7 +13,7 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class PacienteDataProvider {
+public class PacienteDataProvider implements PacienteGateway{
 
     private final PacienteRepository repository;
     private final PacienteMapper pacienteMapper;
@@ -22,6 +22,7 @@ public class PacienteDataProvider {
     public static final String MENSAGEM_ERRO_CONSULTAR_POR_EMAIL = "Erro ao consultar paciente pelo email.";
 
 
+    @Override
     public Paciente salvar(Paciente paciente) {
         PacienteEntity pacienteEntity = pacienteMapper.paraEntity(paciente);
 
@@ -35,6 +36,7 @@ public class PacienteDataProvider {
         return pacienteMapper.paraDomain(pacienteEntity);
     }
 
+    @Override
     public Optional<Paciente> consultarPorId(UUID id) {
         Optional<PacienteEntity> pacienteEntity;
 
@@ -48,6 +50,7 @@ public class PacienteDataProvider {
         return pacienteEntity.map(paciente -> pacienteMapper.paraDomain(pacienteEntity));
     }
 
+    @Override
     public  Optional<Paciente> consultarPorEmail(String email) {
         Optional<PacienteEntity> pacienteEntity;
 
