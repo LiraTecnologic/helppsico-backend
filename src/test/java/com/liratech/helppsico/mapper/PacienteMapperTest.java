@@ -4,6 +4,7 @@ import com.liratech.helppsico.builders.PacienteBuilder;
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.entrypoint.dto.PacienteDto;
 import com.liratech.helppsico.entrypoint.mapper.PacienteMapper;
+import com.liratech.helppsico.validator.PacienteValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,24 +20,17 @@ class PacienteMapperTest {
         PacienteDto pacienteDto = PacienteBuilder.criarPacienteDto();
         Paciente paciente = pacienteMapper.paraDomain(pacienteDto);
 
-        Assertions.assertNotNull(paciente);
-        Assertions.assertEquals(pacienteDto.getId(), paciente.getId());
-        Assertions.assertEquals(pacienteDto.getNome(), paciente.getNome());
-        Assertions.assertEquals(pacienteDto.getCpf(), paciente.getCpf());
-        Assertions.assertEquals(pacienteDto.getEmail(),paciente.getEmail());
-        Assertions.assertEquals(pacienteDto.getTelefone(), paciente.getTelefone());
-        Assertions.assertEquals(pacienteDto.getDataNascimento(), paciente.getDataNascimento());
-        Assertions.assertEquals(pacienteDto.getSenha(), paciente.getSenha());
-        Assertions.assertEquals(pacienteDto.getGenero(), paciente.getGenero());
-
         Assertions.assertNotNull(paciente.getEndereco());
-        //Validar todo o Endereco
-
-        Assertions.assertEquals(pacienteDto.getFotoUrl(), paciente.getFotoUrl());
+        PacienteValidator.validaPacienteDtoParaDomain(pacienteDto, paciente);
     }
 
     @Test
     @DisplayName("Caso de sucesso na tranformação de Domain para Dto")
     void transformacaoPacienteDeDomainParaDto() {
+        Paciente paciente = PacienteBuilder.criarPaciente();
+        PacienteDto pacienteDto = pacienteMapper.paraDto(paciente);
+
+        Assertions.assertNotNull(pacienteDto);
+        PacienteValidator.validaPacienteDomainParaDto(paciente, pacienteDto);
     }
 }
