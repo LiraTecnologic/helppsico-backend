@@ -5,30 +5,56 @@ import com.liratech.helppsico.entrypoint.dto.PacienteDto;
 import org.junit.jupiter.api.Assertions;
 
 public class PacienteValidator {
-    public static void validarPacienteDomain(Paciente comparacao1, Paciente comparacao2){
-        Assertions.assertEquals(comparacao1.getId(), comparacao2.getId());
-        Assertions.assertEquals(comparacao1.getNome(), comparacao2.getNome());
-        Assertions.assertEquals(comparacao1.getCpf(), comparacao2.getCpf());
-        Assertions.assertEquals(comparacao1.getEmail(),comparacao2.getEmail());
-        Assertions.assertEquals(comparacao1.getTelefone(), comparacao2.getTelefone());
-        Assertions.assertEquals(comparacao1.getDataNascimento(), comparacao2.getDataNascimento());
-        Assertions.assertEquals(comparacao1.getSenha(), comparacao2.getSenha());
-        Assertions.assertEquals(comparacao1.getGenero(), comparacao2.getGenero());
-        EnderecoValidator.validarEnderecoDomain(comparacao1.getEndereco(), comparacao2.getEndereco());
-        Assertions.assertEquals(comparacao1.getFotoUrl(), comparacao2.getFotoUrl());
+    public static void validarPacienteDomain (Paciente esperado, Paciente resultado){
+        Assertions.assertEquals(esperado.getId(), resultado.getId());
+        Assertions.assertEquals(esperado.getNome(), resultado.getNome());
+        Assertions.assertEquals(esperado.getCpf(), resultado.getCpf());
+        Assertions.assertEquals(esperado.getEmail(),resultado.getEmail());
+        Assertions.assertEquals(esperado.getTelefone(), resultado.getTelefone());
+        Assertions.assertEquals(esperado.getDataNascimento(), resultado.getDataNascimento());
+        Assertions.assertEquals(esperado.getSenha(), resultado.getSenha());
+        TipoGeneroValidator.validaTipoGenero(esperado.getGenero(), resultado.getGenero());
+        EnderecoValidator.validaEnderecoDomain(esperado.getEndereco(), resultado.getEndereco());
+        Assertions.assertEquals(esperado.getFotoUrl(), resultado.getFotoUrl());
     }
 
-    public static void validarPacienteDto(PacienteDto comparacao1, PacienteDto comparacao2){
-        Assertions.assertEquals(comparacao1.getId(), comparacao2.getId());
-        Assertions.assertEquals(comparacao1.getNome(), comparacao2.getNome());
-        Assertions.assertEquals(comparacao1.getCpf(), comparacao2.getCpf());
-        Assertions.assertEquals(comparacao1.getEmail(),comparacao2.getEmail());
-        Assertions.assertEquals(comparacao1.getTelefone(), comparacao2.getTelefone());
-        Assertions.assertEquals(comparacao1.getDataNascimento(), comparacao2.getDataNascimento());
-        Assertions.assertEquals(comparacao1.getSenha(), comparacao2.getSenha());
-        Assertions.assertEquals(comparacao1.getGenero(), comparacao2.getGenero());
-        EnderecoValidator.validarEnderecoDto(comparacao1.getEndereco(), comparacao2.getEndereco());
-        Assertions.assertEquals(comparacao1.getFotoUrl(), comparacao2.getFotoUrl());
-        Assertions.assertEquals(comparacao1.getFoto(), comparacao2.getFoto());
+    public static void validarPacienteDto (PacienteDto esperado, PacienteDto resultado){
+        Assertions.assertEquals(esperado.getId(), resultado.getId());
+        Assertions.assertEquals(esperado.getNome(), resultado.getNome());
+        Assertions.assertEquals(esperado.getCpf(), resultado.getCpf());
+        Assertions.assertEquals(esperado.getEmail(),resultado.getEmail());
+        Assertions.assertEquals(esperado.getTelefone(), resultado.getTelefone());
+        Assertions.assertEquals(esperado.getDataNascimento(), resultado.getDataNascimento());
+        Assertions.assertEquals(esperado.getSenha(), resultado.getSenha());
+        TipoGeneroValidator.validaTipoGeneroDto(esperado.getGenero(), resultado.getGenero());
+        EnderecoValidator.validaEnderecoDto(esperado.getEndereco(), resultado.getEndereco());
+        Assertions.assertEquals(esperado.getFotoUrl(), resultado.getFotoUrl());
+        Assertions.assertEquals(esperado.getFoto(), resultado.getFoto());
+    }
+
+    public static void validaPacienteDtoParaDomain (PacienteDto esperado, Paciente resultado){
+        Assertions.assertEquals(esperado.getId(), resultado.getId());
+        Assertions.assertEquals(esperado.getNome(), resultado.getNome());
+        Assertions.assertEquals(esperado.getCpf(), resultado.getCpf());
+        Assertions.assertEquals(esperado.getEmail(),resultado.getEmail());
+        Assertions.assertEquals(esperado.getTelefone(), resultado.getTelefone());
+        Assertions.assertEquals(esperado.getDataNascimento(), resultado.getDataNascimento());
+        Assertions.assertEquals(esperado.getSenha(), resultado.getSenha());
+        TipoGeneroValidator.validaTipoGeneroDtoParaDomain(esperado.getGenero(), resultado.getGenero());
+        EnderecoValidator.validaEnderecoDtoParaDomain(esperado.getEndereco(), resultado.getEndereco());
+        Assertions.assertEquals(esperado.getFotoUrl(), resultado.getFotoUrl());
+    }
+
+    public static void validaPacienteDomainParaDto (Paciente esperado, PacienteDto resultado){
+        Assertions.assertEquals(esperado.getId(), resultado.getId());
+        Assertions.assertEquals(esperado.getNome(), resultado.getNome());
+        Assertions.assertEquals(esperado.getCpf(), resultado.getCpf());
+        Assertions.assertEquals(esperado.getEmail(),resultado.getEmail());
+        Assertions.assertEquals(esperado.getTelefone(), resultado.getTelefone());
+        Assertions.assertEquals(esperado.getDataNascimento(), resultado.getDataNascimento());
+        Assertions.assertEquals(esperado.getSenha(), resultado.getSenha());
+        TipoGeneroValidator.validaTipoGeneroDomainParaDto(esperado.getGenero(), resultado.getGenero());
+        EnderecoValidator.validaEnderecoDomainParaDto(esperado.getEndereco(), resultado.getEndereco());
+        Assertions.assertEquals(esperado.getFotoUrl(), resultado.getFotoUrl());
     }
 }

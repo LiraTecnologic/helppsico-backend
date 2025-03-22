@@ -4,6 +4,7 @@ import com.liratech.helppsico.builders.EnderecoBuilder;
 import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.entrypoint.dto.EnderecoDto;
 import com.liratech.helppsico.entrypoint.mapper.EnderecoMapper;
+import com.liratech.helppsico.validator.EnderecoValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,12 +21,7 @@ class EnderecoMapperTest {
         Endereco endereco = enderecoMapper.paraDomain(enderecoDto);
 
         Assertions.assertNotNull(endereco);
-        Assertions.assertEquals(enderecoDto.getId(), endereco.getId());
-        Assertions.assertEquals(enderecoDto.getRua(), endereco.getRua());
-        Assertions.assertEquals(enderecoDto.getNumero(), endereco.getNumero());
-        Assertions.assertEquals(enderecoDto.getCep(), endereco.getCep());
-        Assertions.assertEquals(enderecoDto.getCidade(), endereco.getCidade());
-        Assertions.assertEquals(enderecoDto.getEstado(), endereco.getEstado());
+        EnderecoValidator.validaEnderecoDtoParaDomain(enderecoDto, endereco);
     }
 
     @Test
@@ -35,11 +31,6 @@ class EnderecoMapperTest {
         EnderecoDto enderecoDto = enderecoMapper.paraDto(endereco);
 
         Assertions.assertNotNull(enderecoDto);
-        Assertions.assertEquals(endereco.getId(), enderecoDto.getId());
-        Assertions.assertEquals(endereco.getRua(), enderecoDto.getRua());
-        Assertions.assertEquals(endereco.getNumero(), enderecoDto.getNumero());
-        Assertions.assertEquals(endereco.getCep(), enderecoDto.getCep());
-        Assertions.assertEquals(endereco.getCidade(), enderecoDto.getCidade());
-        Assertions.assertEquals(endereco.getEstado(), enderecoDto.getEstado());
+        EnderecoValidator.validaEnderecoDomainParaDto(endereco, enderecoDto);
     }
 }
