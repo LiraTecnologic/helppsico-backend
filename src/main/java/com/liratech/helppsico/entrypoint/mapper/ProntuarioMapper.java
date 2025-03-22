@@ -9,11 +9,9 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface ProntuarioMapper {
 
-    @Mapping(target = "paciente.cpf", source = "cpf")
-    @Mapping(target = "psicologo.crp", source = "crp")
     Prontuario paraDomain (ProntuarioDto prontuarioDto);
 
-    @Mapping(target = "cpf", source = "paciente.cpf")
-    @Mapping(target = "crp", source = "psicologo.crp")
+    @Mapping(target = "psicologo.foto", ignore = true)
+    @Mapping(target = "paciente.foto", ignore = true)
     ProntuarioDto paraDto (Prontuario prontuario);
 }
