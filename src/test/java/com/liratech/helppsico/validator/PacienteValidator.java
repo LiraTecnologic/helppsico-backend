@@ -5,7 +5,7 @@ import com.liratech.helppsico.entrypoint.dto.PacienteDto;
 import org.junit.jupiter.api.Assertions;
 
 public class PacienteValidator {
-    public static void validarPacienteDomain (Paciente esperado, Paciente resultado){
+    public static void validaPacienteDomain (Paciente esperado, Paciente resultado){
         Assertions.assertEquals(esperado.getId(), resultado.getId());
         Assertions.assertEquals(esperado.getNome(), resultado.getNome());
         Assertions.assertEquals(esperado.getCpf(), resultado.getCpf());
@@ -18,7 +18,7 @@ public class PacienteValidator {
         Assertions.assertEquals(esperado.getFotoUrl(), resultado.getFotoUrl());
     }
 
-    public static void validarPacienteDto (PacienteDto esperado, PacienteDto resultado){
+    public static void validaPacienteDto (PacienteDto esperado, PacienteDto resultado){
         Assertions.assertEquals(esperado.getId(), resultado.getId());
         Assertions.assertEquals(esperado.getNome(), resultado.getNome());
         Assertions.assertEquals(esperado.getCpf(), resultado.getCpf());
