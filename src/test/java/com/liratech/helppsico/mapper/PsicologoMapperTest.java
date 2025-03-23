@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -50,6 +53,26 @@ class PsicologoMapperTest {
             PsicologoDto psicologoDto = psicologoDtos.get(i);
 
             PsicologoValidator.validaPsicologoDomainParaDto(psicologo, psicologoDto);
+        }
+    }
+
+    @Test
+    @DisplayName("Caso de sucesso na transformação de PageDomain para PageDtos")
+    void transformacaoPagePsicologoDomainParaDto () {
+        List<Psicologo> psicologos = PsicologoBuilder.criarListaPsicologo();
+        Page<Psicologo> pageDomain = new PageImpl<>(psicologos, PageRequest.of(0, 2), psicologos.size());
+        Page<PsicologoDto> pageDto = psicologoMapper.pageDto(pageDomain);
+
+        Assertions.assertNotNull(pageDto);
+        Assertions.assertEquals(pageDomain.getTotalElements(), pageDto.getTotalElements());
+        Assertions.assertEquals(pageDomain.getSize(), pageDto.getSize());
+
+        List<PsicologoDto> dtos = pageDto.getContent();
+        for(int i = 0; i < pageDto.getSize(); i++){
+            Psicologo psicologo = psicologos.get(i);
+            PsicologoDto dto = dtos.get(i);
+
+            PsicologoValidator.validaPsicologoDomainParaDto(psicologo, dto);
         }
     }
 }

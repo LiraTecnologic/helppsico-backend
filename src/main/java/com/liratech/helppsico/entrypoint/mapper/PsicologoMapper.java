@@ -5,6 +5,7 @@ import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -17,4 +18,8 @@ public interface PsicologoMapper {
 
     @Mapping(target = "foto", ignore = true)
     List<PsicologoDto> paraDtos (List<Psicologo> psicologos);
+
+    default Page<PsicologoDto> pageDto(Page<Psicologo> psicologoPage) {
+       return psicologoPage.map(this::paraDto);
+    }
 }
