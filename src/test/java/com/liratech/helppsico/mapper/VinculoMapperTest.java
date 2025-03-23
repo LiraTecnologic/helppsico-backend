@@ -1,7 +1,6 @@
 package com.liratech.helppsico.mapper;
 
 import com.liratech.helppsico.builders.VinculoBuilder;
-import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.domain.StatusVinculo;
 import com.liratech.helppsico.domain.Vinculo;
 import com.liratech.helppsico.entrypoint.dto.StatusVinculoDto;
