@@ -5,6 +5,7 @@ import com.liratech.helppsico.entrypoint.dto.consulta.ConsultaDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 public class ConsultaBuilder {
@@ -30,5 +31,21 @@ public class ConsultaBuilder {
                 .endereco(EnderecoBuilder.criarEnderecoDto())
                 .finalizada(false)
                 .build();
+    }
+
+    public static Consulta criarConsultaParaLista(){
+        return Consulta.builder()
+                .id(UUID.randomUUID())
+                .psicologo(PsicologoBuilder.criarPsicologo())
+                .paciente(PacienteBuilder.criarPaciente())
+                .dataHora(LocalDateTime.now())
+                .valor(new BigDecimal(150.5))
+                .endereco(EnderecoBuilder.criarEndereco())
+                .finalizada(false)
+                .build();
+    }
+
+    public static List<Consulta> criarListaConslta(){
+        return List.of(criarConsulta(),criarConsultaParaLista());
     }
 }
