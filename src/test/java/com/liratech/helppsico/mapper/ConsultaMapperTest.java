@@ -29,6 +29,7 @@ class ConsultaMapperTest {
         PsicologoValidator.validaPsicologoDtoParaDomain(consultaDto.getPsicologo(), consulta.getPsicologo());
         PacienteValidator.validaPacienteDtoParaDomain(consultaDto.getPaciente(), consulta.getPaciente());
         Assertions.assertEquals(consultaDto.getDataHora(), consulta.getDataHora());
+        Assertions.assertEquals(consultaDto.getValor(), consulta.getValor());
         EnderecoValidator.validaEnderecoDtoParaDomain(consultaDto.getEndereco(), consulta.getEndereco());
         Assertions.assertEquals(consultaDto.getFinalizada(), consulta.getFinalizada());
     }
@@ -44,6 +45,7 @@ class ConsultaMapperTest {
         PsicologoValidator.validaPsicologoDomainParaDto(consulta.getPsicologo(), consultaDto.getPsicologo());
         PacienteValidator.validaPacienteDomainParaDto(consulta.getPaciente(), consultaDto.getPaciente());
         Assertions.assertEquals(consulta.getDataHora(), consultaDto.getDataHora());
+        Assertions.assertEquals(consulta.getValor(), consultaDto.getValor());
         EnderecoValidator.validaEnderecoDomainParaDto(consulta.getEndereco(), consultaDto.getEndereco());
         Assertions.assertEquals(consulta.getFinalizada(), consultaDto.getFinalizada());
     }
@@ -65,6 +67,7 @@ class ConsultaMapperTest {
             PsicologoValidator.validaPsicologoDomainParaDto(consulta.getPsicologo(), consultaDto.getPsicologo());
             PacienteValidator.validaPacienteDomainParaDto(consulta.getPaciente(), consultaDto.getPaciente());
             Assertions.assertEquals(consulta.getDataHora(), consultaDto.getDataHora());
+            Assertions.assertEquals(consulta.getValor(), consultaDto.getValor());
             EnderecoValidator.validaEnderecoDomainParaDto(consulta.getEndereco(), consultaDto.getEndereco());
             Assertions.assertEquals(consulta.getFinalizada(), consultaDto.getFinalizada());
         }
