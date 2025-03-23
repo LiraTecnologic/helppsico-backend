@@ -25,7 +25,9 @@ class VinculoMapperTest {
 
         Assertions.assertNotNull(vinculo);
         Assertions.assertEquals(vinculoDto.getId(), vinculo.getId());
+        Assertions.assertNotNull(vinculo.getPaciente());
         PacienteValidator.validaPacienteDtoParaDomain(vinculoDto.getPaciente(), vinculo.getPaciente());
+        Assertions.assertNotNull(vinculo.getPsicologo());
         PsicologoValidator.validaPsicologoDtoParaDomain(vinculoDto.getPsicologo(), vinculo.getPsicologo());
         Assertions.assertEquals(StatusVinculo.valueOf(vinculoDto.getStatus().name()), vinculo.getStatus());
     }
@@ -38,7 +40,9 @@ class VinculoMapperTest {
 
         Assertions.assertNotNull(vinculoDto);
         Assertions.assertEquals(vinculo.getId(), vinculoDto.getId());
+        Assertions.assertNotNull(vinculoDto.getPaciente());
         PacienteValidator.validaPacienteDomainParaDto(vinculo.getPaciente(), vinculoDto.getPaciente());
+        Assertions.assertNotNull(vinculoDto.getPsicologo());
         PsicologoValidator.validaPsicologoDomainParaDto(vinculo.getPsicologo(), vinculoDto.getPsicologo());
         Assertions.assertEquals(StatusVinculoDto.valueOf(vinculo.getStatus().name()), vinculoDto.getStatus());
     }
