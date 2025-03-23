@@ -26,7 +26,9 @@ class ConsultaMapperTest {
 
         Assertions.assertNotNull(consulta);
         Assertions.assertEquals(consultaDto.getId(), consulta.getId());
+        Assertions.assertNotNull(consulta.getPsicologo());
         PsicologoValidator.validaPsicologoDtoParaDomain(consultaDto.getPsicologo(), consulta.getPsicologo());
+        Assertions.assertNotNull(consulta.getPaciente());
         PacienteValidator.validaPacienteDtoParaDomain(consultaDto.getPaciente(), consulta.getPaciente());
         Assertions.assertEquals(consultaDto.getDataHora(), consulta.getDataHora());
         Assertions.assertEquals(consultaDto.getValor(), consulta.getValor());
@@ -42,7 +44,9 @@ class ConsultaMapperTest {
 
         Assertions.assertNotNull(consultaDto);
         Assertions.assertEquals(consulta.getId(), consultaDto.getId());
+        Assertions.assertNotNull(consultaDto.getPsicologo());
         PsicologoValidator.validaPsicologoDomainParaDto(consulta.getPsicologo(), consultaDto.getPsicologo());
+        Assertions.assertNotNull(consultaDto.getPaciente());
         PacienteValidator.validaPacienteDomainParaDto(consulta.getPaciente(), consultaDto.getPaciente());
         Assertions.assertEquals(consulta.getDataHora(), consultaDto.getDataHora());
         Assertions.assertEquals(consulta.getValor(), consultaDto.getValor());
@@ -64,7 +68,9 @@ class ConsultaMapperTest {
             ConsultaDto consultaDto = consultaDtos.get(i);
 
             Assertions.assertEquals(consulta.getId(), consultaDto.getId());
+            Assertions.assertNotNull(consultaDto.getPsicologo());
             PsicologoValidator.validaPsicologoDomainParaDto(consulta.getPsicologo(), consultaDto.getPsicologo());
+            Assertions.assertNotNull(consultaDto.getPaciente());
             PacienteValidator.validaPacienteDomainParaDto(consulta.getPaciente(), consultaDto.getPaciente());
             Assertions.assertEquals(consulta.getDataHora(), consultaDto.getDataHora());
             Assertions.assertEquals(consulta.getValor(), consultaDto.getValor());
