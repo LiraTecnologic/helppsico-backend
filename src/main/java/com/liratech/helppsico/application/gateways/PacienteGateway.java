@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface PacienteGateway {
-    Paciente salvarPaciente(Paciente paciente);
+    Paciente salvar(Paciente paciente);
 
     Optional<Paciente> consultarPorId(UUID id);
 
