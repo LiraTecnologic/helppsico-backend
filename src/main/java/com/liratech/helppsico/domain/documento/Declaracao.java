@@ -21,6 +21,4 @@ public class Declaracao extends Documento{
         this.descricao = descricao;
         this.finalidade = finalidade;
     }
-
-
 }
