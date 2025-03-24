@@ -34,12 +34,7 @@ public class AtestadoEntity extends DocumentoEntity {
     private String finalidade;
 
     public AtestadoEntity (UUID id, PacienteEntity paciente, PsicologoEntity psicologo, LocalDate dataEmissao, LocalDate dataValidade, String assinaturaPsicologo, LocalDate dataAtendimento, EnderecoEntity local, String descricao, String descricaoEstadoPsicologico, String periodoAfastamento, String finalidade){
-        this.id = id;
-        this.paciente = paciente;
-        this.psicologo = psicologo;
-        this.dataEmissao = dataEmissao;
-        this.dataValidade = dataValidade;
-        this.assinaturaPsicologo = assinaturaPsicologo;
+        super(id, paciente, psicologo, dataEmissao, dataValidade, assinaturaPsicologo);
         this.dataAtendimento = dataAtendimento;
         this.local = local;
         this.descricao = descricao;
