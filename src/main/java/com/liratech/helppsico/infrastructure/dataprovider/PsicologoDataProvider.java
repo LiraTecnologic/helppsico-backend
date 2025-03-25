@@ -35,7 +35,7 @@ public class PsicologoDataProvider implements PsicologoGateway {
         PsicologoEntity psicologoEntity = mapper.paraEntity(psicologo);
 
         try {
-
+            psicologoEntity = repository.save(psicologoEntity);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_SALVAR, ex);
             throw new DataProviderException(MENSAGEM_ERRO_SALVAR, ex);
@@ -49,7 +49,7 @@ public class PsicologoDataProvider implements PsicologoGateway {
         Optional<PsicologoEntity> psicologoEntity;
 
         try {
-
+            psicologoEntity = repository.findById(id);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_CONSULTAR_POR_ID, ex);
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_ID, ex);
@@ -63,7 +63,7 @@ public class PsicologoDataProvider implements PsicologoGateway {
         List<PsicologoEntity> psicologosEntities;
 
         try {
-
+            psicologosEntities = repository.findByNome(nome);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_CONSULTAR_POR_NOME, ex);
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_NOME, ex);
@@ -79,7 +79,7 @@ public class PsicologoDataProvider implements PsicologoGateway {
         Page<PsicologoEntity> psicologosEntities;
 
         try {
-
+            psicologosEntities = repository.consultarMelhoresAvaliados(pageable);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_CONSULTAR_MELHORES_AVALIADOS, ex);
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_MELHORES_AVALIADOS, ex);
@@ -93,7 +93,7 @@ public class PsicologoDataProvider implements PsicologoGateway {
         Optional<PsicologoEntity> psicologoEntity;
 
         try {
-
+            psicologoEntity = repository.findByCrp(crp);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_CONSULTAR_POR_CRP, ex);
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_CRP, ex);
@@ -107,7 +107,7 @@ public class PsicologoDataProvider implements PsicologoGateway {
         Page<PsicologoEntity> psicologosEntities;
 
         try {
-
+            psicologosEntities = repository.findAll(pageable);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_LISTAR, ex);
             throw new DataProviderException(MENSAGEM_ERRO_LISTAR, ex);
