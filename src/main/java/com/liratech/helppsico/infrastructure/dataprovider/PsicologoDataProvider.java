@@ -2,6 +2,7 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 
 import com.liratech.helppsico.application.gateways.PsicologoGateway;
 import com.liratech.helppsico.domain.Psicologo;
+import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
 import com.liratech.helppsico.infrastructure.repositories.PsicologoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.PsicologoEntity;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +23,23 @@ public class PsicologoDataProvider implements PsicologoGateway {
 
     private final PsicologoRepository repository;
     private final PsicologoMapper mapper;
+    public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar psicologo.";
+    public static final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar psicologo pelo id.";
+    public static final String MENSAGEM_ERRO_CONSULTAR_POR_NOME = "Erro ao consultar psicologos pelo nome.";
+    public static final String MENSAGEM_ERRO_CONSULTAR_MELHORES_AVALIADOS = "Erro ao consultar psicologos melhores avaliados.";
+    public static final String MENSAGEM_ERRO_CONSULTAR_POR_CRP = "Erro ao consultar psicologo pelo crp.";
+    public static final String MENSAGEM_ERRO_LISTAR = "Erro ao listar psicologos.";
 
     @Override
     public Psicologo salvar(Psicologo psicologo) {
         PsicologoEntity psicologoEntity = mapper.paraEntity(psicologo);
+
+        try {
+
+        }catch (Exception ex){
+            log.error(MENSAGEM_ERRO_SALVAR, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_SALVAR, ex);
+        }
 
         return mapper.paraDomain(psicologoEntity);
     }
@@ -34,12 +48,26 @@ public class PsicologoDataProvider implements PsicologoGateway {
     public Optional<Psicologo> consultarPorId(UUID id) {
         Optional<PsicologoEntity> psicologoEntity;
 
+        try {
+
+        }catch (Exception ex){
+            log.error(MENSAGEM_ERRO_CONSULTAR_POR_ID, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_ID, ex);
+        }
+
         return psicologoEntity.map(psicologo -> mapper.paraDomain(psicologo));
     }
 
     @Override
     public List<Psicologo> consultarPorNome(String nome) {
         List<PsicologoEntity> psicologosEntities;
+
+        try {
+
+        }catch (Exception ex){
+            log.error(MENSAGEM_ERRO_CONSULTAR_POR_NOME, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_NOME, ex);
+        }
 
         return psicologosEntities.stream()
                 .map(psicologo -> mapper.paraDomain(psicologo))
@@ -50,6 +78,13 @@ public class PsicologoDataProvider implements PsicologoGateway {
     public Page<Psicologo> consultarMelhoresAvaliados(Pageable pageable) {
         Page<PsicologoEntity> psicologosEntities;
 
+        try {
+
+        }catch (Exception ex){
+            log.error(MENSAGEM_ERRO_CONSULTAR_MELHORES_AVALIADOS, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_MELHORES_AVALIADOS, ex);
+        }
+
         return psicologosEntities.map(psicologo -> mapper.paraDomain(psicologo));
     }
 
@@ -57,12 +92,26 @@ public class PsicologoDataProvider implements PsicologoGateway {
     public Optional<Psicologo> consultarPorCrp(String crp) {
         Optional<PsicologoEntity> psicologoEntity;
 
+        try {
+
+        }catch (Exception ex){
+            log.error(MENSAGEM_ERRO_CONSULTAR_POR_CRP, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_CRP, ex);
+        }
+
         return psicologoEntity.map(psicologo -> mapper.paraDomain(psicologo));
     }
 
     @Override
     public Page<Psicologo> listar(Pageable pageable) {
         Page<PsicologoEntity> psicologosEntities;
+
+        try {
+
+        }catch (Exception ex){
+            log.error(MENSAGEM_ERRO_LISTAR, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_LISTAR, ex);
+        }
 
         return psicologosEntities.map(psicologo -> mapper.paraDomain(psicologo));
     }
