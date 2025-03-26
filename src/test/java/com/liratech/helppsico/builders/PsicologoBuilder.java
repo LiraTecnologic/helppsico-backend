@@ -13,21 +13,21 @@ import java.util.List;
 import java.util.UUID;
 
 public class PsicologoBuilder {
-    
-    public static Psicologo gerarPsicologo() {
+
+    public static Psicologo criarPsicologo() {
         return Psicologo.builder()
                 .id(UUID.randomUUID())
-                .nome("Psicologo teste")
-                .crp("0100000")
-                .cpf("12332114763")
-                .email("emailteste@gmail.com")
-                .telefone("44987415623")
-                .dataNascimento(LocalDate.now())
-                .senha("senhateste123!")
+                .nome("Dr. João Silva")
+                .crp("123456")
+                .cpf("12345678901")
+                .email("joao.silva@example.com")
+                .telefone("(11) 98765-4321")
+                .dataNascimento(LocalDate.of(1985, 5, 20))
+                .senha("Senha@123")
                 .genero(TipoGenero.MASCULINO)
-                .enderecoAtendimento(EnderecoBuilder.gerarEndereco())
-                .fotoUrl("urltestefoto")
-                .biografia("Biografia teste")
+                .enderecoAtendimento(EnderecoBuilder.criarEndereco())
+                .fotoUrl("https://example.com/foto.jpg")
+                .biografia("Psicólogo com 10 anos de experiência em terapia cognitivo-comportamental.")
                 .build();
     }
 
@@ -35,7 +35,7 @@ public class PsicologoBuilder {
         List<Psicologo> psicologoList = new ArrayList<>();
 
         for (int i = 0; i < 3; i++) {
-            psicologoList.add(gerarPsicologo());
+            psicologoList.add(criarPsicologo());
         }
 
         return psicologoList;
@@ -45,7 +45,7 @@ public class PsicologoBuilder {
         List<Psicologo> psicologoList = new ArrayList<>();
 
         for (int i = 0; i < 3; i++) {
-            psicologoList.add(gerarPsicologo());
+            psicologoList.add(criarPsicologo());
         }
 
         return transformarListaEmPagina(psicologoList, PageRequest.of(0,10));

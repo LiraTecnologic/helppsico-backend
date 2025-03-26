@@ -2,7 +2,6 @@ package com.liratech.helppsico.application.usecases;
 
 import com.liratech.helppsico.application.exceptions.PsicologoExistenteException;
 import com.liratech.helppsico.application.exceptions.PsicologoNaoEncontradoException;
-import com.liratech.helppsico.builders.EnderecoBuilder;
 import com.liratech.helppsico.builders.PsicologoBuilder;
 import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.domain.Psicologo;
@@ -44,7 +43,7 @@ class PsicologoUseCaseTest {
 
     @Test
     void testeCadastroDePsicologo() {
-        Psicologo psicologoNovo = PsicologoBuilder.gerarPsicologo();
+        Psicologo psicologoNovo = PsicologoBuilder.criarPsicologo();
 
         Mockito.when(gateway.consultarPorCrp(psicologoNovo.getCrp())).thenReturn(Optional.empty());
         Mockito.when(gateway.salvar(psicologoNovo)).thenReturn(psicologoNovo);
@@ -54,15 +53,15 @@ class PsicologoUseCaseTest {
 
         Psicologo psicologoCadastrado = useCase.cadastrar(psicologoNovo);
 
-        PsicologoValidator.validaPsicologo(psicologoNovo, psicologoCadastrado);
+        PsicologoValidator.validaPsicologoDomain(psicologoNovo, psicologoCadastrado);
     }
 
     @Test
     void testeExceptionPsicologoJaCadastrado() {
-        Psicologo psicologoNovo = PsicologoBuilder.gerarPsicologo();
+        Psicologo psicologoNovo = PsicologoBuilder.criarPsicologo();
 
         Mockito.when(gateway.consultarPorCrp(psicologoNovo.getCrp()))
-                .thenReturn(Optional.of(PsicologoBuilder.gerarPsicologo()));
+                .thenReturn(Optional.of(PsicologoBuilder.criarPsicologo()));
 
         PsicologoExistenteException exception = Assertions
                 .assertThrows(PsicologoExistenteException.class, () -> useCase.cadastrar(psicologoNovo));
@@ -73,19 +72,19 @@ class PsicologoUseCaseTest {
 
     @Test
     void testeConsultaPsicologoPeloId() {
-        Psicologo psicologoBuilder = PsicologoBuilder.gerarPsicologo();
+        Psicologo psicologoBuilder = PsicologoBuilder.criarPsicologo();
 
         Mockito.when(gateway.consultarPorId(psicologoBuilder.getId()))
                 .thenReturn(Optional.of(psicologoBuilder));
 
         Psicologo psicologo = useCase.consultarPorId(psicologoBuilder.getId());
 
-        PsicologoValidator.validaPsicologo(psicologoBuilder, psicologo);
+        PsicologoValidator.validaPsicologoDomain(psicologoBuilder, psicologo);
     }
 
     @Test
     void testePsicologoNaoEncontradoPeloId() {
-        UUID id = PsicologoBuilder.gerarPsicologo().getId();
+        UUID id = PsicologoBuilder.criarPsicologo().getId();
 
         Mockito.when(gateway.consultarPorId(id))
                 .thenReturn(Optional.empty());
@@ -101,7 +100,7 @@ class PsicologoUseCaseTest {
 
     @Test
     void testeConsultaPsicologosPeloNome() {
-        String nomeTeste = PsicologoBuilder.gerarPsicologo().getNome();
+        String nomeTeste = PsicologoBuilder.criarPsicologo().getNome();
         List<Psicologo> psicologoList = PsicologoBuilder.gerarListaDePsicologos();
 
         Mockito.when(gateway.consultarPorNome(nomeTeste))
@@ -110,7 +109,7 @@ class PsicologoUseCaseTest {
         List<Psicologo> psicologos = useCase.consultarPorNome(nomeTeste);
 
         for (int i = 0; i < psicologoList.size(); i++) {
-            PsicologoValidator.validaPsicologo(psicologoList.get(i), psicologos.get(i));
+            PsicologoValidator.validaPsicologoDomain(psicologoList.get(i), psicologos.get(i));
         }
     }
 
@@ -125,25 +124,25 @@ class PsicologoUseCaseTest {
                 .consultarMelhoresAvaliados(PageRequest.of(0, 10));
 
         for (int i = 0; i < psicologosPage.getSize(); i++) {
-            PsicologoValidator.validaPsicologo(psicologosPage.toList().get(i), psicologos.toList().get(i));
+            PsicologoValidator.validaPsicologoDomain(psicologosPage.toList().get(i), psicologos.toList().get(i));
         }
     }
 
     @Test
     void testeConsultaPorCrp() {
-        Psicologo psicologoBuilder = PsicologoBuilder.gerarPsicologo();
+        Psicologo psicologoBuilder = PsicologoBuilder.criarPsicologo();
 
         Mockito.when(gateway.consultarPorCrp(psicologoBuilder.getCrp()))
                 .thenReturn(Optional.of(psicologoBuilder));
 
         Psicologo psicologo = useCase.consultarPorCrp(psicologoBuilder.getCrp());
 
-        PsicologoValidator.validaPsicologo(psicologoBuilder, psicologo);
+        PsicologoValidator.validaPsicologoDomain(psicologoBuilder, psicologo);
     }
 
     @Test
     void testePsicologoNaoEncontradoPeloCrp() {
-        String crp = PsicologoBuilder.gerarPsicologo().getCrp();
+        String crp = PsicologoBuilder.criarPsicologo().getCrp();
 
         Mockito.when(gateway.consultarPorCrp(crp))
                 .thenReturn(Optional.empty());
@@ -169,13 +168,13 @@ class PsicologoUseCaseTest {
                 .listar(PageRequest.of(0, 10));
 
         for (int i = 0; i < psicologoPage.size(); i++) {
-            PsicologoValidator.validaPsicologo(psicologoPage.toList().get(i), psicologos.toList().get(i));
+            PsicologoValidator.validaPsicologoDomain(psicologoPage.toList().get(i), psicologos.toList().get(i));
         }
     }
 
     @Test
     void testeAlteracaoDePsicologo() {
-        Psicologo psicologoBuilder = PsicologoBuilder.gerarPsicologo();
+        Psicologo psicologoBuilder = PsicologoBuilder.criarPsicologo();
 
         Endereco enderecoNovo = Endereco.builder()
                 .id(UUID.randomUUID())
@@ -214,6 +213,6 @@ class PsicologoUseCaseTest {
 
         Psicologo psicologoTeste = captor.getValue();
 
-        PsicologoValidator.validaPsicologo(psicologoBuilder, psicologoTeste);
+        PsicologoValidator.validaPsicologoDomain(psicologoBuilder, psicologoTeste);
     }
 }

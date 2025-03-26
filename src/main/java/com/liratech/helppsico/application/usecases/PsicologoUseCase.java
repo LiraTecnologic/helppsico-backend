@@ -55,7 +55,7 @@ public class PsicologoUseCase {
     }
 
     public Psicologo consultarPorId(UUID id) {
-        log.info("Consultando psicólogo pelo sei id. Id: {}", id);
+        log.info("Consultando psicólogo pelo seu id. Id: {}", id);
 
         Optional<Psicologo> psicologo = gateway.consultarPorId(id);
 

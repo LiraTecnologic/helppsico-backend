@@ -6,14 +6,14 @@ import java.util.UUID;
 
 public class EnderecoBuilder {
 
-    public static Endereco gerarEndereco() {
+    public static Endereco criarEndereco(){
         return Endereco.builder()
                 .id(UUID.randomUUID())
-                .rua("Rua teste")
+                .rua("Rua Teste")
                 .numero(123)
-                .cep("78950123")
-                .cidade("Cidade teste")
-                .estado("Estado teste")
+                .cep("12345678")
+                .cidade("Cidade Teste")
+                .estado("Estado Teste")
                 .build();
     }
 }
