@@ -45,7 +45,7 @@ class PacienteDataProviderTest {
         Mockito.when(repository.save(Mockito.any())).thenThrow(RuntimeException.class);
         DataProviderException exception = Assertions
                 .assertThrows(DataProviderException.class, () -> dataProvider.salvar(PacienteBuilder.criarPaciente()));
-        Assertions.assertEquals(exception.getMessage(), PacienteDataProvider.MENSAGEM_ERRO_SALVAR);
+        Assertions.assertEquals(PacienteDataProvider.MENSAGEM_ERRO_SALVAR, exception.getMessage());
     }
 
     @Test
@@ -65,7 +65,7 @@ class PacienteDataProviderTest {
         Mockito.when(repository.findById(Mockito.any())).thenThrow(RuntimeException.class);
         DataProviderException exception = Assertions
                 .assertThrows(DataProviderException.class, () -> dataProvider.consultarPorId(PacienteBuilder.criarPaciente().getId()));
-        Assertions.assertEquals(exception.getMessage(), PacienteDataProvider.MENSAGEM_ERRO_CONSULTAR_POR_ID);
+        Assertions.assertEquals(PacienteDataProvider.MENSAGEM_ERRO_CONSULTAR_POR_ID, exception.getMessage());
     }
 
     @Test
@@ -85,6 +85,6 @@ class PacienteDataProviderTest {
         Mockito.when(repository.findByEmail(Mockito.any())).thenThrow(RuntimeException.class);
         DataProviderException exception = Assertions
                 .assertThrows(DataProviderException.class, () -> dataProvider.consultarPorEmail(PacienteBuilder.criarPaciente().getEmail()));
-        Assertions.assertEquals(exception.getMessage(), PacienteDataProvider.MENSAGEM_ERRO_CONSULTAR_POR_EMAIL);
+        Assertions.assertEquals(PacienteDataProvider.MENSAGEM_ERRO_CONSULTAR_POR_EMAIL, exception.getMessage());
     }
 }
