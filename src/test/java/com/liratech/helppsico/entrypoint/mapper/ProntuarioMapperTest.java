@@ -1,4 +1,4 @@
-package com.liratech.helppsico.mapper;
+package com.liratech.helppsico.entrypoint.mapper;
 
 import com.liratech.helppsico.builders.ProntuarioBuilder;
 import com.liratech.helppsico.domain.Prontuario;
@@ -17,7 +17,7 @@ class ProntuarioMapperTest {
 
     @Test
     @DisplayName("Caso de sucesso na tranformação de DTO para Domain")
-    void transformacaoProntuarioDtoParaDomain() {
+    void testeTransformacaoProntuarioDtoParaDomain() {
         ProntuarioDto prontuarioDto = ProntuarioBuilder.criarProntuarioDto();
         Prontuario prontuario = prontuarioMapper.paraDomain(prontuarioDto);
 
@@ -31,7 +31,7 @@ class ProntuarioMapperTest {
 
     @Test
     @DisplayName("Caso de sucesso na tranformação de Domain para DTO")
-    void transformacaoProntuarioDomainParaDto() {
+    void testeTransformacaoProntuarioDomainParaDto() {
         Prontuario prontuario = ProntuarioBuilder.criarProntuario();
         ProntuarioDto prontuarioDto = prontuarioMapper.paraDto(prontuario);
 

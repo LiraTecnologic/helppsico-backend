@@ -1,4 +1,4 @@
-package com.liratech.helppsico.mapper;
+package com.liratech.helppsico.entrypoint.mapper;
 
 import com.liratech.helppsico.builders.ConsultaBuilder;
 import com.liratech.helppsico.domain.Consulta;
@@ -20,7 +20,7 @@ class ConsultaMapperTest {
 
     @Test
     @DisplayName("Caso de sucesso na transformação de DTO para Domain")
-    void transformacaoConsultaDtoParaDomain() {
+    void testeTransformacaoConsultaDtoParaDomain() {
         ConsultaDto consultaDto = ConsultaBuilder.criarConsultaDto();
         Consulta consulta = consultaMapper.paraDomain(consultaDto);
 
@@ -38,7 +38,7 @@ class ConsultaMapperTest {
 
     @Test
     @DisplayName("Caso de sucesso na transformação de Domain para Dto")
-    void transformacaoConsltaDomainParaDto() {
+    void testeTransformacaoConsltaDomainParaDto() {
         Consulta consulta = ConsultaBuilder.criarConsulta();
         ConsultaDto consultaDto = consultaMapper.paraDto(consulta);
 
@@ -56,7 +56,7 @@ class ConsultaMapperTest {
 
     @Test
     @DisplayName("Caso de sucesso nas transformações de Domains para Dtos")
-    void transformacaoConsultaDomainsParaDtos() {
+    void testeTransformacaoConsultaDomainsParaDtos() {
         List<Consulta> consultas = ConsultaBuilder.criarListaConslta();
         List<ConsultaDto> consultaDtos = consultaMapper.paraDtos(consultas);
 

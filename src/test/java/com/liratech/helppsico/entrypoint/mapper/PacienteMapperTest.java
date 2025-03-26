@@ -1,4 +1,4 @@
-package com.liratech.helppsico.mapper;
+package com.liratech.helppsico.entrypoint.mapper;
 
 import com.liratech.helppsico.builders.PacienteBuilder;
 import com.liratech.helppsico.domain.Paciente;
@@ -16,7 +16,7 @@ class PacienteMapperTest {
 
     @Test
     @DisplayName("Caso de sucesso na tranformação de DTO para Domain")
-    void transformacaoPacienteDeDtoParaDomain() {
+    void testeTransformacaoPacienteDeDtoParaDomain() {
         PacienteDto pacienteDto = PacienteBuilder.criarPacienteDto();
         Paciente paciente = pacienteMapper.paraDomain(pacienteDto);
 
@@ -26,7 +26,7 @@ class PacienteMapperTest {
 
     @Test
     @DisplayName("Caso de sucesso na tranformação de Domain para Dto")
-    void transformacaoPacienteDeDomainParaDto() {
+    void testeTransformacaoPacienteDeDomainParaDto() {
         Paciente paciente = PacienteBuilder.criarPaciente();
         PacienteDto pacienteDto = pacienteMapper.paraDto(paciente);
 

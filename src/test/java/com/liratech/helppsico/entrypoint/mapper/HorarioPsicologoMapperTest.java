@@ -1,4 +1,4 @@
-package com.liratech.helppsico.mapper;
+package com.liratech.helppsico.entrypoint.mapper;
 
 import com.liratech.helppsico.builders.HorarioPsicologoBuilder;
 import com.liratech.helppsico.domain.HorarioPsicologo;
@@ -16,7 +16,7 @@ class HorarioPsicologoMapperTest {
 
     @Test
     @DisplayName("Caso de sucesso na tranformação de DTO para Domain")
-    void transformacaoHorarioPsicologoDtoParaDomain() {
+    void testeTransformacaoHorarioPsicologoDtoParaDomain() {
         HorarioPsicologoDto horarioPsicologoDto = HorarioPsicologoBuilder.criarHorarioPsicologoDto();
         HorarioPsicologo horarioPsicologo = horarioPsicologoMapper.paraDomain(horarioPsicologoDto);
 
@@ -30,7 +30,7 @@ class HorarioPsicologoMapperTest {
 
     @Test
     @DisplayName("Caso de sucesso na tranformação de Domain para DTO")
-    void transformacaoHorarioPsicologoDomainParaDto() {
+    void testeTransformacaoHorarioPsicologoDomainParaDto() {
         HorarioPsicologo horarioPsicologo = HorarioPsicologoBuilder.criarHorarioPsicologo();
         HorarioPsicologoDto horarioPsicologoDto = horarioPsicologoMapper.paraDto(horarioPsicologo);
 

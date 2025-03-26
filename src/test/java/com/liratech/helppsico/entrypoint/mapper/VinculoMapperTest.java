@@ -1,4 +1,4 @@
-package com.liratech.helppsico.mapper;
+package com.liratech.helppsico.entrypoint.mapper;
 
 import com.liratech.helppsico.builders.VinculoBuilder;
 import com.liratech.helppsico.domain.StatusVinculo;
@@ -19,7 +19,7 @@ class VinculoMapperTest {
 
     @Test
     @DisplayName("Caso de sucesso na transformação de DTO para Domain")
-    void transformacaoVinculoDtoParaDomain() {
+    void testeTransformacaoVinculoDtoParaDomain() {
         VinculoDto vinculoDto = VinculoBuilder.criarVinculoDto();
         Vinculo vinculo = vinculoMapper.paraDomain(vinculoDto);
 
@@ -34,7 +34,7 @@ class VinculoMapperTest {
 
     @Test
     @DisplayName("Caso de sucesso na transformação de Doamin para Dto")
-    void transformacaoVinculoDomainParaDto() {
+    void testeTransformacaoVinculoDomainParaDto() {
         Vinculo vinculo = VinculoBuilder.criarVinculo();
         VinculoDto vinculoDto = vinculoMapper.paraDto(vinculo);
 

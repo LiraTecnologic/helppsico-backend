@@ -1,4 +1,4 @@
-package com.liratech.helppsico.mapper;
+package com.liratech.helppsico.entrypoint.mapper;
 
 import com.liratech.helppsico.builders.PsicologoBuilder;
 import com.liratech.helppsico.domain.Psicologo;
@@ -21,7 +21,7 @@ class PsicologoMapperTest {
 
     @Test
     @DisplayName("Caso de sucesso na transformação de DTO para Domain")
-    void transformacaoPsicologoDtoParaDomain() {
+    void testeTransformacaoPsicologoDtoParaDomain() {
         PsicologoDto psicologoDto = PsicologoBuilder.criarPsicologoDto();
         Psicologo psicologo = psicologoMapper.paraDomain(psicologoDto);
 
@@ -31,7 +31,7 @@ class PsicologoMapperTest {
 
     @Test
     @DisplayName("Caso de sucesso na transformação de Domain para Dto")
-    void transformacaoPsicologoDomainParaDto() {
+    void testeTransformacaoPsicologoDomainParaDto() {
         Psicologo psicologo = PsicologoBuilder.criarPsicologo();
         PsicologoDto psicologoDto = psicologoMapper.paraDto(psicologo);
 
@@ -41,7 +41,7 @@ class PsicologoMapperTest {
 
     @Test
     @DisplayName("Caso de sucesso na transformação de Domain para Dtos")
-    void transformacaoPsicologoDomainParaDtos() {
+    void testeTransformacaoPsicologoDomainParaDtos() {
         List<Psicologo> psicologos = PsicologoBuilder.criarListaPsicologo();
         List<PsicologoDto> psicologoDtos = psicologoMapper.paraDtos(psicologos);
 
@@ -58,7 +58,7 @@ class PsicologoMapperTest {
 
     @Test
     @DisplayName("Caso de sucesso na transformação de PageDomain para PageDtos")
-    void transformacaoPagePsicologoDomainParaDto () {
+    void testeTransformacaoPagePsicologoDomainParaDto () {
         List<Psicologo> psicologos = PsicologoBuilder.criarListaPsicologo();
         Page<Psicologo> pageDomain = new PageImpl<>(psicologos, PageRequest.of(0, 2), psicologos.size());
         Page<PsicologoDto> pageDto = psicologoMapper.pageDto(pageDomain);
