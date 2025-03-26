@@ -13,7 +13,7 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class PacienteDataProvider implements PacienteGateway{
+public class PacienteDataProvider implements PacienteGateway {
 
     private final PacienteRepository repository;
     private final PacienteMapper pacienteMapper;
@@ -47,7 +47,7 @@ public class PacienteDataProvider implements PacienteGateway{
             throw new DataProviderException(MENSAGEM_ERRO_SALVAR, ex.getCause());
         }
 
-        return pacienteEntity.map(paciente -> pacienteMapper.paraDomain(pacienteEntity));
+        return pacienteEntity.map(paciente -> pacienteMapper.paraDomain(paciente));
     }
 
     @Override

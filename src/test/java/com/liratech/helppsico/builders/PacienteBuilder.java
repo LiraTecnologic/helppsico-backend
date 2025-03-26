@@ -8,17 +8,18 @@ import java.util.UUID;
 
 public class PacienteBuilder {
 
-    public static Paciente gerarPaciente() {
+    public static Paciente criarPaciente() {
         return Paciente.builder()
                 .id(UUID.randomUUID())
-                .cpf("14584747899")
-                .email("emailteste@gmail.com")
-                .telefone("44558723651")
+                .nome("João Silva")
+                .cpf("123.456.789-00")
+                .email("joao.silva@email.com")
+                .telefone("(11) 98765-4321")
                 .dataNascimento(LocalDate.now())
-                .senha("senhateste!@0")
+                .senha("senhaSegura@123")
                 .genero(TipoGenero.MASCULINO)
-                .endereco(EnderecoBuilder.gerarEndereco())
-                .fotoUrl("fotourlteste")
+                .endereco(EnderecoBuilder.criarEndereco())
+                .fotoUrl("https://example.com/foto-joao.jpg")
                 .build();
     }
 }
