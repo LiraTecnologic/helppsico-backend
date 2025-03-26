@@ -1,4 +1,4 @@
-package com.liratech.helppsico.mapper;
+package com.liratech.helppsico.entrypoint.mapper;
 
 import com.liratech.helppsico.builders.AvaliacaoBuilder;
 import com.liratech.helppsico.domain.Avaliacao;
@@ -17,7 +17,7 @@ class AvaliacaoMapperTest {
 
     @Test
     @DisplayName("Caso de sucesso na transformação de DTO para Domain")
-    void transformacaoAvalicaoDtoParaDomain() {
+    void testeTransformacaoAvalicaoDtoParaDomain() {
         AvaliacaoDto avaliacaoDto = AvaliacaoBuilder.criarAvaliacaoDto();
         Avaliacao avaliacao = avaliacaoMapper.paraDomain(avaliacaoDto);
 
@@ -33,7 +33,7 @@ class AvaliacaoMapperTest {
 
     @Test
     @DisplayName("Caso de sucesso na transformação de Domain para DTO")
-    void transformacaoAvaliacaoDomainParaDto() {
+    void testeTransformacaoAvaliacaoDomainParaDto() {
         Avaliacao avaliacao = AvaliacaoBuilder.criarAvaliacao();
         AvaliacaoDto avaliacaoDto = avaliacaoMapper.paraDto(avaliacao);
 

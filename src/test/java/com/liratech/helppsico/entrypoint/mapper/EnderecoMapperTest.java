@@ -1,4 +1,4 @@
-package com.liratech.helppsico.mapper;
+package com.liratech.helppsico.entrypoint.mapper;
 
 import com.liratech.helppsico.builders.EnderecoBuilder;
 import com.liratech.helppsico.domain.Endereco;
@@ -16,7 +16,7 @@ class EnderecoMapperTest {
 
     @Test
     @DisplayName("Caso de sucesso na tranformação de DTO para Domain")
-    void transformacaoEnderecoDtoParaDomain() {
+    void testeTransformacaoEnderecoDtoParaDomain() {
         EnderecoDto enderecoDto = EnderecoBuilder.criarEnderecoDto();
         Endereco endereco = enderecoMapper.paraDomain(enderecoDto);
 
@@ -26,7 +26,7 @@ class EnderecoMapperTest {
 
     @Test
     @DisplayName("Caso de sucesso na tranformação de Domain para DTO")
-    void transformacaoEnderecoDomainParaDto() {
+    void testeTransformacaoEnderecoDomainParaDto() {
         Endereco endereco = EnderecoBuilder.criarEndereco();
         EnderecoDto enderecoDto = enderecoMapper.paraDto(endereco);
 
