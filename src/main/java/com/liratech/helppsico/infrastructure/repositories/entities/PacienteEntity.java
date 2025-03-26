@@ -1,5 +1,6 @@
 package com.liratech.helppsico.infrastructure.repositories.entities;
 
+import com.liratech.helppsico.domain.TipoGenero;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -32,8 +33,8 @@ public class PacienteEntity {
     @JoinColumn(name = "id_endereco")
     private EnderecoEntity endereco;
 
-    @Enumerated(EnumType.STRING)
-    private TipoGeneroEntity genero;
+    @Enumerated(EnumType.ORDINAL)
+    private TipoGenero genero;
 
     @Column(name = "foto_url")
     private String fotoUrl;
