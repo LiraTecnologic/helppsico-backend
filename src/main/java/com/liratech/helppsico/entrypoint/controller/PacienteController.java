@@ -40,5 +40,4 @@ public class PacienteController {
 
         return ResponseEntity.ok(retorno);
     }
-
 }

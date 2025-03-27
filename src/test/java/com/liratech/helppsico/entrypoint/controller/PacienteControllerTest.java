@@ -11,8 +11,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class PacienteControllerTest {
 
     private final PacienteMapper mapper;
+
     @Mock
     private PacienteUseCase useCase;
+
     @InjectMocks
     private PacienteController controller;
 
