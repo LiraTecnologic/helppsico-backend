@@ -1,4 +1,4 @@
-package com.liratech.helppsico.validator;
+package com.liratech.helppsico.validators;
 
 import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.entrypoint.dto.EnderecoDto;
