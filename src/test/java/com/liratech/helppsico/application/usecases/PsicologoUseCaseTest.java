@@ -2,6 +2,7 @@ package com.liratech.helppsico.application.usecases;
 
 import com.liratech.helppsico.application.exceptions.PsicologoExistenteException;
 import com.liratech.helppsico.application.exceptions.PsicologoNaoEncontradoException;
+import com.liratech.helppsico.builders.EnderecoBuilder;
 import com.liratech.helppsico.builders.PsicologoBuilder;
 import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.domain.Psicologo;
@@ -14,6 +15,7 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -45,11 +47,11 @@ class PsicologoUseCaseTest {
     void testeCadastroDePsicologo() {
         Psicologo psicologoNovo = PsicologoBuilder.criarPsicologo();
 
-        Mockito.when(gateway.consultarPorCrp(psicologoNovo.getCrp())).thenReturn(Optional.empty());
-        Mockito.when(gateway.salvar(psicologoNovo)).thenReturn(psicologoNovo);
+        Mockito.when(gateway.consultarPorCrp(Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(gateway.salvar(Mockito.any())).thenReturn(psicologoNovo);
 
-        Mockito.when(fotoUseCase.salvarImagem(psicologoNovo.getFoto())).thenReturn(psicologoNovo.getFotoUrl());
-        Mockito.when(enderecoUseCase.cadastrar(psicologoNovo.getEnderecoAtendimento())).thenReturn(psicologoNovo.getEnderecoAtendimento());
+        Mockito.when(fotoUseCase.salvarImagem(Mockito.any())).thenReturn(psicologoNovo.getFotoUrl());
+        Mockito.when(enderecoUseCase.cadastrar(Mockito.any())).thenReturn(psicologoNovo.getEnderecoAtendimento());
 
         Psicologo psicologoCadastrado = useCase.cadastrar(psicologoNovo);
 
@@ -60,7 +62,7 @@ class PsicologoUseCaseTest {
     void testeExceptionPsicologoJaCadastrado() {
         Psicologo psicologoNovo = PsicologoBuilder.criarPsicologo();
 
-        Mockito.when(gateway.consultarPorCrp(psicologoNovo.getCrp()))
+        Mockito.when(gateway.consultarPorCrp(Mockito.any()))
                 .thenReturn(Optional.of(PsicologoBuilder.criarPsicologo()));
 
         PsicologoExistenteException exception = Assertions
@@ -74,7 +76,7 @@ class PsicologoUseCaseTest {
     void testeConsultaPsicologoPeloId() {
         Psicologo psicologoBuilder = PsicologoBuilder.criarPsicologo();
 
-        Mockito.when(gateway.consultarPorId(psicologoBuilder.getId()))
+        Mockito.when(gateway.consultarPorId(Mockito.any()))
                 .thenReturn(Optional.of(psicologoBuilder));
 
         Psicologo psicologo = useCase.consultarPorId(psicologoBuilder.getId());
@@ -86,7 +88,7 @@ class PsicologoUseCaseTest {
     void testePsicologoNaoEncontradoPeloId() {
         UUID id = PsicologoBuilder.criarPsicologo().getId();
 
-        Mockito.when(gateway.consultarPorId(id))
+        Mockito.when(gateway.consultarPorId(Mockito.any()))
                 .thenReturn(Optional.empty());
 
         PsicologoNaoEncontradoException exception = Assertions
@@ -103,7 +105,7 @@ class PsicologoUseCaseTest {
         String nomeTeste = PsicologoBuilder.criarPsicologo().getNome();
         List<Psicologo> psicologoList = PsicologoBuilder.gerarListaDePsicologos();
 
-        Mockito.when(gateway.consultarPorNome(nomeTeste))
+        Mockito.when(gateway.consultarPorNome(Mockito.any()))
                 .thenReturn(psicologoList);
 
         List<Psicologo> psicologos = useCase.consultarPorNome(nomeTeste);
@@ -116,12 +118,13 @@ class PsicologoUseCaseTest {
     @Test
     void testeConsultaMelhoresPsicologosAvaliados() {
         Page<Psicologo> psicologosPage = PsicologoBuilder.gerarPageDePsicologos();
+        Pageable pageable = PageRequest.of(0, 10);
 
-        Mockito.when(gateway.consultarMelhoresAvaliados())
+        Mockito.when(gateway.consultarMelhoresAvaliados(Mockito.any()))
                 .thenReturn(psicologosPage);
 
         Page<Psicologo> psicologos = useCase
-                .consultarMelhoresAvaliados(PageRequest.of(0, 10));
+                .consultarMelhoresAvaliados(pageable);
 
         for (int i = 0; i < psicologosPage.getSize(); i++) {
             PsicologoValidator.validaPsicologoDomain(psicologosPage.toList().get(i), psicologos.toList().get(i));
@@ -132,7 +135,7 @@ class PsicologoUseCaseTest {
     void testeConsultaPorCrp() {
         Psicologo psicologoBuilder = PsicologoBuilder.criarPsicologo();
 
-        Mockito.when(gateway.consultarPorCrp(psicologoBuilder.getCrp()))
+        Mockito.when(gateway.consultarPorCrp(Mockito.any()))
                 .thenReturn(Optional.of(psicologoBuilder));
 
         Psicologo psicologo = useCase.consultarPorCrp(psicologoBuilder.getCrp());
@@ -144,7 +147,7 @@ class PsicologoUseCaseTest {
     void testePsicologoNaoEncontradoPeloCrp() {
         String crp = PsicologoBuilder.criarPsicologo().getCrp();
 
-        Mockito.when(gateway.consultarPorCrp(crp))
+        Mockito.when(gateway.consultarPorCrp(Mockito.any()))
                 .thenReturn(Optional.empty());
 
         PsicologoNaoEncontradoException exception = Assertions
@@ -202,17 +205,17 @@ class PsicologoUseCaseTest {
 
         //Mockar cadastro de endereço
 
-        Mockito.when(gateway.consultarPorId(psicologoBuilder.getId()))
+        Mockito.when(gateway.consultarPorId(Mockito.any()))
                 .thenReturn(Optional.of(psicologoBuilder));
 
-        Mockito.when(gateway.salvar(ArgumentMatchers.any()))
+        Mockito.when(gateway.salvar(Mockito.any()))
                 .thenReturn(captor.capture());
 
 
         useCase.alterar(psicologoNovo, psicologoBuilder.getId());
 
-        Psicologo psicologoTeste = captor.getValue();
+        Psicologo psicologoAlterado = captor.getValue();
 
-        PsicologoValidator.validaPsicologoDomain(psicologoBuilder, psicologoTeste);
+        PsicologoValidator.validaPsicologoDomain(psicologoNovo, psicologoAlterado);
     }
 }
