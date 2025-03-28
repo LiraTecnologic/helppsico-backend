@@ -1,5 +1,6 @@
 package com.liratech.helppsico.infrastructure.repositories.entities;
 
+import com.liratech.helppsico.domain.StatusVinculo;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.UUID;
@@ -25,6 +26,6 @@ public class VinculoEntity {
     @JoinColumn(name = "id_psicologo")
     private PsicologoEntity psicologo;
 
-    @Enumerated(EnumType.STRING)
-    private StatusVinculoEntity status;
+    @Enumerated(EnumType.ORDINAL)
+    private StatusVinculo status;
 }
