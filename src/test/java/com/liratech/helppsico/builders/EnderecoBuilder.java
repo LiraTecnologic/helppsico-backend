@@ -6,7 +6,7 @@ import com.liratech.helppsico.entrypoint.dto.EnderecoDto;
 import java.util.UUID;
 
 public class EnderecoBuilder {
-    public static Endereco criarEndereco(){
+    public static Endereco criarEndereco() {
         return Endereco.builder()
                 .id(UUID.randomUUID())
                 .rua("Rua Teste")

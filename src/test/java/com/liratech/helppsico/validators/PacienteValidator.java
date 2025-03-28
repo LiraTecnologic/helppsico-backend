@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 
 public class PacienteValidator {
     public static void validaPacienteDomain (Paciente esperado, Paciente resultado){
+
         Assertions.assertEquals(esperado.getId(), resultado.getId());
         Assertions.assertEquals(esperado.getNome(), resultado.getNome());
         Assertions.assertEquals(esperado.getCpf(), resultado.getCpf());
