@@ -1,5 +1,6 @@
 package com.liratech.helppsico.infrastructure.repositories.entities;
 
+import com.liratech.helppsico.domain.TipoGenero;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
@@ -34,8 +35,8 @@ public class PsicologoEntity {
     @JoinColumn(name = "id_endereco")
     private EnderecoEntity enderecoAtendimento;
 
-    @Enumerated(EnumType.STRING)
-    private TipoGeneroEntity genero;
+    @Enumerated(EnumType.ORDINAL)
+    private TipoGenero genero;
 
     @Column(name = "foto_url")
     private String fotoUrl;
