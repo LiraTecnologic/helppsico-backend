@@ -29,6 +29,23 @@ class PsicologoMapperTest {
     }
 
     @Test
+    @DisplayName("Caso de sucesso na transformação de Lista de DTO para Lista de Domain")
+    void testeTransformacaoListDtoParaListDomain(){
+        List<PsicologoDto> psicologoDtos = PsicologoBuilder.criarListaPsicologoDto();
+        List<Psicologo> psicologos = psicologoMapper.paraDomains(psicologoDtos);
+
+        Assertions.assertNotNull(psicologos);
+        Assertions.assertEquals(psicologoDtos.size(), psicologos.size());
+
+        for(int i =0; i<psicologos.size(); i++){
+            Psicologo psicologo = psicologos.get(i);
+            PsicologoDto psicologoDto = psicologoDtos.get(i);
+
+            PsicologoValidator.validaPsicologoDtoParaDomain(psicologoDto,psicologo);
+        }
+    }
+
+    @Test
     @DisplayName("Caso de sucesso na transformação de Domain para Dto")
     void testeTransformacaoPsicologoDomainParaDto() {
         Psicologo psicologo = PsicologoBuilder.criarPsicologo();
@@ -60,7 +77,7 @@ class PsicologoMapperTest {
     void testeTransformacaoPagePsicologoDomainParaDto () {
         List<Psicologo> psicologos = PsicologoBuilder.criarListaPsicologo();
         Page<Psicologo> pageDomain = new PageImpl<>(psicologos, PageRequest.of(0, 2), psicologos.size());
-        Page<PsicologoDto> pageDto = psicologoMapper.pageDto(pageDomain);
+        Page<PsicologoDto> pageDto = psicologoMapper.paraDtosPage(pageDomain);
 
         Assertions.assertNotNull(pageDto);
         Assertions.assertEquals(pageDomain.getTotalElements(), pageDto.getTotalElements());
@@ -72,6 +89,26 @@ class PsicologoMapperTest {
             PsicologoDto dto = dtos.get(i);
 
             PsicologoValidator.validaPsicologoDomainParaDto(psicologo, dto);
+        }
+    }
+
+    @Test
+    @DisplayName("Caso de sucesso na transformação de PageDtos para PageDomain")
+    void testeTransformacaoPagePsicologoDtoParaDomain () {
+        List<PsicologoDto> psicologosDto = PsicologoBuilder.criarListaPsicologoDto();
+        Page<PsicologoDto> pageDto = new PageImpl<>(psicologosDto, PageRequest.of(0, 2), psicologosDto.size());
+        Page<Psicologo> pageDomain = psicologoMapper.paraDomainsPage(pageDto);
+
+        Assertions.assertNotNull(pageDomain);
+        Assertions.assertEquals(pageDto.getTotalElements(), pageDomain.getTotalElements());
+        Assertions.assertEquals(pageDto.getSize(), pageDomain.getSize());
+
+        List<Psicologo> psicologos = pageDomain.getContent();
+        for(int i = 0; i < pageDomain.getSize(); i++){
+            PsicologoDto psicologoDto = psicologosDto.get(i);
+            Psicologo psicologo = psicologos.get(i);
+
+            PsicologoValidator.validaPsicologoDtoParaDomain(psicologoDto,psicologo);
         }
     }
 }
