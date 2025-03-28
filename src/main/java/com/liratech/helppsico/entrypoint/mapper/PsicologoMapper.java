@@ -13,13 +13,19 @@ import java.util.List;
 public interface PsicologoMapper {
     Psicologo paraDomain (PsicologoDto psicologoDto);
 
+    List<Psicologo> paraDomains(List<PsicologoDto> psicologoDtos);
+
     @Mapping(target = "foto", ignore = true)
     PsicologoDto paraDto (Psicologo psicologo);
 
     @Mapping(target = "foto", ignore = true)
     List<PsicologoDto> paraDtos (List<Psicologo> psicologos);
 
-    default Page<PsicologoDto> pageDto(Page<Psicologo> psicologoPage) {
+    default Page<PsicologoDto> paraDtosPage(Page<Psicologo> psicologoPage) {
        return psicologoPage.map(this::paraDto);
+    }
+
+    default Page<Psicologo> paraDomainsPage(Page<PsicologoDto> psicologoDtoPage){
+        return psicologoDtoPage.map(this ::paraDomain);
     }
 }
