@@ -38,7 +38,7 @@ public class PsicologoDataProvider implements PsicologoGateway {
             psicologoEntity = repository.save(psicologoEntity);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_SALVAR, ex);
-            throw new DataProviderException(MENSAGEM_ERRO_SALVAR, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_SALVAR, ex.getCause());
         }
 
         return mapper.paraDomain(psicologoEntity);
@@ -52,7 +52,7 @@ public class PsicologoDataProvider implements PsicologoGateway {
             psicologoEntity = repository.findById(id);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_CONSULTAR_POR_ID, ex);
-            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_ID, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_ID, ex.getCause());
         }
 
         return psicologoEntity.map(psicologo -> mapper.paraDomain(psicologo));
@@ -66,7 +66,7 @@ public class PsicologoDataProvider implements PsicologoGateway {
             psicologosEntities = repository.findByNome(nome);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_CONSULTAR_POR_NOME, ex);
-            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_NOME, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_NOME, ex.getCause());
         }
 
         return psicologosEntities.stream()
@@ -82,7 +82,7 @@ public class PsicologoDataProvider implements PsicologoGateway {
             psicologosEntities = repository.consultarMelhoresAvaliados(pageable);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_CONSULTAR_MELHORES_AVALIADOS, ex);
-            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_MELHORES_AVALIADOS, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_MELHORES_AVALIADOS, ex.getCause());
         }
 
         return psicologosEntities.map(psicologo -> mapper.paraDomain(psicologo));
@@ -96,7 +96,7 @@ public class PsicologoDataProvider implements PsicologoGateway {
             psicologoEntity = repository.findByCrp(crp);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_CONSULTAR_POR_CRP, ex);
-            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_CRP, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_CRP, ex.getCause());
         }
 
         return psicologoEntity.map(psicologo -> mapper.paraDomain(psicologo));
@@ -110,7 +110,7 @@ public class PsicologoDataProvider implements PsicologoGateway {
             psicologosEntities = repository.findAll(pageable);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_LISTAR, ex);
-            throw new DataProviderException(MENSAGEM_ERRO_LISTAR, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_LISTAR, ex.getCause());
         }
 
         return psicologosEntities.map(psicologo -> mapper.paraDomain(psicologo));
