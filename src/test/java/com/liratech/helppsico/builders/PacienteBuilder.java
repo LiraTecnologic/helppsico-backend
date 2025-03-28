@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public class PacienteBuilder {
-    public static Paciente criarPaciente(){
+    public static Paciente criarPaciente() {
         return Paciente.builder()
                 .id(UUID.randomUUID())
                 .nome("João Silva")
