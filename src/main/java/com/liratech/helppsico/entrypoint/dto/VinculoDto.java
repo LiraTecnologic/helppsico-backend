@@ -1,6 +1,7 @@
 package com.liratech.helppsico.entrypoint.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.liratech.helppsico.domain.StatusVinculo;
 import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -29,5 +30,5 @@ public class VinculoDto {
     @NotNull(message = "O status é obrigatório")
     @JsonProperty("status")
     @Enumerated(EnumType.STRING)
-    private StatusVinculoDto status;
+    private StatusVinculo status;
 }

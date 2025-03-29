@@ -1,6 +1,7 @@
 package com.liratech.helppsico.entrypoint.dto.documento;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.liratech.helppsico.domain.documento.TipoDocumento;
 import com.liratech.helppsico.entrypoint.dto.PacienteDto;
 import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
 import jakarta.persistence.EnumType;
@@ -28,5 +29,5 @@ public class SolicitacaoDocumentoDto {
     @NotNull(message = "O tipo do documento é obrigatório")
     @JsonProperty("tipoDocumento")
     @Enumerated(EnumType.STRING)
-    private TipoDocumentoDto tipoDocumento;
+    private TipoDocumento tipoDocumento;
 }
