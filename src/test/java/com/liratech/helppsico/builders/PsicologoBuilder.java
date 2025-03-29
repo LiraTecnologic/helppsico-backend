@@ -2,6 +2,8 @@ package com.liratech.helppsico.builders;
 
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.domain.TipoGenero;
+import com.liratech.helppsico.entrypoint.dto.TipoGeneroDto;
+import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -31,17 +33,44 @@ public class PsicologoBuilder {
                 .build();
     }
 
-    public static List<Psicologo> gerarListaDePsicologos() {
+    public static PsicologoDto criarPsicologoDto() {
+        return PsicologoDto.builder()
+                .id(UUID.randomUUID())
+                .nome("Dr. João Silva")
+                .crp("123456")
+                .cpf("12345678901")
+                .email("joao.silva@example.com")
+                .telefone("(11) 98765-4321")
+                .dataNascimento(LocalDate.of(1985, 5, 20))
+                .senha("Senha@123")
+                .genero(TipoGeneroDto.MASCULINO)
+                .enderecoAtendimento(EnderecoBuilder.criarEnderecoDto())
+                .fotoUrl("https://example.com/foto.jpg")
+                .biografia("Psicólogo com 10 anos de experiência em terapia cognitivo-comportamental.")
+                .build();
+    }
+
+    public static List<Psicologo> criarListaPsicologo() {
         List<Psicologo> psicologoList = new ArrayList<>();
 
-        for (int i = 0; i < 3; i++) {
+        for(int i=0; i<3; i++){
             psicologoList.add(criarPsicologo());
         }
 
         return psicologoList;
     }
 
-    public static Page<Psicologo> gerarPageDePsicologos() {
+    public static List<PsicologoDto> criarListaPsicologoDto() {
+        List<PsicologoDto> psicologoListDtos = new ArrayList<>();
+
+        for(int i =0; i<3; i++){
+            psicologoListDtos.add(criarPsicologoDto());
+        }
+
+        return psicologoListDtos;
+    }
+
+    public static Page<Psicologo> criarPageDePsicologos() {
         List<Psicologo> psicologoList = new ArrayList<>();
 
         for (int i = 0; i < 3; i++) {
@@ -56,6 +85,25 @@ public class PsicologoBuilder {
         int end = Math.min((start + pageable.getPageSize()), lista.size());
 
         List<Psicologo> sublist = lista.subList(start, end);
+
+        return new PageImpl<>(sublist, pageable, lista.size());
+    }
+
+    public static Page<PsicologoDto> criarPageDePsicologosDto() {
+        List<PsicologoDto> psicologoDtoList = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            psicologoDtoList.add(criarPsicologoDto());
+        }
+
+        return transformarListaEmPaginaDto(psicologoDtoList, PageRequest.of(0,10));
+    }
+
+    private static Page<PsicologoDto> transformarListaEmPaginaDto(List<PsicologoDto> lista, Pageable pageable) {
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), lista.size());
+
+        List<PsicologoDto> sublist = lista.subList(start, end);
 
         return new PageImpl<>(sublist, pageable, lista.size());
     }
