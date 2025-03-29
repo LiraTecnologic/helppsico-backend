@@ -2,6 +2,7 @@ package com.liratech.helppsico.builders;
 
 import com.liratech.helppsico.domain.Avaliacao;
 import com.liratech.helppsico.entrypoint.dto.psicologo.AvaliacaoDto;
+import com.liratech.helppsico.infrastructure.repositories.entities.AvaliacaoEntity;
 
 import java.util.UUID;
 
@@ -21,6 +22,16 @@ public class AvaliacaoBuilder {
                 .id(UUID.randomUUID())
                 .psicologo(PsicologoBuilder.criarPsicologoDto())
                 .paciente(PacienteBuilder.criarPacienteDto())
+                .nota(4.5)
+                .comentario("Bom psicologo")
+                .build();
+    }
+
+    public static AvaliacaoEntity criarAvaliacaoEntity(){
+        return AvaliacaoEntity.builder()
+                .id(UUID.randomUUID())
+                .psicologo(PsicologoBuilder.criarPsicologoEntity())
+                .paciente(PacienteBuilder.criarPacienteEntity())
                 .nota(4.5)
                 .comentario("Bom psicologo")
                 .build();
