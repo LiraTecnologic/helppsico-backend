@@ -125,4 +125,14 @@ public class PsicologoBuilder {
                 .biografia("Psicólogo com 10 anos de experiência em terapia cognitivo-comportamental.")
                 .build();
     }
+
+    public static List<PsicologoEntity> criarListaPsicologoEntity() {
+        List<PsicologoEntity> psicologoEntities = new ArrayList<>();
+
+        for(int i=0; i<3; i++){
+            psicologoEntities.add(criarPsicologoEntity());
+        }
+
+        return psicologoEntities;
+    }
 }
