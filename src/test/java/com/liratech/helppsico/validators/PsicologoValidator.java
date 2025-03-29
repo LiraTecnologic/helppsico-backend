@@ -1,63 +1,70 @@
 package com.liratech.helppsico.validators;
 
-import com.liratech.helppsico.domain.Paciente;
+import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.domain.TipoGenero;
-import com.liratech.helppsico.entrypoint.dto.PacienteDto;
 import com.liratech.helppsico.entrypoint.dto.TipoGeneroDto;
+import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
 import org.junit.jupiter.api.Assertions;
 
-public class PacienteValidator {
-    public static void validaPacienteDomain (Paciente esperado, Paciente resultado){
-
+public class PsicologoValidator {
+    public static void validaPsicologoDomain(Psicologo esperado, Psicologo resultado){
         Assertions.assertEquals(esperado.getId(), resultado.getId());
         Assertions.assertEquals(esperado.getNome(), resultado.getNome());
+        Assertions.assertEquals(esperado.getCrp(), resultado.getCrp());
         Assertions.assertEquals(esperado.getCpf(), resultado.getCpf());
-        Assertions.assertEquals(esperado.getEmail(),resultado.getEmail());
+        Assertions.assertEquals(esperado.getEmail(), resultado.getEmail());
         Assertions.assertEquals(esperado.getTelefone(), resultado.getTelefone());
         Assertions.assertEquals(esperado.getDataNascimento(), resultado.getDataNascimento());
         Assertions.assertEquals(esperado.getSenha(), resultado.getSenha());
         Assertions.assertEquals(esperado, resultado);
-        EnderecoValidator.validaEnderecoDomain(esperado.getEndereco(), resultado.getEndereco());
+        Assertions.assertEquals(esperado.getEnderecoAtendimento(), resultado.getEnderecoAtendimento());
         Assertions.assertEquals(esperado.getFotoUrl(), resultado.getFotoUrl());
+        Assertions.assertEquals(esperado.getBiografia(), resultado.getBiografia());
     }
 
-    public static void validaPacienteDto (PacienteDto esperado, PacienteDto resultado){
+    public static void validaPsicologoDto(PsicologoDto esperado, PsicologoDto resultado){
         Assertions.assertEquals(esperado.getId(), resultado.getId());
         Assertions.assertEquals(esperado.getNome(), resultado.getNome());
+        Assertions.assertEquals(esperado.getCrp(), resultado.getCrp());
         Assertions.assertEquals(esperado.getCpf(), resultado.getCpf());
-        Assertions.assertEquals(esperado.getEmail(),resultado.getEmail());
+        Assertions.assertEquals(esperado.getEmail(), resultado.getEmail());
         Assertions.assertEquals(esperado.getTelefone(), resultado.getTelefone());
         Assertions.assertEquals(esperado.getDataNascimento(), resultado.getDataNascimento());
         Assertions.assertEquals(esperado.getSenha(), resultado.getSenha());
         Assertions.assertEquals(esperado, resultado);
-        EnderecoValidator.validaEnderecoDto(esperado.getEndereco(), resultado.getEndereco());
+        Assertions.assertEquals(esperado.getEnderecoAtendimento(), resultado.getEnderecoAtendimento());
         Assertions.assertEquals(esperado.getFotoUrl(), resultado.getFotoUrl());
         Assertions.assertEquals(esperado.getFoto(), resultado.getFoto());
+        Assertions.assertEquals(esperado.getBiografia(), resultado.getBiografia());
     }
 
-    public static void validaPacienteDtoParaDomain (PacienteDto esperado, Paciente resultado){
+    public static void validaPsicologoDtoParaDomain(PsicologoDto esperado, Psicologo resultado) {
         Assertions.assertEquals(esperado.getId(), resultado.getId());
         Assertions.assertEquals(esperado.getNome(), resultado.getNome());
+        Assertions.assertEquals(esperado.getCrp(), resultado.getCrp());
         Assertions.assertEquals(esperado.getCpf(), resultado.getCpf());
-        Assertions.assertEquals(esperado.getEmail(),resultado.getEmail());
+        Assertions.assertEquals(esperado.getEmail(), resultado.getEmail());
         Assertions.assertEquals(esperado.getTelefone(), resultado.getTelefone());
         Assertions.assertEquals(esperado.getDataNascimento(), resultado.getDataNascimento());
         Assertions.assertEquals(esperado.getSenha(), resultado.getSenha());
         Assertions.assertEquals(TipoGenero.valueOf(esperado.getGenero().name()), resultado.getGenero());
-        EnderecoValidator.validaEnderecoDtoParaDomain(esperado.getEndereco(), resultado.getEndereco());
+        EnderecoValidator.validaEnderecoDtoParaDomain(esperado.getEnderecoAtendimento(), resultado.getEnderecoAtendimento());
         Assertions.assertEquals(esperado.getFotoUrl(), resultado.getFotoUrl());
+        Assertions.assertEquals(esperado.getBiografia(), resultado.getBiografia());
     }
 
-    public static void validaPacienteDomainParaDto (Paciente esperado, PacienteDto resultado){
+    public static void validaPsicologoDomainParaDto(Psicologo esperado, PsicologoDto resultado) {
         Assertions.assertEquals(esperado.getId(), resultado.getId());
         Assertions.assertEquals(esperado.getNome(), resultado.getNome());
+        Assertions.assertEquals(esperado.getCrp(), resultado.getCrp());
         Assertions.assertEquals(esperado.getCpf(), resultado.getCpf());
-        Assertions.assertEquals(esperado.getEmail(),resultado.getEmail());
+        Assertions.assertEquals(esperado.getEmail(), resultado.getEmail());
         Assertions.assertEquals(esperado.getTelefone(), resultado.getTelefone());
         Assertions.assertEquals(esperado.getDataNascimento(), resultado.getDataNascimento());
         Assertions.assertEquals(esperado.getSenha(), resultado.getSenha());
         Assertions.assertEquals(TipoGeneroDto.valueOf(esperado.getGenero().name()), resultado.getGenero());
-        EnderecoValidator.validaEnderecoDomainParaDto(esperado.getEndereco(), resultado.getEndereco());
+        EnderecoValidator.validaEnderecoDomainParaDto(esperado.getEnderecoAtendimento(), resultado.getEnderecoAtendimento());
         Assertions.assertEquals(esperado.getFotoUrl(), resultado.getFotoUrl());
+        Assertions.assertEquals(esperado.getBiografia(), resultado.getBiografia());
     }
 }
