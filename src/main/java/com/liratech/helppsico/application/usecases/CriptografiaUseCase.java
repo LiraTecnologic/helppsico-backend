@@ -1,4 +1,4 @@
-package com.liratech.helppsico.usecases;
+package com.liratech.helppsico.application.usecases;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

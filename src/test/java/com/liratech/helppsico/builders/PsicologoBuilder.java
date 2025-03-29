@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class PsicologoBuilder {
+
     public static Psicologo criarPsicologo() {
         return Psicologo.builder()
                 .id(UUID.randomUUID())
