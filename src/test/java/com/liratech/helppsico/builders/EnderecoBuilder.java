@@ -17,7 +17,7 @@ public class EnderecoBuilder {
                 .build();
     }
 
-    public static EnderecoDto criarEnderecoDto(){
+    public static EnderecoDto criarEnderecoDto() {
         return EnderecoDto.builder()
                 .id(UUID.randomUUID())
                 .rua("Rua Teste")
