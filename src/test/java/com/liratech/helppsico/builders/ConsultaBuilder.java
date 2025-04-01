@@ -2,9 +2,11 @@ package com.liratech.helppsico.builders;
 
 import com.liratech.helppsico.domain.Consulta;
 import com.liratech.helppsico.entrypoint.dto.consulta.ConsultaDto;
+import com.liratech.helppsico.infrastructure.repositories.entities.ConsultaEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,19 +35,35 @@ public class ConsultaBuilder {
                 .build();
     }
 
-    public static Consulta criarConsultaParaLista(){
-        return Consulta.builder()
+    public static List<Consulta> criarListaConslta(){
+        List<Consulta> consultas = new ArrayList<>();
+
+        for(int i=0; i<3; i++){
+            consultas.add(criarConsulta());
+        }
+
+        return consultas;
+    }
+
+    public static ConsultaEntity criarConsultaEntity() {
+        return ConsultaEntity.builder()
                 .id(UUID.randomUUID())
-                .psicologo(PsicologoBuilder.criarPsicologo())
-                .paciente(PacienteBuilder.criarPaciente())
+                .psicologo(PsicologoBuilder.criarPsicologoEntity())
+                .paciente(PacienteBuilder.criarPacienteEntity())
                 .dataHora(LocalDateTime.now())
                 .valor(new BigDecimal(150.5))
-                .endereco(EnderecoBuilder.criarEndereco())
+                .endereco(EnderecoBuilder.criarEnderecoEntity())
                 .finalizada(false)
                 .build();
     }
 
-    public static List<Consulta> criarListaConslta(){
-        return List.of(criarConsulta(),criarConsultaParaLista());
+    public static List<ConsultaEntity> criarListaConsultaEntity() {
+        List<ConsultaEntity> consultaEntites = new ArrayList<>();
+
+        for(int i =0; i<3; i++){
+            consultaEntites.add(criarConsultaEntity());
+        }
+
+        return consultaEntites;
     }
 }
