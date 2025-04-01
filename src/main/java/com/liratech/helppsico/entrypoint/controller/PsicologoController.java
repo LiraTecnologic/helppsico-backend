@@ -3,6 +3,7 @@ package com.liratech.helppsico.entrypoint.controller;
 import com.liratech.helppsico.application.usecases.PsicologoUseCase;
 import com.liratech.helppsico.entrypoint.dto.ResponseDto;
 import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
+import com.liratech.helppsico.entrypoint.mapper.PsicologoMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,8 +47,7 @@ public class PsicologoController {
             @RequestParam(defaultValue = "nome,asc") String sort){
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
 
-        Page<PsicologoDto> psicologos = useCase.listar(pageable);
-        //Ver como utilizar o mapper nesta situação
+        Page<PsicologoDto> psicologos = mapper.paraDtosPage(useCase.listar(pageable));
 
         ResponseDto<Page<PsicologoDto>> resposta = new ResponseDto<>(psicologos);
 

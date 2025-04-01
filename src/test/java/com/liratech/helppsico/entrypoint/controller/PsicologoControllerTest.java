@@ -10,6 +10,9 @@ import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
 import com.liratech.helppsico.entrypoint.mapper.PsicologoMapper;
 import com.liratech.helppsico.infrastructure.mapper.PsicologoMapper;
 import com.liratech.helppsico.infrastructure.repositories.PsicologoRepository;
+import com.liratech.helppsico.validators.PsicologoValidator;
+import com.liratech.helppsico.validators.json.PsicologoValidatorJson;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -20,6 +23,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -29,25 +34,17 @@ import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
+@RequiredArgsConstructor
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class PsicologoControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private PsicologoUseCase useCase;
-
-    @Autowired
-    private PsicologoMapper mapperEntry;
-
-    @Autowired
-    private PsicologoMapper mapperInfra;
+    private final MockMvc mockMvc;
+    private final ObjectMapper objectMapper;
+    private final PsicologoUseCase useCase;
+    private final PsicologoMapper mapperEntry;
+    private final PsicologoMapper mapperInfra;
 
     @MockitoSpyBean
     private PsicologoRepository repository;
@@ -68,20 +65,19 @@ public class PsicologoControllerTest {
         psicologoSalvo.setId(UUID.randomUUID());
 
         Mockito.when(repository.findByCrp(Mockito.any())).thenReturn(Optional.empty());
-        Mockito.when(repository.save(Mockito.any())).thenReturn(mapper.paraEntity(psicologoDomain));
+        Mockito.when(repository.save(Mockito.any())).thenReturn(mapperInfra.paraEntity(psicologoDomain));
 
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         String psicologoJson = objectMapper.writeValueAsString(psicologoDtoEntrada);
 
-        mockMvc.perform(post("/psicologos")
+        ResultActions resultado = mockMvc.perform(post("/psicologos")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(psicologoJson))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/psicologos/" + psicologoDtoSalvo.getId().toString()))
-                .andExpect(jsonPath("$.dado.id").value(psicologoDtoSalvo.getId().toString()))
-                .andExpect(jsonPath("$.dado.nome").value(psicologoDtoSalvo.getNome()))
-                .andExpect(jsonPath("$.dado.crp").value(psicologoDtoSalvo.getCrp()))
-                .andExpect(jsonPath("$.erro").doesNotExist());
+                .andExpect(header().string("Location", "/psicologos/"
+                        + mapperEntry.paraDto(psicologoSalvo).getId().toString()));
+
+        PsicologoValidatorJson.validaPsicologoJson(resultado, mapperEntry.paraDto(psicologoSalvo));
     }
 }
