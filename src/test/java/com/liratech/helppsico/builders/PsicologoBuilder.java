@@ -4,6 +4,8 @@ import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.domain.TipoGenero;
 import com.liratech.helppsico.entrypoint.dto.TipoGeneroDto;
 import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
+import com.liratech.helppsico.infrastructure.repositories.entities.PsicologoEntity;
+import com.liratech.helppsico.infrastructure.repositories.entities.TipoGeneroEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -106,5 +108,32 @@ public class PsicologoBuilder {
         List<PsicologoDto> sublist = lista.subList(start, end);
 
         return new PageImpl<>(sublist, pageable, lista.size());
+    }
+
+    public static PsicologoEntity criarPsicologoEntity() {
+        return PsicologoEntity.builder()
+                .id(UUID.randomUUID())
+                .nome("Dr. João Silva")
+                .crp("123456")
+                .cpf("12345678901")
+                .email("joao.silva@example.com")
+                .telefone("(11) 98765-4321")
+                .dataNascimento(LocalDate.of(1985, 5, 20))
+                .senha("Senha@123")
+                .genero(TipoGeneroEntity.MASCULINO)
+                .enderecoAtendimento(EnderecoBuilder.criarEnderecoEntity())
+                .fotoUrl("https://example.com/foto.jpg")
+                .biografia("Psicólogo com 10 anos de experiência em terapia cognitivo-comportamental.")
+                .build();
+    }
+
+    public static List<PsicologoEntity> criarListaPsicologoEntity() {
+        List<PsicologoEntity> psicologoEntities = new ArrayList<>();
+
+        for(int i=0; i<3; i++){
+            psicologoEntities.add(criarPsicologoEntity());
+        }
+
+        return psicologoEntities;
     }
 }

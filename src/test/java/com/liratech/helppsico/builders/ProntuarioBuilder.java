@@ -2,6 +2,7 @@ package com.liratech.helppsico.builders;
 
 import com.liratech.helppsico.domain.Prontuario;
 import com.liratech.helppsico.entrypoint.dto.psicologo.ProntuarioDto;
+import com.liratech.helppsico.infrastructure.repositories.entities.ProntuarioEntity;
 
 import java.util.UUID;
 
@@ -21,6 +22,16 @@ public class ProntuarioBuilder {
                 .id(UUID.randomUUID())
                 .psicologo(PsicologoBuilder.criarPsicologoDto())
                 .paciente(PacienteBuilder.criarPacienteDto())
+                .titulo("Teste")
+                .conteudo("teste")
+                .build();
+    }
+
+    public static ProntuarioEntity criarProntuarioEntity() {
+        return ProntuarioEntity.builder()
+                .id(UUID.randomUUID())
+                .psicologo(PsicologoBuilder.criarPsicologoEntity())
+                .paciente(PacienteBuilder.criarPacienteEntity())
                 .titulo("Teste")
                 .conteudo("teste")
                 .build();
