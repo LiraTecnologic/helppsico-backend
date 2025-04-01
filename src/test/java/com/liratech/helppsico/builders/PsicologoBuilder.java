@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class PsicologoBuilder {
-
     public static Psicologo criarPsicologo() {
         return Psicologo.builder()
                 .id(UUID.randomUUID())
@@ -52,10 +51,11 @@ public class PsicologoBuilder {
                 .build();
     }
 
-    public static List<Psicologo> criarListaPsicologo() {
+
+    public static List<Psicologo> gerarListaDePsicologos() {
         List<Psicologo> psicologoList = new ArrayList<>();
 
-        for(int i=0; i<3; i++){
+        for (int i = 0; i < 3; i++) {
             psicologoList.add(criarPsicologo());
         }
 
