@@ -1,4 +1,4 @@
-package com.liratech.helppsico.infrastructure.mappers;
+package com.liratech.helppsico.infrastructure.mapper;
 
 import com.liratech.helppsico.builders.PsicologoBuilder;
 import com.liratech.helppsico.domain.Psicologo;

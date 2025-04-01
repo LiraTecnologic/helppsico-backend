@@ -1,4 +1,4 @@
-package com.liratech.helppsico.infrastructure.mappers;
+package com.liratech.helppsico.infrastructure.mapper;
 
 import com.liratech.helppsico.builders.VinculoBuilder;
 import com.liratech.helppsico.domain.StatusVinculo;
