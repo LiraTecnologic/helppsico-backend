@@ -1,5 +1,6 @@
 package com.liratech.helppsico.entrypoint.controller;
 
+import com.liratech.helppsico.application.usecases.PsicologoUseCase;
 import com.liratech.helppsico.entrypoint.dto.ResponseDto;
 import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
 import lombok.AllArgsConstructor;
