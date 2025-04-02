@@ -20,7 +20,7 @@ public class PsicologoBuilder {
     public static Psicologo criarPsicologo() {
         return Psicologo.builder()
                 .id(UUID.randomUUID())
-                .nome("Dr. João Silva")
+                .nome("joão silva")
                 .crp("123456")
                 .cpf("12345678901")
                 .email("joao.silva@example.com")

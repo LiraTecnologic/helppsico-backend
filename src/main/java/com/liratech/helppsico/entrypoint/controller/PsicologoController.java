@@ -78,9 +78,8 @@ public class PsicologoController {
             @RequestParam(defaultValue = "nome,asc") String sort){
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
 
-        Page<PsicologoDto> psicologos = useCase.consultarMelhoresAvaliados(pageable);
+        Page<PsicologoDto> psicologos = mapper.paraDtosPage(useCase.consultarMelhoresAvaliados(pageable));
         ResponseDto<Page<PsicologoDto>> resposta = new ResponseDto<>(psicologos);
-        //Ver como utilizar o mapper nesta situação
 
         return ResponseEntity.ok(resposta);
     }
