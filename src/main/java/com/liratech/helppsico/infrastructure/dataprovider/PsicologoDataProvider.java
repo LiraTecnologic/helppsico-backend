@@ -3,6 +3,7 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.application.gateways.PsicologoGateway;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
+import com.liratech.helppsico.infrastructure.mappers.PsicologoMapper;
 import com.liratech.helppsico.infrastructure.repositories.PsicologoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.PsicologoEntity;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +56,7 @@ public class PsicologoDataProvider implements PsicologoGateway {
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_ID, ex.getCause());
         }
 
-        return psicologoEntity.map(psicologo -> mapper.paraDomain(psicologo));
+        return psicologoEntity.map(mapper::paraDomain);
     }
 
     @Override
@@ -70,7 +71,7 @@ public class PsicologoDataProvider implements PsicologoGateway {
         }
 
         return psicologosEntities.stream()
-                .map(psicologo -> mapper.paraDomain(psicologo))
+                .map(mapper::paraDomain)
                 .collect(Collectors.toList());
     }
 
@@ -85,7 +86,7 @@ public class PsicologoDataProvider implements PsicologoGateway {
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_MELHORES_AVALIADOS, ex.getCause());
         }
 
-        return psicologosEntities.map(psicologo -> mapper.paraDomain(psicologo));
+        return psicologosEntities.map(mapper::paraDomain);
     }
 
     @Override
@@ -99,7 +100,7 @@ public class PsicologoDataProvider implements PsicologoGateway {
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_CRP, ex.getCause());
         }
 
-        return psicologoEntity.map(psicologo -> mapper.paraDomain(psicologo));
+        return psicologoEntity.map(mapper::paraDomain);
     }
 
     @Override
@@ -113,6 +114,6 @@ public class PsicologoDataProvider implements PsicologoGateway {
             throw new DataProviderException(MENSAGEM_ERRO_LISTAR, ex.getCause());
         }
 
-        return psicologosEntities.map(psicologo -> mapper.paraDomain(psicologo));
+        return psicologosEntities.map(mapper::paraDomain);
     }
 }
