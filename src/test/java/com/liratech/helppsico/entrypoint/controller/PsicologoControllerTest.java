@@ -7,17 +7,16 @@ import com.liratech.helppsico.application.usecases.PsicologoUseCase;
 import com.liratech.helppsico.builders.PsicologoBuilder;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
+import com.liratech.helppsico.entrypoint.mapper.EnderecoMapper;
 import com.liratech.helppsico.entrypoint.mapper.PsicologoMapper;
-import com.liratech.helppsico.infrastructure.mapper.PsicologoMapper;
 import com.liratech.helppsico.infrastructure.repositories.PsicologoRepository;
+import com.liratech.helppsico.infrastructure.repositories.entities.EnderecoEntity;
 import com.liratech.helppsico.infrastructure.repositories.entities.PsicologoEntity;
-import com.liratech.helppsico.validators.PsicologoValidator;
 import com.liratech.helppsico.validators.json.PsicologoValidatorJson;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -31,8 +30,6 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import com.liratech.helppsico.infrastructure.mappers.PsicologoMapper;
-import java.net.URI;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -46,12 +43,15 @@ public class PsicologoControllerTest {
 
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
-    private final PsicologoUseCase useCase;
     private final PsicologoMapper mapperEntry;
     private final com.liratech.helppsico.infrastructure.mappers.PsicologoMapper mapperInfra;
+    private final EnderecoMapper
 
     @MockitoSpyBean
-    private PsicologoRepository repository;
+    private final PsicologoRepository repository;
+
+    @MockitoSpyBean
+    private final EnderecoRepository repositoryEndereco;
 
     private PsicologoDto psicologoDtoEntrada;
     private Psicologo psicologoDomain;
@@ -65,9 +65,13 @@ public class PsicologoControllerTest {
     @Test
     void testeCadastrarPsicologo() throws Exception {
         psicologoDtoEntrada.setId(null);
+        EnderecoEntity enderecoEntity = mapp
 
         Mockito.when(repository.findByCrp(Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(repositoryEndereco.findById(Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(repositoryEndereco.save(Mockito.any())).thenReturn();
         Mockito.when(repository.save(Mockito.any())).thenReturn(mapperInfra.paraEntity(psicologoDomain));
+
 
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
@@ -102,6 +106,13 @@ public class PsicologoControllerTest {
                         .param("sort", sort))
                 .andExpect(status().isOk());
 
-        //validar resposta
+        PsicologoValidatorJson.validaPageResponse(resultado);
+    }
+
+    @Test
+    void testeConsultarPorId() throws Exception{
+        UUID idRequest = psicologoDtoEntrada.getId();
+
+        Mockito.when()
     }
 }
