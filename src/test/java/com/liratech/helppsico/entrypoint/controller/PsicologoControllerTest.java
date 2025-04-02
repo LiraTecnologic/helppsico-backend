@@ -59,7 +59,7 @@ public class PsicologoControllerTest {
     }
 
     @Test
-    void testeCadastrarPsicologoComSucesso() throws Exception {
+    void testeCadastrarPsicologo() throws Exception {
         psicologoDtoEntrada.setId(null);
         Psicologo psicologoSalvo = mapperInfra.paraEntity(psicologoDomain);
         psicologoSalvo.setId(UUID.randomUUID());
@@ -79,5 +79,10 @@ public class PsicologoControllerTest {
                         + mapperEntry.paraDto(psicologoSalvo).getId().toString()));
 
         PsicologoValidatorJson.validaPsicologoJson(resultado, mapperEntry.paraDto(psicologoSalvo));
+    }
+
+    @Test
+    void testeListarPsicologos() throws Exception {
+
     }
 }

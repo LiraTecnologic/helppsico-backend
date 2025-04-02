@@ -42,7 +42,7 @@ public class PsicologoBuilder {
                 .telefone("(11) 98765-4321")
                 .dataNascimento(LocalDate.of(1985, 5, 20))
                 .senha("Senha@123")
-                .genero(TipoGeneroDto.MASCULINO)
+                .genero(TipoGenero.MASCULINO)
                 .enderecoAtendimento(EnderecoBuilder.criarEnderecoDto())
                 .fotoUrl("https://example.com/foto.jpg")
                 .biografia("Psicólogo com 10 anos de experiência em terapia cognitivo-comportamental.")
