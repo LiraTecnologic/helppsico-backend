@@ -1,4 +1,4 @@
-package com.liratech.helppsico.infrastructure.mappers;
+package com.liratech.helppsico.infrastructure.mapper;
 
 import com.liratech.helppsico.builders.AvaliacaoBuilder;
 import com.liratech.helppsico.domain.Avaliacao;

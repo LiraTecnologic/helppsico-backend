@@ -1,4 +1,4 @@
-package com.liratech.helppsico.infrastructure.mappers;
+package com.liratech.helppsico.infrastructure.mapper;
 
 import com.liratech.helppsico.builders.PacienteBuilder;
 import com.liratech.helppsico.domain.Paciente;
@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class PacienteMapperTest {
 
