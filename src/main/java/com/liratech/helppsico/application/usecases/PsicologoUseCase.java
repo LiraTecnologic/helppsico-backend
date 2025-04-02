@@ -1,5 +1,6 @@
 package com.liratech.helppsico.application.usecases;
 
+import com.liratech.helppsico.application.gateways.PsicologoGateway;
 import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.application.exceptions.PsicologoExistenteException;
