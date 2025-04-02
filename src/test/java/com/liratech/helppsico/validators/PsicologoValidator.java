@@ -2,10 +2,8 @@ package com.liratech.helppsico.validators;
 
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.domain.TipoGenero;
-import com.liratech.helppsico.entrypoint.dto.TipoGeneroDto;
 import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
 import com.liratech.helppsico.infrastructure.repositories.entities.PsicologoEntity;
-import com.liratech.helppsico.infrastructure.repositories.entities.TipoGeneroEntity;
 import org.junit.jupiter.api.Assertions;
 
 public class PsicologoValidator {
@@ -64,7 +62,7 @@ public class PsicologoValidator {
         Assertions.assertEquals(esperado.getTelefone(), resultado.getTelefone());
         Assertions.assertEquals(esperado.getDataNascimento(), resultado.getDataNascimento());
         Assertions.assertEquals(esperado.getSenha(), resultado.getSenha());
-        Assertions.assertEquals(TipoGeneroDto.valueOf(esperado.getGenero().name()), resultado.getGenero());
+        Assertions.assertEquals(TipoGenero.valueOf(esperado.getGenero().name()), resultado.getGenero());
         EnderecoValidator.validaEnderecoDomainParaDto(esperado.getEnderecoAtendimento(), resultado.getEnderecoAtendimento());
         Assertions.assertEquals(esperado.getFotoUrl(), resultado.getFotoUrl());
         Assertions.assertEquals(esperado.getBiografia(), resultado.getBiografia());
@@ -79,7 +77,7 @@ public class PsicologoValidator {
         Assertions.assertEquals(esperado.getTelefone(), resultado.getTelefone());
         Assertions.assertEquals(esperado.getDataNascimento(), resultado.getDataNascimento());
         Assertions.assertEquals(esperado.getSenha(), resultado.getSenha());
-        Assertions.assertEquals(TipoGeneroEntity.valueOf(esperado.getGenero().name()), resultado.getGenero());
+        Assertions.assertEquals(TipoGenero.valueOf(esperado.getGenero().name()), resultado.getGenero());
         EnderecoValidator.validaEnderecoDomainParaEntity(esperado.getEnderecoAtendimento(), resultado.getEnderecoAtendimento());
         Assertions.assertEquals(esperado.getFotoUrl(), resultado.getFotoUrl());
         Assertions.assertEquals(esperado.getBiografia(), resultado.getBiografia());
