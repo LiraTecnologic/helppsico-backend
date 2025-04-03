@@ -63,9 +63,16 @@ public class PsicologoController {
     }
 
     @GetMapping("/nome")
-    public ResponseEntity<ResponseDto<List<PsicologoDto>>> consultarPorNome (@RequestParam String nome){
-        List<PsicologoDto> psicologos = mapper.paraDtos(useCase.consultarPorNome(nome));
-        ResponseDto<List<PsicologoDto>> resposta = new ResponseDto<>(psicologos);
+    public ResponseEntity<ResponseDto<Page<PsicologoDto>>> consultarPorNome (
+            @RequestParam String nome,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "nome,asc") String sort
+    ){
+        nome.replace("-", " ");
+
+        Page<PsicologoDto> psicologos = mapper.paraDtosPage(useCase.consultarPorNome(nome));
+        ResponseDto<Page<PsicologoDto>> resposta = new ResponseDto<>(psicologos);
         //Ver como utilizar o mapper nesta situação
 
         return ResponseEntity.ok(resposta);
