@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -173,5 +174,23 @@ public class PsicologoControllerTest {
                 .andExpect(status().isOk());
 
         PsicologoValidatorJson.validaPsicologoJson(resultado, psicologoDtoEntrada);
+    }
+
+    @Test
+    void testeAlterarPsicologo() throws Exception {
+        UUID idRequest = psicologoDtoEntrada.getId();
+
+        PsicologoDto psicologoAlterado = psicologoDtoEntrada;
+        psicologoAlterado.setId(null);
+        psicologoAlterado.setNome("Dr. Huckenberg");
+        psicologoAlterado.setBiografia("Psicólogo com 8 anos de experiência em terapia na holanda.");
+
+        Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(mapperInfra.paraEntity(psicologoDomain)));
+        Mockito.when(repository.save(Mockito.any())).thenReturn(psicologoAlterado);
+
+        ResultActions resultado = mockMvc.perform(put("/psicologos/{id}", idRequest))
+                .andExpect(status().isOk());
+
+        PsicologoValidatorJson.validaPsicologoJson(resultado, psicologoAlterado);
     }
 }

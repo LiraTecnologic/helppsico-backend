@@ -94,7 +94,7 @@ public class PsicologoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDto<PsicologoDto>> alterar (@RequestBody PsicologoDto psicologo, @PathVariable UUID id){
-        PsicologoDto psicologoNovo = mapper.paraDto(useCase.alterar(psicologo, id));
+        PsicologoDto psicologoNovo = mapper.paraDto(useCase.alterar(mapper.paraDomain(psicologo), id));
         ResponseDto<PsicologoDto> resposta = new ResponseDto<>(psicologoNovo);
         return ResponseEntity.ok(resposta);
     }
