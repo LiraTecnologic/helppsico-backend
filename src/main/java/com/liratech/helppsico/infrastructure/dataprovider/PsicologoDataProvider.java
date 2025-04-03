@@ -60,8 +60,8 @@ public class PsicologoDataProvider implements PsicologoGateway {
     }
 
     @Override
-    public List<Psicologo> consultarPorNome(String nome) {
-        List<PsicologoEntity> psicologosEntities;
+    public Page<Psicologo> consultarPorNome(String nome) {
+        Page<PsicologoEntity> psicologosEntities;
 
         try {
             psicologosEntities = repository.findByNome(nome);
@@ -70,9 +70,7 @@ public class PsicologoDataProvider implements PsicologoGateway {
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_NOME, ex.getCause());
         }
 
-        return psicologosEntities.stream()
-                .map(mapper::paraDomain)
-                .collect(Collectors.toList());
+        return psicologosEntities.map(mapper::paraDomain);
     }
 
     @Override

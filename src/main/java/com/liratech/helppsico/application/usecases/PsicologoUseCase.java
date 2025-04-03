@@ -71,11 +71,11 @@ public class PsicologoUseCase {
         return psicologoEncontrado;
     }
 
-    public List<Psicologo> consultarPorNome(String nome) {
+    public Page<Psicologo> consultarPorNome(String nome) {
 
         log.info("Consultando psicólogos pelo nome. Nome a ser buscado: {}", nome);
 
-        List<Psicologo> psicologoList = gateway.consultarPorNome(nome);
+        Page<Psicologo> psicologoList = gateway.consultarPorNome(nome);
 
 
         log.info("Psicólogo consultados com sucesso. Psicólogos: {}", psicologoList);
