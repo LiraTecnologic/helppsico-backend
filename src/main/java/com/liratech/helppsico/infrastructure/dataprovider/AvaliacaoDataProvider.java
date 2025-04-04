@@ -24,7 +24,7 @@ public class AvaliacaoDataProvider implements AvaliacaoGateway {
     private final AvaliacaoRepository repository;
 
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar avaliação.";
-    public static final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar avaliação pelo id.";
+    public static final String MENSAGEM_ERRO_BUSCAR_POR_ID = "Erro ao consultar avaliação pelo id.";
     public static final String MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO = "Erro ao listar avaliações por psicólogo.";
     public static final String MENSAGEM_ERRO_DELETAR = "Erro ao deletar avaliação.";
 
@@ -65,8 +65,8 @@ public class AvaliacaoDataProvider implements AvaliacaoGateway {
         try {
             avaliacaoEntity = repository.findById(id);
         }catch (Exception ex){
-            log.error(MENSAGEM_ERRO_CONSULTAR_POR_ID, ex);
-            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_ID, ex.getCause());
+            log.error(MENSAGEM_ERRO_BUSCAR_POR_ID, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_BUSCAR_POR_ID, ex.getCause());
         }
 
         return avaliacaoEntity.map(mapper::paraDomain);
