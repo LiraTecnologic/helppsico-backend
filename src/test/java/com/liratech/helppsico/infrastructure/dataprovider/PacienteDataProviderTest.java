@@ -3,6 +3,8 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.builders.PacienteBuilder;
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
+import com.liratech.helppsico.infrastructure.mapper.PacienteMapper;
+import com.liratech.helppsico.infrastructure.repositories.PacienteRepository;
 import com.liratech.helppsico.validators.PacienteValidator;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
