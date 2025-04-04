@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -23,6 +24,9 @@ public class AvaliacaoDataProvider implements AvaliacaoGateway {
     private final AvaliacaoRepository repository;
 
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar avaliação.";
+    public static final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar avaliação pelo id.";
+    public static final String MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO = "Erro ao listar avaliações por psicólogo.";
+    public static final String MENSAGEM_ERRO_DELETAR = "Erro ao deletar avaliação.";
 
     @Override
     public Avaliacao salvar(Avaliacao avaliacao) {
@@ -40,16 +44,41 @@ public class AvaliacaoDataProvider implements AvaliacaoGateway {
 
     @Override
     public List<Avaliacao> listarPorPsicologo(UUID id) {
-        return null;
+        List<AvaliacaoEntity> psicologoList;
+
+        try {
+            psicologoList = repository.listarPorPsicologos(id);
+        }catch (Exception ex){
+            log.error(MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO, ex.getCause());
+        }
+
+        return psicologoList.stream()
+                .map(mapper::paraDomain)
+                .collect(Collectors.toList());
     }
 
     @Override
     public Optional<Avaliacao> buscarPorId(UUID id) {
-        return Optional.empty();
+        Optional<AvaliacaoEntity> avaliacaoEntity;
+
+        try {
+            avaliacaoEntity = repository.findById(id);
+        }catch (Exception ex){
+            log.error(MENSAGEM_ERRO_CONSULTAR_POR_ID, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_ID, ex.getCause());
+        }
+
+        return avaliacaoEntity.map(mapper::paraDomain);
     }
 
     @Override
     public void deletar(UUID id) {
-
+        try {
+            repository.deleteById(id);
+        } catch (Exception ex) {
+            log.error(MENSAGEM_ERRO_DELETAR, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_DELETAR, ex.getCause());
+        }
     }
 }
