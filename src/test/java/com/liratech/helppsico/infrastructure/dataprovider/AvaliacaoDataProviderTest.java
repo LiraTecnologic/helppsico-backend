@@ -19,8 +19,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.net.DatagramPacket;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.IntStream;
 
 @ExtendWith(MockitoExtension.class)
 @RequiredArgsConstructor
@@ -56,7 +59,7 @@ public class AvaliacaoDataProviderTest {
         DataProviderException exception = Assertions
                 .assertThrows(DataProviderException.class, () -> dataProvider.salvar(AvaliacaoBuilder.criarAvaliacao()));
         
-        Assertions.assertEquals(exception.getMessage(), AvaliacaoDataProvider.MENSAGEM_ERRO_SALVAR);
+        Assertions.assertEquals(AvaliacaoDataProvider.MENSAGEM_ERRO_SALVAR, exception.getMessage());
     }
 
     @Test
@@ -79,6 +82,55 @@ public class AvaliacaoDataProviderTest {
         DataProviderException exception = Assertions
                 .assertThrows(DataProviderException.class, () -> dataProvider.buscarPorId(AvaliacaoBuilder.criarAvaliacao().getId()));
         
-        Assertions.assertEquals(exception.getMessage(), AvaliacaoDataProvider.MENSAGEM_ERRO_BUSCAR_POR_ID);
+        Assertions.assertEquals(AvaliacaoDataProvider.MENSAGEM_ERRO_BUSCAR_POR_ID, exception.getMessage());
+    }
+
+    @Test
+    void testeListarPorPsicologo(){
+        List<AvaliacaoEntity> avaliacaoTeste = AvaliacaoBuilder.criarListaDeAvaliacaoEntity();
+        UUID idProcurado = avaliacaoTeste.getFirst().getId();
+        avaliacaoTeste.get(1).setId(idProcurado);
+        avaliacaoTeste.get(2).setId(idProcurado);
+
+        Mockito.when(repository.findAllById(Mockito.any())).thenReturn(avaliacaoTeste);
+
+        List<Avaliacao> avaliacaoResultado = dataProvider.listarPorPsicologo(idProcurado);
+
+        List<Avaliacao> avaliacaoTesteDomain = avaliacaoTeste.stream().map(mapper::paraDomain).toList();
+
+        for (int i = 0; i < avaliacaoResultado.size(); i++) {
+            AvaliacaoValidator.validaAvaliacaoDomain(avaliacaoTesteDomain.get(i), avaliacaoResultado.get(i));
+        }
+    }
+
+    @Test
+    void testeExceptionListarPorPsicologo() {
+        Mockito.when(repository.listarPorPsicologos(Mockito.any())).thenThrow(DataProviderException.class);
+
+        DataProviderException exception = Assertions
+                .assertThrows(DataProviderException.class, () -> dataProvider.listarPorPsicologo(AvaliacaoBuilder.criarAvaliacao().getId()));
+
+        Assertions.assertEquals(AvaliacaoDataProvider.MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO, exception.getMessage());
+    }
+
+    @Test
+    void testeDeletarAvaliacao() {
+        UUID idGerado = AvaliacaoBuilder.criarAvaliacao().getId();
+
+        Mockito.doNothing().when(repository).deleteById(Mockito.any());
+
+        dataProvider.deletar(idGerado);
+
+        Mockito.verify(repository, Mockito.times(1)).deleteById(idGerado);
+    }
+
+    @Test
+    void testeExceptionDeletarAvaliacao() {
+        Mockito.doThrow(DataProviderException.class).when(repository).deleteById(Mockito.any());
+
+        DataProviderException exception = Assertions
+                .assertThrows(DataProviderException.class, () -> dataProvider.deletar(AvaliacaoBuilder.criarAvaliacao().getId()));
+
+        Assertions.assertEquals(AvaliacaoDataProvider.MENSAGEM_ERRO_DELETAR, exception.getMessage());
     }
 }
