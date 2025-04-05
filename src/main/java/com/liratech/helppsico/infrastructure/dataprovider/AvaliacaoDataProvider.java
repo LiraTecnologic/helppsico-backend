@@ -44,16 +44,16 @@ public class AvaliacaoDataProvider implements AvaliacaoGateway {
 
     @Override
     public List<Avaliacao> listarPorPsicologo(UUID id) {
-        List<AvaliacaoEntity> psicologoList;
+        List<AvaliacaoEntity> avaliacaoList;
 
         try {
-            psicologoList = repository.listarPorPsicologos(id);
+            avaliacaoList = repository.listarPorPsicologo(id);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO, ex);
             throw new DataProviderException(MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO, ex.getCause());
         }
 
-        return psicologoList.stream()
+        return avaliacaoList.stream()
                 .map(mapper::paraDomain)
                 .collect(Collectors.toList());
     }
