@@ -18,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
 
 import java.net.DatagramPacket;
 import java.util.List;
@@ -87,19 +88,19 @@ public class AvaliacaoDataProviderTest {
 
     @Test
     void testeListarPorPsicologo(){
-        List<AvaliacaoEntity> avaliacaoTeste = AvaliacaoBuilder.criarListaDeAvaliacaoEntity();
-        UUID idProcurado = avaliacaoTeste.getFirst().getId();
-        avaliacaoTeste.get(1).setId(idProcurado);
-        avaliacaoTeste.get(2).setId(idProcurado);
+        Page<AvaliacaoEntity> avaliacaoTeste = AvaliacaoBuilder.criarPageDeAvaliacoesEntity();
+        UUID idProcurado = avaliacaoTeste.getContent().get(1).getId();
+        avaliacaoTeste.getContent().get(1).setId(idProcurado);
+        avaliacaoTeste.getContent().get(2).setId(idProcurado);
 
-        Mockito.when(repository.findAllById(Mockito.any())).thenReturn(avaliacaoTeste);
+        Mockito.when(repository.listarPorPsicologo(Mockito.any())).thenReturn(avaliacaoTeste);
 
-        List<Avaliacao> avaliacaoResultado = dataProvider.listarPorPsicologo(idProcurado);
+        Page<Avaliacao> avaliacaoResultado = dataProvider.listarPorPsicologo(idProcurado);
 
-        List<Avaliacao> avaliacaoTesteDomain = avaliacaoTeste.stream().map(mapper::paraDomain).toList();
+        Page<Avaliacao> avaliacaoTesteDomain = avaliacaoTeste.map(mapper::paraDomain);
 
-        for (int i = 0; i < avaliacaoResultado.size(); i++) {
-            AvaliacaoValidator.validaAvaliacaoDomain(avaliacaoTesteDomain.get(i), avaliacaoResultado.get(i));
+        for (int i = 0; i < avaliacaoResultado.getNumberOfElements(); i++) {
+            AvaliacaoValidator.validaAvaliacaoDomain(avaliacaoTesteDomain.getContent().get(i), avaliacaoResultado.getContent().get(i));
         }
     }
 
