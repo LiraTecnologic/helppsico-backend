@@ -5,6 +5,7 @@ import com.liratech.helppsico.entrypoint.dto.ResponseDto;
 import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
 import com.liratech.helppsico.entrypoint.mapper.PsicologoMapper;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,11 +19,11 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/psicologos")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PsicologoController {
 
-    private PsicologoUseCase useCase;
-    private PsicologoMapper mapper;
+    private final PsicologoUseCase useCase;
+    private final PsicologoMapper mapper;
 
     @PostMapping
     public ResponseEntity<ResponseDto<PsicologoDto>> cadastrar (@RequestBody PsicologoDto psicologo){
@@ -69,11 +70,10 @@ public class PsicologoController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "nome,asc") String sort
     ){
-        nome.replace("-", " ");
+        String nomeFormatado = nome.replace("-", " ");
 
-        Page<PsicologoDto> psicologos = mapper.paraDtosPage(useCase.consultarPorNome(nome));
+        Page<PsicologoDto> psicologos = mapper.paraDtosPage(useCase.consultarPorNome(nomeFormatado));
         ResponseDto<Page<PsicologoDto>> resposta = new ResponseDto<>(psicologos);
-        //Ver como utilizar o mapper nesta situação
 
         return ResponseEntity.ok(resposta);
     }
