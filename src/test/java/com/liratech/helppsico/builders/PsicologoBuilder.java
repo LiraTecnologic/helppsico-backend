@@ -2,10 +2,8 @@ package com.liratech.helppsico.builders;
 
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.domain.TipoGenero;
-import com.liratech.helppsico.entrypoint.dto.TipoGeneroDto;
 import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
 import com.liratech.helppsico.infrastructure.repositories.entities.PsicologoEntity;
-import com.liratech.helppsico.infrastructure.repositories.entities.TipoGeneroEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -20,7 +18,7 @@ public class PsicologoBuilder {
     public static Psicologo criarPsicologo() {
         return Psicologo.builder()
                 .id(UUID.randomUUID())
-                .nome("joão silva")
+                .nome("João Silva")
                 .crp("123456")
                 .cpf("12345678901")
                 .email("joao.silva@example.com")
@@ -37,7 +35,7 @@ public class PsicologoBuilder {
     public static PsicologoDto criarPsicologoDto() {
         return PsicologoDto.builder()
                 .id(UUID.randomUUID())
-                .nome("Dr. João Silva")
+                .nome("João Silva")
                 .crp("123456")
                 .cpf("12345678901")
                 .email("joao.silva@example.com")
@@ -113,14 +111,14 @@ public class PsicologoBuilder {
     public static PsicologoEntity criarPsicologoEntity() {
         return PsicologoEntity.builder()
                 .id(UUID.randomUUID())
-                .nome("Dr. João Silva")
+                .nome("João Silva")
                 .crp("123456")
                 .cpf("12345678901")
                 .email("joao.silva@example.com")
                 .telefone("(11) 98765-4321")
                 .dataNascimento(LocalDate.of(1985, 5, 20))
                 .senha("Senha@123")
-                .genero(TipoGeneroEntity.MASCULINO)
+                .genero(TipoGenero.MASCULINO)
                 .enderecoAtendimento(EnderecoBuilder.criarEnderecoEntity())
                 .fotoUrl("https://example.com/foto.jpg")
                 .biografia("Psicólogo com 10 anos de experiência em terapia cognitivo-comportamental.")
@@ -135,5 +133,22 @@ public class PsicologoBuilder {
         }
 
         return psicologoEntities;
+    }
+
+    public static Psicologo criarPsicologoNovosDados() {
+        return Psicologo.builder()
+                .id(null)
+                .nome("Jonatham Silva")
+                .crp(null)
+                .cpf(null)
+                .email("jonatham.silva@example.com")
+                .telefone("(11) 98765-4321")
+                .dataNascimento(LocalDate.of(1987, 5, 20))
+                .senha(null)
+                .genero(TipoGenero.MASCULINO)
+                .enderecoAtendimento(EnderecoBuilder.criarEndereco())
+                .fotoUrl("https://example.com/foto.jpg")
+                .biografia("Psicólogo com 10 anos de experiência em terapia de sono.")
+                .build();
     }
 }

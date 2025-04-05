@@ -128,7 +128,6 @@ public class PsicologoControllerTest {
         int page = 0;
         int size = 10;
         String sort = "nome,asc";
-        Pageable pageable = PageRequest.of(page,size);
 
         Page<Psicologo> paginaDomain = PsicologoBuilder.criarPageDePsicologos();
         Page<PsicologoEntity> paginaEntity = paginaDomain.map(mapperInfra::paraEntity);
@@ -136,7 +135,10 @@ public class PsicologoControllerTest {
         Mockito.when(repository.findByNome(Mockito.any())).thenReturn(paginaEntity);
 
         ResultActions resultado = mockMvc.perform(get("/psicologos/nome")
-                        .param("nome", "joão-silva"))
+                        .param("nome", "joão-silva")
+                        .param("page", String.valueOf(page))
+                        .param("size", String.valueOf(size))
+                        .param("sort", sort))
                 .andExpect(status().isOk());
 
         PsicologoValidatorJson.validaPageResponse(resultado);
@@ -147,7 +149,6 @@ public class PsicologoControllerTest {
         int page = 0;
         int size = 10;
         String sort = "nome,asc";
-        Pageable pageable = PageRequest.of(page,size);
 
         Page<Psicologo> paginaDomain = PsicologoBuilder.criarPageDePsicologos();
         Page<PsicologoEntity> paginaEntity = paginaDomain.map(mapperInfra::paraEntity);
@@ -167,7 +168,7 @@ public class PsicologoControllerTest {
     void testeConsultarPorCrp() throws Exception {
         String crpParam = psicologoDtoEntrada.getCrp();
 
-        Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(mapperInfra.paraEntity(psicologoDomain)));
+        Mockito.when(repository.findByCrp(Mockito.any())).thenReturn(Optional.of(mapperInfra.paraEntity(psicologoDomain)));
 
         ResultActions resultado = mockMvc.perform(get("/psicologos/crp")
                         .param("crp", crpParam))
@@ -180,17 +181,22 @@ public class PsicologoControllerTest {
     void testeAlterarPsicologo() throws Exception {
         UUID idRequest = psicologoDtoEntrada.getId();
 
-        PsicologoDto psicologoAlterado = psicologoDtoEntrada;
-        psicologoAlterado.setId(null);
-        psicologoAlterado.setNome("Dr. Huckenberg");
-        psicologoAlterado.setBiografia("Psicólogo com 8 anos de experiência em terapia na holanda.");
+        Psicologo novosDados = PsicologoBuilder.criarPsicologoNovosDados();
+        Psicologo psicologoAlterado = psicologoDomain;
+        psicologoAlterado.alterarDados(novosDados);
 
         Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(mapperInfra.paraEntity(psicologoDomain)));
-        Mockito.when(repository.save(Mockito.any())).thenReturn(psicologoAlterado);
+        Mockito.when(repository.save(Mockito.any())).thenReturn(mapperInfra.paraEntity(psicologoAlterado));
 
-        ResultActions resultado = mockMvc.perform(put("/psicologos/{id}", idRequest))
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        String novosDadosJson = objectMapper.writeValueAsString(novosDados);
+
+        ResultActions resultado = mockMvc.perform(put("/psicologos/{id}", idRequest)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(novosDadosJson))
                 .andExpect(status().isOk());
 
-        PsicologoValidatorJson.validaPsicologoJson(resultado, psicologoAlterado);
+        PsicologoValidatorJson.validaPsicologoJson(resultado, mapperEntry.paraDto(psicologoAlterado));
     }
 }
