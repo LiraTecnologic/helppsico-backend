@@ -105,7 +105,7 @@ public class AvaliacaoDataProviderTest {
 
     @Test
     void testeExceptionListarPorPsicologo() {
-        Mockito.when(repository.listarPorPsicologos(Mockito.any())).thenThrow(DataProviderException.class);
+        Mockito.when(repository.listarPorPsicologo(Mockito.any())).thenThrow(DataProviderException.class);
 
         DataProviderException exception = Assertions
                 .assertThrows(DataProviderException.class, () -> dataProvider.listarPorPsicologo(AvaliacaoBuilder.criarAvaliacao().getId()));

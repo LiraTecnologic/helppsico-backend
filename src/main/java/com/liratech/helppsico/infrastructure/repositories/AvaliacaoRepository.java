@@ -9,5 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface AvaliacaoRepository extends JpaRepository<AvaliacaoEntity, UUID> {
-    List<AvaliacaoEntity> listarPorPsicologos(UUID id);
+    List<AvaliacaoEntity> listarPorPsicologo(UUID id);
 }
