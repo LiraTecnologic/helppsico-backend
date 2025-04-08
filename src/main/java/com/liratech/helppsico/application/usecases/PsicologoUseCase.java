@@ -3,15 +3,14 @@ package com.liratech.helppsico.application.usecases;
 import com.liratech.helppsico.application.gateways.PsicologoGateway;
 import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.domain.Psicologo;
-import com.liratech.helppsico.application.exceptions.PsicologoExistenteException;
-import com.liratech.helppsico.application.exceptions.PsicologoNaoEncontradoException;
+import com.liratech.helppsico.application.exceptions.psicologo.PsicologoExistenteException;
+import com.liratech.helppsico.application.exceptions.psicologo.PsicologoNaoEncontradoException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
