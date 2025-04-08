@@ -14,7 +14,7 @@ import java.util.UUID;
 @Repository
 public interface PsicologoRepository extends JpaRepository<PsicologoEntity, UUID> {
 
-    List<PsicologoEntity> findByNome(String nome);
+    Page<PsicologoEntity> findByNome(String nome);
 
     @Query("""
             SELECT p
