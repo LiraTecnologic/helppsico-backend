@@ -1,8 +1,7 @@
 package com.liratech.helppsico.application.usecases;
 
-import com.liratech.helppsico.application.exceptions.PsicologoExistenteException;
-import com.liratech.helppsico.application.exceptions.PsicologoNaoEncontradoException;
-import com.liratech.helppsico.builders.EnderecoBuilder;
+import com.liratech.helppsico.application.exceptions.psicologo.PsicologoExistenteException;
+import com.liratech.helppsico.application.exceptions.psicologo.PsicologoNaoEncontradoException;
 import com.liratech.helppsico.builders.PsicologoBuilder;
 import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.domain.Psicologo;

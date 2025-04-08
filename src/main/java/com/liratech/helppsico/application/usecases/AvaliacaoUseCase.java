@@ -1,5 +1,6 @@
 package com.liratech.helppsico.application.usecases;
 
+import com.liratech.helppsico.application.exceptions.avaliacao.AvaliacaoNaoEncontradaException;
 import com.liratech.helppsico.application.gateways.AvaliacaoGateway;
 import com.liratech.helppsico.domain.Avaliacao;
 import com.liratech.helppsico.domain.Paciente;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -20,6 +22,7 @@ public class AvaliacaoUseCase {
     private final PacienteUseCase pacienteUseCase;
     private final PsicologoUseCase psicologoUseCase;
     private final AvaliacaoGateway gateway;
+    public static final String MENSAGEM_ERRO_AVALIACAO_NAO_ENCONTRADA = "Avaliação não encontrada";
 
     public Avaliacao avaliar(Avaliacao avaliacao){
         log.info("Salvando avaliação. Avaliação: {}", avaliacao);
@@ -42,7 +45,19 @@ public class AvaliacaoUseCase {
     }
 
     public Avaliacao buscarPorId(UUID id) {
-        return ;
+        log.info("Buscando avaliação por id. Id: {}", id);
+
+        Optional<Avaliacao> avaliacaoOptional = gateway.buscarPorId(id);
+
+        if (avaliacaoOptional.isEmpty()){
+            throw new AvaliacaoNaoEncontradaException(MENSAGEM_ERRO_AVALIACAO_NAO_ENCONTRADA);
+        }
+
+        Avaliacao avaliacaoSalva = avaliacaoOptional.get();
+
+        log.info("Avaliação encontrada com sucesso. Avaliação encontrada: {}", avaliacaoSalva);
+
+        return avaliacaoSalva;
     }
 
     public void deletar(UUID id) {
