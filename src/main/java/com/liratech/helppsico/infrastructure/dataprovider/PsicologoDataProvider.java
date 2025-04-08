@@ -3,6 +3,7 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.application.gateways.PsicologoGateway;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
+import com.liratech.helppsico.infrastructure.mapper.PsicologoMapper;
 import com.liratech.helppsico.infrastructure.repositories.PsicologoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.PsicologoEntity;
 import lombok.RequiredArgsConstructor;
@@ -55,12 +56,12 @@ public class PsicologoDataProvider implements PsicologoGateway {
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_ID, ex.getCause());
         }
 
-        return psicologoEntity.map(psicologo -> mapper.paraDomain(psicologo));
+        return psicologoEntity.map(mapper::paraDomain);
     }
 
     @Override
-    public List<Psicologo> consultarPorNome(String nome) {
-        List<PsicologoEntity> psicologosEntities;
+    public Page<Psicologo> consultarPorNome(String nome) {
+        Page<PsicologoEntity> psicologosEntities;
 
         try {
             psicologosEntities = repository.findByNome(nome);
@@ -69,9 +70,7 @@ public class PsicologoDataProvider implements PsicologoGateway {
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_NOME, ex.getCause());
         }
 
-        return psicologosEntities.stream()
-                .map(psicologo -> mapper.paraDomain(psicologo))
-                .collect(Collectors.toList());
+        return psicologosEntities.map(mapper::paraDomain);
     }
 
     @Override
@@ -85,7 +84,7 @@ public class PsicologoDataProvider implements PsicologoGateway {
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_MELHORES_AVALIADOS, ex.getCause());
         }
 
-        return psicologosEntities.map(psicologo -> mapper.paraDomain(psicologo));
+        return psicologosEntities.map(mapper::paraDomain);
     }
 
     @Override
@@ -99,7 +98,7 @@ public class PsicologoDataProvider implements PsicologoGateway {
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_CRP, ex.getCause());
         }
 
-        return psicologoEntity.map(psicologo -> mapper.paraDomain(psicologo));
+        return psicologoEntity.map(mapper::paraDomain);
     }
 
     @Override
@@ -113,6 +112,6 @@ public class PsicologoDataProvider implements PsicologoGateway {
             throw new DataProviderException(MENSAGEM_ERRO_LISTAR, ex.getCause());
         }
 
-        return psicologosEntities.map(psicologo -> mapper.paraDomain(psicologo));
+        return psicologosEntities.map(mapper::paraDomain);
     }
 }

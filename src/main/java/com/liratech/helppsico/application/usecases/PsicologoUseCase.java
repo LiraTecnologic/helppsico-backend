@@ -1,5 +1,6 @@
 package com.liratech.helppsico.application.usecases;
 
+import com.liratech.helppsico.application.gateways.PsicologoGateway;
 import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.application.exceptions.PsicologoExistenteException;
@@ -70,11 +71,11 @@ public class PsicologoUseCase {
         return psicologoEncontrado;
     }
 
-    public List<Psicologo> consultarPorNome(String nome) {
+    public Page<Psicologo> consultarPorNome(String nome) {
 
         log.info("Consultando psicólogos pelo nome. Nome a ser buscado: {}", nome);
 
-        List<Psicologo> psicologoList = gateway.consultarPorNome(nome);
+        Page<Psicologo> psicologoList = gateway.consultarPorNome(nome);
 
 
         log.info("Psicólogo consultados com sucesso. Psicólogos: {}", psicologoList);
