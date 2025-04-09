@@ -1,5 +1,7 @@
 package com.liratech.helppsico.application.usecases;
 
+import com.liratech.helppsico.application.exceptions.PacienteExistenteException;
+import com.liratech.helppsico.application.exceptions.PacienteNaoEncontradoException;
 import com.liratech.helppsico.application.gateways.PacienteGateway;
 import com.liratech.helppsico.domain.Paciente;
 import lombok.RequiredArgsConstructor;
@@ -16,14 +18,16 @@ public class PacienteUseCase {
     private final CpfUseCase cpfUseCase;
     private final PacienteGateway gateway;
     private final CriptografiaUseCase criptografiaUseCase;
+    public static final String MENSAGEM_PACIENTE_JA_EXISTE = "Paciente já está cadastrado";
+    public static final String MENSAGEM_PACIENTE_NAO_ENCONTRADO = "Paciente não encontrado";
 
     public Paciente cadastrar(Paciente novoPaciente) {
         log.info("Cadastro de paciente. Paciente novo: {}", novoPaciente);
 
-        //se for ser verificado com o CPF, deve adicioanr um ".consultarPorCpf"
         Optional<Paciente> pacientePresente = gateway.consultarPorEmail(novoPaciente.getEmail());
-        pacientePresente.ifPresent(paciente -> {//rodar exeção
-             });
+        pacientePresente.ifPresent(paciente -> {
+            throw new PacienteExistenteException(MENSAGEM_PACIENTE_JA_EXISTE);
+        });
 
         String fotoUrl = fotoUseCase.salvarImagem(novoPaciente.getFotoUrl());
         novoPaciente.setFotoUrl(fotoUrl);
@@ -43,7 +47,7 @@ public class PacienteUseCase {
         Optional<Paciente> paciente = gateway.consultarPorId(id);
 
         if(paciente.isEmpty()){
-            //rodar exeção;
+            throw new PacienteNaoEncontradoException(MENSAGEM_PACIENTE_NAO_ENCONTRADO);
         }
 
         Paciente pacienteBuscado = paciente.get();
