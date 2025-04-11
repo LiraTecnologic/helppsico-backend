@@ -33,6 +33,8 @@ public class AvaliacaoUseCase {
         Paciente paciente = pacienteUseCase.consultarPorId(avaliacao.getPaciente().getId());
         avaliacao.setPaciente(paciente);
 
+        //Logica de repetição
+
         Avaliacao avaliacaoSalva = gateway.salvar(avaliacao);
 
         log.info("Avaliação salva com sucesso. Avaliação salva: {}", avaliacaoSalva);
@@ -41,7 +43,15 @@ public class AvaliacaoUseCase {
     }
 
     public Page<Avaliacao> listarPorPsicologo(UUID id) {
-        return ;
+        log.info("Buscando avaliações do psicologo pelo id. Id: {}", id);
+
+        psicologoUseCase.consultarPorId(id);
+
+        Page<Avaliacao> avaliacoes = gateway.listarPorPsicologo(id);
+
+        log.info("Avaliações buscadas com sucesso. Avaliações: {}", avaliacoes);
+
+        return avaliacoes;
     }
 
     public Avaliacao buscarPorId(UUID id) {
@@ -61,6 +71,7 @@ public class AvaliacaoUseCase {
     }
 
     public void deletar(UUID id) {
-
+        buscarPorId(id);
+        gateway.deletar(id);
     }
 }
