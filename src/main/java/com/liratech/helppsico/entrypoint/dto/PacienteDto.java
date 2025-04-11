@@ -1,6 +1,7 @@
 package com.liratech.helppsico.entrypoint.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.liratech.helppsico.domain.TipoGenero;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
@@ -54,7 +55,7 @@ public class PacienteDto {
     @NotNull(message = "O gênero é obrigatório")
     @JsonProperty("genero")
     @Enumerated(EnumType.STRING)
-    private TipoGeneroDto genero;
+    private TipoGenero genero;
 
     @NotNull(message = "O endereco é obrigatório")
     @JsonProperty("endereco")
