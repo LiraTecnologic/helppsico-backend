@@ -32,8 +32,8 @@ class PacienteUseCaseTest {
         Paciente novoPaciente = PacienteBuilder.criarPaciente();
 
         Mockito.when(gateway.consultarPorEmail(Mockito.any())).thenReturn(Optional.empty());
-        Mockito.when(gateway.salvar(Mockito.any())).thenReturn(novoPaciente);
         Mockito.when(enderecoUseCase.cadastrar(Mockito.any())).thenReturn(novoPaciente.getEndereco());
+        Mockito.when(gateway.salvar(Mockito.any())).thenReturn(novoPaciente);
 
         Paciente pacienteCadastrado = useCase.cadastrar(novoPaciente);
         PacienteValidator.validaPacienteDomain(novoPaciente, pacienteCadastrado);
