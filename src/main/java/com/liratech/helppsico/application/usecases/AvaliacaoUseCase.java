@@ -1,5 +1,6 @@
 package com.liratech.helppsico.application.usecases;
 
+import com.liratech.helppsico.application.exceptions.avaliacao.AvaliacaoJaCadastradaException;
 import com.liratech.helppsico.application.exceptions.avaliacao.AvaliacaoNaoEncontradaException;
 import com.liratech.helppsico.application.gateways.AvaliacaoGateway;
 import com.liratech.helppsico.domain.Avaliacao;
@@ -23,6 +24,7 @@ public class AvaliacaoUseCase {
     private final PsicologoUseCase psicologoUseCase;
     private final AvaliacaoGateway gateway;
     public static final String MENSAGEM_AVALIACAO_NAO_ENCONTRADA = "Avaliação não encontrada";
+    public static final String MENSAGEM_AVALIACAO_JA_CADASTRADA = "Avaliação já está cadastrada";
 
     public Avaliacao avaliar(Avaliacao avaliacao){
         log.info("Salvando avaliação. Avaliação: {}", avaliacao);
@@ -33,13 +35,21 @@ public class AvaliacaoUseCase {
         Paciente paciente = pacienteUseCase.consultarPorId(avaliacao.getPaciente().getId());
         avaliacao.setPaciente(paciente);
 
-        //Logica de repetição
+        Optional<Avaliacao> avaliacaoConsultada = consultarPorPaciente(paciente.getId(), psicologo.getId());
+
+        if (avaliacaoConsultada.isPresent()){
+            throw new AvaliacaoJaCadastradaException(MENSAGEM_AVALIACAO_JA_CADASTRADA);
+        }
 
         Avaliacao avaliacaoSalva = gateway.salvar(avaliacao);
 
         log.info("Avaliação salva com sucesso. Avaliação salva: {}", avaliacaoSalva);
 
         return avaliacaoSalva;
+    }
+
+    public Optional<Avaliacao> consultarPorPaciente(UUID idPaciente, UUID idPsicologo){
+        return gateway.consultarPorPaciente(idPaciente, idPsicologo);
     }
 
     public Page<Avaliacao> listarPorPsicologo(UUID id) {
