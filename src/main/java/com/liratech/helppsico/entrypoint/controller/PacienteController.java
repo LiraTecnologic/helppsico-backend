@@ -1,7 +1,9 @@
 package com.liratech.helppsico.entrypoint.controller;
 
+import com.liratech.helppsico.application.usecases.PacienteUseCase;
 import com.liratech.helppsico.entrypoint.dto.PacienteDto;
 import com.liratech.helppsico.entrypoint.dto.ResponseDto;
+import com.liratech.helppsico.entrypoint.mapper.PacienteMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,14 +21,14 @@ public class PacienteController {
 
     @PostMapping
     public ResponseEntity<ResponseDto<PacienteDto>> cadastrar(@RequestBody PacienteDto paciente){
-        PacienteDto pacienteNovo = mapper.paraDto(useCase.cadastrar(mapper.paraDain(paciente)));
+        PacienteDto pacienteNovo = mapper.paraDto(useCase.cadastrar(mapper.paraDomain(paciente)));
         ResponseDto<PacienteDto> retorno = new ResponseDto<>(pacienteNovo);
 
         return ResponseEntity
                 .created(
                         UriComponentsBuilder
                                 .newInstance()
-                                .path("/paciente/{id}")
+                                .path("/pacientes/{id}")
                                 .buildAndExpand(pacienteNovo.getId())
                                 .toUri()
                 )
