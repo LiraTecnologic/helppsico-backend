@@ -72,4 +72,23 @@ public class AvaliacaoBuilder {
 
         return new PageImpl<>(sublist, pageable, lista.size());
     }
+
+    public static Page<Avaliacao> criarPageDeAvaliacoes() {
+        List<Avaliacao> avaliacaoList = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            avaliacaoList.add(criarAvaliacao());
+        }
+
+        return transformarListaEmPagina(avaliacaoList, PageRequest.of(0,10));
+    }
+
+    private static Page<Avaliacao> transformarListaEmPagina(List<Avaliacao> lista, Pageable pageable) {
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), lista.size());
+
+        List<Avaliacao> sublist = lista.subList(start, end);
+
+        return new PageImpl<>(sublist, pageable, lista.size());
+    }
 }
