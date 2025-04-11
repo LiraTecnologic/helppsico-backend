@@ -15,7 +15,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 public class PacienteUseCase {
-    private final CpfUseCase cpfUseCase;
     private final PacienteGateway gateway;
     private final CriptografiaUseCase criptografiaUseCase;
     public static final String MENSAGEM_PACIENTE_JA_EXISTE = "Paciente já está cadastrado";
@@ -28,9 +27,6 @@ public class PacienteUseCase {
         pacientePresente.ifPresent(paciente -> {
             throw new PacienteExistenteException(MENSAGEM_PACIENTE_JA_EXISTE);
         });
-
-        String fotoUrl = fotoUseCase.salvarImagem(novoPaciente.getFotoUrl());
-        novoPaciente.setFotoUrl(fotoUrl);
 
         String senhaCriptografada = criptografiaUseCase.criptografar(novoPaciente.getSenha());
         novoPaciente.setSenha(senhaCriptografada);

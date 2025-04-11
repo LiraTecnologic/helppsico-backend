@@ -22,9 +22,6 @@ class PacienteUseCaseTest {
     private PacienteGateway gateway;
 
     @Mock
-    private FotoUseCase fotoUseCase;
-
-    @Mock
     private EnderecoUseCase enderecoUseCase;
 
     @InjectMocks
@@ -36,7 +33,6 @@ class PacienteUseCaseTest {
 
         Mockito.when(gateway.consultarPorEmail(Mockito.any())).thenReturn(Optional.empty());
         Mockito.when(gateway.salvar(Mockito.any())).thenReturn(novoPaciente);
-        Mockito.when(fotoUseCase.salvarImagem(Mockito.any())).thenReturn(novoPaciente.getFotoUrl());
         Mockito.when(enderecoUseCase.cadastrar(Mockito.any())).thenReturn(novoPaciente.getEndereco());
 
         Paciente pacienteCadastrado = useCase.cadastrar(novoPaciente);
