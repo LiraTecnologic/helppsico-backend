@@ -26,6 +26,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
+import static com.liratech.helppsico.infrastructure.dataprovider.AvaliacaoDataProvider.MENSAGEM_ERRO_CONSULTAR_POR_PACIENTE;
+
 @ExtendWith(MockitoExtension.class)
 @RequiredArgsConstructor
 public class AvaliacaoDataProviderTest {
@@ -93,7 +95,7 @@ public class AvaliacaoDataProviderTest {
         avaliacaoTeste.getContent().get(1).setId(idProcurado);
         avaliacaoTeste.getContent().get(2).setId(idProcurado);
 
-        Mockito.when(repository.listarPorPsicologo(Mockito.any())).thenReturn(avaliacaoTeste);
+        Mockito.when(repository.findAllByPsicologo(Mockito.any())).thenReturn(avaliacaoTeste);
 
         Page<Avaliacao> avaliacaoResultado = dataProvider.listarPorPsicologo(idProcurado);
 
@@ -106,12 +108,38 @@ public class AvaliacaoDataProviderTest {
 
     @Test
     void testeExceptionListarPorPsicologo() {
-        Mockito.when(repository.listarPorPsicologo(Mockito.any())).thenThrow(DataProviderException.class);
+        Mockito.when(repository.findAllByPsicologo(Mockito.any())).thenThrow(DataProviderException.class);
 
         DataProviderException exception = Assertions
                 .assertThrows(DataProviderException.class, () -> dataProvider.listarPorPsicologo(AvaliacaoBuilder.criarAvaliacao().getId()));
 
         Assertions.assertEquals(AvaliacaoDataProvider.MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO, exception.getMessage());
+    }
+
+    @Test
+    void testeConsultarPorPaciente(){
+        AvaliacaoEntity avaliacaoTeste = AvaliacaoBuilder.criarAvaliacaoEntity();
+
+        Mockito.when(repository.findByPacienteIdAndPsicologoId(Mockito.any(), Mockito.any())).thenReturn(Optional.of(avaliacaoTeste));
+
+        Optional<Avaliacao> avaliacaoResposta = dataProvider.consultarPorPaciente(avaliacaoTeste.getPaciente().getId(), avaliacaoTeste.getPsicologo().getId());
+
+        avaliacaoResposta.ifPresent(avaliacao ->
+                AvaliacaoValidator.validaAvaliacaoDomain(mapper.paraDomain(avaliacaoTeste), avaliacao)
+        );
+    }
+
+    @Test
+    void testeExceptionConsultarPorPaciente(){
+        Avaliacao avaliacaoTeste = AvaliacaoBuilder.criarAvaliacao();
+
+        Mockito.when(repository.findByPacienteIdAndPsicologoId(Mockito.any(), Mockito.any()))
+                .thenThrow(DataProviderException.class);
+
+        DataProviderException exception = Assertions.assertThrows(DataProviderException.class,
+                () -> dataProvider.consultarPorPaciente(avaliacaoTeste.getPaciente().getId(), avaliacaoTeste.getPsicologo().getId()));
+
+        Assertions.assertEquals(MENSAGEM_ERRO_CONSULTAR_POR_PACIENTE, exception.getMessage());
     }
 
     @Test

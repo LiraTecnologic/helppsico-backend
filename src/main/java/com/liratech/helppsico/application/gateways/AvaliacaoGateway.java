@@ -14,6 +14,8 @@ public interface AvaliacaoGateway {
 
     Optional<Avaliacao> buscarPorId(UUID id);
 
+    Optional<Avaliacao> consultarPorPaciente(UUID idPaciente, UUID idPsicologo);
+
     void deletar(UUID id);
 }
 

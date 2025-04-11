@@ -1,7 +1,7 @@
 package com.liratech.helppsico.application.usecases;
 
-import com.liratech.helppsico.application.exceptions.PacienteExistenteException;
-import com.liratech.helppsico.application.exceptions.PacienteNaoEncontradoException;
+import com.liratech.helppsico.application.exceptions.paciente.PacienteExistenteException;
+import com.liratech.helppsico.application.exceptions.paciente.PacienteNaoEncontradoException;
 import com.liratech.helppsico.application.gateways.PacienteGateway;
 import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.domain.Paciente;
