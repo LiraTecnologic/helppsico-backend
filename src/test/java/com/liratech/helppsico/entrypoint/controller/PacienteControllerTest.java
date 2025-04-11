@@ -79,7 +79,7 @@ class PacienteControllerTest {
 
     @Test
     void testeConsultarPacientePorId() throws Exception {
-        UUID idRequest = pacienteDto.getId();
+        UUID idRequest = pacienteDtoEntrada.getId();
 
         Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(mapperInfra.paraEntity(pacienteDomain)));
 
