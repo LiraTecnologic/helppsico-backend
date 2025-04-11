@@ -3,6 +3,7 @@ package com.liratech.helppsico.application.usecases;
 import com.liratech.helppsico.application.exceptions.PacienteExistenteException;
 import com.liratech.helppsico.application.exceptions.PacienteNaoEncontradoException;
 import com.liratech.helppsico.application.gateways.PacienteGateway;
+import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.domain.Paciente;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class PacienteUseCase {
     private final PacienteGateway gateway;
     private final CriptografiaUseCase criptografiaUseCase;
+    private final EnderecoUseCase enderecoUseCase;
     public static final String MENSAGEM_PACIENTE_JA_EXISTE = "Paciente já está cadastrado";
     public static final String MENSAGEM_PACIENTE_NAO_ENCONTRADO = "Paciente não encontrado";
 
@@ -30,6 +32,9 @@ public class PacienteUseCase {
 
         String senhaCriptografada = criptografiaUseCase.criptografar(novoPaciente.getSenha());
         novoPaciente.setSenha(senhaCriptografada);
+
+        Endereco endereco = enderecoUseCase.cadastrar(novoPaciente.getEndereco());
+        novoPaciente.setEndereco(endereco);
 
         Paciente pacienteSalvo = gateway.salvar(novoPaciente);
 
