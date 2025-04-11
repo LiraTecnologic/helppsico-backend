@@ -22,7 +22,7 @@ public class AvaliacaoUseCase {
     private final PacienteUseCase pacienteUseCase;
     private final PsicologoUseCase psicologoUseCase;
     private final AvaliacaoGateway gateway;
-    public static final String MENSAGEM_ERRO_AVALIACAO_NAO_ENCONTRADA = "Avaliação não encontrada";
+    public static final String MENSAGEM_AVALIACAO_NAO_ENCONTRADA = "Avaliação não encontrada";
 
     public Avaliacao avaliar(Avaliacao avaliacao){
         log.info("Salvando avaliação. Avaliação: {}", avaliacao);
@@ -60,7 +60,7 @@ public class AvaliacaoUseCase {
         Optional<Avaliacao> avaliacaoOptional = gateway.buscarPorId(id);
 
         if (avaliacaoOptional.isEmpty()){
-            throw new AvaliacaoNaoEncontradaException(MENSAGEM_ERRO_AVALIACAO_NAO_ENCONTRADA);
+            throw new AvaliacaoNaoEncontradaException(MENSAGEM_AVALIACAO_NAO_ENCONTRADA);
         }
 
         Avaliacao avaliacaoSalva = avaliacaoOptional.get();
