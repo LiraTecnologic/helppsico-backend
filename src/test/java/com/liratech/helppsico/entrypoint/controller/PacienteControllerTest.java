@@ -1,32 +1,91 @@
 package com.liratech.helppsico.entrypoint.controller;
 
-import org.junit.jupiter.api.DisplayName;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.liratech.helppsico.domain.Paciente;
+import com.liratech.helppsico.entrypoint.dto.PacienteDto;
+import com.liratech.helppsico.infrastructure.repositories.PacienteRepository;
+import com.liratech.helppsico.infrastructure.repositories.entities.EnderecoEntity;
+import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.Mockito;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
-@ExtendWith(MockitoExtension.class)
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@RequiredArgsConstructor
+@SpringBootTest
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
 class PacienteControllerTest {
 
-    private final PacienteMapper mapper;
+    private final MockMvc mockMvc;
+    private final ObjectMapper objectMapper;
+    private final PacienteMapper mapperEntry;
+    private final com.liratech.helppsico.infrastructure.mapper.PacienteMapper mapperInfra;
+    private final EnderecoMapper enderecoMapper;
 
-    @Mock
-    private PacienteUseCase useCase;
+    @MockitoSpyBean
+    private final PacienteRepository repository;
 
-    @InjectMocks
-    private PacienteController controller;
+    @MockitoSpyBean
+    private final EnderecoRepository repositoryEndereco;
 
-    @Test
-    @DisplayName("Teste de sucesso para cadastro de um novo Paciente.")
-    void testeCadastrarPaciente() {
+    private PacienteDto pacienteDtoEntrada;
+    private Paciente pacienteDomain;
 
+    @BeforeEach
+    void inicializacaoAtributos(){
+        this.pacienteDtoEntrada = PacienteBuilder.criarPacienteDto();
+        this.pacienteDomain = mapperEntry.paraDomain(pacienteDtoEntrada);
     }
 
     @Test
-    @DisplayName("Teste de sucesso para consulta de Paciente por ID.")
-    void testeConsultaPacientePorId() {
+    void testeCadastrarPaciente() throws Exception {
+        pacienteDtoEntrada.setId(null);
+        EnderecoEntity enderecoEntity = enderecoMapper.paraEntity(pacienteDomain.getEndereco());
 
+        Mockito.when(repository.findByEmail(Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(repositoryEndereco.findById(Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(repositoryEndereco.save(Mockito.any())).thenReturn(enderecoEntity);
+        Mockito.when(repository.save(Mockito.any())).thenReturn(mapperInfra.paraEntity(pacienteDomain));
+
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        String pacienteJson = objectMapper.writeValueAsString(pacienteDtoEntrada);
+
+        ResultActions resultado = mockMvc.perform(post("/pacientes")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(pacienteJson))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("Location", "/pacientes/"
+                        + mapperEntry.paraDto(pacienteDomain).getId().toString()));
+
+        PacienteValidatorJson.validaPacienteJson(resultado, mapperEntry.paraDto(pacienteDomain));
+    }
+
+    @Test
+    void testeConsultarPacientePorId() throws Exception {
+        UUID idRequest = pacienteDto.getId();
+
+        Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(mapperInfra.paraEntity(pacienteDomain)));
+
+        ResultActions resultado = mockMvc.perform(get("/psicologos/{id}", idRequest))
+                .andExpect(status().isOk());
+
+        PacienteValidatorJson.validaPacienteJson(resultado, pacienteDtoEntrada);
     }
 }

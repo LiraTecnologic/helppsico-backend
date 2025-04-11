@@ -2,7 +2,7 @@ package com.liratech.helppsico.entrypoint.controller;
 
 import com.liratech.helppsico.entrypoint.dto.PacienteDto;
 import com.liratech.helppsico.entrypoint.dto.ResponseDto;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/pacientes")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PacienteController {
 
     private PacienteUseCase useCase;
