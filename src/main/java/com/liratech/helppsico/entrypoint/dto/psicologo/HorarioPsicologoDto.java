@@ -3,6 +3,7 @@ package com.liratech.helppsico.entrypoint.dto.psicologo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import java.sql.Time;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class HorarioPsicologoDto {
 
     @JsonProperty("id")

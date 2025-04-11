@@ -13,7 +13,7 @@ public interface PsicologoGateway {
 
         Optional<Psicologo> consultarPorId(UUID id);
 
-        List<Psicologo> consultarPorNome(String nome);
+        Page<Psicologo> consultarPorNome(String nome);
 
         Page<Psicologo> consultarMelhoresAvaliados(Pageable pageable);
 
