@@ -1,5 +1,6 @@
 package com.liratech.helppsico.infrastructure.repositories.entities.documento;
 
+import com.liratech.helppsico.domain.documento.TipoDocumento;
 import com.liratech.helppsico.infrastructure.repositories.entities.PacienteEntity;
 import com.liratech.helppsico.infrastructure.repositories.entities.PsicologoEntity;
 import jakarta.persistence.*;
@@ -28,8 +29,8 @@ public class SolicitacaoDocumentoEntity {
     @JoinColumn(name = "id_paciente")
     private PacienteEntity paciente;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "tipo_documento")
-    private TipoDocumentoEntity tipoDocumento;
+    private TipoDocumento tipoDocumento;
 }
 
