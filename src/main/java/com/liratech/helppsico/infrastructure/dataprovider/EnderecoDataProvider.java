@@ -41,7 +41,7 @@ public class EnderecoDataProvider implements EnderecoGateway{
         Optional<EnderecoEntity> enderecoEntity;
 
         try{
-            enderecoEntity.enderecoMapper.findById(id);
+            enderecoEntity = enderecoRepository.findById(id);
         } catch (Exception exception){
             log.error(MENSAGEM_ERRO_CONSULTAR_POR_ID, exception);
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_ID, exception.getCause());
