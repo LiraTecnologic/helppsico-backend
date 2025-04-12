@@ -73,7 +73,7 @@ public class AvaliacaoDataProvider implements AvaliacaoGateway {
     }
 
     @Override
-    public  Optional<Avaliacao> consultarPorPaciente(UUID idPaciente, UUID idPsicologo){
+    public  Optional<Avaliacao> consultarPorPacientePsicologo(UUID idPaciente, UUID idPsicologo){
         Optional<AvaliacaoEntity> avaliacao;
 
         try {

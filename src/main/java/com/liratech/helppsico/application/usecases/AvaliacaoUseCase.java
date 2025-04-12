@@ -35,7 +35,7 @@ public class AvaliacaoUseCase {
         Paciente paciente = pacienteUseCase.consultarPorId(avaliacao.getPaciente().getId());
         avaliacao.setPaciente(paciente);
 
-        Optional<Avaliacao> avaliacaoConsultada = consultarPorPaciente(paciente.getId(), psicologo.getId());
+        Optional<Avaliacao> avaliacaoConsultada = consultarPorPacientePsicologo(paciente.getId(), psicologo.getId());
 
         if (avaliacaoConsultada.isPresent()){
             throw new AvaliacaoJaCadastradaException(MENSAGEM_AVALIACAO_JA_CADASTRADA);
@@ -48,8 +48,8 @@ public class AvaliacaoUseCase {
         return avaliacaoSalva;
     }
 
-    public Optional<Avaliacao> consultarPorPaciente(UUID idPaciente, UUID idPsicologo){
-        return gateway.consultarPorPaciente(idPaciente, idPsicologo);
+    public Optional<Avaliacao> consultarPorPacientePsicologo(UUID idPaciente, UUID idPsicologo){
+        return gateway.consultarPorPacientePsicologo(idPaciente, idPsicologo);
     }
 
     public Page<Avaliacao> listarPorPsicologo(UUID id) {

@@ -122,7 +122,7 @@ public class AvaliacaoDataProviderTest {
 
         Mockito.when(repository.findByPacienteIdAndPsicologoId(Mockito.any(), Mockito.any())).thenReturn(Optional.of(avaliacaoTeste));
 
-        Optional<Avaliacao> avaliacaoResposta = dataProvider.consultarPorPaciente(avaliacaoTeste.getPaciente().getId(), avaliacaoTeste.getPsicologo().getId());
+        Optional<Avaliacao> avaliacaoResposta = dataProvider.consultarPorPacientePsicologo(avaliacaoTeste.getPaciente().getId(), avaliacaoTeste.getPsicologo().getId());
 
         avaliacaoResposta.ifPresent(avaliacao ->
                 AvaliacaoValidator.validaAvaliacaoDomain(mapper.paraDomain(avaliacaoTeste), avaliacao)
@@ -137,7 +137,7 @@ public class AvaliacaoDataProviderTest {
                 .thenThrow(DataProviderException.class);
 
         DataProviderException exception = Assertions.assertThrows(DataProviderException.class,
-                () -> dataProvider.consultarPorPaciente(avaliacaoTeste.getPaciente().getId(), avaliacaoTeste.getPsicologo().getId()));
+                () -> dataProvider.consultarPorPacientePsicologo(avaliacaoTeste.getPaciente().getId(), avaliacaoTeste.getPsicologo().getId()));
 
         Assertions.assertEquals(MENSAGEM_ERRO_CONSULTAR_POR_PACIENTE, exception.getMessage());
     }
