@@ -64,7 +64,7 @@ class EnderecoControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(enderecoJson))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/enderecos/"
+                .andExpect(header().string("Location", "/enderecos/{id}"
                         + mapperEntry.paraDto(enderecoDomain).getId().toString()));
 
         EnderecoValidatorJson.validaEnderecoJson(resultado, mapperEntry.paraDto(enderecoDomain));

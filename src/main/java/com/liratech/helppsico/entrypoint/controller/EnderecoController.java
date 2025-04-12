@@ -28,7 +28,7 @@ public class EnderecoController {
                 .created(
                         UriComponentsBuilder
                                 .newInstance()
-                                .path("/enderecos/")
+                                .path("/enderecos/{id}")
                                 .buildAndExpand(enderecoNovo.getId())
                                 .toUri()
                 )
