@@ -47,9 +47,10 @@ class EnderecoDataProviderTest {
 
     @Test
     void testeErroSalvarEndereco() {
-        Mockito.when(repository.save(Mockito.any())).thenReturn(DataProviderException.class);
+        Mockito.when(repository.save(Mockito.any())).thenThrow(RuntimeException.class);
 
-        DataProviderException exception = Assertions.assertThrows(DataProviderException.class, () -> dataProvider.salvar(EnderecoBuilder.criarEndereco()));
+        DataProviderException exception = Assertions
+                .assertThrows(DataProviderException.class, () -> dataProvider.salvar(EnderecoBuilder.criarEndereco()));
         Assertions.assertEquals(EnderecoDataProvider.MENSAGEM_ERRO_SALVAR, exception.getMessage());
     }
 
@@ -68,7 +69,7 @@ class EnderecoDataProviderTest {
 
     @Test
     void testeErroConsultarEnderecoPorId() {
-        Mockito.when(repository.findById(Mockito.any())).thenReturn(DataProviderException.class);
+        Mockito.when(repository.findById(Mockito.any())).thenThrow(RuntimeException.class);
 
         DataProviderException exception = Assertions
                 .assertThrows(DataProviderException.class, () -> dataProvider.consultarPorId(EnderecoBuilder.criarEndereco().getId()));
