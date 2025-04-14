@@ -37,7 +37,7 @@ public class AvaliacaoValidatorJson {
 
         for (int i = 0; i < 3; i++){
             resultado.andExpect(jsonPath("$.dado.content["+i+"].id").exists())
-                    //Psicologo aqui
+                    //Verificação do Psicologo
                     .andExpect(jsonPath("$.dado.content["+i+"].psicologo.nome").value("João Silva"))
                     .andExpect(jsonPath("$.dado.content["+i+"].psicologo.crp").value("123456"))
                     .andExpect(jsonPath("$.dado.content["+i+"].psicologo.cpf").value("12345678901"))
@@ -54,7 +54,7 @@ public class AvaliacaoValidatorJson {
                     .andExpect(jsonPath("$.dado.content["+i+"].psicologo.fotoUrl").value("https://example.com/foto.jpg"))
                     .andExpect(jsonPath("$.dado.content["+i+"].psicologo.biografia").value("Psicólogo com 10 anos de experiência em terapia cognitivo-comportamental."))
 
-                    //Paciente é aqui
+                    //Verificação do paciente
                     .andExpect(jsonPath("$.dado.content["+i+"].paciente.nome").value("João Silva"))
                     .andExpect(jsonPath("$.dado.content["+i+"].paciente.cpf").value("12345678901"))
                     .andExpect(jsonPath("$.dado.content["+i+"].paciente.email").value("joao.silva@example.com"))
