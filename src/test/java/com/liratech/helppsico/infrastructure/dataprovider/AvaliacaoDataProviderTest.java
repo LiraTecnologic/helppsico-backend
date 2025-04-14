@@ -117,7 +117,7 @@ public class AvaliacaoDataProviderTest {
     }
 
     @Test
-    void testeConsultarPorPaciente(){
+    void testeConsultarPorPacientePsicologo(){
         AvaliacaoEntity avaliacaoTeste = AvaliacaoBuilder.criarAvaliacaoEntity();
 
         Mockito.when(repository.findByPacienteIdAndPsicologoId(Mockito.any(), Mockito.any())).thenReturn(Optional.of(avaliacaoTeste));
@@ -130,7 +130,7 @@ public class AvaliacaoDataProviderTest {
     }
 
     @Test
-    void testeExceptionConsultarPorPaciente(){
+    void testeExceptionConsultarPorPacientePsicologo(){
         Avaliacao avaliacaoTeste = AvaliacaoBuilder.criarAvaliacao();
 
         Mockito.when(repository.findByPacienteIdAndPsicologoId(Mockito.any(), Mockito.any()))
