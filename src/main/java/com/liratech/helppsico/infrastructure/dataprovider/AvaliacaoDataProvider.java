@@ -28,6 +28,7 @@ public class AvaliacaoDataProvider implements AvaliacaoGateway {
     public static final String MENSAGEM_ERRO_BUSCAR_POR_ID = "Erro ao consultar avaliação pelo id.";
     public static final String MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO = "Erro ao listar avaliações por psicólogo.";
     public static final String MENSAGEM_ERRO_DELETAR = "Erro ao deletar avaliação.";
+    public static final String MENSAGEM_ERRO_CONSULTAR_POR_PACIENTE = "Erro ao consultar por paciente";
 
     @Override
     public Avaliacao salvar(Avaliacao avaliacao) {
@@ -48,7 +49,7 @@ public class AvaliacaoDataProvider implements AvaliacaoGateway {
         Page<AvaliacaoEntity> avaliacaoList;
 
         try {
-            avaliacaoList = repository.listarPorPsicologo(id);
+            avaliacaoList = repository.findAllByPsicologo(id);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO, ex);
             throw new DataProviderException(MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO, ex.getCause());
@@ -69,6 +70,20 @@ public class AvaliacaoDataProvider implements AvaliacaoGateway {
         }
 
         return avaliacaoEntity.map(mapper::paraDomain);
+    }
+
+    @Override
+    public  Optional<Avaliacao> consultarPorPacientePsicologo(UUID idPaciente, UUID idPsicologo){
+        Optional<AvaliacaoEntity> avaliacao;
+
+        try {
+            avaliacao = repository.findByPacienteIdAndPsicologoId(idPaciente, idPsicologo);
+        }catch (Exception ex){
+            log.error(MENSAGEM_ERRO_CONSULTAR_POR_PACIENTE);
+            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_PACIENTE, ex.getCause());
+        }
+
+        return avaliacao.map(mapper::paraDomain);
     }
 
     @Override
