@@ -50,7 +50,7 @@ class ConsultaMapperTest {
     @Test
     @DisplayName("Caso de sucesso na trasformação de Lista Entity para Lista Domain")
     void testeTrasnformacaoListConsultaEntityParaListConsultaDomain() {
-        List<ConsultaEntity> consultaEntityList = ConsultaBuilder.criarListaConsultaEntity();
+        List<ConsultaEntity> consultaEntityList = ConsultaBuilder.criarPageConsultaEntity();
         List<Consulta> consultaList = consultaMapper.paraDomains(consultaEntityList);
 
         Assertions.assertNotNull(consultaList);

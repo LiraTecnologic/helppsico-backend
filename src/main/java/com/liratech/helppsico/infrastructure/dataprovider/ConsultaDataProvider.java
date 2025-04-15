@@ -1,5 +1,6 @@
 package com.liratech.helppsico.infrastructure.dataprovider;
 
+import com.liratech.helppsico.application.gateways.ConsultaGateway;
 import com.liratech.helppsico.domain.Consulta;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
 import com.liratech.helppsico.infrastructure.mapper.ConsultaMapper;
@@ -22,10 +23,10 @@ public class ConsultaDataProvider implements ConsultaGateway {
     private final ConsultaMapper mapper;
     private final ConsultaRepository repository;
 
-    private static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar consulta.";
-    private static final String MENSAGEM_ERRO_CONSULTAR_HISTORICO = "Erro ao consultar histórica de sessões.";
-    private static final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar sessão pelo id.";
-    private static final String MENSAGEM_ERRO_CONSULTAR_SESSOES_FUTURAS = "Erro ao consultar sessões futuras.";
+    public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar consulta.";
+    public static final String MENSAGEM_ERRO_CONSULTAR_HISTORICO = "Erro ao consultar histórica de sessões.";
+    public static final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar sessão pelo id.";
+    public static final String MENSAGEM_ERRO_CONSULTAR_SESSOES_FUTURAS = "Erro ao consultar sessões futuras.";
 
     @Override
     public Consulta salvar(Consulta consulta) {
