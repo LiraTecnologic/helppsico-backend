@@ -1,6 +1,5 @@
 package com.liratech.helppsico.application.usecases;
 
-import com.liratech.helppsico.application.exceptions.endereco.EnderecoExistenteException;
 import com.liratech.helppsico.application.exceptions.endereco.EnderecoNaoEncontradoException;
 import com.liratech.helppsico.domain.Endereco;
 import lombok.RequiredArgsConstructor;
@@ -17,16 +16,10 @@ public class EnderecoUseCase {
 
     private final EnderecoGateway gateway;
 
-    public static final String MENSAGEM_ENDERECO_JA_EXISTENTE = "Endereço já cadastrado";
     public static final String MENSAGEM_ENDERECO_NAO_ENCONTRADO = "Endereco não encontrado";
 
     public Endereco cadastrar(Endereco novoEndereco){
         log.info("Cadastro de Endereço. Endereço novo: {}", novoEndereco);
-
-        Optional<Endereco> enderecoPresente = gateway.consultarPorId(novoEndereco.getId());
-        enderecoPresente.ifPresent(endereco -> {
-            throw new EnderecoExistenteException(MENSAGEM_ENDERECO_JA_EXISTENTE);
-        });
 
         Endereco enderecoSalvo = gateway.salvar(novoEndereco);
 
