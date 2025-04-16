@@ -53,7 +53,6 @@ class EnderecoControllerTest {
     void testeCadastrarEndereco() throws Exception {
         enderecoDtoEntrada.setId(null);
 
-        //Mockito.when(repository.findByCep(Mockito.any())).thenReturn(Optional.empty());
         Mockito.when(repository.save(Mockito.any())).thenReturn(mapperInfra.paraEntity(enderecoDomain));
 
         objectMapper.registerModule(new JavaTimeModule());
@@ -64,7 +63,7 @@ class EnderecoControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(enderecoJson))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/enderecos/id"
+                .andExpect(header().string("Location", "/enderecos/"
                         + mapperEntry.paraDto(enderecoDomain).getId().toString()));
 
         EnderecoValidatorJson.validaEnderecoJson(resultado, mapperEntry.paraDto(enderecoDomain));
