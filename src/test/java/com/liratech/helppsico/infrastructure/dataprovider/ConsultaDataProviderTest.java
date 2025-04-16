@@ -43,15 +43,8 @@ class ConsultaDataProviderTest {
 
     private final ConsultaEntity consultaEntityTeste = ConsultaBuilder.criarConsultaEntity();
     private final Consulta consultaDomainTeste = ConsultaBuilder.criarConsulta();
-
     private final Page<ConsultaEntity> pageConsultaEntitiesTeste = ConsultaBuilder.criarPageConsultaEntity();
-
-    private final PacienteEntity pacienteEntityTeste = PacienteBuilder.criarPacienteEntity();
-
     private final Paciente pacienteDomainTeste = PacienteBuilder.criarPaciente();
-
-    private final PsicologoEntity psicologoEntityTeste = PsicologoBuilder.criarPsicologoEntity();
-
     private final Psicologo psicologoDomainTeste = PsicologoBuilder.criarPsicologo();
 
     private final ConsultaMapper mapper;
@@ -121,6 +114,39 @@ class ConsultaDataProviderTest {
     }
 
     @Test
-    void consultarHistorico() {
+    void testeConsultaHistorico() {
+        Pageable pageable = PageRequest.of(0, 10);
+
+        Mockito.when(repository.consultarHistorico(Mockito.any(), Mockito.any(), Mockito.any()))
+                .thenReturn(pageConsultaEntitiesTeste);
+
+        Page<Consulta> resultado = dataProvider.consultarHistorico(
+                psicologoDomainTeste.getId(), pacienteDomainTeste.getId(), pageable
+        );
+
+        Assertions.assertEquals(resultado.getTotalElements(), pageConsultaEntitiesTeste.getTotalElements());
+
+        List<Consulta> resultadoList = resultado.getContent();
+
+        IntStream.range(0, resultadoList.size())
+                .forEach(i -> ConsultaValidator.validaConsultaDomain(
+                        mapper.paraDomain(pageConsultaEntitiesTeste.getContent().get(i)),
+                        resultadoList.get(i)
+                ));
     }
+
+    @Test
+    void testeExceptionConsultarHistorico() {
+        Pageable pageable = PageRequest.of(0, 10);
+
+        Mockito.when(repository.consultarHistorico(Mockito.any(), Mockito.any(), Mockito.any()))
+                .thenThrow(RuntimeException.class);
+
+        DataProviderException exception = Assertions.assertThrows(DataProviderException.class,
+                () -> dataProvider.consultarHistorico(psicologoDomainTeste.getId(), pacienteDomainTeste.getId(), pageable));
+
+        Assertions.assertEquals(exception.getMessage(), ConsultaDataProvider.MENSAGEM_ERRO_CONSULTAR_HISTORICO);
+    }
+
+
 }
