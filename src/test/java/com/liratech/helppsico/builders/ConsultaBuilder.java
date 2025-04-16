@@ -1,8 +1,13 @@
 package com.liratech.helppsico.builders;
 
 import com.liratech.helppsico.domain.Consulta;
+import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.entrypoint.dto.consulta.ConsultaDto;
 import com.liratech.helppsico.infrastructure.repositories.entities.ConsultaEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -65,5 +70,19 @@ public class ConsultaBuilder {
         }
 
         return consultaEntites;
+    }
+
+    public static Page<ConsultaEntity> criarPageConsultaEntity() {
+        Pageable pageable = PageRequest.of(0, 10);
+        return transformarListaEmPagina(criarListaConsultaEntity(), pageable);
+    }
+
+    private static Page<ConsultaEntity> transformarListaEmPagina(List<ConsultaEntity> lista, Pageable pageable) {
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), lista.size());
+
+        List<ConsultaEntity> sublist = lista.subList(start, end);
+
+        return new PageImpl<>(sublist, pageable, lista.size());
     }
 }
