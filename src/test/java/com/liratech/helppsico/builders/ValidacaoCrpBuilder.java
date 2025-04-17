@@ -12,9 +12,9 @@ public class ValidacaoCrpBuilder {
     public static ValidacaoCrp criarValidacaoCrp(){
         return ValidacaoCrp.builder()
                 .id(UUID.randomUUID())
-                //esse tem que estar sem o CRP, então acredito que não irá poder ser dessa forma
                 .psicologo(PsicologoBuilder.criarPsicologo())
-                .crp("08/01234")
+                .crp(PsicologoBuilder.criarPsicologo().getCrp())
+                .motivoReprova("Psicologo inativo")
                 .build();
     }
 
