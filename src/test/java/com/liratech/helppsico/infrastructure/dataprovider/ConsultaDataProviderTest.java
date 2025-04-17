@@ -71,7 +71,7 @@ class ConsultaDataProviderTest {
 
     @Test
     void testeConsultaPorId() {
-        Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(consultaEntityTeste));
+        Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(mapper.paraEntity(consultaDomainTeste)));
 
         Optional<Consulta> resultado = dataProvider.consultarPorId(consultaDomainTeste.getId());
 

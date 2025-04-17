@@ -24,7 +24,7 @@ public class ConsultaDataProvider implements ConsultaGateway {
     private final ConsultaRepository repository;
 
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar consulta.";
-    public static final String MENSAGEM_ERRO_CONSULTAR_HISTORICO = "Erro ao consultar histórica de sessões.";
+    public static final String MENSAGEM_ERRO_CONSULTAR_HISTORICO = "Erro ao consultar histórico de sessões.";
     public static final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar sessão pelo id.";
     public static final String MENSAGEM_ERRO_CONSULTAR_SESSOES_FUTURAS = "Erro ao consultar sessões futuras.";
 
