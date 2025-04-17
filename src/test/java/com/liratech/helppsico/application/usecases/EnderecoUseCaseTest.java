@@ -29,6 +29,7 @@ class EnderecoUseCaseTest {
         Endereco novoEndereco = EnderecoBuilder.criarEndereco();
 
         Mockito.when(gateway.salvar(captor.capture())).thenReturn(novoEndereco);
+        novoEndereco.setId(null);
 
         useCase.cadastrar(novoEndereco);
         Endereco enderecoCapturado = captor.getValue();
