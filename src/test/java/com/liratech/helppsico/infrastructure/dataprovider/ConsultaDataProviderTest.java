@@ -29,6 +29,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.IntStream;
 
 @ExtendWith(MockitoExtension.class)
@@ -146,6 +147,55 @@ class ConsultaDataProviderTest {
                 () -> dataProvider.consultarHistorico(psicologoDomainTeste.getId(), pacienteDomainTeste.getId(), pageable));
 
         Assertions.assertEquals(exception.getMessage(), ConsultaDataProvider.MENSAGEM_ERRO_CONSULTAR_HISTORICO);
+    }
+
+    @Test
+    void testeConsultaSessoesDoMesmoDia() {
+        List<ConsultaEntity> listTeste = ConsultaBuilder.criarListaConsultaEntity();
+
+        Mockito.when(repository.consultarConsultasMesmoDia(Mockito.any())).thenReturn(listTeste);
+
+        List<Consulta> resultado = dataProvider.consultarConsultasMesmoDia(12);
+
+        Assertions.assertEquals(listTeste.size(), resultado.size());
+
+        IntStream.range(0, resultado.size())
+                .forEach(i -> ConsultaValidator.validaConsultaDomain(
+                        mapper.paraDomain(listTeste.get(i)),
+                        resultado.get(i)
+                ));
+    }
+
+    @Test
+    void testeExceptionConsultaSessoesDoMesmoDia() {
+        Mockito.when(repository.consultarConsultasMesmoDia(Mockito.any())).thenThrow(RuntimeException.class);
+
+        DataProviderException exception = Assertions.assertThrows(DataProviderException.class,
+                () -> dataProvider.consultarConsultasMesmoDia(12));
+
+        Assertions.assertEquals(exception.getMessage(), ConsultaDataProvider.MENSAGEM_ERRO_CONSULTAR_SESSOES_MESMO_DIA);
+    }
+
+    @Test
+    void testeDelecaoDeConsulta() {
+        UUID idTeste = consultaEntityTeste.getId();
+
+        Mockito.doNothing().when(repository).deleteById(Mockito.any());
+
+        dataProvider.deletar(idTeste);
+
+        Mockito.verify(repository, Mockito.times(1)).deleteById(idTeste);
+    }
+
+    @Test
+    void testeExceptionDelecaoDeConsulta() {
+        UUID idTeste = consultaEntityTeste.getId();
+        Mockito.doThrow(DataProviderException.class).when(repository).deleteById(Mockito.any());
+
+        DataProviderException exception = Assertions.assertThrows(DataProviderException.class,
+                () -> dataProvider.deletar(idTeste));
+
+        Assertions.assertEquals(exception.getMessage(), ConsultaDataProvider.MENSAGEM_ERRO_DELETAR_CONSULTA);
     }
 
 

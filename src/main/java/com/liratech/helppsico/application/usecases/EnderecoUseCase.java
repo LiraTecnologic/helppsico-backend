@@ -1,6 +1,7 @@
 package com.liratech.helppsico.application.usecases;
 
 import com.liratech.helppsico.application.exceptions.endereco.EnderecoNaoEncontradoException;
+import com.liratech.helppsico.application.gateways.EnderecoGateway;
 import com.liratech.helppsico.domain.Endereco;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

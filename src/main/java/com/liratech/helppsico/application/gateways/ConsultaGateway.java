@@ -4,6 +4,7 @@ import com.liratech.helppsico.domain.Consulta;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -12,4 +13,6 @@ public interface ConsultaGateway {
     Optional<Consulta> consultarPorId(UUID id);
     Page<Consulta> consultarConsultasFuturas(UUID idPsicologo, UUID idPaciente, Pageable pageable);
     Page<Consulta> consultarHistorico(UUID idPsicologo, UUID idPaciente, Pageable pageable);
+    List<Consulta> consultarConsultasMesmoDia(int dayOfMonth);
+    void deletar(UUID id);
 }
