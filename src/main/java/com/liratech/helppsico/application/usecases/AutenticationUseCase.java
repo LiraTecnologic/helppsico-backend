@@ -6,6 +6,7 @@ import com.liratech.helppsico.domain.Psicologo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import com.liratech.helppsico.application.exceptions.token.TokenInvalidoException;
 
 @Service
 @RequiredArgsConstructor
