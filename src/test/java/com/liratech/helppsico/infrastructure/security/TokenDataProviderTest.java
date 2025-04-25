@@ -47,8 +47,6 @@ public class TokenDataProviderTest {
 
     @BeforeEach
     void inicializar(){
-        dataProvider = new TokenDataProvider(CHAVE_SECRETA);
-
         Mockito.when(parserBuilderMock.setSigningKey(Mockito.any(Key.class))).thenReturn(parserBuilderMock);
         Mockito.when(parserBuilderMock.build()).thenReturn(parserMock);
     }
@@ -87,6 +85,9 @@ public class TokenDataProviderTest {
         Mockito.when(builderMock.signWith(Mockito.any(Key.class), Mockito.any(SignatureAlgorithm.class)))
                 .thenReturn(builderMock);
         Mockito.when(builderMock.compact()).thenReturn("token-gerado");
+
+        String token = dataProvider.gerarTokenPsicologo(psicologo);
+        Assertions.assertNotNull(token);
 
         ArgumentCaptor<Map<String, Object>> claimsCaptor = ArgumentCaptor.forClass(Map.class);
         Mockito.verify(builderMock).setClaims(claimsCaptor.capture());
