@@ -56,6 +56,38 @@ class ConsultaUseCaseTest {
 
     private final Consulta consultaTeste = ConsultaBuilder.criarConsulta();
 
+    private final List<Consulta> consultasNaData = List.of(
+            Consulta.builder()
+                    .id(UUID.randomUUID())
+                    .paciente(PacienteBuilder.criarPaciente())
+                    .psicologo(PsicologoBuilder.criarPsicologo())
+                    .dataHora(consultaTeste.getDataHora())
+                    .valor(new BigDecimal(400))
+                    .finalizada(false)
+                    .endereco(EnderecoBuilder.criarEndereco())
+                    .build(),
+
+            Consulta.builder()
+                    .id(UUID.randomUUID())
+                    .paciente(PacienteBuilder.criarPaciente())
+                    .psicologo(PsicologoBuilder.criarPsicologo())
+                    .dataHora(LocalDateTime.now().plusHours(3))
+                    .valor(new BigDecimal(400))
+                    .finalizada(false)
+                    .endereco(EnderecoBuilder.criarEndereco())
+                    .build(),
+
+            Consulta.builder()
+                    .id(UUID.randomUUID())
+                    .paciente(PacienteBuilder.criarPaciente())
+                    .psicologo(PsicologoBuilder.criarPsicologo())
+                    .dataHora(LocalDateTime.now().plusHours(5))
+                    .valor(new BigDecimal(400))
+                    .finalizada(false)
+                    .endereco(EnderecoBuilder.criarEndereco())
+                    .build()
+    );
+
     @Test
     void testaAgendamentoDeConsulta() {
 
@@ -76,39 +108,6 @@ class ConsultaUseCaseTest {
 
     @Test
     void testaExcpetionDataNaoDisponivelAgendamentoDeConsulta() {
-        List<Consulta> consultasNaData = List.of(
-                Consulta.builder()
-                        .id(UUID.randomUUID())
-                        .paciente(PacienteBuilder.criarPaciente())
-                        .psicologo(PsicologoBuilder.criarPsicologo())
-                        .dataHora(consultaTeste.getDataHora())
-                        .valor(new BigDecimal(400))
-                        .finalizada(false)
-                        .endereco(EnderecoBuilder.criarEndereco())
-                        .build(),
-
-                Consulta.builder()
-                        .id(UUID.randomUUID())
-                        .paciente(PacienteBuilder.criarPaciente())
-                        .psicologo(PsicologoBuilder.criarPsicologo())
-                        .dataHora(LocalDateTime.now().plusHours(3))
-                        .valor(new BigDecimal(400))
-                        .finalizada(false)
-                        .endereco(EnderecoBuilder.criarEndereco())
-                        .build(),
-
-                Consulta.builder()
-                        .id(UUID.randomUUID())
-                        .paciente(PacienteBuilder.criarPaciente())
-                        .psicologo(PsicologoBuilder.criarPsicologo())
-                        .dataHora(LocalDateTime.now().plusHours(5))
-                        .valor(new BigDecimal(400))
-                        .finalizada(false)
-                        .endereco(EnderecoBuilder.criarEndereco())
-                        .build()
-        );
-
-
         Mockito.when(pacienteUseCase.consultarPorId(Mockito.any())).thenReturn(PacienteBuilder.criarPaciente());
         Mockito.when(psicologoUseCase.consultarPorId(Mockito.any())).thenReturn(PsicologoBuilder.criarPsicologo());
         Mockito.when(gateway.consultarConsultasMesmoDia(Mockito.any())).thenReturn(consultasNaData);
@@ -188,11 +187,54 @@ class ConsultaUseCaseTest {
     }
 
     @Test
-    void testeExceptionConsultaNaoEncontradaException() {
-        
+    void testeExceptionConsultaNaoEncontradaEmAlteracaoDeData() {
+        Mockito.when(gateway.consultarPorId(Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(gateway.consultarConsultasMesmoDia(Mockito.any())).thenReturn(new ArrayList<>());
+        Mockito.when(gateway.salvar(Mockito.any())).thenReturn(consultaTeste);
+
+        ConsultaNaoEncontradaException exception = Assertions.assertThrows(ConsultaNaoEncontradaException.class,
+                () -> useCase.alterarData(consultaTeste.getId(), LocalDateTime.now().plusDays(3)));
+
+        Assertions.assertEquals(exception.getMessage(), useCase.MENSAGEM_CONSULTA_NAO_ENCONTRADA);
     }
 
     @Test
-    void finalizar() {
+    void testeExceptionConsultaExistenteEmAlteracaoDeData() {
+        Mockito.when(gateway.consultarPorId(Mockito.any())).thenReturn(Optional.of(consultaTeste));
+        Mockito.when(gateway.consultarConsultasMesmoDia(Mockito.any())).thenReturn(consultasNaData);
+        Mockito.when(gateway.salvar(Mockito.any())).thenReturn(consultaTeste);
+
+        ConsultaJaExistenteNaDataException exception = Assertions.assertThrows(ConsultaJaExistenteNaDataException.class,
+                () -> useCase.alterarData(consultaTeste.getId(), consultaTeste.getDataHora()));
+
+        Assertions.assertEquals(exception.getMessage(), useCase.MENSAGEM_CONSULTA_JA_EXISTENTE_NA_DATA);
+    }
+
+    @Test
+    void testeFinalizarConsulta() {
+        Mockito.when(gateway.consultarPorId(Mockito.any())).thenReturn(Optional.of(consultaTeste));
+        Mockito.when(gateway.salvar(captor.capture())).thenReturn(consultaTeste);
+
+        useCase.finalizar(consultaTeste.getId());
+
+        Consulta resultado = captor.getValue();
+
+        Assertions.assertEquals(consultaTeste.getId(), resultado.getId());
+        PsicologoValidator.validaPsicologoDomain(consultaTeste.getPsicologo(), resultado.getPsicologo());
+        PacienteValidator.validaPacienteDomain(consultaTeste.getPaciente(), resultado.getPaciente());
+        Assertions.assertEquals(consultaTeste.getDataHora(), resultado.getDataHora());
+        EnderecoValidator.validaEnderecoDomain(consultaTeste.getEndereco(), resultado.getEndereco());
+        Assertions.assertTrue(resultado.getFinalizada());
+    }
+
+    @Test
+    void testeExceptionConsultaNaoEncontradaEmFinalizarConsulta() {
+        Mockito.when(gateway.consultarPorId(Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(gateway.salvar(Mockito.any())).thenReturn(consultaTeste);
+
+        ConsultaNaoEncontradaException exception = Assertions.assertThrows(ConsultaNaoEncontradaException.class,
+                () -> useCase.finalizar(consultaTeste.getId()));
+
+        Assertions.assertEquals(exception.getMessage(), useCase.MENSAGEM_CONSULTA_NAO_ENCONTRADA);
     }
 }
