@@ -103,10 +103,10 @@ public class TokenDataProvider implements TokenGateway {
 
             return tipo;
         } catch (ExpiredJwtException ex) {
-            log.error(ERRO_TOKEN_EXPIRADO);
+            log.error(ERRO_TOKEN_EXPIRADO, ex);
             throw new TokenExpiradoException(ERRO_TOKEN_EXPIRADO, ex.getCause());
         } catch (JwtException | IllegalArgumentException ex) {
-            log.error(ERRO_TOKEN_INVALIDO);
+            log.error(ERRO_TOKEN_INVALIDO, ex);
             throw new TokenInvalidoException(ERRO_TOKEN_INVALIDO, ex.getCause());
         }
     }
