@@ -8,6 +8,7 @@ import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.validators.ClaimsValidator;
 import io.jsonwebtoken.*;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,24 +27,23 @@ import static com.liratech.helppsico.infrastructure.security.TokenDataProvider.*
 import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
+@RequiredArgsConstructor
 public class TokenDataProviderTest {
 
     @Mock
-    private JwtParserBuilder parserBuilderMock;
+    private final JwtParserBuilder parserBuilderMock;
 
     @Mock
-    private JwtParser parserMock;
+    private final JwtParser parserMock;
 
     @Mock
-    private JwtBuilder builderMock;
+    private final JwtBuilder builderMock;
 
     @Mock
-    private Jws<Claims> jwsMock;
+    private final Jws<Claims> jwsMock;
 
     @InjectMocks
-    private TokenDataProvider dataProvider;
-
-    private final String CHAVE_SECRETA = "wO4xQjNq3FvJk9pLm2R5sP8uVbY0zXc1D7hG6tQe9iWa4nCf7yZd5vB";
+    private final TokenDataProvider dataProvider;
 
     @BeforeEach
     void inicializar(){
