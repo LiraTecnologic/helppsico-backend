@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,10 +24,12 @@ public class ConsultaDataProvider implements ConsultaGateway {
     private final ConsultaMapper mapper;
     private final ConsultaRepository repository;
 
+    public static final String MENSAGEM_ERRO_DELETAR_CONSULTA = "Erro ao deletar uma consulta pelo id.";
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar consulta.";
     public static final String MENSAGEM_ERRO_CONSULTAR_HISTORICO = "Erro ao consultar histórico de sessões.";
     public static final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar sessão pelo id.";
     public static final String MENSAGEM_ERRO_CONSULTAR_SESSOES_FUTURAS = "Erro ao consultar sessões futuras.";
+    public static final String MENSAGEM_ERRO_CONSULTAR_SESSOES_MESMO_DIA = "Erro ao consultar sessões do mesmo dia específicado.";
 
     @Override
     public Consulta salvar(Consulta consulta) {
@@ -82,5 +85,28 @@ public class ConsultaDataProvider implements ConsultaGateway {
         }
         
         return consultaEntities.map(mapper::paraDomain);
+    }
+
+    @Override
+    public List<Consulta> consultarConsultasMesmoDia(int diaDoMes) {
+        List<ConsultaEntity> consultaEntities;
+
+        try {
+            consultaEntities = repository.consultarConsultasMesmoDia(diaDoMes);
+        } catch (Exception ex) {
+            log.error(MENSAGEM_ERRO_CONSULTAR_SESSOES_MESMO_DIA, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_SESSOES_MESMO_DIA, ex.getCause());
+        }
+        return consultaEntities.stream().map(mapper::paraDomain).toList();
+    }
+
+    @Override
+    public void deletar(UUID id) {
+        try {
+            repository.deleteById(id);
+        } catch (Exception ex) {
+            log.error(MENSAGEM_ERRO_DELETAR_CONSULTA, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_DELETAR_CONSULTA, ex.getCause());
+        }
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -27,5 +28,9 @@ public interface ConsultaRepository extends JpaRepository<ConsultaEntity, UUID> 
             @Param("idPaciente") UUID idPaciente,
             Pageable pageable
     );
+
+
+    @Query("SELECT c FROM Consulta c WHERE DAY(c.data_hora) = :diaDoMes")
+    List<ConsultaEntity> consultarConsultasMesmoDia(int diaDoMes);
 }
 
