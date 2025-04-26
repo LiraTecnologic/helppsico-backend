@@ -141,7 +141,7 @@ class ConsultaUseCaseTest {
     }
 
     @Test
-    void testeConsultaConsultasFuturas() {
+    void testeConsultarConsultasFuturas() {
         Pageable pageable = PageRequest.of(0, 10);
 
         Mockito.when(gateway.consultarConsultasFuturas(Mockito.any(), Mockito.any(), Mockito.any()))
@@ -154,13 +154,13 @@ class ConsultaUseCaseTest {
     }
 
     @Test
-    void testeConsultaHistorico() {
+    void testeConsultarHistorico() {
         Pageable pageable = PageRequest.of(0, 10);
 
         Mockito.when(gateway.consultarHistorico(Mockito.any(), Mockito.any(), Mockito.any()))
                 .thenReturn(ConsultaBuilder.criarPageConsultaEntity().map(mapperInfra::paraDomain));
 
-        Page<Consulta> resultado = useCase.consultarConsultasFuturas(PacienteBuilder.criarPaciente().getId(),
+        Page<Consulta> resultado = useCase.consultarHistorico(PacienteBuilder.criarPaciente().getId(),
                 PsicologoBuilder.criarPsicologo().getId(), pageable);
 
         resultado.forEach(consulta -> ConsultaValidator.validaConsultaDomain(consulta, mapperInfra.paraDomain(ConsultaBuilder.criarConsultaEntity())));

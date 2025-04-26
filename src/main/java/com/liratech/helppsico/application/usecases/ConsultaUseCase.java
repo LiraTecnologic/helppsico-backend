@@ -31,7 +31,7 @@ public class ConsultaUseCase {
     public Consulta agendar(Consulta novaConsulta) {
         log.info("Agendando nova consulta. Nova consulta: {}", novaConsulta);
 
-        this.validaHorarioConsulta(novaConsulta);
+        this.validarHorarioConsulta(novaConsulta);
 
         Paciente paciente = pacienteUseCase.consultarPorId(novaConsulta.getPaciente().getId());
         Psicologo psicologo = psicologoUseCase.consultarPorId(novaConsulta.getPsicologo().getId());
@@ -65,7 +65,7 @@ public class ConsultaUseCase {
         return consultasFuturas;
     }
 
-    public Page<Consulta> consultaHistorico(UUID idPaciente, UUID idPsicologo, Pageable pageable) {
+    public Page<Consulta> consultarHistorico(UUID idPaciente, UUID idPsicologo, Pageable pageable) {
         log.info("Consultando histórico de consultas. Id paciente: {}, Id psicólogo: {}", idPaciente, idPsicologo);
         Page<Consulta> historico = gateway.consultarHistorico(idPaciente, idPsicologo, pageable);
         log.info("Histórico de consultas consultados com sucesso. Histórico: {}", historico);
@@ -77,7 +77,7 @@ public class ConsultaUseCase {
 
         Consulta consulta = this.consultarPorId(idConsulta);
         consulta.setDataHora(novaData);
-        this.validaHorarioConsulta(consulta);
+        this.validarHorarioConsulta(consulta);
         Consulta consultaSalva = gateway.salvar(consulta);
 
         log.info("Alteração de data feita com sucesso. Consulta: {}", consultaSalva);
@@ -98,7 +98,7 @@ public class ConsultaUseCase {
         return consultaSalva;
     }
 
-    private void validaHorarioConsulta(Consulta novaConsulta) {
+    private void validarHorarioConsulta(Consulta novaConsulta) {
         List<Consulta> consultasMesmoDia = gateway.consultarConsultasMesmoDia(novaConsulta.getDataHora().getDayOfMonth());
 
         if(!consultasMesmoDia.isEmpty()) {
