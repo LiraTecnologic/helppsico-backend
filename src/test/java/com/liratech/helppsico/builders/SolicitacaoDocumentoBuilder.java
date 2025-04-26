@@ -1,6 +1,7 @@
 package com.liratech.helppsico.builders;
 
 import com.liratech.helppsico.domain.documento.SolicitacaoDocumento;
+import com.liratech.helppsico.domain.documento.TipoDocumento;
 import com.liratech.helppsico.infrastructure.repositories.entities.documento.SolicitacaoDocumentoEntity;
 
 import java.util.UUID;
@@ -11,7 +12,7 @@ public class SolicitacaoDocumentoBuilder {
                 .id(UUID.randomUUID())
                 .psicologo(PsicologoBuilder.criarPsicologo())
                 .paciente(PacienteBuilder.criarPaciente())
-                .tipoDocumento()
+                .tipoDocumento(TipoDocumento.ATESTADO)
                 .build();
     }
 
@@ -20,7 +21,7 @@ public class SolicitacaoDocumentoBuilder {
                 .id(UUID.randomUUID())
                 .psicologo(PsicologoBuilder.criarPsicologoEntity())
                 .paciente(PacienteBuilder.criarPacienteEntity())
-                .tipoDocumento()
+                .tipoDocumento(TipoDocumento.ATESTADO)
                 .build();
     }
 }
