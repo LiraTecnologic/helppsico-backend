@@ -44,7 +44,6 @@ public class ConsultaControllerTest {
 
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
-    private final ConsultaMapper mapper;
 
     @MockitoSpyBean
     private final ConsultaRepository repository;
