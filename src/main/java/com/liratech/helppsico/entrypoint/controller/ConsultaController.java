@@ -1,11 +1,9 @@
 package com.liratech.helppsico.entrypoint.controller;
 
-import com.liratech.helppsico.domain.Consulta;
 import com.liratech.helppsico.entrypoint.dto.ResponseDto;
 import com.liratech.helppsico.entrypoint.dto.consulta.ConsultaDto;
 import com.liratech.helppsico.entrypoint.mapper.ConsultaMapper;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +25,7 @@ public class ConsultaController {
 
     @PostMapping
     public ResponseEntity<ResponseDto<ConsultaDto>> agendar(@RequestBody ConsultaDto novaConsulta) {
-        ConsultaDto resultado = useCase.agendar(mapper.paraDomain(novaConsulta));
+        ConsultaDto resultado = mapper.paraDto(useCase.agendar(mapper.paraDomain(novaConsulta)));
         ResponseDto<ConsultaDto> resposta = new ResponseDto<>(resultado);
 
         return ResponseEntity
@@ -56,13 +54,13 @@ public class ConsultaController {
     ){
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
 
-        Page<ConsultaDto> resultado = useCase.consultarConsultasFuturas(idPaciente, idPsicologo, pageable);
+        Page<ConsultaDto> resultado = mapper.paraDto(useCase.consultarConsultasFuturas(idPaciente, idPsicologo, pageable));
         ResponseDto<Page<ConsultaDto>> resposta = new ResponseDto<>(resultado);
 
         return ResponseEntity.ok(resposta);
     }
 
-    @GetMapping("/historico")
+    @GetMapping("/historico/{idPaciente}/{idPsicologo}")
     public ResponseEntity<ResponseDto<Page<ConsultaDto>>> consultarHistorico(
             @PathVariable("idPaciente") UUID idPaciente,
             @PathVariable("idPsicologo") UUID idPsicologo,
@@ -72,7 +70,7 @@ public class ConsultaController {
     ){
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
 
-        Page<ConsultaDto> resultado = useCase.consultarHistorico(idPaciente, idPsicologo, pageable);
+        Page<ConsultaDto> resultado = mapper.paraDto(useCase.consultarHistorico(idPaciente, idPsicologo, pageable));
         ResponseDto<Page<ConsultaDto>> resposta = new ResponseDto<>(resultado);
 
         return ResponseEntity.ok(resposta);
@@ -80,7 +78,7 @@ public class ConsultaController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<ResponseDto<ConsultaDto>> alterarData(@PathVariable UUID idConsulta, @RequestBody LocalDateTime novaData) {
-        ConsultaDto resultado = useCase.alterarData(idConsulta, novaData);
+        ConsultaDto resultado = mapper.paraDto(useCase.alterarData(idConsulta, novaData));
         ResponseDto<ConsultaDto> resposta = new ResponseDto<>(resultado);
 
         return ResponseEntity.ok(resposta);
@@ -88,11 +86,9 @@ public class ConsultaController {
 
     @PatchMapping("/finalizar/{id}")
     public ResponseEntity<ResponseDto<ConsultaDto>> finalizar(@PathVariable UUID idConsulta) {
-        ConsultaDto resultado = useCase.finalizar(idConsulta);
+        ConsultaDto resultado = mapper.paraDto(useCase.finalizar(idConsulta));
         ResponseDto<ConsultaDto> resposta = new ResponseDto<>(resultado);
 
         return ResponseEntity.ok(resposta);
     }
-
-
 }
