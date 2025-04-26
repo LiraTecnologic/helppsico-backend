@@ -52,10 +52,7 @@ public class ConsultaControllerTest {
     private final PsicologoRepository psicologoRepository;
 
     @MockitoSpyBean
-    private final PacienteRepository pacienteRepository;
-
-    @MockitoSpyBean
-    private final EnderecoRepository enderecoRepository;
+    private final PacienteRepository pacienteRepository
 
     private ConsultaDto consultaDtoEntrada;
     private ConsultaEntity consultaRetorno;
@@ -64,16 +61,13 @@ public class ConsultaControllerTest {
     private EnderecoEntity enderecoEntity;
     private Page<ConsultaEntity> pageConsulta;
 
-    public ConsultaControllerTest(MockMvc mockMvc, ObjectMapper objectMapper, ConsultaMapper mapper,
-                                  ConsultaRepository repository, PsicologoRepository psicologoRepository,
-                                  PacienteRepository pacienteRepository, EnderecoRepository enderecoRepository) {
+    public ConsultaControllerTest(MockMvc mockMvc, ObjectMapper objectMapper, ConsultaRepository repository, PsicologoRepository psicologoRepository,
+                                  PacienteRepository pacienteRepository) {
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;
-        this.mapper = mapper;
         this.repository = repository;
         this.psicologoRepository = psicologoRepository;
         this.pacienteRepository = pacienteRepository;
-        this.enderecoRepository = enderecoRepository;
     }
 
     @BeforeEach
@@ -108,7 +102,6 @@ public class ConsultaControllerTest {
         Mockito.when(repository.save(Mockito.any())).thenReturn(consultaRetorno);
         Mockito.when(pacienteRepository.findById(Mockito.any(UUID.class))).thenReturn(Optional.of(pacienteEntity));
         Mockito.when(psicologoRepository.findById(Mockito.any(UUID.class))).thenReturn(Optional.of(psicologoEntity));
-        Mockito.when(enderecoRepository.findById(Mockito.any(UUID.class))).thenReturn(Optional.of(enderecoEntity));
 
         ResultActions resultActions = mockMvc.perform(post("/consultas")
                         .contentType(MediaType.APPLICATION_JSON)
