@@ -11,7 +11,7 @@ import com.liratech.helppsico.application.exceptions.token.TokenInvalidoExceptio
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class AutenticationUseCase {
+public class AutenticacaoUseCase {
     private final TokenGateway gateway;
 
     public static final String MENSAGEM_GERACAO_TOKEN_INVALIDA = "Geração de token inválida.";
@@ -47,7 +47,7 @@ public class AutenticationUseCase {
         log.info("Iniciando validação de token de usuario");
 
         if (token == null || token.isBlank()) {
-            log.warn("Token nulo ou vazio recebido para validação");
+            log.error("Token nulo ou vazio recebido para validação");
             throw new TokenInvalidoException(MENSAGEM_TOKEN_NULO);
         }
 
