@@ -30,8 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -52,7 +51,7 @@ public class ConsultaControllerTest {
     private final PsicologoRepository psicologoRepository;
 
     @MockitoSpyBean
-    private final PacienteRepository pacienteRepository
+    private final PacienteRepository pacienteRepository;
 
     private ConsultaDto consultaDtoEntrada;
     private ConsultaEntity consultaRetorno;
@@ -102,6 +101,7 @@ public class ConsultaControllerTest {
         Mockito.when(repository.save(Mockito.any())).thenReturn(consultaRetorno);
         Mockito.when(pacienteRepository.findById(Mockito.any(UUID.class))).thenReturn(Optional.of(pacienteEntity));
         Mockito.when(psicologoRepository.findById(Mockito.any(UUID.class))).thenReturn(Optional.of(psicologoEntity));
+        Mockito.when(repository.consultarConsultasMesmoDia(Mockito.any(UUID.class))).thenReturn(Collections.emptyList());
 
         ResultActions resultActions = mockMvc.perform(post("/consultas")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -115,6 +115,7 @@ public class ConsultaControllerTest {
     void deveCancelarConsultaComSucesso() throws Exception {
         UUID idConsulta = UUID.randomUUID();
 
+        Mockito.when(repository.findById(Mockito.any(UUID.class))).thenReturn(Optional.of(consultaRetorno));
         Mockito.doNothing().when(repository).deleteById(idConsulta);
 
         mockMvc.perform(delete("/consultas/" + idConsulta))
