@@ -1,7 +1,9 @@
 package com.liratech.helppsico.validators;
 
 import com.liratech.helppsico.domain.Consulta;
+import com.liratech.helppsico.entrypoint.dto.consulta.ConsultaDto;
 import org.junit.jupiter.api.Assertions;
+import org.springframework.test.web.servlet.ResultActions;
 
 public class ConsultaValidator {
 

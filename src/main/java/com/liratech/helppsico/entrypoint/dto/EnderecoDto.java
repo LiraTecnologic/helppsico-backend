@@ -9,6 +9,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
 public class EnderecoDto{
 
     @JsonProperty("id")

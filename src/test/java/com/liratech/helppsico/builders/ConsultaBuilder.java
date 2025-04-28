@@ -1,7 +1,6 @@
 package com.liratech.helppsico.builders;
 
 import com.liratech.helppsico.domain.Consulta;
-import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.entrypoint.dto.consulta.ConsultaDto;
 import com.liratech.helppsico.infrastructure.repositories.entities.ConsultaEntity;
 import org.springframework.data.domain.Page;
@@ -16,6 +15,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class ConsultaBuilder {
+
+
     public static Consulta criarConsulta(){
         return Consulta.builder()
                 .id(UUID.fromString("c56d3bae-f60a-4e69-be27-82e1586ca742"))
@@ -74,15 +75,29 @@ public class ConsultaBuilder {
 
     public static Page<ConsultaEntity> criarPageConsultaEntity() {
         Pageable pageable = PageRequest.of(0, 10);
-        return transformarListaEmPagina(criarListaConsultaEntity(), pageable);
+        return transformarListaEmPaginaEntity(criarListaConsultaEntity(), pageable);
     }
 
-    private static Page<ConsultaEntity> transformarListaEmPagina(List<ConsultaEntity> lista, Pageable pageable) {
+    private static Page<ConsultaEntity> transformarListaEmPaginaEntity(List<ConsultaEntity> lista, Pageable pageable) {
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), lista.size());
 
         List<ConsultaEntity> sublist = lista.subList(start, end);
 
         return new PageImpl<>(sublist, pageable, lista.size());
+    }
+
+    private static Page<Consulta> transformarListaEmPaginaDomain(List<Consulta> lista, Pageable pageable) {
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), lista.size());
+
+        List<Consulta> sublist = lista.subList(start, end);
+
+        return new PageImpl<>(sublist, pageable, lista.size());
+    }
+
+    public static Page<Consulta> criarPageConsultaDomain() {
+        Pageable pageable = PageRequest.of(0, 10);
+        return transformarListaEmPaginaDomain(criarListaConslta(), pageable);
     }
 }

@@ -15,6 +15,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
 public class PsicologoDto {
 
     @JsonProperty("id")
