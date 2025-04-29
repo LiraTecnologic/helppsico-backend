@@ -7,6 +7,7 @@ import com.liratech.helppsico.infrastructure.repositories.entities.documento.Sol
 import com.liratech.helppsico.validators.SolicitacaoDocumentoValidator;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,15 +25,20 @@ import static org.junit.jupiter.api.Assertions.*;
 class SolicitacaoDocumentoDataProviderTest {
 
     @Mock
-    private final SolicitacaoDocumentoRepository repository;
+    private SolicitacaoDocumentoRepository repository;
 
     @InjectMocks
-    private final SolicitacaoDocumentoDataProvider dataProvider;
+    private SolicitacaoDocumentoDataProvider dataProvider;
 
-    private final SolicitacaoDocumento domainTest = SolicitacaoDocumentoBuilder.criarSolicitacaoDocumento();
-    private final SolicitacaoDocumentoEntity entityTest = SolicitacaoDocumentoBuilder.criarSolicitacaoDocumentoEntity();
+    private SolicitacaoDocumento domainTest;
+    private SolicitacaoDocumentoEntity entityTest;
+    private SolicitacaoDocumentoMapper mapper;
 
-    private final SolicitacaoDocumentoMapper mapper;
+    @BeforeEach
+    void inicializandoAtributos() {
+        domainTest = SolicitacaoDocumentoBuilder.criarSolicitacaoDocumento();
+        entityTest = SolicitacaoDocumentoBuilder.criarSolicitacaoDocumentoEntity();
+    }
 
     @Test
     void testeSalvarSolicitacaoDocumento() {
@@ -87,7 +93,7 @@ class SolicitacaoDocumentoDataProviderTest {
 
     @Test
     void testeErroDeletarSolicitacaoDocumento() {
-        Mockito.when(repository.deleteById(Mockito.any())).thenThrow(RuntimeException.class);
+        Mockito.when(repository.deleteById(Mockito.any())).doThrow(RuntimeException.class);
 
         DataProviderException ex = Assertions.assertThrows(DataProviderException.class,
                 () -> dataProvider.deletar(domainTest.getId()));

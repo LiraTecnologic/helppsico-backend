@@ -28,7 +28,7 @@ public class SolicitacaoDocumentoDataProvider implements SolicitacaoDocumentoGat
         try{
             entity = repository.save(entity);
         } catch (Exception ex){
-            log.error(MENSSAGEM_ERRO_SALVAR);
+            log.error(MENSSAGEM_ERRO_SALVAR, ex);
             throw new DataProviderException(MENSSAGEM_ERRO_SALVAR, ex.getCause());
         }
 
@@ -42,7 +42,7 @@ public class SolicitacaoDocumentoDataProvider implements SolicitacaoDocumentoGat
         try {
             entity = repository.findById(id);
         } catch (Exception ex){
-            log.error(MENSSAGEM_ERRO_CONSULTAR_POR_ID);
+            log.error(MENSSAGEM_ERRO_CONSULTAR_POR_ID, ex);
             throw new DataProviderException(MENSSAGEM_ERRO_CONSULTAR_POR_ID, ex.getCause());
         }
 
@@ -54,7 +54,7 @@ public class SolicitacaoDocumentoDataProvider implements SolicitacaoDocumentoGat
         try {
             repository.deleteById(id);
         } catch (Exception ex){
-            log.error(MENSSAGEM_ERRO_DELETAR);
+            log.error(MENSSAGEM_ERRO_DELETAR, ex);
             throw new DataProviderException(MENSSAGEM_ERRO_DELETAR, ex.getCause());
         }
     }
