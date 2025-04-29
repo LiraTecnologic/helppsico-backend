@@ -15,6 +15,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.liratech.helppsico.application.usecases.PacienteUseCase.MENSAGEM_PACIENTE_JA_EXISTE;
+import static com.liratech.helppsico.application.usecases.PacienteUseCase.MENSAGEM_PACIENTE_NAO_ENCONTRADO;
+
 @ExtendWith(MockitoExtension.class)
 class PacienteUseCaseTest {
 
@@ -66,5 +69,24 @@ class PacienteUseCaseTest {
         PacienteNaoEncontradoException exception = Assertions.assertThrows(PacienteNaoEncontradoException.class, () -> useCase.consultarPorId(id));
         Assertions.assertEquals(MENSAGEM_PACIENTE_NAO_ENCONTRADO, exception.getMessage());
         Mockito.verify(gateway, Mockito.times(1)).consultarPorId(id);
+    }
+
+    @Test
+    void testeConsultarPacientePorEmail() {
+        Paciente pacienteCriado = PacienteBuilder.criarPaciente();
+
+        Mockito.when(gateway.consultarPorEmail(Mockito.any())).thenReturn(Optional.of(pacienteCriado));
+        Paciente paciente = useCase.consultarPorEmail(pacienteCriado.getEmail());
+        PacienteValidator.validaPacienteDomain(pacienteCriado, paciente);
+    }
+
+    @Test
+    void testeErroConsultaPacientePorEmail() {
+        String email = PacienteBuilder.criarPaciente().getEmail();
+
+        Mockito.when(gateway.consultarPorEmail(Mockito.any())).thenReturn(Optional.empty());
+        PacienteNaoEncontradoException exception = Assertions.assertThrows(PacienteNaoEncontradoException.class, () -> useCase.consultarPorEmail(email));
+        Assertions.assertEquals(MENSAGEM_PACIENTE_NAO_ENCONTRADO, exception.getMessage());
+        Mockito.verify(gateway, Mockito.times(1)).consultarPorEmail(email);
     }
 }
