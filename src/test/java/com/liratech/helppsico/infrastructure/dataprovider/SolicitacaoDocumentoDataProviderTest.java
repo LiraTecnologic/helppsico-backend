@@ -32,7 +32,7 @@ class SolicitacaoDocumentoDataProviderTest {
 
     private SolicitacaoDocumento domainTest;
     private SolicitacaoDocumentoEntity entityTest;
-    private SolicitacaoDocumentoMapper mapper;
+    private final SolicitacaoDocumentoMapper mapper;
 
     @BeforeEach
     void inicializandoAtributos() {
@@ -93,7 +93,7 @@ class SolicitacaoDocumentoDataProviderTest {
 
     @Test
     void testeErroDeletarSolicitacaoDocumento() {
-        Mockito.when(repository.deleteById(Mockito.any())).doThrow(RuntimeException.class);
+        Mockito.doThrow(DataProviderException.class).when(repository).deleteById(Mockito.any());
 
         DataProviderException ex = Assertions.assertThrows(DataProviderException.class,
                 () -> dataProvider.deletar(domainTest.getId()));
