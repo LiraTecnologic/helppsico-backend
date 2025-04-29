@@ -2,6 +2,7 @@ package com.liratech.helppsico.application.usecases;
 
 import com.liratech.helppsico.application.exceptions.login.SenhaInvalidaException;
 import com.liratech.helppsico.domain.Paciente;
+import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.entrypoint.dto.LoginDto;
 import com.liratech.helppsico.entrypoint.dto.LoginRespostaDto;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,6 @@ public class LoginUseCase {
     private final CriptografiaUseCase criptografiaUseCase;
 
     public static final String MENSAGEM_SENHA_INVALIDA = "Senha do usuario inválida.";
-    public static final String MENSAGEM_TIPO_INVALIDO = "Tipo do token errado!";
 
     public LoginRespostaDto logarPaciente(String email, String senha){
         log.info("Iniciando processo de login do paciente. Email:{}", email);
@@ -34,14 +34,29 @@ public class LoginUseCase {
         log.info("Processo de login finalizado.");
 
         return LoginRespostaDto.builder()
-                .idPaciente(pacienteBuscado.getId())
+                .idUsuario(pacienteBuscado.getId())
                 .email(email)
-                .senha(senha)
                 .token(token)
                 .build();
     }
 
-    public LoginDto logarPsicologo(String idPsicologo, String token){
+    public LoginRespostaDto logarPsicologo(String crp, String senha){
+        log.info("Iniciando processo de login do psicologo. Crp:{}", crp);
 
+        Psicologo psicologoBuscado = psicologoUseCase.consultarPorCrp(crp);
+
+        if (!criptografiaUseCase.validarSenha(senha, psicologoBuscado.getSenha())){
+            throw new SenhaInvalidaException(MENSAGEM_SENHA_INVALIDA);
+        }
+
+        String token = autenticacaoUseCase.gerarTokenPsicologo(psicologoBuscado);
+
+        log.info("Processo de login finalizado.");
+
+        return LoginRespostaDto.builder()
+                .idUsuario(psicologoBuscado.getId())
+                .crp(crp)
+                .token(token)
+                .build();
     }
 }

@@ -10,8 +10,8 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 public class LoginRespostaDto {
-    private UUID idPaciente;
+    private UUID idUsuario;
+    private String crp;
     private String email;
-    private String senha;
     private String token;
 }
