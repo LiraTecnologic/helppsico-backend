@@ -2,6 +2,8 @@ package com.liratech.helppsico.application.usecases;
 
 import com.liratech.helppsico.application.exceptions.solicitacaoDocumento.SolicitacaoDocumentoNaoEncontradoException;
 import com.liratech.helppsico.application.gateways.SolicitacaoDocumentoGateway;
+import com.liratech.helppsico.domain.Paciente;
+import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.domain.documento.SolicitacaoDocumento;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,13 @@ public class SolicitacaoDocumentoUseCase {
 
     public SolicitacaoDocumento criarSolicitacao(SolicitacaoDocumento solicitacao){
         log.info("Cadastro da Solicitação. Solicitação nova: {}", solicitacao);
+
+        Paciente paciente = pacienteUseCase.consultarPorId(solicitacao.getPaciente().getId());
+        solicitacao.setPaciente(paciente);
+
+        Psicologo psicologo = psicologoUseCase.consultarPorId(solicitacao.getPsicologo().getId());
+        solicitacao.setPsicologo(psicologo);
+
         SolicitacaoDocumento solicitacaoDocumento = gateway.salvar(solicitacao);
 
         log.info("Solicitação cadastrada com sucesso. Solicitação: {}", solicitacaoDocumento);
