@@ -37,6 +37,10 @@ public class SolicitacaoDocumentoUseCase {
         return solicitacaoDocumento;
     }
 
+    public Optional<SolicitacaoDocumento> consultarPorPacientePsicologo(UUID idPaciente, UUID idPsicologo){
+        return gateway.consultarPorPacientePsicologo(idPaciente, idPsicologo);
+    }
+
     public SolicitacaoDocumento buscarPorId(UUID id){
         log.info("Buscando Solicitação de Documento pelo ID. ID requisitado: {}", id);
 
