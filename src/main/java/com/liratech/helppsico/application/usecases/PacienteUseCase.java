@@ -55,4 +55,18 @@ public class PacienteUseCase {
         log.info("Busca de Paciente realziada com sucesso. Paciente: {}", pacienteBuscado);
         return pacienteBuscado;
     }
+
+    public Paciente consultarPorEmail(String email){
+        log.info("Consultar o paciente por email. Email: {}", email);
+
+        Optional<Paciente> pacienteOptional = gateway.consultarPorEmail(email);
+
+        if (pacienteOptional.isEmpty()){
+            throw new PacienteNaoEncontradoException(MENSAGEM_PACIENTE_NAO_ENCONTRADO);
+        }
+
+        Paciente paciente = pacienteOptional.get();
+        log.info("Paciente consultado com sucesso. Paciente: {}", paciente);
+        return paciente;
+    }
 }
