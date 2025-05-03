@@ -31,7 +31,7 @@ public class LoginUseCase {
 
         String token = autenticacaoUseCase.gerarTokenPaciente(pacienteBuscado);
 
-        log.info("Processo de login finalizado.");
+        log.info("Processo de login do paciente finalizado.");
 
         return LoginRespostaDto.builder()
                 .idUsuario(pacienteBuscado.getId())
@@ -51,7 +51,7 @@ public class LoginUseCase {
 
         String token = autenticacaoUseCase.gerarTokenPsicologo(psicologoBuscado);
 
-        log.info("Processo de login finalizado.");
+        log.info("Processo de login do psicologo finalizado.");
 
         return LoginRespostaDto.builder()
                 .idUsuario(psicologoBuscado.getId())

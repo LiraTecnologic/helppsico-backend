@@ -84,6 +84,7 @@ public class LoginUseCaseTest {
 
         Mockito.when(pacienteUseCase.consultarPorEmail(Mockito.any())).thenReturn(pacienteBuscado);
         Mockito.when(criptografiaUseCase.validarSenha(Mockito.any(), Mockito.any())).thenReturn(false);
+        Mockito.when(autenticacaoUseCase.gerarTokenPaciente(Mockito.any())).thenReturn(null);
 
         SenhaInvalidaException exception = Assertions.assertThrows(
                 SenhaInvalidaException.class, () -> useCase.logarPaciente(email, senha)
@@ -93,6 +94,8 @@ public class LoginUseCaseTest {
 
         Mockito.verify(pacienteUseCase).consultarPorEmail(Mockito.any());
         Mockito.verify(criptografiaUseCase).validarSenha(Mockito.any(), Mockito.any());
+        Mockito.verify(autenticacaoUseCase).gerarTokenPaciente(Mockito.any());
+
     }
 
     @Test
@@ -119,6 +122,7 @@ public class LoginUseCaseTest {
 
         Mockito.when(psicologoUseCase.consultarPorCrp(Mockito.any())).thenReturn(psicologoBuscado);
         Mockito.when(criptografiaUseCase.validarSenha(Mockito.any(), Mockito.any())).thenReturn(false);
+        Mockito.when(autenticacaoUseCase.gerarTokenPsicologo(Mockito.any())).thenReturn(null);
 
         SenhaInvalidaException exception = Assertions.assertThrows(
                 SenhaInvalidaException.class, () -> useCase.logarPsicologo(crp, senha)
@@ -128,5 +132,6 @@ public class LoginUseCaseTest {
 
         Mockito.verify(psicologoUseCase).consultarPorCrp(Mockito.any());
         Mockito.verify(criptografiaUseCase).validarSenha(Mockito.any(), Mockito.any());
+        Mockito.verify(autenticacaoUseCase).gerarTokenPsicologo(Mockito.any());
     }
 }
