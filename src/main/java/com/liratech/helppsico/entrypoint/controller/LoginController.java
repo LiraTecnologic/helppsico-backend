@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class LoginController {
 
-    private LoginUseCase useCase;
+    private final LoginUseCase useCase;
 
     @PostMapping("/paciente")
     public ResponseEntity<ResponseDto<LoginRespostaDto>> logarPaciente(@RequestBody LoginDto loginCorpo){
