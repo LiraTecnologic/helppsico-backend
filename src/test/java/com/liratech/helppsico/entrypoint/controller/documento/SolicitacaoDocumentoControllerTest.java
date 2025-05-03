@@ -9,6 +9,8 @@ import com.liratech.helppsico.infrastructure.mapper.PsicologoMapper;
 import com.liratech.helppsico.infrastructure.repositories.PacienteRepository;
 import com.liratech.helppsico.infrastructure.repositories.PsicologoRepository;
 import com.liratech.helppsico.infrastructure.repositories.SolicitacaoDocumentoRepository;
+import com.liratech.helppsico.infrastructure.repositories.entities.PacienteEntity;
+import com.liratech.helppsico.infrastructure.repositories.entities.PsicologoEntity;
 import com.liratech.helppsico.infrastructure.repositories.entities.documento.SolicitacaoDocumentoEntity;
 import com.liratech.helppsico.validators.json.SolicitacaoDocumentoValidatorJson;
 import lombok.RequiredArgsConstructor;
@@ -35,49 +37,64 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 class SolicitacaoDocumentoControllerTest {
 
-    private final MockMvc mockMvc;
-    private final ObjectMapper objectMapper;
+    private MockMvc mockMvc;
+    private ObjectMapper objectMapper;
 
-    private final PsicologoMapper mapperPsicologo;
-    private final PacienteMapper mapperPaciente;
+    private PsicologoMapper mapperPsicologo;
+    private PacienteMapper mapperPaciente;
     private final SolicitacaoDocumentoMapper mapperEntry;
     private final com.liratech.helppsico.infrastructure.mapper.SolicitacaoDocumentoMapper mapperInfra;
 
     @MockitoSpyBean
-    private final SolicitacaoDocumentoRepository repository;
+    private SolicitacaoDocumentoRepository repository;
 
     @MockitoSpyBean
-    private final PsicologoRepository psicologoRepository;
+    private PsicologoRepository psicologoRepository;
 
     @MockitoSpyBean
-    private final PacienteRepository pacienteRepository;
+    private PacienteRepository pacienteRepository;
+
+    private SolicitacaoDocumentoEntity solicitacaoRetorno;
 
     private SolicitacaoDocumentoDto solicitacaoDtoEntrada;
     private SolicitacaoDocumento solicitacaoDomain;
     private SolicitacaoDocumentoEntity solicitacaoEntity;
 
+    private PacienteEntity pacienteEntity;
+    private PsicologoEntity psicologoEntity;
+
+    public SolicitacaoDocumentoControllerTest(SolicitacaoDocumentoDto solicitacaoDtoEntrada, SolicitacaoDocumento solicitacaoDomain, SolicitacaoDocumentoEntity solicitacaoEntity) {
+        this.solicitacaoDtoEntrada = solicitacaoDtoEntrada;
+        this.solicitacaoDomain = solicitacaoDomain;
+        this.solicitacaoEntity = solicitacaoEntity;
+    }
+
     @BeforeEach
     void inicializarAtributos(){
+        solicitacaoRetorno = SolicitacaoDocumentoBuilder.criarSolicitacaoDocumentoEntity();
+        pacienteEntity = solicitacaoRetorno.getPaciente();
+        psicologoEntity = solicitacaoRetorno.getPsicologo();
+
         this.solicitacaoDtoEntrada = SolicitacaoDocumentoBuilder.criarSolicitacaoDocumentoDto();
         this.solicitacaoDomain = mapperEntry.paraDomain(solicitacaoDtoEntrada);
         this.solicitacaoEntity = mapperInfra.paraEntity(solicitacaoDomain);
     }
 
     @Test
-    void testeSolicitarDocumentos() {
+    void testeSolicitarDocumentos() throws Exception {
         solicitacaoDtoEntrada.setId(null);
 
-        Mockito.when(psicologoRepository.findById(Mockito.any())).thenReturn(Optional.of(mapperPsicologo.paraEntity(solicitacaoDomain.getPsicologo())));
-        Mockito.when(pacienteRepository.findById(Mockito.any())).thenReturn(Optional.of(mapperPaciente.paraEntity(solicitacaoDomain.getPaciente())));
+        Mockito.when(pacienteRepository.findById(Mockito.any())).thenReturn(Optional.of(pacienteEntity));
+        Mockito.when(psicologoRepository.findById(Mockito.any())).thenReturn(Optional.of(psicologoEntity));
         Mockito.when(repository.save(Mockito.any())).thenReturn(solicitacaoEntity);
 
         String solicitacaoJson = objectMapper.writeValueAsString(solicitacaoDtoEntrada);
 
-        ResultActions resultado = mockMvc.perform(post("/solicitacoesDocumentos")
+        ResultActions resultado = mockMvc.perform(post("/solicitacoes-documentos")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(solicitacaoJson))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/solicitacoesDocumentos/" + solicitacaoDomain.getId().toString()));
+                .andExpect(header().string("Location", "/solicitacoes-documentos/" + solicitacaoDomain.getId().toString()));
 
         SolicitacaoDocumentoValidatorJson.validaSolicitacaoJson(resultado, mapperEntry.paraDto(solicitacaoDomain));
     }

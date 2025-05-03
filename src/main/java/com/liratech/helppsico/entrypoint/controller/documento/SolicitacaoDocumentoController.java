@@ -12,22 +12,22 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/solicitacoesDocumentos")
+@RequestMapping("/solicitacoes-documentos")
 public class SolicitacaoDocumentoController {
 
-    private SolicitacaoDocumentoUseCase useCase;
-    private SolicitacaoDocumentoMapper mapper;
+    private final SolicitacaoDocumentoUseCase useCase;
+    private final SolicitacaoDocumentoMapper mapper;
 
     @PostMapping()
     public ResponseEntity<ResponseDto<SolicitacaoDocumentoDto>> solicitarDocumentos(@RequestBody SolicitacaoDocumentoDto solicitacao){
-        SolicitacaoDocumentoDto solicitacaoResultado = useCase.criarSolicitacao(mapper.paraDomain(solicitacao));
+        SolicitacaoDocumentoDto solicitacaoResultado = mapper.paraDto(useCase.criarSolicitacao(mapper.paraDomain(solicitacao)));
         ResponseDto<SolicitacaoDocumentoDto> solicitacaoResposta = new ResponseDto<>(solicitacaoResultado);
 
         return ResponseEntity
                 .created(
                         UriComponentsBuilder
                                 .newInstance()
-                                .path("solicitacoesDocumentos/{id}")
+                                .path("/solicitacoes-documentos/{id}")
                                 .buildAndExpand(solicitacaoResultado.getId())
                                 .toUri()
                 )
