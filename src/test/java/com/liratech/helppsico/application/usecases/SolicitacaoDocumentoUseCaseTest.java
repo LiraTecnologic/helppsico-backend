@@ -51,7 +51,6 @@ class SolicitacaoDocumentoUseCaseTest {
 
         Mockito.when(pacienteUseCase.consultarPorId(Mockito.any())).thenReturn(pacienteTeste);
         Mockito.when(psicologoUseCase.consultarPorId(Mockito.any())).thenReturn(psicologoTeste);
-        Mockito.when(useCase.consultarPorPacientePsicologo(Mockito.any(), Mockito.any())).thenReturn(Optional.empty());
         Mockito.when(gateway.salvar(captor.capture())).thenReturn(solicitacaoTeste);
 
         SolicitacaoDocumento solicitacaoDocumento = useCase.criarSolicitacao(solicitacaoTeste);
@@ -62,7 +61,29 @@ class SolicitacaoDocumentoUseCaseTest {
 
     @Test
     void testeErroCriarSolicitacao() {
-        
+        SolicitacaoDocumento solicitacao = SolicitacaoDocumentoBuilder.criarSolicitacao();
+        UUID idPaciente = solicitacao.getPaciente().getId();
+        UUID idPsicologo = solicitacao.getPsicologo().getId();
+
+        Mockito.when(pacienteUseCase.consultarPorId(idPaciente))
+                .thenThrow(new RuntimeException("Paciente não encontrado"));
+
+        RuntimeException exPaciente = assertThrows(RuntimeException.class, () -> {
+            useCase.criarSolicitacao(solicitacao);
+        });
+        assertEquals("Paciente não encontrado", exPaciente.getMessage());
+
+        Mockito.when(pacienteUseCase.consultarPorId(idPaciente))
+                .thenReturn(PacienteBuilder.criarPaciente());
+
+        Mockito.when(psicologoUseCase.consultarPorId(idPsicologo))
+                .thenThrow(new RuntimeException("Psicólogo não encontrado"));
+
+        RuntimeException exPsicologo = assertThrows(RuntimeException.class, () -> {
+            useCase.criarSolicitacao(solicitacao);
+        });
+
+        assertEquals("Psicólogo não encontrado", exPsicologo.getMessage());
     }
 
     @Test
@@ -95,12 +116,12 @@ class SolicitacaoDocumentoUseCaseTest {
         SolicitacaoDocumento solicitacao = SolicitacaoDocumentoBuilder.criarSolicitacao();
         UUID idSolicitacao = solicitacao.getId();
 
-        Mockito.when(useCase.buscarPorId(Mockito.any())).thenReturn(solicitacao);
+        Mockito.when(gateway.consultarPorId(Mockito.any())).thenReturn(Optional.of(solicitacao));
         Mockito.doNothing().when(gateway).deletar(Mockito.any());
 
         useCase.deletar(idSolicitacao);
 
-        Mockito.verify(useCase, Mockito.times(1)).buscarPorId(idSolicitacao);
-        Mockito.verify(useCase, Mockito.times(1)).deletar(idSolicitacao);
+        Mockito.verify(gateway).consultarPorId(idSolicitacao);
+        Mockito.verify(gateway).deletar(idSolicitacao);
     }
 }

@@ -1,5 +1,7 @@
 package com.liratech.helppsico.application.usecases;
 
+import com.liratech.helppsico.application.exceptions.paciente.PacienteNaoEncontradoException;
+import com.liratech.helppsico.application.exceptions.psicologo.PsicologoNaoEncontradoException;
 import com.liratech.helppsico.application.exceptions.solicitacaoDocumento.SolicitacaoDocumentoNaoEncontradoException;
 import com.liratech.helppsico.application.gateways.SolicitacaoDocumentoGateway;
 import com.liratech.helppsico.domain.Paciente;
@@ -25,20 +27,18 @@ public class SolicitacaoDocumentoUseCase {
     public SolicitacaoDocumento criarSolicitacao(SolicitacaoDocumento solicitacao){
         log.info("Cadastro da Solicitação. Solicitação nova: {}", solicitacao);
 
-        Paciente paciente = pacienteUseCase.consultarPorId(solicitacao.getPaciente().getId());
+        Paciente paciente = Optional.ofNullable(pacienteUseCase.consultarPorId(solicitacao.getPaciente().getId()))
+                .orElseThrow(() -> new PacienteNaoEncontradoException("Paciente não encontrado"));
         solicitacao.setPaciente(paciente);
 
-        Psicologo psicologo = psicologoUseCase.consultarPorId(solicitacao.getPsicologo().getId());
+        Psicologo psicologo = Optional.ofNullable(psicologoUseCase.consultarPorId(solicitacao.getPsicologo().getId()))
+                        .orElseThrow(() -> new PsicologoNaoEncontradoException("Psicologo não encontrado"));
         solicitacao.setPsicologo(psicologo);
 
         SolicitacaoDocumento solicitacaoDocumento = gateway.salvar(solicitacao);
 
         log.info("Solicitação cadastrada com sucesso. Solicitação: {}", solicitacaoDocumento);
         return solicitacaoDocumento;
-    }
-
-    public Optional<SolicitacaoDocumento> consultarPorPacientePsicologo(UUID idPaciente, UUID idPsicologo){
-        return gateway.consultarPorPacientePsicologo(idPaciente, idPsicologo);
     }
 
     public SolicitacaoDocumento buscarPorId(UUID id){
