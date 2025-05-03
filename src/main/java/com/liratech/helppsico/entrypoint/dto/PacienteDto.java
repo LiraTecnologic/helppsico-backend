@@ -61,11 +61,4 @@ public class PacienteDto {
     @NotNull(message = "O endereco é obrigatório")
     @JsonProperty("endereco")
     private EnderecoDto endereco;
-
-    @NotBlank(message = "A url da foto é obrigatória")
-    @JsonProperty("fotoUrl")
-    private String fotoUrl;
-
-    @JsonProperty("foto")
-    private MultipartFile foto;
 }
