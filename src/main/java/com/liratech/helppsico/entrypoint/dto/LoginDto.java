@@ -13,8 +13,9 @@ import lombok.*;
 @Builder
 public class LoginDto {
 
-    @NotBlank(message = "O email é obrigatório")
-    @Email(message = "Email inválido")
+    @JsonProperty("crp")
+    private String crp;
+
     @JsonProperty("email")
     private String email;
 
@@ -24,7 +25,4 @@ public class LoginDto {
             message = "A senha deve conter pelo menos uma letra, um número e um caractere especial.")
     @JsonProperty("senha")
     private String senha;
-
-    @JsonProperty("token")
-    private String token;
 }
