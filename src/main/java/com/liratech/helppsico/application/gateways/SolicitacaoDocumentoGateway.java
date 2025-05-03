@@ -10,7 +10,5 @@ public interface SolicitacaoDocumentoGateway {
 
     Optional<SolicitacaoDocumento> consultarPorId(UUID id);
 
-    Optional<SolicitacaoDocumento> consultarPorPacientePsicologo(UUID idPsicologo, UUID ipPaciente);
-
     void deletar(UUID id);
 }
