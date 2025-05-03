@@ -27,12 +27,10 @@ public class SolicitacaoDocumentoUseCase {
     public SolicitacaoDocumento criarSolicitacao(SolicitacaoDocumento solicitacao){
         log.info("Cadastro da Solicitação. Solicitação nova: {}", solicitacao);
 
-        Paciente paciente = Optional.ofNullable(pacienteUseCase.consultarPorId(solicitacao.getPaciente().getId()))
-                .orElseThrow(() -> new PacienteNaoEncontradoException("Paciente não encontrado"));
+        Paciente paciente = pacienteUseCase.consultarPorId(solicitacao.getPaciente().getId());
         solicitacao.setPaciente(paciente);
 
-        Psicologo psicologo = Optional.ofNullable(psicologoUseCase.consultarPorId(solicitacao.getPsicologo().getId()))
-                        .orElseThrow(() -> new PsicologoNaoEncontradoException("Psicologo não encontrado"));
+        Psicologo psicologo = psicologoUseCase.consultarPorId(solicitacao.getPsicologo().getId());
         solicitacao.setPsicologo(psicologo);
 
         SolicitacaoDocumento solicitacaoDocumento = gateway.salvar(solicitacao);

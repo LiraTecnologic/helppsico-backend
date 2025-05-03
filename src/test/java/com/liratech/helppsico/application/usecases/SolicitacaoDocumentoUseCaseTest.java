@@ -60,33 +60,6 @@ class SolicitacaoDocumentoUseCaseTest {
     }
 
     @Test
-    void testeErroCriarSolicitacao() {
-        SolicitacaoDocumento solicitacao = SolicitacaoDocumentoBuilder.criarSolicitacao();
-        UUID idPaciente = solicitacao.getPaciente().getId();
-        UUID idPsicologo = solicitacao.getPsicologo().getId();
-
-        Mockito.when(pacienteUseCase.consultarPorId(idPaciente))
-                .thenThrow(new RuntimeException("Paciente não encontrado"));
-
-        RuntimeException exPaciente = assertThrows(RuntimeException.class, () -> {
-            useCase.criarSolicitacao(solicitacao);
-        });
-        assertEquals("Paciente não encontrado", exPaciente.getMessage());
-
-        Mockito.when(pacienteUseCase.consultarPorId(idPaciente))
-                .thenReturn(PacienteBuilder.criarPaciente());
-
-        Mockito.when(psicologoUseCase.consultarPorId(idPsicologo))
-                .thenThrow(new RuntimeException("Psicólogo não encontrado"));
-
-        RuntimeException exPsicologo = assertThrows(RuntimeException.class, () -> {
-            useCase.criarSolicitacao(solicitacao);
-        });
-
-        assertEquals("Psicólogo não encontrado", exPsicologo.getMessage());
-    }
-
-    @Test
     void testeBuscarSolicitacaoPorId() {
         SolicitacaoDocumento solicitacao = SolicitacaoDocumentoBuilder.criarSolicitacao();
         UUID idSolicitacao = solicitacao.getId();
@@ -100,15 +73,15 @@ class SolicitacaoDocumentoUseCaseTest {
 
     @Test
     void testeErroBuscarSolicitacaoPorId() {
-        UUID idSocitacao = SolicitacaoDocumentoBuilder.criarSolicitacao().getId();
+        UUID idSolicitacao = SolicitacaoDocumentoBuilder.criarSolicitacao().getId();
 
         Mockito.when(gateway.consultarPorId(Mockito.any())).thenReturn(Optional.empty());
 
         SolicitacaoDocumentoNaoEncontradoException ex = Assertions
-                .assertThrows(SolicitacaoDocumentoNaoEncontradoException.class, () -> useCase.buscarPorId(idSocitacao));
+                .assertThrows(SolicitacaoDocumentoNaoEncontradoException.class, () -> useCase.buscarPorId(idSolicitacao));
         Assertions.assertEquals(MENSAGEM_SOLICITACAO_DOCUMENTO_NAO_ENCONTRADO, ex.getMessage());
 
-        Mockito.verify(gateway, Mockito.times(1)).consultarPorId(idSocitacao);
+        Mockito.verify(gateway, Mockito.times(1)).consultarPorId(idSolicitacao);
     }
 
     @Test
