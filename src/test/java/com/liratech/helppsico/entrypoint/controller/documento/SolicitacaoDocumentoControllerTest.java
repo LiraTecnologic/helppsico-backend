@@ -1,4 +1,4 @@
-package com.liratech.helppsico.entrypoint.controller;
+package com.liratech.helppsico.entrypoint.controller.documento;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liratech.helppsico.builders.SolicitacaoDocumentoBuilder;
@@ -10,7 +10,6 @@ import com.liratech.helppsico.infrastructure.repositories.PacienteRepository;
 import com.liratech.helppsico.infrastructure.repositories.PsicologoRepository;
 import com.liratech.helppsico.infrastructure.repositories.SolicitacaoDocumentoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.documento.SolicitacaoDocumentoEntity;
-import com.liratech.helppsico.validators.SolicitacaoDocumentoValidator;
 import com.liratech.helppsico.validators.json.SolicitacaoDocumentoValidatorJson;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,4 +1,4 @@
-package com.liratech.helppsico.entrypoint.controller;
+package com.liratech.helppsico.entrypoint.controller.documento;
 
 import com.liratech.helppsico.entrypoint.dto.ResponseDto;
 import com.liratech.helppsico.entrypoint.dto.documento.SolicitacaoDocumentoDto;
