@@ -7,3 +7,53 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
+public class HorarioPsicologoDataProviderTest {
+
+    @Mock
+    private HorarioPsicologoRepository repository;
+
+    @InjectMocks
+    private HorarioPsicologoDataProvider dataProvider;
+
+
+    @Test
+    void testeSalvarHorario(){
+
+    }
+
+    @Test
+    void testeExceptionSalvarHorario(){
+
+    }
+
+    @Test
+    void testeListarHorarioPorPsicologo(){
+
+    }
+
+    @Test
+    void testeExceptionListarHorarioPorPsicologo(){
+
+    }
+
+    @Test
+    void testeBuscarHorarioPorId(){
+
+    }
+
+    @Test
+    void testeExceptionBuscarHorarioPorId(){
+
+    }
+
+    @Test
+    void testeDeletarHorario(){
+
+    }
+
+    @Test
+    void testeExceptionDeletarHorario(){
+
+    }
+}
