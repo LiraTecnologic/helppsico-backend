@@ -76,7 +76,7 @@ public class HorarioPsicologoDataProvider implements HorarioPsicologoGateway {
             repository.deleteById(id);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_DELETAR_HORARIO, ex);
-            throw new DataProviderException(MENSAGEM_ERRO_DELETAR_HORARIO)
+            throw new DataProviderException(MENSAGEM_ERRO_DELETAR_HORARIO, ex.getCause());
         }
     }
 }
