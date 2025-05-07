@@ -37,11 +37,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 class SolicitacaoDocumentoControllerTest {
 
-    private MockMvc mockMvc;
-    private ObjectMapper objectMapper;
+    private final MockMvc mockMvc;
+    private final ObjectMapper objectMapper;
 
-    private PsicologoMapper mapperPsicologo;
-    private PacienteMapper mapperPaciente;
+    private final PsicologoMapper mapperPsicologo;
+    private final PacienteMapper mapperPaciente;
     private final SolicitacaoDocumentoMapper mapperEntry;
     private final com.liratech.helppsico.infrastructure.mapper.SolicitacaoDocumentoMapper mapperInfra;
 
@@ -63,7 +63,17 @@ class SolicitacaoDocumentoControllerTest {
     private PacienteEntity pacienteEntity;
     private PsicologoEntity psicologoEntity;
 
-    public SolicitacaoDocumentoControllerTest(SolicitacaoDocumentoDto solicitacaoDtoEntrada, SolicitacaoDocumento solicitacaoDomain, SolicitacaoDocumentoEntity solicitacaoEntity) {
+    public SolicitacaoDocumentoControllerTest(MockMvc mockMvc, ObjectMapper objectMapper, PsicologoMapper mapperPsicologo,
+                                              PacienteMapper mapperPaciente, SolicitacaoDocumentoMapper mapperEntry,
+                                              com.liratech.helppsico.infrastructure.mapper.SolicitacaoDocumentoMapper mapperInfra,
+                                              SolicitacaoDocumentoDto solicitacaoDtoEntrada, SolicitacaoDocumento solicitacaoDomain,
+                                              SolicitacaoDocumentoEntity solicitacaoEntity) {
+        this.mockMvc = mockMvc;
+        this.objectMapper = objectMapper;
+        this.mapperPsicologo = mapperPsicologo;
+        this.mapperPaciente = mapperPaciente;
+        this.mapperEntry = mapperEntry;
+        this.mapperInfra = mapperInfra;
         this.solicitacaoDtoEntrada = solicitacaoDtoEntrada;
         this.solicitacaoDomain = solicitacaoDomain;
         this.solicitacaoEntity = solicitacaoEntity;
