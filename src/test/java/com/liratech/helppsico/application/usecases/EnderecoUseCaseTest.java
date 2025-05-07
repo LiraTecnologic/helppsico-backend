@@ -1,18 +1,22 @@
 package com.liratech.helppsico.application.usecases;
 
 import com.liratech.helppsico.application.exceptions.endereco.EnderecoNaoEncontradoException;
+import com.liratech.helppsico.application.gateways.EnderecoGateway;
 import com.liratech.helppsico.builders.EnderecoBuilder;
 import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.validators.EnderecoValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 import java.util.UUID;
 
 import static com.liratech.helppsico.application.usecases.EnderecoUseCase.MENSAGEM_ENDERECO_NAO_ENCONTRADO;
 
+@ExtendWith(MockitoExtension.class)
 class EnderecoUseCaseTest {
 
     @Mock

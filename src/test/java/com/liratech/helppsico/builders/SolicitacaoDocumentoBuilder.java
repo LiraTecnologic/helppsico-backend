@@ -7,7 +7,7 @@ import com.liratech.helppsico.infrastructure.repositories.entities.documento.Sol
 import java.util.UUID;
 
 public class SolicitacaoDocumentoBuilder {
-    public static SolicitacaoDocumento criarSolicitacao(){
+    public static SolicitacaoDocumento criarSolicitacaoDocumento(){
         return SolicitacaoDocumento.builder()
                 .id(UUID.randomUUID())
                 .psicologo(PsicologoBuilder.criarPsicologo())
@@ -16,7 +16,7 @@ public class SolicitacaoDocumentoBuilder {
                 .build();
     }
 
-    public static SolicitacaoDocumentoEntity criarSolicitacaoEntity(){
+    public static SolicitacaoDocumentoEntity criarSolicitacaoDocumentoEntity(){
         return SolicitacaoDocumentoEntity.builder()
                 .id(UUID.randomUUID())
                 .psicologo(PsicologoBuilder.criarPsicologoEntity())

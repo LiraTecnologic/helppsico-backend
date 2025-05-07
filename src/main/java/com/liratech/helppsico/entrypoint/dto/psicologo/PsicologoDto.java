@@ -71,13 +71,6 @@ public class PsicologoDto {
     @JsonProperty("endereco")
     private EnderecoDto enderecoAtendimento;
 
-    @NotBlank(message = "A url da foto é obrigatória")
-    @JsonProperty("fotoUrl")
-    private String fotoUrl;
-
-    @JsonProperty("foto")
-    private MultipartFile foto;
-
     @NotBlank(message = "A biografia é obrigatória")
     @JsonProperty("biografia")
     private String biografia;
