@@ -20,7 +20,7 @@ public class ValidacaoCrpUseCase {
     private final ValidacaoCrpGateway gateway;
     private final PsicologoUseCase psicologoUseCase;
 
-    public static final String MENSAGEM_VALIDACAO_CRP_JA_CADASTRADA = "Validação CRP já está cadastrada";
+    public static final String MENSAGEM_VALIDACAO_CRP_EXISTENTE = "Validação CRP já existente";
 
     public ValidacaoCrp criar(ValidacaoCrp validacaoCrp){
         log.info("Criando Validação de CRP. Nova Validação: {}", validacaoCrp);
@@ -28,13 +28,13 @@ public class ValidacaoCrpUseCase {
         Psicologo psicologo = psicologoUseCase.consultarPorCrp(validacaoCrp.getCrp());
         validacaoCrp.setPsicologo(psicologo);
 
-        Optional<ValidacaoCrp> validacaoConsulta =  ;
+        Optional<ValidacaoCrp> validacaoConsulta = gateway.consultarPorPsicologoId(psicologo.getId());
 
         if(validacaoConsulta.isPresent()){
-            throw new ValidacaoCrpExistenteException(MENSAGEM_VALIDACAO_CRP_JA_CADASTRADA);
+            throw new ValidacaoCrpExistenteException(MENSAGEM_VALIDACAO_CRP_EXISTENTE);
         }
 
-        ValicadacaoCrp validacaoSalva = gateway.salvar(validacaoCrp);
+        ValidacaoCrp validacaoSalva = gateway.salvar(validacaoCrp);
 
         log.info("Validação criada com sucesso. Validação: {}", validacaoSalva);
 
