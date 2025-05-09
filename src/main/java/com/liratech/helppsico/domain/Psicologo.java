@@ -33,5 +33,6 @@ public class Psicologo {
         this.enderecoAtendimento = psicologo.getEnderecoAtendimento();
         this.fotoUrl = psicologo.getFotoUrl();
         this.biografia = psicologo.getBiografia();
+        this.statusPsicologo = psicologo.getStatusPsicologo();
     }
 }

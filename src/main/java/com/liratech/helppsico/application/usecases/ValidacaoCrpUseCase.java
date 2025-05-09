@@ -63,7 +63,8 @@ public class ValidacaoCrpUseCase {
         }
 
         ValidacaoCrp validacaoSalva = gateway.salvar(validacaoCrp);
-        // Atualiza o Psicologo ...
+
+        psicologoUseCase.alterar(psicologo, psicologo.getId());
 
         log.info("Validação realizada com sucesso. Validação: {}", validacaoSalva);
 
@@ -71,6 +72,12 @@ public class ValidacaoCrpUseCase {
     }
 
     public Page<ValidacaoCrp> listar(Pageable pageable){
+        log.info("Listando as validações de crp.");
 
+        Page<ValidacaoCrp> validacaoCrpPage = gateway.listar(pageable);
+
+        log.info("Lista de todas as validações. Lista: {}",validacaoCrpPage);
+
+        return validacaoCrpPage;
     }
 }
