@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.sql.Time;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "HorarioPsicologo")
@@ -24,6 +25,7 @@ public class HorarioPsicologoEntity {
     @JoinColumn(name = "id_psicologo")
     private PsicologoEntity psicologo;
 
-    private LocalDate data;
-    private Time hora;
+    @OneToMany
+    @JoinColumn(name = "id_horario_psicologo")
+    private List<HorarioEntity> horarios;
 }

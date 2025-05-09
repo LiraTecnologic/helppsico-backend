@@ -38,8 +38,7 @@ public class HorarioPsicologoUseCase {
         log.info("Iniciando alteração de dados do horarioPsicologo. Horario novo: {}", horarioPsicologoNovo);
 
         HorarioPsicologo horarioPsicologoAlterado = consultarPorId(idHorario);
-        horarioPsicologoAlterado.setData(horarioPsicologoNovo.getData());
-        horarioPsicologoAlterado.setHora(horarioPsicologoNovo.getHora());
+        horarioPsicologoAlterado.setHorarios(horarioPsicologoNovo.getHorarios());
 
         log.info("Horario alterado com sucesso. Horario alterado: {}", horarioPsicologoAlterado);
         return horarioPsicologoAlterado;
@@ -59,10 +58,13 @@ public class HorarioPsicologoUseCase {
 
         Optional<HorarioPsicologo> horarioPsicologo = gateway.buscarPorId(id);
         if (horarioPsicologo.isEmpty()) {
-            throw new HorarioNaoEncontradoException(ERRO_HORARIO_NAO_ENCONTRADO)
+            throw new HorarioNaoEncontradoException(ERRO_HORARIO_NAO_ENCONTRADO);
         }
 
+        HorarioPsicologo horarioBuscado = horarioPsicologo.get();
+
         log.info("Horario buscado com sucesso: Horario: {}", horarioPsicologo);
+        return horarioBuscado;
     }
 
     public void deletar(UUID id){

@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.sql.Time;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -13,6 +14,5 @@ import java.util.UUID;
 public class HorarioPsicologo {
     private UUID id;
     private Psicologo psicologo;
-    private LocalDate data;
-    private Time hora;
+    private List<Horario> horarios;
 }
