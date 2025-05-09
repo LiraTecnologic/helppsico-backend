@@ -36,7 +36,7 @@ public class HorarioPsicologoDataProvider implements HorarioPsicologoGateway {
             horarioEntity = repository.save(horarioEntity);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_SALVAR, ex);
-            throw new DataProviderException(MENSAGEM_ERRO_SALVAR, ex.getCause())
+            throw new DataProviderException(MENSAGEM_ERRO_SALVAR, ex.getCause());
         }
 
         return mapper.paraDomain(horarioEntity);

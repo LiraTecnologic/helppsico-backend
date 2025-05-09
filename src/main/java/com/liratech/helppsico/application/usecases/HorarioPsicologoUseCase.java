@@ -40,6 +40,8 @@ public class HorarioPsicologoUseCase {
         HorarioPsicologo horarioPsicologoAlterado = consultarPorId(idHorario);
         horarioPsicologoAlterado.setHorarios(horarioPsicologoNovo.getHorarios());
 
+        horarioPsicologoAlterado = gateway.salvar(horarioPsicologoAlterado);
+
         log.info("Horario alterado com sucesso. Horario alterado: {}", horarioPsicologoAlterado);
         return horarioPsicologoAlterado;
     }

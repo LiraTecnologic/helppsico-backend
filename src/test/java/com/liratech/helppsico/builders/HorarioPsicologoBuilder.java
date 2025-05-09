@@ -2,6 +2,7 @@ package com.liratech.helppsico.builders;
 
 import com.liratech.helppsico.domain.HorarioPsicologo;
 import com.liratech.helppsico.domain.Psicologo;
+import com.liratech.helppsico.entrypoint.dto.psicologo.HorarioDto;
 import com.liratech.helppsico.entrypoint.dto.psicologo.HorarioPsicologoDto;
 import com.liratech.helppsico.infrastructure.repositories.entities.HorarioPsicologoEntity;
 import org.springframework.data.domain.Page;
@@ -21,8 +22,7 @@ public class HorarioPsicologoBuilder {
         return HorarioPsicologo.builder()
                 .id(UUID.randomUUID())
                 .psicologo(PsicologoBuilder.criarPsicologo())
-                .data(LocalDate.now())
-                .hora(Time.valueOf(LocalTime.now()))
+                .horarios(HorarioBuilder.criarListaHorarioDomain())
                 .build();
     }
 
@@ -30,8 +30,7 @@ public class HorarioPsicologoBuilder {
         return HorarioPsicologoDto.builder()
                 .id(UUID.randomUUID())
                 .psicologo(PsicologoBuilder.criarPsicologoDto())
-                .data(LocalDate.now())
-                .hora(Time.valueOf(LocalTime.now()))
+                .horarios(HorarioBuilder.criarListaHorarioDto())
                 .build();
     }
 
@@ -39,8 +38,7 @@ public class HorarioPsicologoBuilder {
         return HorarioPsicologoEntity.builder()
                 .id(UUID.randomUUID())
                 .psicologo(PsicologoBuilder.criarPsicologoEntity())
-                .data(LocalDate.now())
-                .hora(Time.valueOf(LocalTime.now()))
+                .horarios(HorarioBuilder.criarListaHorarioEntity())
                 .build();
     }
 
