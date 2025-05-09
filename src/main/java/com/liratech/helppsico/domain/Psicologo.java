@@ -22,6 +22,7 @@ public class Psicologo {
     private Endereco enderecoAtendimento;
     private String fotoUrl;
     private String biografia;
+    private StatusPsicologo statusPsicologo;
 
     public void alterarDados(Psicologo psicologo) {
         this.nome = psicologo.getNome();
