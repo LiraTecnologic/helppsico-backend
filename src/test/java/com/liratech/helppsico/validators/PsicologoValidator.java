@@ -17,7 +17,7 @@ public class PsicologoValidator {
         Assertions.assertEquals(esperado.getDataNascimento(), resultado.getDataNascimento());
         Assertions.assertEquals(esperado.getSenha(), resultado.getSenha());
         Assertions.assertEquals(esperado, resultado);
-        Assertions.assertEquals(esperado.getEnderecoAtendimento(), resultado.getEnderecoAtendimento());
+        EnderecoValidator.validaEnderecoDomain(esperado.getEnderecoAtendimento(), resultado.getEnderecoAtendimento());
         Assertions.assertEquals(esperado.getFotoUrl(), resultado.getFotoUrl());
         Assertions.assertEquals(esperado.getBiografia(), resultado.getBiografia());
     }
