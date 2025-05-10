@@ -65,8 +65,6 @@ public class ProntuarioUseCase {
     public Prontuario alterar(Prontuario prontuarioAlterado, UUID idProntuario) {
         log.info("Alterando prontuário com novos dados. Novos dados: {}, Id: {}", prontuarioAlterado, idProntuario);
         Prontuario prontuario = this.consultarPorId(idProntuario);
-        Paciente paciente = this.pacienteUseCase.consultarPorId(prontuarioAlterado.getPaciente().getId());
-        prontuarioAlterado.setPaciente(paciente);
 
         prontuario.alterarDado(prontuarioAlterado);
 

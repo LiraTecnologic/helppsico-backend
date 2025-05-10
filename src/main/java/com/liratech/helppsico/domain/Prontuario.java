@@ -16,7 +16,6 @@ public class Prontuario {
     private String conteudo;
 
     public void alterarDado(Prontuario prontuarioAlterado) {
-        this.paciente = prontuarioAlterado.getPaciente();
         this.titulo = prontuarioAlterado.getTitulo();
         this.conteudo = prontuarioAlterado.getConteudo();
     }
