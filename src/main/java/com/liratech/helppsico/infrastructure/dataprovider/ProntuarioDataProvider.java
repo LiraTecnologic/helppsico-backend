@@ -28,11 +28,11 @@ public class ProntuarioDataProvider implements ProntuarioGateway {
     private final ProntuarioMapper mapper;
     private final PacienteMapper pacienteMapper;
     private final PsicologoMapper psicologoMapper;
-    private final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar prontuário.";
-    private final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar prontuário pelo id.";
-    private final String MENSAGEM_ERRO_LISTAR_PACIENTE = "Erro ao listar prontuários pelo paciente.";
-    private final String MENSAGEM_ERRO_LISTAR_PSICOLOGO = "Erro ao listar prontuários pelo psicologo.";
-    private final String MENSAGEM_ERRO_DELETAR = "Erro ao deletar prontuário.";
+    public final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar prontuário.";
+    public final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar prontuário pelo id.";
+    public final String MENSAGEM_ERRO_LISTAR_PACIENTE = "Erro ao listar prontuários pelo paciente.";
+    public final String MENSAGEM_ERRO_LISTAR_PSICOLOGO = "Erro ao listar prontuários pelo psicologo.";
+    public final String MENSAGEM_ERRO_DELETAR = "Erro ao deletar prontuário.";
 
     @Override
     public Prontuario salvar(Prontuario prontuario) {
