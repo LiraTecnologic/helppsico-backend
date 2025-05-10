@@ -10,7 +10,6 @@ import java.util.UUID;
 @Setter
 @Builder
 public class Foto {
-    private UUID id;
     private Psicologo psicologo;
     private Paciente paciente;
     private String fotoUrl;

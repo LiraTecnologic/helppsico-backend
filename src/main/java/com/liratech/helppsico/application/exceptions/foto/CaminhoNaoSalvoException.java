@@ -1,4 +1,4 @@
-package com.liratech.helppsico.application.exceptions;
+package com.liratech.helppsico.application.exceptions.foto;
 
 public class CaminhoNaoSalvoException extends RuntimeException {
 
