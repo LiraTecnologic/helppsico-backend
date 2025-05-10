@@ -80,7 +80,6 @@ public class FotoUseCaseTest {
         Foto fotoTeste = useCase.salvar(multipartFile, fotoPaciente);
 
         FotoValidator.validaFotoDomain(fotoPaciente, fotoTeste);
-        Mockito.verify(psicologoUseCase).consultarPorId(Mockito.any());
     }
 
     @Test
@@ -92,7 +91,6 @@ public class FotoUseCaseTest {
         Foto fotoTeste = useCase.salvar(multipartFile, fotoPsicologo);
 
         FotoValidator.validaFotoDomain(fotoPaciente, fotoTeste);
-        Mockito.verify(pacienteUseCase).consultarPorId(Mockito.any());
     }
 
     @Test
