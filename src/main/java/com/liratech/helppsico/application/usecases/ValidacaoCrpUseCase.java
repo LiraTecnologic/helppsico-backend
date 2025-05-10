@@ -1,10 +1,12 @@
 package com.liratech.helppsico.application.usecases;
 
 import com.liratech.helppsico.application.exceptions.validacaoCrp.ValidacaoCrpExistenteException;
+import com.liratech.helppsico.application.exceptions.validacaoCrp.ValidacaoCrpNaoExistenteException;
 import com.liratech.helppsico.application.exceptions.validacaoCrp.ValidacaoCrpSolicitadaException;
 import com.liratech.helppsico.application.gateways.ValidacaoCrpGateway;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.domain.StatusPsicologo;
+import com.liratech.helppsico.domain.ValidacaoCrp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,7 @@ public class ValidacaoCrpUseCase {
 
     public static final String MENSAGEM_VALIDACAO_CRP_EXISTENTE = "Validação CRP já existente";
     public static final String MENSAGEM_VALIDACAO_CRP_JA_SOLICITADA = "Validação CRP já foi solicitada";
+    public static final String MENSAGEM_VALIDACAO_CRP_NAO_EXISTENTE = "Validação CRP não existe";
 
     public ValidacaoCrp criar(ValidacaoCrp validacaoCrp){
         log.info("Criando Validação de CRP. Nova Validação: {}", validacaoCrp);
@@ -31,7 +34,7 @@ public class ValidacaoCrpUseCase {
         Psicologo psicologo = psicologoUseCase.consultarPorId(validacaoCrp.getPsicologo().getId());
         validacaoCrp.setPsicologo(psicologo);
 
-        Optional<ValidacaoCrp> validacaoConsulta = gateway.consultarPorPsicologoId(psicologo.getId());
+        Optional<ValidacaoCrp> validacaoConsulta = gateway.consultarPorPsicologo(psicologo.getId());
 
         if(validacaoConsulta.isPresent()){
             throw new ValidacaoCrpExistenteException(MENSAGEM_VALIDACAO_CRP_EXISTENTE);
@@ -44,25 +47,21 @@ public class ValidacaoCrpUseCase {
         return validacaoSalva;
     }
 
-    public ValidacaoCrp validar(ValidacaoCrp validacaoCrp, UUID id){
-        log.info("Validando o CRP. Validacao: {}", validacaoCrp);
+    public ValidacaoCrp validar(ValidacaoCrp validacaoCrpNovo, UUID id){
+        log.info("Validando o CRP. Validacao: {}", validacaoCrpNovo);
 
-        Psicologo psicologo = psicologoUseCase.consultarPorId(validacaoCrp.getPsicologo().getId());
-        validacaoCrp.setPsicologo(psicologo);
+        ValidacaoCrp validacaoConsultado = consultarPorId(id);
+        Psicologo psicologo = psicologoUseCase.consultarPorId(validacaoCrpNovo.getPsicologo().getId());
 
-        Optional<ValidacaoCrp> validacaoConsulta = gateway.consultarPorId(id);
+        validacaoConsultado.setMotivoReprova(validacaoCrpNovo.getMotivoReprova());
 
-        if(validacaoConsulta.isPresent()){
-            throw new ValidacaoCrpSolicitadaException(MENSAGEM_VALIDACAO_CRP_JA_SOLICITADA);
-        }
-
-        if(validacaoCrp.getMotivoReprova() == null || validacaoCrp.getMotivoReprova().isBlank()){
+        if(validacaoCrpNovo.getMotivoReprova() == null || validacaoCrpNovo.getMotivoReprova().isBlank()){
             psicologo.setStatusPsicologo(StatusPsicologo.APROVADO);
         } else {
             psicologo.setStatusPsicologo(StatusPsicologo.NAO_APROVADO);
         }
 
-        ValidacaoCrp validacaoSalva = gateway.salvar(validacaoCrp);
+        ValidacaoCrp validacaoSalva = gateway.salvar(validacaoConsultado);
 
         psicologoUseCase.alterar(psicologo, psicologo.getId());
 
@@ -79,5 +78,15 @@ public class ValidacaoCrpUseCase {
         log.info("Lista de todas as validações. Lista: {}",validacaoCrpPage);
 
         return validacaoCrpPage;
+    }
+
+    public ValidacaoCrp consultarPorId (UUID id){
+        Optional<ValidacaoCrp> validacaoCrpBuscado = gateway.consultarPorId(id);
+
+        if(validacaoCrpBuscado.isEmpty()){
+            throw new ValidacaoCrpNaoExistenteException(MENSAGEM_VALIDACAO_CRP_NAO_EXISTENTE);
+        }
+
+        return validacaoCrpBuscado.get();
     }
 }
