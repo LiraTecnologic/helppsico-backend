@@ -1,5 +1,6 @@
 package com.liratech.helppsico.entrypoint.controller;
 
+import com.liratech.helppsico.application.usecases.ConsultaUseCase;
 import com.liratech.helppsico.entrypoint.dto.ResponseDto;
 import com.liratech.helppsico.entrypoint.dto.consulta.ConsultaDto;
 import com.liratech.helppsico.entrypoint.mapper.ConsultaMapper;
