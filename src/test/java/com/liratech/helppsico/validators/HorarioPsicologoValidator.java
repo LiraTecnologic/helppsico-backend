@@ -7,6 +7,6 @@ import org.junit.jupiter.api.Assertions;
 public class HorarioPsicologoValidator {
     public static void validaHorarioPsicologoDomain(HorarioPsicologo esperado, HorarioPsicologo resultado){
         PsicologoValidator.validaPsicologoDomain(esperado.getPsicologo(), resultado.getPsicologo());
-        Assertions.assertEquals(esperado.getHorarios(), resultado.getHorarios());
+        HorarioValidator.validaHorarioDomain(esperado.getHorarios(), resultado.getHorarios());
     }
 }
