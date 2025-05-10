@@ -8,6 +8,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
 public class Prontuario {
     private UUID id;
     private Psicologo psicologo;
