@@ -74,4 +74,7 @@ public class PsicologoDto {
     @NotBlank(message = "A biografia é obrigatória")
     @JsonProperty("biografia")
     private String biografia;
+
+    @JsonProperty("urlFoto")
+    private String urlFoto;
 }

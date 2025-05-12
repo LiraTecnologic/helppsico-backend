@@ -22,7 +22,7 @@ public class PacienteBuilder {
                 .senha("senhaSegura@123")
                 .genero(TipoGenero.MASCULINO)
                 .endereco(EnderecoBuilder.criarEndereco())
-                .fotoUrl("https://example.com/foto-joao.jpg")
+                .fotoUrl("url-salvo")
                 .build();
     }
 
@@ -37,7 +37,7 @@ public class PacienteBuilder {
                 .senha("senhaSegura@123")
                 .genero(TipoGeneroDto.MASCULINO)
                 .endereco(EnderecoBuilder.criarEnderecoDto())
-                .fotoUrl("https://example.com/foto-joao.jpg")
+                .fotoUrl("url-salvo")
                 .build();
     }
 
@@ -52,7 +52,7 @@ public class PacienteBuilder {
                 .senha("senhaSegura@123")
                 .genero(TipoGeneroEntity.MASCULINO)
                 .endereco(EnderecoBuilder.criarEnderecoEntity())
-                .fotoUrl("https://example.com/foto-joao.jpg")
+                .fotoUrl("url-salvo")
                 .build();
     }
 }

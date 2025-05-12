@@ -10,7 +10,4 @@ import java.util.UUID;
 
 public interface FotoGateway {
     String salvarLocal(MultipartFile foto);
-    Foto salvarEntidade(Foto foto);
-    Optional<Foto> buscarPorPsicologo(Psicologo psicologo);
-    Optional<Foto> buscarPorPaciente(Paciente paciente);
 }
