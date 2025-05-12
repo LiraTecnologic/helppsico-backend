@@ -76,7 +76,7 @@ class DocumentoDataProviderTest {
 
     @Test
     void testeListarDocumentos(){
-        Mockito.when(repository.findAll(Mockito.any())).thenReturn(pageDocumentosEntity);
+        Mockito.when(repository.findAll()).thenReturn(pageDocumentosEntity);
 
         Page<Documento> documentos = dataProvider.listar(pageable);
 
@@ -89,7 +89,7 @@ class DocumentoDataProviderTest {
 
     @Test
     void testeErroListarDocumentos(){
-        Mockito.when(repository.findAll(Mockito.any())).thenThrow(Exception.class);
+        Mockito.when(repository.findAll()).thenThrow(Exception.class);
 
         DataProviderException exception = Assertions.assertThrows(
                 DataProviderException.class,

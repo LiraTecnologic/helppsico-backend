@@ -21,6 +21,10 @@ public class DocumentoDataProvider implements DocumentoGateway{
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar documento.";
     public static final String MENSAGEM_ERRO_LISTAR = "Erro ao listar documento.";
 
+    public DocumentoDataProvider(DocumentoMapper mapper, DocumentoRepository repository) {
+        this.mapper = mapper;
+        this.repository = repository;
+    }
 
     @Override
     public Documento salvar(Documento documento){
@@ -33,7 +37,7 @@ public class DocumentoDataProvider implements DocumentoGateway{
             throw new DataProviderException(MENSAGEM_ERRO_SALVAR, ex.getCause());
         }
 
-        return mapper.paraDto(documentoEntity);
+        return mapper.paraDomain(documentoEntity);
     }
 
     @Override
