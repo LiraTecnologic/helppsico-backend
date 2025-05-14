@@ -25,6 +25,24 @@ public class FotoBuilder {
                 .build();
     }
 
+    public static FotoDto criarFotoDtoPaciente() {
+        return FotoDto.builder()
+                .id(UUID.randomUUID())
+                .psicologo(null)
+                .paciente(PacienteBuilder.criarPacienteDto())
+                .fotoUrl(null)
+                .build();
+    }
+
+    public static FotoDto criarFotoDtoPsicologo() {
+        return FotoDto.builder()
+                .id(UUID.randomUUID())
+                .psicologo(PsicologoBuilder.criarPsicologoDto())
+                .paciente(null)
+                .fotoUrl(null)
+                .build();
+    }
+
     public static FotoEntity criarFotoEntity() {
         return FotoEntity.builder()
                 .id(UUID.randomUUID())

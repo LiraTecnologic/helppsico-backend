@@ -3,16 +3,17 @@ package com.liratech.helppsico.entrypoint.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.liratech.helppsico.application.gateways.FotoGateway;
-import com.liratech.helppsico.application.usecases.FotoUseCase;
-import com.liratech.helppsico.application.usecases.PacienteUseCase;
-import com.liratech.helppsico.application.usecases.PsicologoUseCase;
 import com.liratech.helppsico.domain.Foto;
 import com.liratech.helppsico.builders.FotoBuilder;
 import com.liratech.helppsico.entrypoint.dto.FotoDto;
 import com.liratech.helppsico.entrypoint.mapper.FotoMapper;
+import com.liratech.helppsico.infrastructure.dataprovider.FotoDataProvider;
+import com.liratech.helppsico.infrastructure.mapper.PacienteMapper;
+import com.liratech.helppsico.infrastructure.mapper.PsicologoMapper;
+import com.liratech.helppsico.infrastructure.repositories.FotoRepository;
+import com.liratech.helppsico.infrastructure.repositories.PacienteRepository;
+import com.liratech.helppsico.infrastructure.repositories.PsicologoRepository;
 import com.liratech.helppsico.validators.json.FotoValidatorJson;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -27,12 +28,12 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@RequiredArgsConstructor
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
@@ -40,43 +41,50 @@ class FotoControllerTest {
 
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
-    private final FotoMapper mapper;
+    private final FotoMapper mapperEntry;
+    private final com.liratech.helppsico.infrastructure.mapper.FotoMapper mapperInfra;
+    private final PacienteMapper pacienteMapper;
+    private final PsicologoMapper psicologoMapper;
 
     @MockitoSpyBean
-    private final FotoUseCase fotoUseCase;
+    private FotoRepository fotoRepository;
 
     @MockitoSpyBean
-    private final FotoGateway fotoGateway;
+    private FotoDataProvider fotoDataProvider;
 
     @MockitoSpyBean
-    private final PacienteUseCase pacienteUseCase;
+    private PacienteRepository pacienteRepository;
 
     @MockitoSpyBean
-    private final PsicologoUseCase psicologoUseCase;
+    private PsicologoRepository psicologoRepository;
 
-    private FotoDto fotoDtoEntrada;
-    private Foto fotoDomain;
+    private FotoDto fotoDtoPaciente;
+    private FotoDto fotoDtoPsicologo;
+    private Foto fotoDomainPaciente;
+    private Foto fotoDomainPsicologo;
     private MockMultipartFile arquivoFoto;
 
-    public FotoControllerTest(FotoMapper mapper, MockMvc mockMvc, ObjectMapper objectMapper, FotoDto fotoDtoEntrada, Foto fotoDomain, MockMultipartFile arquivoFoto) {
-        this.mapper = mapper;
+    public FotoControllerTest(MockMvc mockMvc, ObjectMapper objectMapper, FotoMapper mapper, FotoMapper mapperEntry, com.liratech.helppsico.infrastructure.mapper.FotoMapper mapperInfra, PacienteMapper pacienteMapper, PsicologoMapper psicologoMapper, MockMultipartFile arquivoFoto, Foto fotoDomainPaciente, FotoDto fotoDtoPaciente, FotoDto fotoDtoPsicologo, Foto fotoDomainPsicologo) {
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;
-        this.fotoDtoEntrada = fotoDtoEntrada;
-        this.fotoDomain = fotoDomain;
+        this.mapperEntry = mapperEntry;
+        this.mapperInfra = mapperInfra;
+        this.pacienteMapper = pacienteMapper;
+        this.psicologoMapper = psicologoMapper;
         this.arquivoFoto = arquivoFoto;
-    }
-
-    public FotoControllerTest(MockMultipartFile arquivoFoto, Foto fotoDomain, FotoDto fotoDtoEntrada) {
-        this.arquivoFoto = arquivoFoto;
-        this.fotoDomain = fotoDomain;
-        this.fotoDtoEntrada = fotoDtoEntrada;
+        this.fotoDomainPaciente = fotoDomainPaciente;
+        this.fotoDtoPaciente = fotoDtoPaciente;
+        this.fotoDtoPsicologo = fotoDtoPsicologo;
+        this.fotoDomainPsicologo = fotoDomainPsicologo;
     }
 
     @BeforeEach
     void inicializarAtributos() throws Exception {
-        this.fotoDtoEntrada = FotoBuilder.criarFotoDto();
-        this.fotoDomain = mapper.paraDomain(fotoDtoEntrada);
+        this.fotoDtoPaciente = FotoBuilder.criarFotoDtoPaciente();
+        this.fotoDomainPaciente = mapperEntry.paraDomain(fotoDtoPaciente);
+
+        this.fotoDtoPsicologo = FotoBuilder.criarFotoDtoPsicologo();
+        this.fotoDomainPsicologo = mapperEntry.paraDomain(fotoDtoPsicologo);
 
         Path tempFile = Files.createTempFile("test-image", ".jpg");
         Files.write(tempFile, "conteúdo de teste".getBytes());
@@ -91,14 +99,15 @@ class FotoControllerTest {
 
     @Test
     void testeSalvarFotoPaciente() throws Exception {
-        Mockito.when(fotoGateway.salvarLocal(any())).thenReturn("C:/12345_teste.jpg");
-        Mockito.when(pacienteUseCase.consultarPorId(any())).thenReturn(fotoDomain.getPaciente());
-        Mockito.when(fotoUseCase.salvar(any(), any())).thenReturn(fotoDomain);
+        Mockito.when(fotoDataProvider.salvarLocal(Mockito.any())).thenReturn("url-local");
+        Mockito.when(pacienteRepository.findById(Mockito.any())).thenReturn(Optional.of(pacienteMapper.paraEntity(fotoDomainPaciente.getPaciente())));
+        Mockito.when(pacienteRepository.save(Mockito.any())).thenReturn(pacienteMapper.paraEntity(fotoDomainPaciente.getPaciente()));
+        Mockito.when(fotoRepository.save(Mockito.any())).thenReturn(mapperInfra.paraEntity(fotoDomainPaciente));
 
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-        String fotoJson = objectMapper.writeValueAsString(fotoDtoEntrada);
+        String fotoJson = objectMapper.writeValueAsString(fotoDtoPaciente);
 
         MockMultipartFile fotoJsonPart = new MockMultipartFile(
                 "fotoDto",
@@ -107,14 +116,41 @@ class FotoControllerTest {
                 fotoJson.getBytes()
         );
 
-        ResultActions resultado = mockMvc.perform(multipart("/pacientes")
+        ResultActions resultado = mockMvc.perform(multipart("/fotos")
                         .file(arquivoFoto)
                         .file(fotoJsonPart))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/pacientes/"));
+                .andExpect(header().string("Location", "/fotos"));
 
-        FotoValidatorJson.validaFotoJson(resultado, mapper.paraDto(fotoDomain));
+        FotoValidatorJson.validaFotoJson(resultado, mapperEntry.paraDto(fotoDomainPaciente));
     }
 
+    @Test
+    void testeSalvarFotoPsicologo() throws Exception {
+        Mockito.when(fotoDataProvider.salvarLocal(Mockito.any())).thenReturn("url-local");
+        Mockito.when(psicologoRepository.findById(Mockito.any())).thenReturn(Optional.of(psicologoMapper.paraEntity(fotoDomainPsicologo.getPsicologo())));
+        Mockito.when(psicologoRepository.save(Mockito.any())).thenReturn(psicologoMapper.paraEntity(fotoDomainPsicologo.getPsicologo()));
+        Mockito.when(fotoRepository.save(Mockito.any())).thenReturn(mapperInfra.paraEntity(fotoDomainPsicologo));
+
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        String fotoJson = objectMapper.writeValueAsString(fotoDtoPsicologo);
+
+        MockMultipartFile fotoJsonPart = new MockMultipartFile(
+                "fotoDto",
+                "",
+                MediaType.APPLICATION_JSON_VALUE,
+                fotoJson.getBytes()
+        );
+
+        ResultActions resultado = mockMvc.perform(multipart("/fotos")
+                        .file(arquivoFoto)
+                        .file(fotoJsonPart))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("Location", "/fotos"));
+
+        FotoValidatorJson.validaFotoJson(resultado, mapperEntry.paraDto(fotoDomainPsicologo));
+    }
 
 }
