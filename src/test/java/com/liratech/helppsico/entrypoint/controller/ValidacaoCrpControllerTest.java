@@ -6,6 +6,7 @@ import com.liratech.helppsico.builders.ValidacaoCrpBuilder;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.infrastructure.repositories.ValidacaoCrpRepository;
 import com.liratech.helppsico.validators.ValidacaoCrpValidator;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@RequiredArgsConstructor
 @ActiveProfiles("test")
 public class ValidacaoCrpControllerTest {
 

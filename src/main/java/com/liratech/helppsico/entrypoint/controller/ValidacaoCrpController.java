@@ -39,7 +39,6 @@ public class ValidacaoCrpController {
             @RequestBody ValidacaoCrpDto validacaoCrpDto,
             @PathVariable UUID id){
 
-        validacaoCrpDto.setId(id);
         ValidacaoCrpDto validacaoCrpResultado = mapper.paraDto(useCase.validar(mapper.paraDomain(validacaoCrpDto)));
         ResponseDto<ValidacaoCrpDto> resultado = new ResponseDto<>(validacaoCrpResultado);
 
