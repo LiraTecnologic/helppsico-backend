@@ -2,7 +2,6 @@ package com.liratech.helppsico.application.usecases;
 
 import com.liratech.helppsico.application.exceptions.validacaoCrp.ValidacaoCrpExistenteException;
 import com.liratech.helppsico.application.exceptions.validacaoCrp.ValidacaoCrpNaoExistenteException;
-import com.liratech.helppsico.application.exceptions.validacaoCrp.ValidacaoCrpSolicitadaException;
 import com.liratech.helppsico.application.gateways.ValidacaoCrpGateway;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.domain.StatusPsicologo;
@@ -25,7 +24,6 @@ public class ValidacaoCrpUseCase {
     private final PsicologoUseCase psicologoUseCase;
 
     public static final String MENSAGEM_VALIDACAO_CRP_EXISTENTE = "Validação CRP já existente";
-    public static final String MENSAGEM_VALIDACAO_CRP_JA_SOLICITADA = "Validação CRP já foi solicitada";
     public static final String MENSAGEM_VALIDACAO_CRP_NAO_EXISTENTE = "Validação CRP não existe";
 
     public ValidacaoCrp criar(ValidacaoCrp validacaoCrp){
