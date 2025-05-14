@@ -15,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.UUID;
 
+@RestController
 @RequestMapping("/horarios-psicologos")
 @RequiredArgsConstructor
 public class HorarioPsicologoController {
