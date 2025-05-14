@@ -1,7 +1,9 @@
 package com.liratech.helppsico.infrastructure.dataprovider;
 
 import com.liratech.helppsico.builders.ValidacaoCrpBuilder;
+import com.liratech.helppsico.domain.ValidacaoCrp;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
+import com.liratech.helppsico.infrastructure.repositories.ValidacaoCrpRepository;
 import com.liratech.helppsico.validators.ValidacaoCrpValidator;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
