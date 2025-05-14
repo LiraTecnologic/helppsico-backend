@@ -75,6 +75,6 @@ public class PsicologoDto {
     @JsonProperty("biografia")
     private String biografia;
 
-    @JsonProperty("fotoUrl")
-    private String fotoUrl;
+    @JsonProperty("urlFoto")
+    private String urlFoto;
 }

@@ -18,9 +18,6 @@ import java.util.UUID;
 @Builder
 public class FotoDto {
 
-    @JsonProperty("id")
-    private UUID id;
-
     @JsonProperty("psicologo")
     private PsicologoDto psicologo;
 

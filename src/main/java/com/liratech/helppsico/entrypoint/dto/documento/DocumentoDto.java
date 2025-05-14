@@ -6,12 +6,15 @@ import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@SuperBuilder
 public class DocumentoDto {
 
     @JsonProperty("id")
