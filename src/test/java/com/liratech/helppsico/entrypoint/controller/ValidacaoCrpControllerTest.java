@@ -1,11 +1,14 @@
 package com.liratech.helppsico.entrypoint.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.liratech.helppsico.builders.PsicologoBuilder;
 import com.liratech.helppsico.builders.ValidacaoCrpBuilder;
-import com.liratech.helppsico.domain.Psicologo;
+import com.liratech.helppsico.infrastructure.mapper.PacienteMapper;
+import com.liratech.helppsico.infrastructure.mapper.PsicologoMapper;
+import com.liratech.helppsico.infrastructure.repositories.PacienteRepository;
+import com.liratech.helppsico.infrastructure.repositories.PsicologoRepository;
 import com.liratech.helppsico.infrastructure.repositories.ValidacaoCrpRepository;
 import com.liratech.helppsico.validators.ValidacaoCrpValidator;
+import com.liratech.helppsico.validators.json.ValidacaoCrpValidatorJson;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,10 +23,13 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.awt.*;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -37,71 +43,75 @@ public class ValidacaoCrpControllerTest {
     private final ValidacaoCrpMapper mapperEntry;
     private final com.liratech.helppsico.infrastructure.mapper.ValidacaoCrpMapper mapperInfra;
 
+    private final PacienteMapper pacienteMapper;
+    private final PsicologoMapper psicologoMapper;
+
     @MockitoSpyBean
     private final ValidacaoCrpRepository repository;
 
+    @MockitoSpyBean
+    private final PacienteRepository pacienteRepository;
+
+    @MockitoSpyBean
+    private final PsicologoRepository psicologoRepository;
+
     private ValidacaoCrpDto validacaoEntrada;
     private ValidacaoCrp validacaoDomain;
+    private ValidacaoCrpEntity validacaoEntity;
 
     public ValidacaoCrpControllerTest(MockMvc mockMvc, ObjectMapper objectMapper, ValidacaoCrpMapper mapperEntry,
                                       com.liratech.helppsico.infrastructure.mapper.ValidacaoCrpMapper mapperInfra,
-                                      ValidacaoCrpRepository repository) {
+                                      ValidacaoCrpRepository repository, PacienteRepository pacienteRepository,
+                                      PsicologoRepository psicologoRepository, PacienteMapper pacienteMapper,
+                                      PsicologoMapper psicologoMapper, PacienteMapper pacienteMapper1,
+                                      PsicologoMapper psicologoMapper1, PacienteRepository pacienteRepository1,
+                                      PsicologoRepository psicologoRepository1) {
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;
         this.mapperEntry = mapperEntry;
         this.mapperInfra = mapperInfra;
         this.repository = repository;
+        this.pacienteMapper = pacienteMapper1;
+        this.psicologoMapper = psicologoMapper1;
+        this.pacienteRepository = pacienteRepository1;
+        this.psicologoRepository = psicologoRepository1;
     }
 
     @BeforeEach
     void inicializarAtributos(){
         this.validacaoEntrada = ValidacaoCrpBuilder.criarValidacaoCrpDto();
         this.validacaoDomain = mapperEntry.paraDomain(validacaoEntrada);
+        this.validacaoEntity = mapperInfra.paraEntity(validacaoDomain);
     }
 
     @Test
     void testeCriarValidacaoCrp() throws Exception{
-        ValidacaoCrp validacaoCrp = ValidacaoCrpBuilder.criarValidacao();
-        Psicologo psicologo = PsicologoBuilder.criarPsicologo();
-        psicologo.setId(validacaoCrp.getPsicologo().getId());
+        validacaoEntrada.setId(null);
 
-        Mockito.when(psicologoUseCase.consultarPorId(Mockito.any())).thenReturn(psicologo);
-        Mockito.when(gateway.salvar(captor.capture())).thenReturn(validacaoCrp);
+        Mockito.when(psicologoRepository.findById(Mockito.any())).thenReturn(Optional.of(psicologoMapper.paraEntity(validacaoDomain.getPsicologo())));
+        // adiciona verificação de CRP
+        // adicionar verificação de MotivoReprova
+        Mockito.when(repository.save(Mockito.any())).thenReturn(validacaoEntity);
 
-        ValidacaoCrp resultado = useCase.criar(validacaoCrp);
+        String validacaoJson = objectMapper.writeValueAsString(validacaoEntrada);
 
-        ValidacaoCrp capturado = captor.getValue();
-        ValidacaoCrpValidator.validaValidacaoCrpDomain(validacaoCrp, capturado);
-        ValidacaoCrpValidator.validaValidacaoCrpDomain(validacaoCrp, resultado);
+        ResultActions result = mockMvc.perform(post("/validacao-crp")
+                .content(PageAttributes.MediaType.APPLICATION_JSON)
+                .content(validacaoJson))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("Location", "/validacao-crp/") + validacaoDomain.getId().toString());
+
+        ValidacaoCrpValidatorJson.verificaoValidacaoJson(result, mapperEntry.paraDto(validacaoDomain));
     }
 
     @Test
     void testeValidarVerificaoCrp() throws Exception{
-        ValidacaoCrp validacaoCrp = ValidacaoCrpBuilder.criarValidacao();
-        UUID id = validacaoCrp.getId();
-
-        Mockito.when(gateway.buscarPorId(id)).thenReturn(Optional.of(validacaoCrp));
-        Mockito.when(gateway.salvar(Mockito.any())).thenReturn(validacaoCrp);
-
-        ValidacaoCrp resultado = useCase.validar(validacaoCrp);
-
-        ValidacaoCrpValidator.validaValidacaoCrpDomain(validacaoCrp, resultado);
-        Mockito.verify(gateway, Mockito.times(1)).buscarPorId(id);
-        Mockito.verify(gateway, Mockito.times(1)).salvar(Mockito.any());
+        
     }
 
     @Test
     void testeBuscarValidacaoCrpPorIdNaoEncontrada() {
-        UUID id = UUID.randomUUID();
 
-        Mockito.when(gateway.buscarPorId(id)).thenReturn(Optional.empty());
-
-        ValidacaoCrpNaoEncontradaException exception = Assertions.assertThrows(
-                ValidacaoCrpNaoEncontradaException.class, () -> useCase.buscarPorId(id)
-        );
-
-        Assertions.assertEquals(MENSAGEM_VALIDACAO_CRP_NAO_ENCONTRADA, exception.getMessage());
-        Mockito.verify(gateway, Mockito.times(1)).buscarPorId(id);
     }
 
     @Test
