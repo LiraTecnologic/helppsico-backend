@@ -112,7 +112,7 @@ public class ProntuarioUseCase {
         Optional<Prontuario> prontuario = gateway.consultarPorId(idProntuario);
 
         if(prontuario.isEmpty()) {
-            throw new ProntuarioNaoEncontradoException();
+            throw new ProntuarioNaoEncontradoException("Prontuario não encontrado pelo seu id.");
         }
 
         return prontuario.get();

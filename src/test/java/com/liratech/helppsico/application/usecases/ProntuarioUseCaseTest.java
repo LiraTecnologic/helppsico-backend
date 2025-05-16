@@ -1,5 +1,6 @@
 package com.liratech.helppsico.application.usecases;
 
+import com.liratech.helppsico.application.exceptions.prontuarios.ErroAtualizarCamposEspecificosExcpetion;
 import com.liratech.helppsico.application.gateways.ProntuarioGateway;
 import com.liratech.helppsico.builders.ConsultaBuilder;
 import com.liratech.helppsico.builders.PacienteBuilder;
@@ -60,7 +61,6 @@ class ProntuarioUseCaseTest {
         pacienteTeste = PacienteBuilder.criarPaciente();
         prontuarioPage = ProntuarioBuilder.criarPageProntuarioEntity().map(mapper::paraDomain);
     }
-
 
 
     @Test
@@ -143,6 +143,19 @@ class ProntuarioUseCaseTest {
         Prontuario prontuario = captor.getValue();
 
         Assertions.assertEquals(prontuario.getConteudo(), novoConteudo);
+    }
+
+    @Test
+    void testeExceptionAlteracaoParcial() {
+        Map<String, Object> campos = new HashMap<>();
+        campos.put("campoInvalido", "valor");
+
+        ErroAtualizarCamposEspecificosExcpetion ex = assertThrows(
+                ErroAtualizarCamposEspecificosExcpetion.class,
+                () -> useCase.alterarParcial(campos, prontuarioTeste.getId())
+        );
+
+        Assertions.assertEquals(ex.getMessage(), "Erro ao atualizar campo: campoInvalido");
     }
 
     @Test
