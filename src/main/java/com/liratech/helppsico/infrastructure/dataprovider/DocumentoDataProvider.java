@@ -1,7 +1,10 @@
 package com.liratech.helppsico.infrastructure.dataprovider;
 
+import com.liratech.helppsico.application.gateways.DocumentoGateway;
 import com.liratech.helppsico.domain.documento.Documento;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
+import com.liratech.helppsico.infrastructure.mapper.DocumentoMapper;
+import com.liratech.helppsico.infrastructure.repositories.DocumentoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.documento.DocumentoEntity;
 import org.springframework.data.domain.Page;
 import lombok.RequiredArgsConstructor;
@@ -13,18 +16,13 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class DocumentoDataProvider implements DocumentoGateway{
+public class DocumentoDataProvider implements DocumentoGateway {
 
     private final DocumentoRepository repository;
     private final DocumentoMapper mapper;
 
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar documento.";
     public static final String MENSAGEM_ERRO_LISTAR = "Erro ao listar documento.";
-
-    public DocumentoDataProvider(DocumentoMapper mapper, DocumentoRepository repository) {
-        this.mapper = mapper;
-        this.repository = repository;
-    }
 
     @Override
     public Documento salvar(Documento documento){

@@ -1,11 +1,15 @@
 package com.liratech.helppsico.builders;
 
+import com.liratech.helppsico.application.usecases.dto.DadosGeraisDocumentoDto;
 import com.liratech.helppsico.domain.HorarioPsicologo;
-import com.liratech.helppsico.domain.documento.Atestado;
+import com.liratech.helppsico.domain.documento.*;
 
-import com.liratech.helppsico.domain.documento.Documento;
 import com.liratech.helppsico.entrypoint.dto.documento.AtestadoDto;
+import com.liratech.helppsico.entrypoint.mapper.EnderecoMapper;
+import com.liratech.helppsico.entrypoint.mapper.PacienteMapper;
+import com.liratech.helppsico.entrypoint.mapper.PsicologoMapper;
 import com.liratech.helppsico.infrastructure.repositories.entities.documento.AtestadoEntity;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -16,7 +20,101 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@AllArgsConstructor
 public class DocumentoBuilder {
+
+    private static PacienteMapper pacienteMapper;
+    private static PsicologoMapper psicologoMapper;
+    private static EnderecoMapper enderecoMapper;
+
+    public static Atestado criarAtestadoDadosGerais(DadosGeraisDocumentoDto dadosGeraisDocumentoDto) {
+        return new Atestado(
+                UUID.randomUUID(),
+                pacienteMapper.paraDomain(dadosGeraisDocumentoDto.getPaciente()),
+                psicologoMapper.paraDomain(dadosGeraisDocumentoDto.getPsicologo()),
+                dadosGeraisDocumentoDto.getDataEmissao(),
+                dadosGeraisDocumentoDto.getDataValidade(),
+                dadosGeraisDocumentoDto.getAssinaturaPsicologo(),
+                dadosGeraisDocumentoDto.getDataAtendimento(),
+                enderecoMapper.paraDomain(dadosGeraisDocumentoDto.getLocal()),
+                dadosGeraisDocumentoDto.getDescricao(),
+                dadosGeraisDocumentoDto.getDescrcaoEstadoPsicologico(),
+                dadosGeraisDocumentoDto.getPeridoAfastamento(),
+                dadosGeraisDocumentoDto.getFinalidade()
+        );
+    }
+
+    public static Declaracao criarDeclaracaoDadosGerais(DadosGeraisDocumentoDto dadosGeraisDocumentoDto) {
+        return new Declaracao(
+                UUID.randomUUID(),
+                pacienteMapper.paraDomain(dadosGeraisDocumentoDto.getPaciente()),
+                psicologoMapper.paraDomain(dadosGeraisDocumentoDto.getPsicologo()),
+                dadosGeraisDocumentoDto.getDataEmissao(),
+                dadosGeraisDocumentoDto.getDataValidade(),
+                dadosGeraisDocumentoDto.getAssinaturaPsicologo(),
+                dadosGeraisDocumentoDto.getMotivo(),
+                dadosGeraisDocumentoDto.getDescricao(),
+                dadosGeraisDocumentoDto.getFinalidade()
+        );
+    }
+
+    public static RelatorioPsicologo criarRelatorioPsicologoDadosGerais(DadosGeraisDocumentoDto dadosGeraisDocumentoDto) {
+        return new RelatorioPsicologo(
+                UUID.randomUUID(),
+                pacienteMapper.paraDomain(dadosGeraisDocumentoDto.getPaciente()),
+                psicologoMapper.paraDomain(dadosGeraisDocumentoDto.getPsicologo()),
+                dadosGeraisDocumentoDto.getDataEmissao(),
+                dadosGeraisDocumentoDto.getDataValidade(),
+                dadosGeraisDocumentoDto.getAssinaturaPsicologo(),
+                dadosGeraisDocumentoDto.getSolicitante(),
+                dadosGeraisDocumentoDto.getObjetivo(),
+                dadosGeraisDocumentoDto.getHistorico(),
+                dadosGeraisDocumentoDto.getProcedimentosUtilizados(),
+                dadosGeraisDocumentoDto.getDescricaoResultados(),
+                dadosGeraisDocumentoDto.getConclusao(),
+                dadosGeraisDocumentoDto.getRecomendacoes(),
+                dadosGeraisDocumentoDto.getSigilo()
+        );
+    }
+
+    public static LaudoPsicologo criarLaudoPsicologoDadosGerais(DadosGeraisDocumentoDto dadosGeraisDocumentoDto) {
+        return new LaudoPsicologo(
+                UUID.randomUUID(),
+                pacienteMapper.paraDomain(dadosGeraisDocumentoDto.getPaciente()),
+                psicologoMapper.paraDomain(dadosGeraisDocumentoDto.getPsicologo()),
+                dadosGeraisDocumentoDto.getDataEmissao(),
+                dadosGeraisDocumentoDto.getDataValidade(),
+                dadosGeraisDocumentoDto.getAssinaturaPsicologo(),
+                dadosGeraisDocumentoDto.getSolicitante(),
+                dadosGeraisDocumentoDto.getObjetivo(),
+                dadosGeraisDocumentoDto.getHistorico(),
+                dadosGeraisDocumentoDto.getProcedimentosUtilizados(),
+                dadosGeraisDocumentoDto.getDescricaoResultados(),
+                dadosGeraisDocumentoDto.getConclusao(),
+                dadosGeraisDocumentoDto.getRespostaDemanda(),
+                dadosGeraisDocumentoDto.getRecomendacoes(),
+                dadosGeraisDocumentoDto.getSigilo()
+        );
+    }
+
+    public static ParecerPsicologo criarParecerPsicologoDadosGerais(DadosGeraisDocumentoDto dadosGeraisDocumentoDto) {
+        return new ParecerPsicologo(
+                UUID.randomUUID(),
+                pacienteMapper.paraDomain(dadosGeraisDocumentoDto.getPaciente()),
+                psicologoMapper.paraDomain(dadosGeraisDocumentoDto.getPsicologo()),
+                dadosGeraisDocumentoDto.getDataEmissao(),
+                dadosGeraisDocumentoDto.getDataValidade(),
+                dadosGeraisDocumentoDto.getAssinaturaPsicologo(),
+                dadosGeraisDocumentoDto.getSolicitante(),
+                dadosGeraisDocumentoDto.getObjetivo(),
+                dadosGeraisDocumentoDto.getConclusao(),
+                dadosGeraisDocumentoDto.getSigilo(),
+                dadosGeraisDocumentoDto.getContextualizacao(),
+                dadosGeraisDocumentoDto.getFundamentacao(),
+                dadosGeraisDocumentoDto.getAnaliseDoCaso()
+        );
+    }
+
     public static Atestado criarAtestado() {
         return Atestado.builder()
                 .id(UUID.randomUUID())
