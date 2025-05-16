@@ -45,7 +45,7 @@ public class ProntuarioControllerTest {
 
     @MockitoSpyBean
     private ProntuarioRepository repository;
-    
+
     private ProntuarioDto prontuarioDto;
     private ProntuarioEntity prontuario;
     private Page<ProntuarioEntity> pageProntuarios;
