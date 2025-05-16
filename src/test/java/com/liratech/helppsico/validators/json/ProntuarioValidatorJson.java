@@ -1,4 +1,4 @@
-package com.liratech.helppsico.validators;
+package com.liratech.helppsico.validators.json;
 
 import com.liratech.helppsico.domain.TipoGenero;
 import com.liratech.helppsico.entrypoint.dto.psicologo.ProntuarioDto;
@@ -8,11 +8,11 @@ import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-public class ProntuarioValidator {
+public class ProntuarioValidatorJson {
     public static void validaProntuarioJson(ResultActions resultActions, ProntuarioDto esperado) throws Exception {
-        resultActions.andExpect(jsonPath("$.data.id").value(esperado.getId().toString()))
-                .andExpect(jsonPath("$.data.conteudo").value(esperado.getConteudo()))
-                .andExpect(jsonPath("$.data.titulo").value(esperado.getTitulo()))
+        resultActions.andExpect(jsonPath("$.dado.id").value(esperado.getId().toString()))
+                .andExpect(jsonPath("$.dado.conteudo").value(esperado.getConteudo()))
+                .andExpect(jsonPath("$.dado.titulo").value(esperado.getTitulo()))
                 .andExpect(jsonPath("$.dado.psicologo.id").value(esperado.getId().toString()))
                 .andExpect(jsonPath("$.dado.psicologo.nome").value(esperado.getPsicologo().getNome()))
                 .andExpect(jsonPath("$.dado.psicologo.crp").value(esperado.getPsicologo().getCrp()))
@@ -56,8 +56,8 @@ public class ProntuarioValidator {
                 .andExpect(jsonPath("$.dado.sort.orders[0].direction").value("ASC"));
 
         for (int i = 0; i < 3; i++){
-            resultado.andExpect(jsonPath("$.data.conteudo").value("teste"))
-                    .andExpect(jsonPath("$.data.titulo").value("Teste"))
+            resultado.andExpect(jsonPath("$.dado.conteudo").value("teste"))
+                    .andExpect(jsonPath("$.dado.titulo").value("Teste"))
                     .andExpect(jsonPath("$.dado.content["+i+"].nome").value("João Silva"))
                     .andExpect(jsonPath("$.dado.content["+i+"].crp").value("123456"))
                     .andExpect(jsonPath("$.dado.content["+i+"].cpf").value("12345678901"))

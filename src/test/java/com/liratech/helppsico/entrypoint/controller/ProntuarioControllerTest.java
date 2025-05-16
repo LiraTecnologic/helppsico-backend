@@ -5,7 +5,7 @@ import com.liratech.helppsico.builders.ProntuarioBuilder;
 import com.liratech.helppsico.entrypoint.dto.psicologo.ProntuarioDto;
 import com.liratech.helppsico.infrastructure.repositories.ProntuarioRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.ProntuarioEntity;
-import com.liratech.helppsico.validators.ProntuarioValidator;
+import com.liratech.helppsico.validators.json.ProntuarioValidatorJson;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -70,7 +70,7 @@ public class ProntuarioControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "/prontuarios/" + prontuarioId));
 
-        ProntuarioValidator.validaProntuarioJson(resultActions, prontuarioDto);
+        ProntuarioValidatorJson.validaProntuarioJson(resultActions, prontuarioDto);
 
     }
 
@@ -86,7 +86,7 @@ public class ProntuarioControllerTest {
                         .param("sort", "descricao,asc"))
                 .andExpect(status().isOk());
 
-        ProntuarioValidator.validaProntuariosJson(resultActions);
+        ProntuarioValidatorJson.validaProntuariosJson(resultActions);
     }
 
     @Test
@@ -101,7 +101,7 @@ public class ProntuarioControllerTest {
                         .param("sort", "descricao,asc"))
                 .andExpect(status().isOk());
 
-        ProntuarioValidator.validaProntuariosJson(resultActions);
+        ProntuarioValidatorJson.validaProntuariosJson(resultActions);
     }
 
     @Test
@@ -117,7 +117,7 @@ public class ProntuarioControllerTest {
                         .content(objectMapper.writeValueAsString(prontuarioDto)))
                 .andExpect(status().isOk());
 
-        ProntuarioValidator.validaProntuarioJson(resultActions, prontuarioDto);
+        ProntuarioValidatorJson.validaProntuarioJson(resultActions, prontuarioDto);
     }
 
     @Test
@@ -137,6 +137,6 @@ public class ProntuarioControllerTest {
                         .content(objectMapper.writeValueAsString(campos)))
                 .andExpect(status().isOk());
 
-        ProntuarioValidator.validaProntuarioJson(resultActions, prontuarioDto);
+        ProntuarioValidatorJson.validaProntuarioJson(resultActions, prontuarioDto);
     }
 }

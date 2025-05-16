@@ -25,7 +25,7 @@ public class ProntuarioController {
 
     @PostMapping
     public ResponseEntity<ResponseDto<ProntuarioDto>> registrar(@RequestBody ProntuarioDto novoProntuario) {
-        ProntuarioDto response = mapper.paraDto(useCase.registrar(novoProntuario));
+        ProntuarioDto response = mapper.paraDto(useCase.registrar(mapper.paraDomain(novoProntuario)));
         ResponseDto<ProntuarioDto> resposta = new ResponseDto<>(response);
 
         return ResponseEntity
@@ -71,7 +71,7 @@ public class ProntuarioController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDto<ProntuarioDto>> alterar(@RequestBody ProntuarioDto novosDados, @PathVariable UUID idPronturia) {
-        ProntuarioDto resultado = mapper.paraDto(useCase.alterar(novosDados, idPronturia));
+        ProntuarioDto resultado = mapper.paraDto(useCase.alterar(mapper.paraDomain(novosDados), idPronturia));
         ResponseDto<ProntuarioDto> resposta = new ResponseDto<>(resultado);
 
         return ResponseEntity.ok(resposta);
