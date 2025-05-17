@@ -29,6 +29,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static javax.swing.UIManager.put;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -105,11 +106,11 @@ public class ValidacaoCrpControllerTest {
     }
 
     @Test
-    void testeValidarVerificaoCrp() throws Exception{
+    void testeAprovarCrp() throws Exception{
         UUID id = validacaoDomain.getId();
-        validacaoEntrada.setId(id);
+        validacaoEntrada.setMotivoReprovacao(null);
 
-        // mock da verificação de CRP
+        Mockito.when(psicologoRepository.findById(Mockito.any())).thenReturn(Optional.of(psicologoMapper.paraEntity(validacaoDomain.getPsicologo())));
 
         String validacaoJson = objectMapper.writeValueAsString(validacaoEntrada);
 
@@ -122,8 +123,36 @@ public class ValidacaoCrpControllerTest {
     }
 
     @Test
-    void testeBuscarValidacaoCrpPorIdNaoEncontrada() {
+    void testeReprovarCrp() throws Exception{
+        UUID id = validacaoDomain.getId();
 
+        String motivoReprovacao = "teste para recusar";
+        validacaoEntrada.setMotivoReprovacao(motivoReprovacao);
+
+        Mockito.when(psicologoRepository.findById(Mockito.any())).thenReturn(Optional.of(psicologoMapper.paraEntity(validacaoDomain.getPsicologo())));
+
+        String validacaoJson = objectMapper.writeValueAsString(validacaoEntrada);
+
+        ResultActions result = mockMvc.perform(put("/validacao-crp/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(validacaoJson))
+                .andExpect(status().isOk());
+
+        Mockito.when(psicologoRepository.save(Mockito.any())).thenReturn(psicoloEntity);
+
+        ValidacaoCrpValidatorJson.verificaValidacaoJson(result, mapper.paraDto(validacaoDomain));
+    }
+
+    @Test
+    void testeBuscarValidacaoCrpPorId() throws Exception{
+        UUID idRequest = validacaoDomain.getId();
+
+        Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(validacaoEntity));
+
+        ResultActions resultActions = mockMvc.perform(get("/validacao-crp/{id}", idRequest))
+                .andExpect(status().isOk());
+
+        ValidacaoCrpValidatorJson.verificaValidacaoJson(resultActions, validacaoEntrada);
     }
 
     @Test
