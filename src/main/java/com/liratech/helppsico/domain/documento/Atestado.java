@@ -3,7 +3,9 @@ package com.liratech.helppsico.domain.documento;
 import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.Psicologo;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.util.UUID;
