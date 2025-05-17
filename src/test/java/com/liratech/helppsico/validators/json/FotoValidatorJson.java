@@ -6,7 +6,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class FotoValidatorJson {
-    public static void validaFotoJson(ResultActions resultActions, FotoDto esperado) throws Exception {
+    public static void validaFotoPacienteJson(ResultActions resultActions, FotoDto esperado) throws Exception {
         resultActions
                 .andExpect(jsonPath("$.dado.id").value(esperado.getId() != null ? esperado.getId().toString() : null))
                 .andExpect(jsonPath("$.dado.fotoUrl").value(esperado.getFotoUrl()))
@@ -20,6 +20,12 @@ public class FotoValidatorJson {
                 .andExpect(jsonPath("$.dado.paciente.genero").value(esperado.getPaciente().getGenero().toString()))
                 .andExpect(jsonPath("$.dado.paciente.endereco").value(esperado.getPaciente().getEndereco().toString()))
                 .andExpect(jsonPath("$.dado.paciente.fotoUrl").value(esperado.getPaciente().getFotoUrl()))
+                .andExpect(jsonPath("$.erro").doesNotExist());
+    }
+
+    public static void validaFotoPsicologoJson(ResultActions resultActions, FotoDto esperado) throws Exception{
+        resultActions.andExpect(jsonPath("$.dado.id").value(esperado.getId() != null ? esperado.getId().toString() : null))
+                .andExpect(jsonPath("$.dado.fotoUrl").value(esperado.getFotoUrl()))
                 .andExpect(jsonPath("$.dado.psicologo.id").value(esperado.getPsicologo().getId().toString()))
                 .andExpect(jsonPath("$.dado.psicologo.nome").value(esperado.getPsicologo().getNome()))
                 .andExpect(jsonPath("$.dado.psicologo.crp").value(esperado.getPsicologo().getCrp()))

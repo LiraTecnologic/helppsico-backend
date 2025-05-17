@@ -122,7 +122,7 @@ class FotoControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "/fotos"));
 
-        FotoValidatorJson.validaFotoJson(resultado, mapperEntry.paraDto(fotoDomainPaciente));
+        FotoValidatorJson.validaFotoPacienteJson(resultado, mapperEntry.paraDto(fotoDomainPaciente));
     }
 
     @Test
@@ -150,7 +150,7 @@ class FotoControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "/fotos"));
 
-        FotoValidatorJson.validaFotoJson(resultado, mapperEntry.paraDto(fotoDomainPsicologo));
+        FotoValidatorJson.validaFotoPsicologoJson(resultado, mapperEntry.paraDto(fotoDomainPsicologo));
     }
 
 }
