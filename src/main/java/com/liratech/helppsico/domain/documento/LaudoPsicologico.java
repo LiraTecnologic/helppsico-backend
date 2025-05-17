@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
-public class LaudoPsicologo extends Documento{
+public class LaudoPsicologico extends Documento{
     private String solicitante;
     private String objetivo;
     private String historico;
@@ -19,12 +19,12 @@ public class LaudoPsicologo extends Documento{
     private String recomendacoes;
     private String sigilo;
 
-    public LaudoPsicologo (UUID id, Paciente paciente, Psicologo psicologo,
-                           LocalDate dataEmissao, LocalDate dataValidade,
-                           String assinaturaPsicologo, String solicitante,
-                           String objetivo, String historico, String procedimentosUtilizados,
-                           String descricaoResultados, String conclusao, String respostaDemanda,
-                           String recomendacoes, String sigilo){
+    public LaudoPsicologico(UUID id, Paciente paciente, Psicologo psicologo,
+                            LocalDate dataEmissao, LocalDate dataValidade,
+                            String assinaturaPsicologo, String solicitante,
+                            String objetivo, String historico, String procedimentosUtilizados,
+                            String descricaoResultados, String conclusao, String respostaDemanda,
+                            String recomendacoes, String sigilo){
         super(id, paciente, psicologo, dataEmissao, dataValidade, assinaturaPsicologo);
         this.solicitante = solicitante;
         this.objetivo = objetivo;

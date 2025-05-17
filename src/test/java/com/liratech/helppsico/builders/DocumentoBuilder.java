@@ -1,7 +1,6 @@
 package com.liratech.helppsico.builders;
 
 import com.liratech.helppsico.application.usecases.dto.DadosGeraisDocumentoDto;
-import com.liratech.helppsico.domain.HorarioPsicologo;
 import com.liratech.helppsico.domain.documento.*;
 
 import com.liratech.helppsico.entrypoint.dto.documento.AtestadoDto;
@@ -58,8 +57,8 @@ public class DocumentoBuilder {
         );
     }
 
-    public static RelatorioPsicologo criarRelatorioPsicologoDadosGerais(DadosGeraisDocumentoDto dadosGeraisDocumentoDto) {
-        return new RelatorioPsicologo(
+    public static RelatorioPsicologico criarRelatorioPsicologicoDadosGerais(DadosGeraisDocumentoDto dadosGeraisDocumentoDto) {
+        return new RelatorioPsicologico(
                 UUID.randomUUID(),
                 pacienteMapper.paraDomain(dadosGeraisDocumentoDto.getPaciente()),
                 psicologoMapper.paraDomain(dadosGeraisDocumentoDto.getPsicologo()),
@@ -77,8 +76,8 @@ public class DocumentoBuilder {
         );
     }
 
-    public static LaudoPsicologo criarLaudoPsicologoDadosGerais(DadosGeraisDocumentoDto dadosGeraisDocumentoDto) {
-        return new LaudoPsicologo(
+    public static LaudoPsicologico criarLaudoPsicologicoDadosGerais(DadosGeraisDocumentoDto dadosGeraisDocumentoDto) {
+        return new LaudoPsicologico(
                 UUID.randomUUID(),
                 pacienteMapper.paraDomain(dadosGeraisDocumentoDto.getPaciente()),
                 psicologoMapper.paraDomain(dadosGeraisDocumentoDto.getPsicologo()),
@@ -97,8 +96,8 @@ public class DocumentoBuilder {
         );
     }
 
-    public static ParecerPsicologo criarParecerPsicologoDadosGerais(DadosGeraisDocumentoDto dadosGeraisDocumentoDto) {
-        return new ParecerPsicologo(
+    public static ParecerPsicologico criarParecerPsicologicoDadosGerais(DadosGeraisDocumentoDto dadosGeraisDocumentoDto) {
+        return new ParecerPsicologico(
                 UUID.randomUUID(),
                 pacienteMapper.paraDomain(dadosGeraisDocumentoDto.getPaciente()),
                 psicologoMapper.paraDomain(dadosGeraisDocumentoDto.getPsicologo()),
