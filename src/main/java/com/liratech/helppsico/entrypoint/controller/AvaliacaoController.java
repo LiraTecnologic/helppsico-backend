@@ -14,7 +14,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/avaliacoes")
-public class AvaliacaoController {
+public class    AvaliacaoController {
 
     private final AvaliacaoUseCase useCase;
     private final AvaliacaoMapper mapper;

@@ -4,6 +4,7 @@ import com.liratech.helppsico.infrastructure.repositories.entities.PacienteEntit
 import com.liratech.helppsico.infrastructure.repositories.entities.ProntuarioEntity;
 import com.liratech.helppsico.infrastructure.repositories.entities.PsicologoEntity;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +12,6 @@ import java.util.UUID;
 
 @Repository
 public interface ProntuarioRepository extends JpaRepository<ProntuarioEntity, UUID> {
-    Page<ProntuarioEntity> findByPaciente(PacienteEntity pacienteEntity);
-    Page<ProntuarioEntity> findByPsicologo(PsicologoEntity psicologoEntity);
+    Page<ProntuarioEntity> findByPaciente(PacienteEntity pacienteEntity, Pageable pageable);
+    Page<ProntuarioEntity> findByPsicologo(PsicologoEntity psicologoEntity, Pageable pageable);
 }

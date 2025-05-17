@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Builder
@@ -22,6 +23,7 @@ public class Psicologo {
     private Endereco enderecoAtendimento;
     private String fotoUrl;
     private String biografia;
+    private StatusPsicologo statusPsicologo;
 
     public void alterarDados(Psicologo psicologo) {
         this.nome = psicologo.getNome();
@@ -32,5 +34,6 @@ public class Psicologo {
         this.enderecoAtendimento = psicologo.getEnderecoAtendimento();
         this.fotoUrl = psicologo.getFotoUrl();
         this.biografia = psicologo.getBiografia();
+        this.statusPsicologo = psicologo.getStatusPsicologo();
     }
 }

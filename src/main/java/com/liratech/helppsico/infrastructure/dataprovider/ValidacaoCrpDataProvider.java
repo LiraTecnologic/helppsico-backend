@@ -1,6 +1,10 @@
 package com.liratech.helppsico.infrastructure.dataprovider;
 
+import com.liratech.helppsico.application.gateways.ValidacaoCrpGateway;
+import com.liratech.helppsico.domain.ValidacaoCrp;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
+import com.liratech.helppsico.infrastructure.repositories.ValidacaoCrpRepository;
+import com.liratech.helppsico.infrastructure.repositories.entities.ValidacaoCrpEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -13,9 +17,9 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class ValidacaoCrpDataProvider implements ValidacaoCrpGateway{
+public class ValidacaoCrpDataProvider implements ValidacaoCrpGateway {
 
-    private final ValiacaoCrpRepository repository;
+    private final ValidacaoCrpRepository repository;
     private final ValidacaoCrpMapper mapper;
 
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar Validação de Crp";
@@ -28,7 +32,7 @@ public class ValidacaoCrpDataProvider implements ValidacaoCrpGateway{
         ValidacaoCrpEntity entity = mapper.paraEntity(validacaoCrp);
 
         try{
-            entity = repository.save(validacaoCrp);
+            entity = repository.save(entity);
         } catch (Exception ex){
             log.error(MENSAGEM_ERRO_SALVAR, ex);
             throw new DataProviderException(MENSAGEM_ERRO_SALVAR, ex.getCause());
@@ -39,7 +43,7 @@ public class ValidacaoCrpDataProvider implements ValidacaoCrpGateway{
 
     @Override
     public Optional<ValidacaoCrp> consultarPorId(UUID id){
-        Optional<ValidacaoCrp> validacaoCrp;
+        Optional<ValidacaoCrpEntity> validacaoCrp;
 
         try{
             validacaoCrp = repository.findById(id);
@@ -53,7 +57,7 @@ public class ValidacaoCrpDataProvider implements ValidacaoCrpGateway{
 
     @Override
     public Page<ValidacaoCrp> listar(Pageable pageable){
-        Page<ValidacaoCrp> validacaoCrps;
+        Page<ValidacaoCrpEntity> validacaoCrps;
 
         try{
             validacaoCrps = repository.findAll(pageable);
@@ -63,6 +67,11 @@ public class ValidacaoCrpDataProvider implements ValidacaoCrpGateway{
         }
 
         return validacaoCrps.map(mapper::paraDomain);
+    }
+
+    @Override
+    public Optional<ValidacaoCrp> consultarPorPsicologo(UUID id) {
+        return Optional.empty();
     }
 
     @Override

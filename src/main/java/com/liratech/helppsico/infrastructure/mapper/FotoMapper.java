@@ -1,7 +1,6 @@
 package com.liratech.helppsico.infrastructure.mapper;
 
 import com.liratech.helppsico.domain.Foto;
-import com.liratech.helppsico.infrastructure.repositories.entities.FotoEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
