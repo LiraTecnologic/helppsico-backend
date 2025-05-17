@@ -14,4 +14,9 @@ public class Prontuario {
     private Paciente paciente;
     private String titulo;
     private String conteudo;
+
+    public void alterarDado(Prontuario prontuarioAlterado) {
+        this.titulo = prontuarioAlterado.getTitulo();
+        this.conteudo = prontuarioAlterado.getConteudo();
+    }
 }
