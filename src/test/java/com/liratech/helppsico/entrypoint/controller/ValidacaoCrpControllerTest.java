@@ -111,6 +111,7 @@ public class ValidacaoCrpControllerTest {
         validacaoEntrada.setMotivoReprovacao(null);
 
         Mockito.when(psicologoRepository.findById(Mockito.any())).thenReturn(Optional.of(psicologoMapper.paraEntity(validacaoDomain.getPsicologo())));
+        Mockito.when(psicologoRepository.save(Mockito.any())).thenReturn(psicoloEntity);
 
         String validacaoJson = objectMapper.writeValueAsString(validacaoEntrada);
 
@@ -130,6 +131,7 @@ public class ValidacaoCrpControllerTest {
         validacaoEntrada.setMotivoReprovacao(motivoReprovacao);
 
         Mockito.when(psicologoRepository.findById(Mockito.any())).thenReturn(Optional.of(psicologoMapper.paraEntity(validacaoDomain.getPsicologo())));
+        Mockito.when(psicologoRepository.save(Mockito.any())).thenReturn(psicoloEntity);
 
         String validacaoJson = objectMapper.writeValueAsString(validacaoEntrada);
 
@@ -137,8 +139,6 @@ public class ValidacaoCrpControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(validacaoJson))
                 .andExpect(status().isOk());
-
-        Mockito.when(psicologoRepository.save(Mockito.any())).thenReturn(psicoloEntity);
 
         ValidacaoCrpValidatorJson.verificaValidacaoJson(result, mapper.paraDto(validacaoDomain));
     }
@@ -166,7 +166,7 @@ public class ValidacaoCrpControllerTest {
         Page<ValidacaoCrp> paginaDomain = ValidacaoCrpBuilder.criarValidacaoCrp();
         Page<ValidacaCrpEntity> paginaEntity = paginaDomain.map(mapperInfra::paraEntity);
 
-        Mockito.when(repository.findAll(pageable)).thenReturn(paginaEntity);
+        Mockito.when(repository.findAll(Mockito.any())).thenReturn(paginaEntity);
 
         ResultActions resultado = mockMvc.perform(get("/validacao-crp")
                         .param("page", String.valueOf(page))
