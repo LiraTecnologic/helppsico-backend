@@ -1,9 +1,8 @@
-package com.liratech.helppsico.entrypoint.controller;
+package com.liratech.helppsico.entrypoint.controller.documento;
 
 import com.liratech.helppsico.application.exceptions.TipoDocumentoInvalidoException;
 import com.liratech.helppsico.application.usecases.DocumentoUseCase;
 import com.liratech.helppsico.application.usecases.dto.DadosGeraisDocumentoDto;
-import com.liratech.helppsico.domain.documento.Documento;
 import com.liratech.helppsico.entrypoint.dto.ResponseDto;
 import com.liratech.helppsico.entrypoint.dto.documento.DocumentoDto;
 import com.liratech.helppsico.entrypoint.mapper.DocumentoMapper;
