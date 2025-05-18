@@ -7,9 +7,7 @@ import com.liratech.helppsico.application.usecases.dto.DadosGeraisDocumentoDto;
 import com.liratech.helppsico.builders.DadosGeraisDocumentoBuilder;
 import com.liratech.helppsico.builders.DocumentoBuilder;
 import com.liratech.helppsico.builders.SolicitacaoDocumentoBuilder;
-import com.liratech.helppsico.domain.documento.Atestado;
-import com.liratech.helppsico.domain.documento.Documento;
-import com.liratech.helppsico.domain.documento.SolicitacaoDocumento;
+import com.liratech.helppsico.domain.documento.*;
 import com.liratech.helppsico.entrypoint.mapper.DocumentoMapper;
 import com.liratech.helppsico.infrastructure.repositories.DocumentoRepository;
 import com.liratech.helppsico.infrastructure.repositories.SolicitacaoDocumentoRepository;
@@ -85,5 +83,93 @@ public class EmissaoDocumentoController {
 
         DocumentoValidatorJson.validaDocumentoJson(resultActions, documentoRetorno);
         DocumentoValidatorJson.validaAtestadoJson(resultActions, (Atestado) documentoRetorno);
+    }
+
+    @Test
+    void testeEmitirDeclaracao() throws Exception{
+        documentoRetorno = DocumentoBuilder.criarDeclaracaoDadosGerais(dadosGeraisTeste);
+        solicitacaoDocumentoRetorno.setTipoDocumento(TipoDocumento.DECLARACAO);
+
+        Mockito.when(solicitacaoDocumentoRepository.findById(Mockito.any())).thenReturn(Optional.of(solicitacaoDocumentoRetorno));
+        Mockito.when(repository.save(Mockito.any())).thenReturn(mapperInfra.paraEntity(documentoRetorno));
+
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        String dadosGeraisJson = objectMapper.writeValueAsString(dadosGeraisTeste);
+
+        ResultActions resultActions = mockMvc.perform(post("/documentos/{id}", idSolicitacao)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(dadosGeraisJson))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("Location", "/documentos/" + idSolicitacao));
+
+        DocumentoValidatorJson.validaDocumentoJson(resultActions, documentoRetorno);
+        DocumentoValidatorJson.validaDeclaracaoJson(resultActions, (Declaracao) documentoRetorno);
+    }
+
+    @Test
+    void testeEmitirLaudoPsicologico() throws Exception{
+        documentoRetorno = DocumentoBuilder.criarLaudoPsicologicoDadosGerais(dadosGeraisTeste);
+        solicitacaoDocumentoRetorno.setTipoDocumento(TipoDocumento.LAUDO_PSICOLOGICO);
+
+        Mockito.when(solicitacaoDocumentoRepository.findById(Mockito.any())).thenReturn(Optional.of(solicitacaoDocumentoRetorno));
+        Mockito.when(repository.save(Mockito.any())).thenReturn(mapperInfra.paraEntity(documentoRetorno));
+
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        String dadosGeraisJson = objectMapper.writeValueAsString(dadosGeraisTeste);
+
+        ResultActions resultActions = mockMvc.perform(post("/documentos/{id}", idSolicitacao)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(dadosGeraisJson))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("Location", "/documentos/" + idSolicitacao));
+
+        DocumentoValidatorJson.validaDocumentoJson(resultActions, documentoRetorno);
+        DocumentoValidatorJson.validaLaudoPsicologicoJson(resultActions, (LaudoPsicologico) documentoRetorno);
+    }
+
+    @Test
+    void testeEmitirRelatorioPsicologico() throws Exception{
+        documentoRetorno = DocumentoBuilder.criarRelatorioPsicologicoDadosGerais(dadosGeraisTeste);
+        solicitacaoDocumentoRetorno.setTipoDocumento(TipoDocumento.RELATORIO_PSICOLOGICO);
+
+        Mockito.when(solicitacaoDocumentoRepository.findById(Mockito.any())).thenReturn(Optional.of(solicitacaoDocumentoRetorno));
+        Mockito.when(repository.save(Mockito.any())).thenReturn(mapperInfra.paraEntity(documentoRetorno));
+
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        String dadosGeraisJson = objectMapper.writeValueAsString(dadosGeraisTeste);
+
+        ResultActions resultActions = mockMvc.perform(post("/documentos/{id}", idSolicitacao)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(dadosGeraisJson))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("Location", "/documentos/" + idSolicitacao));
+
+        DocumentoValidatorJson.validaDocumentoJson(resultActions, documentoRetorno);
+        DocumentoValidatorJson.validaRelatorioPsicologicoJson(resultActions, (RelatorioPsicologico) documentoRetorno);
+    }
+
+    @Test
+    void testeEmitirParecerPsicologico() throws Exception{
+        documentoRetorno = DocumentoBuilder.criarParecerPsicologicoDadosGerais(dadosGeraisTeste);
+        solicitacaoDocumentoRetorno.setTipoDocumento(TipoDocumento.DECLARACAO);
+
+        Mockito.when(solicitacaoDocumentoRepository.findById(Mockito.any())).thenReturn(Optional.of(solicitacaoDocumentoRetorno));
+        Mockito.when(repository.save(Mockito.any())).thenReturn(mapperInfra.paraEntity(documentoRetorno));
+
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        String dadosGeraisJson = objectMapper.writeValueAsString(dadosGeraisTeste);
+
+        ResultActions resultActions = mockMvc.perform(post("/documentos/{id}", idSolicitacao)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(dadosGeraisJson))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("Location", "/documentos/" + idSolicitacao));
+
+        DocumentoValidatorJson.validaDocumentoJson(resultActions, documentoRetorno);
+        DocumentoValidatorJson.validaParecerPsicologicoJson(resultActions, (ParecerPsicologico) documentoRetorno);
     }
 }
