@@ -14,6 +14,7 @@ public class DocumentoFactory {
     private static final PacienteMapper pacienteMapper = null;
     private static final PsicologoMapper psicologoMapper = null;
     private static final EnderecoMapper enderecoMapper = null;
+    public static final String MENSAGEM_TIPO_DOCUMENTO_INVALIDO = "Tipo do documento inválido";
 
     public static Documento criar(DadosGeraisDocumentoDto dadosGeraisDocumentoDto, TipoDocumento tipoDocumento) throws TipoDocumentoInvalidoException {
         switch (tipoDocumento.getCodigo()){
@@ -96,7 +97,7 @@ public class DocumentoFactory {
                         dadosGeraisDocumentoDto.getAnaliseDoCaso()
                 );
             default:
-                throw new TipoDocumentoInvalidoException("Tipo de documento inválido");
+                throw new TipoDocumentoInvalidoException(MENSAGEM_TIPO_DOCUMENTO_INVALIDO);
         }
 
     }
