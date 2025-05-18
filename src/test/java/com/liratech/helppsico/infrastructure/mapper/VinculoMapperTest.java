@@ -7,6 +7,7 @@ import com.liratech.helppsico.infrastructure.repositories.entities.StatusVinculo
 import com.liratech.helppsico.infrastructure.repositories.entities.VinculoEntity;
 import com.liratech.helppsico.validators.PacienteValidator;
 import com.liratech.helppsico.validators.PsicologoValidator;
+import com.liratech.helppsico.validators.VinculoValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,12 +23,7 @@ class VinculoMapperTest {
         Vinculo vinculo = VinculoBuilder.criarVinculo();
         VinculoEntity vinculoEntity = vinculoMapper.paraEntity(vinculo);
 
-        Assertions.assertNotNull(vinculoEntity);
-        Assertions.assertNotNull(vinculoEntity.getPsicologo());
-        PsicologoValidator.validaPsicologoDomainParaEntity(vinculo.getPsicologo(), vinculoEntity.getPsicologo());
-        Assertions.assertNotNull(vinculoEntity.getPaciente());
-        PacienteValidator.validaPacienteDomainParaEntity(vinculo.getPaciente(), vinculoEntity.getPaciente());
-        Assertions.assertEquals(StatusVinculoEntity.valueOf(vinculo.getStatus().name()), vinculoEntity.getStatus());
+        VinculoValidator.validaVinculoDomain(vinculo, vinculoMapper.paraDomain(vinculoEntity));
     }
 
     @Test
