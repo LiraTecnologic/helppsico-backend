@@ -20,6 +20,15 @@ public class ValidacaoCrpBuilder {
                 .build();
     }
 
+    public static ValidacaoCrpDto criarValidacaoCrpDto(){
+        return ValidacaoCrpDto.builder()
+                .id(UUID.randomUUID())
+                .psicologo(PsicologoBuilder.criarPsicologoDto())
+                .crp(PsicologoBuilder.criarPsicologoDto())
+                .motivoReprova("Psicologo inativo")
+                .build();
+    }
+
     public static Page<ValidacaoCrp> criarPageValidacaoCrp(){
         List<ValidacaoCrp> validacaoCrpList = new ArrayList<>();
 
