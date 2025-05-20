@@ -60,11 +60,11 @@ public class PsicologoDataProvider implements PsicologoGateway {
     }
 
     @Override
-    public Page<Psicologo> consultarPorNome(String nome) {
+    public Page<Psicologo> consultarPorNome(String nome, Pageable pageable) {
         Page<PsicologoEntity> psicologosEntities;
 
         try {
-            psicologosEntities = repository.findByNome(nome);
+            psicologosEntities = repository.findAllByNome(nome, pageable);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_CONSULTAR_POR_NOME, ex);
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_NOME, ex.getCause());
