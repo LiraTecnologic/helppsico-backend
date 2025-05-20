@@ -57,7 +57,7 @@ public class AvaliacaoUseCaseTest {
 
         Mockito.when(psicologoUseCase.consultarPorId(Mockito.any())).thenReturn(psicologoTeste);
         Mockito.when(pacienteUseCase.consultarPorId(Mockito.any())).thenReturn(pacienteTeste);
-        Mockito.when(useCase.consultarPorPacientePsicologo(Mockito.any(), Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(gateway.consultarPorPacientePsicologo(Mockito.any(), Mockito.any())).thenReturn(Optional.empty());
         Mockito.when(gateway.salvar(captor.capture())).thenReturn(avaliacaoTeste);
 
         Avaliacao avaliacao = useCase.avaliar(avaliacaoTeste);

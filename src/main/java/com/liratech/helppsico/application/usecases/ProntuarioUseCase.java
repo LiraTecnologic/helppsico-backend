@@ -42,20 +42,20 @@ public class ProntuarioUseCase {
         return prontuarioSalvo;
     }
 
-    public Page<Prontuario> listarPorPaciente(Paciente paciente, Pageable pageable) {
-        log.info("Listando prontuários pelo paciente. Paciente: {}", paciente);
+    public Page<Prontuario> listarPorPaciente(UUID id, Pageable pageable) {
+        log.info("Listando prontuários pelo paciente. Id do paciente: {}", id);
 
-        Page<Prontuario> prontuarios = gateway.listarPorPaciente(paciente, pageable);
+        Page<Prontuario> prontuarios = gateway.listarPorPaciente(id, pageable);
 
         log.info("Listagem de prontuários realizada com sucesso. Prontuarios: {}", prontuarios);
 
         return prontuarios;
     }
 
-    public Page<Prontuario> listarPorPsicologo(Psicologo psicologo, Pageable pageable) {
-        log.info("Listando prontuários pelo psicólogo. Psicólogo: {}", psicologo);
+    public Page<Prontuario> listarPorPsicologo(UUID id, Pageable pageable) {
+        log.info("Listando prontuários pelo psicólogo. Id do psicologo: {}", id);
 
-        Page<Prontuario> prontuarios = gateway.listarPorPsicologo(psicologo, pageable);
+        Page<Prontuario> prontuarios = gateway.listarPorPsicologo(id, pageable);
 
         log.info("Listagem de prontuários pelo psicólogo realizada com sucesso. Prontuarios: {}", prontuarios);
 
@@ -115,6 +115,7 @@ public class ProntuarioUseCase {
             throw new ProntuarioNaoEncontradoException("Prontuario não encontrado pelo seu id.");
         }
 
+        log.info("Prontuario consultado com sucesso. Prontuario: {}", prontuario.get());
         return prontuario.get();
     }
 }

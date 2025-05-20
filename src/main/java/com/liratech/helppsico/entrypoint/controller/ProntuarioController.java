@@ -1,8 +1,10 @@
 package com.liratech.helppsico.entrypoint.controller;
 
+import com.liratech.helppsico.application.usecases.ProntuarioUseCase;
 import com.liratech.helppsico.entrypoint.dto.ResponseDto;
 import com.liratech.helppsico.entrypoint.dto.psicologo.ProntuarioDto;
 import com.liratech.helppsico.entrypoint.mapper.ProntuarioMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,7 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("prontuarios")
+@RequestMapping("/prontuarios")
 @RequiredArgsConstructor
 public class ProntuarioController {
 
@@ -24,7 +26,7 @@ public class ProntuarioController {
     private final ProntuarioMapper mapper;
 
     @PostMapping
-    public ResponseEntity<ResponseDto<ProntuarioDto>> registrar(@RequestBody ProntuarioDto novoProntuario) {
+    public ResponseEntity<ResponseDto<ProntuarioDto>> registrar(@RequestBody @Valid ProntuarioDto novoProntuario) {
         ProntuarioDto response = mapper.paraDto(useCase.registrar(mapper.paraDomain(novoProntuario)));
         ResponseDto<ProntuarioDto> resposta = new ResponseDto<>(response);
 
@@ -39,9 +41,9 @@ public class ProntuarioController {
                 .body(resposta);
     }
 
-    @GetMapping("paciente")
+    @GetMapping("/paciente/{idPaciente}")
     public ResponseEntity<ResponseDto<Page<ProntuarioDto>>> listarPorPaciente(
-            @PathVariable("idPaciente") UUID idPaciente,
+            @PathVariable UUID idPaciente,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "nome,asc") String sort
@@ -54,9 +56,9 @@ public class ProntuarioController {
         return ResponseEntity.ok(resposta);
     }
 
-    @GetMapping("psicologo")
+    @GetMapping("/psicologo/{idPsicologo}")
     public ResponseEntity<ResponseDto<Page<ProntuarioDto>>> listarPorPsicolopo(
-            @PathVariable("idPsicologo") UUID idPsicologo,
+            @PathVariable UUID idPsicologo,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "nome,asc") String sort
@@ -70,14 +72,14 @@ public class ProntuarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDto<ProntuarioDto>> alterar(@RequestBody ProntuarioDto novosDados, @PathVariable UUID idPronturia) {
-        ProntuarioDto resultado = mapper.paraDto(useCase.alterar(mapper.paraDomain(novosDados), idPronturia));
+    public ResponseEntity<ResponseDto<ProntuarioDto>> alterar(@RequestBody @Valid ProntuarioDto novosDados, @PathVariable UUID id) {
+        ProntuarioDto resultado = mapper.paraDto(useCase.alterar(mapper.paraDomain(novosDados), id));
         ResponseDto<ProntuarioDto> resposta = new ResponseDto<>(resultado);
 
         return ResponseEntity.ok(resposta);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{idProntuario}")
     public ResponseEntity<ResponseDto<ProntuarioDto>> alterarParcial(@RequestBody Map<String, Object> campos, @PathVariable UUID idProntuario) {
         ProntuarioDto resultado = mapper.paraDto(useCase.alterarParcial(campos, idProntuario));
         ResponseDto<ProntuarioDto> resposta = new ResponseDto<>(resultado);
@@ -85,4 +87,10 @@ public class ProntuarioController {
         return ResponseEntity.ok(resposta);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable UUID id){
+        useCase.deletar(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }

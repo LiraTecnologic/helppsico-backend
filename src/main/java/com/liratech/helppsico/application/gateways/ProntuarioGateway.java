@@ -11,8 +11,12 @@ import java.util.UUID;
 
 public interface ProntuarioGateway {
     Prontuario salvar(Prontuario prontuario);
+
     Optional<Prontuario> consultarPorId(UUID id);
-    Page<Prontuario> listarPorPaciente(Paciente paciente, Pageable pageable);
-    Page<Prontuario> listarPorPsicologo(Psicologo psicologo, Pageable pageable);
+
+    Page<Prontuario> listarPorPaciente(UUID idPaciente, Pageable pageable);
+
+    Page<Prontuario> listarPorPsicologo(UUID idPsicologo, Pageable pageable);
+
     void deletar(UUID id);
 }

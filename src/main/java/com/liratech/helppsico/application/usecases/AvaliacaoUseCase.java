@@ -86,7 +86,7 @@ public class AvaliacaoUseCase {
         log.info("Avaliação deletada com sucesso.");
     }
 
-    public Optional<Avaliacao> consultarPorPacientePsicologo(UUID idPaciente, UUID idPsicologo){
+    private Optional<Avaliacao> consultarPorPacientePsicologo(UUID idPaciente, UUID idPsicologo){
         return gateway.consultarPorPacientePsicologo(idPaciente, idPsicologo);
     }
 }

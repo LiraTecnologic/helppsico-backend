@@ -63,11 +63,11 @@ public class ProntuarioDataProvider implements ProntuarioGateway {
     }
 
     @Override
-    public Page<Prontuario> listarPorPaciente(Paciente paciente, Pageable pageable) {
+    public Page<Prontuario> listarPorPaciente(UUID idPaciente, Pageable pageable) {
         Page<ProntuarioEntity> prontuarioEntities;
 
         try {
-            prontuarioEntities = repository.findByPaciente(pacienteMapper.paraEntity(paciente), pageable);
+            prontuarioEntities = repository.findAllByPacienteId(idPaciente, pageable);
         } catch (Exception ex) {
             log.error(MENSAGEM_ERRO_LISTAR_PACIENTE, ex);
             throw new DataProviderException(MENSAGEM_ERRO_LISTAR_PACIENTE, ex.getCause());
@@ -77,11 +77,11 @@ public class ProntuarioDataProvider implements ProntuarioGateway {
     }
 
     @Override
-    public Page<Prontuario> listarPorPsicologo(Psicologo psicologo, Pageable pageable) {
+    public Page<Prontuario> listarPorPsicologo(UUID idPsicologo, Pageable pageable) {
         Page<ProntuarioEntity> prontuarioEntities;
 
         try {
-            prontuarioEntities = repository.findByPsicologo(psicologoMapper.paraEntity(psicologo), pageable);
+            prontuarioEntities = repository.findAllByPsicologoId(idPsicologo, pageable);
         } catch (Exception ex) {
             log.error(MENSAGEM_ERRO_LISTAR_PSICOLOGO, ex);
             throw new DataProviderException(MENSAGEM_ERRO_LISTAR_PSICOLOGO, ex.getCause());
