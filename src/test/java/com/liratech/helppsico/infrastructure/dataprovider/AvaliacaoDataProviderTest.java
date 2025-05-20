@@ -10,8 +10,10 @@ import com.liratech.helppsico.infrastructure.repositories.AvaliacaoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.AvaliacaoEntity;
 import com.liratech.helppsico.validators.AvaliacaoValidator;
 import com.liratech.helppsico.validators.PsicologoValidator;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,7 +31,7 @@ import java.util.stream.IntStream;
 import static com.liratech.helppsico.infrastructure.dataprovider.AvaliacaoDataProvider.MENSAGEM_ERRO_CONSULTAR_POR_PACIENTE;
 
 @ExtendWith(MockitoExtension.class)
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class AvaliacaoDataProviderTest {
 
     @Mock
@@ -38,21 +40,24 @@ public class AvaliacaoDataProviderTest {
     @InjectMocks
     private AvaliacaoDataProvider dataProvider;
 
-    private final AvaliacaoMapper mapper;
+    private AvaliacaoMapper mapper;
+    private Avaliacao avaliacaoTeste;
+    private AvaliacaoEntity avaliacaoEntityTeste;
+
+    @BeforeEach
+    void inicializarAtributos() {
+        avaliacaoTeste = AvaliacaoBuilder.criarAvaliacao();
+        avaliacaoEntityTeste = mapper.paraEntity(avaliacaoTeste);
+    }
 
     @Test
     void testeSalvarPsicologo() {
-        Avaliacao avaliacao = AvaliacaoBuilder.criarAvaliacao();
-        avaliacao.setId(null);
+        avaliacaoTeste.setId(null);
 
-        AvaliacaoEntity avaliacaoSalvo = mapper.paraEntity(avaliacao);
-        UUID idGerado = UUID.randomUUID();
-        avaliacaoSalvo.setId(idGerado);
+        Mockito.when(repository.save(Mockito.any())).thenReturn(avaliacaoEntityTeste);
 
-        Mockito.when(repository.save(Mockito.any())).thenReturn(avaliacaoSalvo);
-
-        Avaliacao avaliacaoResultado = dataProvider.salvar(avaliacao);
-        AvaliacaoValidator.validaAvaliacaoDomain(mapper.paraDomain(avaliacaoSalvo), avaliacaoResultado);
+        Avaliacao avaliacaoResultado = dataProvider.salvar(avaliacaoTeste);
+        AvaliacaoValidator.validaAvaliacaoDomain(mapper.paraDomain(avaliacaoEntityTeste), avaliacaoResultado);
     }
 
     @Test
