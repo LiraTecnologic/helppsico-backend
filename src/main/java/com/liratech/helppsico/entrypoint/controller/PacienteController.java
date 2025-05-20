@@ -4,6 +4,7 @@ import com.liratech.helppsico.application.usecases.PacienteUseCase;
 import com.liratech.helppsico.entrypoint.dto.PacienteDto;
 import com.liratech.helppsico.entrypoint.dto.ResponseDto;
 import com.liratech.helppsico.entrypoint.mapper.PacienteMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class PacienteController {
     private PacienteMapper mapper;
 
     @PostMapping
-    public ResponseEntity<ResponseDto<PacienteDto>> cadastrar(@RequestBody PacienteDto paciente){
+    public ResponseEntity<ResponseDto<PacienteDto>> cadastrar(@RequestBody @Valid PacienteDto paciente){
         PacienteDto pacienteNovo = mapper.paraDto(useCase.cadastrar(mapper.paraDomain(paciente)));
         ResponseDto<PacienteDto> retorno = new ResponseDto<>(pacienteNovo);
 

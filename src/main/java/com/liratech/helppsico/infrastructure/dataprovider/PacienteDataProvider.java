@@ -1,7 +1,10 @@
 package com.liratech.helppsico.infrastructure.dataprovider;
 
+import com.liratech.helppsico.application.gateways.PacienteGateway;
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
+import com.liratech.helppsico.infrastructure.mapper.PacienteMapper;
+import com.liratech.helppsico.infrastructure.repositories.PacienteRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.PacienteEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,15 +19,14 @@ import java.util.UUID;
 public class PacienteDataProvider implements PacienteGateway {
 
     private final PacienteRepository repository;
-    private final PacienteMapper pacienteMapper;
+    private final PacienteMapper mapper;
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar paciente.";
     public static final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar paciente pelo id.";
     public static final String MENSAGEM_ERRO_CONSULTAR_POR_EMAIL = "Erro ao consultar paciente pelo email.";
 
-
     @Override
     public Paciente salvar(Paciente paciente) {
-        PacienteEntity pacienteEntity = pacienteMapper.paraEntity(paciente);
+        PacienteEntity pacienteEntity = mapper.paraEntity(paciente);
 
         try {
             pacienteEntity = repository.save(pacienteEntity);
@@ -33,7 +35,7 @@ public class PacienteDataProvider implements PacienteGateway {
             throw new DataProviderException(MENSAGEM_ERRO_SALVAR, ex.getCause());
         }
 
-        return pacienteMapper.paraDomain(pacienteEntity);
+        return mapper.paraDomain(pacienteEntity);
     }
 
     @Override
@@ -47,11 +49,11 @@ public class PacienteDataProvider implements PacienteGateway {
             throw new DataProviderException(MENSAGEM_ERRO_SALVAR, ex.getCause());
         }
 
-        return pacienteEntity.map(paciente -> pacienteMapper.paraDomain(paciente));
+        return pacienteEntity.map(mapper::paraDomain);
     }
 
     @Override
-    public  Optional<Paciente> consultarPorEmail(String email) {
+    public Optional<Paciente> consultarPorEmail(String email) {
         Optional<PacienteEntity> pacienteEntity;
 
         try {
@@ -61,7 +63,7 @@ public class PacienteDataProvider implements PacienteGateway {
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_EMAIL, ex.getCause());
         }
 
-        return pacienteEntity.map(paciente -> pacienteMapper.paraDomain(paciente));
+        return pacienteEntity.map(mapper::paraDomain);
     }
 
 }
