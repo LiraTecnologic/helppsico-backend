@@ -22,7 +22,6 @@ public class HorarioPsicologoDataProvider implements HorarioPsicologoGateway {
 
     private final HorarioPsicologoRepository repository;
     private final HorarioPsicologoMapper mapper;
-
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar horario.";
     public static final String MENSAGEM_ERRO_BUSCAR_POR_PSICOLOGO = "Erro ao buscar horarios por psicologo.";
     public static final String MENSAGEM_ERRO_BUSCAR_POR_ID = "Erro ao buscar horario por id.";
@@ -47,7 +46,7 @@ public class HorarioPsicologoDataProvider implements HorarioPsicologoGateway {
         Page<HorarioPsicologoEntity> horarioPsicologoEntityPage;
 
         try {
-            horarioPsicologoEntityPage = repository.buscarPorPsicologo(id, pageable);
+            horarioPsicologoEntityPage = repository.findAllByPsicologoId(id, pageable);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_BUSCAR_POR_PSICOLOGO, ex);
             throw new DataProviderException(MENSAGEM_ERRO_BUSCAR_POR_PSICOLOGO, ex.getCause());

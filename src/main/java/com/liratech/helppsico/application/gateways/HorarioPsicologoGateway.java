@@ -9,7 +9,10 @@ import java.util.UUID;
 
 public interface HorarioPsicologoGateway {
     HorarioPsicologo salvar(HorarioPsicologo horario);
+
     Page<HorarioPsicologo> listarPorPsicologo(UUID id, Pageable pageable);
+
     Optional<HorarioPsicologo> buscarPorId(UUID id);
+
     void deletar(UUID id);
 }

@@ -34,7 +34,7 @@ public class HorarioPsicologoUseCase {
         return horarioSalvo;
     }
 
-    public HorarioPsicologo alterar(UUID idHorario, HorarioPsicologo horarioPsicologoNovo){
+    public HorarioPsicologo alterar(HorarioPsicologo horarioPsicologoNovo, UUID idHorario){
         log.info("Iniciando alteração de dados do horarioPsicologo. Horario novo: {}", horarioPsicologoNovo);
 
         HorarioPsicologo horarioPsicologoAlterado = consultarPorId(idHorario);

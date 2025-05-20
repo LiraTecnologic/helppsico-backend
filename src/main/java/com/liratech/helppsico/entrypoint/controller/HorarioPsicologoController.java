@@ -4,6 +4,7 @@ import com.liratech.helppsico.application.usecases.HorarioPsicologoUseCase;
 import com.liratech.helppsico.entrypoint.dto.ResponseDto;
 import com.liratech.helppsico.entrypoint.dto.psicologo.HorarioPsicologoDto;
 import com.liratech.helppsico.entrypoint.mapper.HorarioPsicologoMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +24,7 @@ public class HorarioPsicologoController {
     private final HorarioPsicologoMapper mapper;
 
     @PostMapping
-    public ResponseEntity<ResponseDto<HorarioPsicologoDto>> cadastrar(@RequestBody HorarioPsicologoDto horarioDto){
+    public ResponseEntity<ResponseDto<HorarioPsicologoDto>> cadastrar(@RequestBody @Valid HorarioPsicologoDto horarioDto){
         HorarioPsicologoDto horarioPsicologoDto = mapper.paraDto(
                 useCase.cadastrar(mapper.paraDomain(horarioDto)));
 
@@ -65,7 +66,7 @@ public class HorarioPsicologoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDto<HorarioPsicologoDto>> alterar (@PathVariable UUID id, @RequestBody HorarioPsicologoDto horarioPsicologoDtoNovo){
-        HorarioPsicologoDto horarioPsicologoAlterado = mapper.paraDto(useCase.alterar(id, mapper.paraDomain(horarioPsicologoDtoNovo)));
+        HorarioPsicologoDto horarioPsicologoAlterado = mapper.paraDto(useCase.alterar(mapper.paraDomain(horarioPsicologoDtoNovo), id));
 
         ResponseDto<HorarioPsicologoDto> response = new ResponseDto<>(horarioPsicologoAlterado);
 

@@ -12,13 +12,5 @@ import java.util.UUID;
 
 @Repository
 public interface HorarioPsicologoRepository extends JpaRepository<HorarioPsicologoEntity, UUID> {
-
-    @Query("""
-            SELECT h
-            FROM HorarioPsicologo h
-            WHERE h.psicologo.id = :idPsicologo
-            """)
-    Page<HorarioPsicologoEntity> buscarPorPsicologo(
-            @Param("idPsicologo") UUID idPsicologo,
-            Pageable pageable);
+    Page<HorarioPsicologoEntity> findAllByPsicologoId(UUID idPsicologo, Pageable pageable);
 }
