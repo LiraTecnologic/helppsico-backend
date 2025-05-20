@@ -38,7 +38,7 @@ import java.util.UUID;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @AllArgsConstructor
-public class EmissaoDocumentoController {
+public class EmissaoDocumentoControllerTest {
 
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
