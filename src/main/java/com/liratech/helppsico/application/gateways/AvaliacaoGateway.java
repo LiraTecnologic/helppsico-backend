@@ -2,6 +2,7 @@ package com.liratech.helppsico.application.gateways;
 
 import com.liratech.helppsico.domain.Avaliacao;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +11,7 @@ import java.util.UUID;
 public interface AvaliacaoGateway {
     Avaliacao salvar(Avaliacao avaliacao);
 
-    Page<Avaliacao> listarPorPsicologo(UUID id);
+    Page<Avaliacao> listarPorPsicologo(UUID id, Pageable pageable);
 
     Optional<Avaliacao> buscarPorId(UUID id);
 

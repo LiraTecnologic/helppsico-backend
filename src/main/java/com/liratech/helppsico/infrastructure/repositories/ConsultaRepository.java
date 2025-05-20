@@ -14,23 +14,27 @@ import java.util.UUID;
 @Repository
 public interface ConsultaRepository extends JpaRepository<ConsultaEntity, UUID> {
 
-    @Query("SELECT c FROM ConsultaEntity c WHERE c.finalizada = false AND c.psicologo.id = :idPsicologo AND c.paciente.id = :idPaciente")
+    @Query("SELECT c " +
+            "FROM ConsultaEntity c " +
+            "WHERE c.finalizada = false AND c.psicologo.id = :idPsicologo AND c.paciente.id = :idPaciente")
     Page<ConsultaEntity> consultarConsultasFuturas(
             @Param("idPsicologo") UUID idPsicologo,
             @Param("idPaciente") UUID idPaciente,
             Pageable pageable
     );
 
-
-    @Query("SELECT c FROM Consulta c WHERE c.finalizada = true AND c.psicologo.id = idPsicologo AND c.paciente.id = :idPaciente")
+    @Query("SELECT c " +
+            "FROM Consulta c " +
+            "WHERE c.finalizada = true AND c.psicologo.id = :idPsicologo AND c.paciente.id = :idPaciente")
     Page<ConsultaEntity> consultarHistorico(
             @Param("idPsicologo") UUID idPsicologo,
             @Param("idPaciente") UUID idPaciente,
             Pageable pageable
     );
 
-
-    @Query("SELECT c FROM Consulta c WHERE DAY(c.data_hora) = :diaDoMes")
-    List<ConsultaEntity> consultarConsultasMesmoDia(int diaDoMes);
+    @Query("SELECT c " +
+            "FROM Consulta c " +
+            "WHERE DAY(c.data_hora) = :diaDoMes")
+    List<ConsultaEntity> consultarConsultasMesmoDia(@Param("diaDoMes") int diaDoMes);
 }
 

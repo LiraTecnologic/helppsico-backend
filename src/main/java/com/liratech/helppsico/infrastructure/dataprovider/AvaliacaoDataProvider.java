@@ -9,6 +9,7 @@ import com.liratech.helppsico.infrastructure.repositories.entities.AvaliacaoEnti
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -45,11 +46,11 @@ public class AvaliacaoDataProvider implements AvaliacaoGateway {
     }
 
     @Override
-    public Page<Avaliacao> listarPorPsicologo(UUID id) {
+    public Page<Avaliacao> listarPorPsicologo(UUID id, Pageable pageable) {
         Page<AvaliacaoEntity> avaliacaoList;
 
         try {
-            avaliacaoList = repository.findAllByPsicologo(id);
+            avaliacaoList = repository.findAllByPsicologoId(id, pageable);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO, ex);
             throw new DataProviderException(MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO, ex.getCause());

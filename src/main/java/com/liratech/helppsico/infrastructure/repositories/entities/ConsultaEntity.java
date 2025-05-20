@@ -19,11 +19,11 @@ public class ConsultaEntity {
     @Column(name = "id_consulta")
     private UUID id;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "id_psicologo")
     private PsicologoEntity psicologo;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "id_paciente")
     private PacienteEntity paciente;
 

@@ -49,7 +49,6 @@ public class PsicologoController {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
 
         Page<PsicologoDto> psicologos = mapper.paraDtosPage(useCase.listar(pageable));
-
         ResponseDto<Page<PsicologoDto>> resposta = new ResponseDto<>(psicologos);
 
         return ResponseEntity.ok(resposta);

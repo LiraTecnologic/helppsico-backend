@@ -33,10 +33,10 @@ import static com.liratech.helppsico.infrastructure.dataprovider.AvaliacaoDataPr
 public class AvaliacaoDataProviderTest {
 
     @Mock
-    private final AvaliacaoRepository repository;
+    private AvaliacaoRepository repository;
 
     @InjectMocks
-    private final AvaliacaoDataProvider dataProvider;
+    private AvaliacaoDataProvider dataProvider;
 
     private final AvaliacaoMapper mapper;
 
@@ -95,7 +95,7 @@ public class AvaliacaoDataProviderTest {
         avaliacaoTeste.getContent().get(1).setId(idProcurado);
         avaliacaoTeste.getContent().get(2).setId(idProcurado);
 
-        Mockito.when(repository.findAllByPsicologo(Mockito.any())).thenReturn(avaliacaoTeste);
+        Mockito.when(repository.findAllByPsicologoId(Mockito.any(), Mockito.any())).thenReturn(avaliacaoTeste);
 
         Page<Avaliacao> avaliacaoResultado = dataProvider.listarPorPsicologo(idProcurado);
 
@@ -108,7 +108,7 @@ public class AvaliacaoDataProviderTest {
 
     @Test
     void testeExceptionListarPorPsicologo() {
-        Mockito.when(repository.findAllByPsicologo(Mockito.any())).thenThrow(DataProviderException.class);
+        Mockito.when(repository.findAllByPsicologoId(Mockito.any())).thenThrow(DataProviderException.class);
 
         DataProviderException exception = Assertions
                 .assertThrows(DataProviderException.class, () -> dataProvider.listarPorPsicologo(AvaliacaoBuilder.criarAvaliacao().getId()));
