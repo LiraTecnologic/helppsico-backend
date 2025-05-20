@@ -1,5 +1,6 @@
 package com.liratech.helppsico.entrypoint.controller;
 
+import com.liratech.helppsico.application.usecases.ConsultaUseCase;
 import com.liratech.helppsico.entrypoint.dto.ResponseDto;
 import com.liratech.helppsico.entrypoint.dto.consulta.ConsultaDto;
 import com.liratech.helppsico.entrypoint.mapper.ConsultaMapper;
@@ -25,6 +26,7 @@ public class ConsultaController {
 
     @PostMapping
     public ResponseEntity<ResponseDto<ConsultaDto>> agendar(@RequestBody ConsultaDto novaConsulta) {
+
         ConsultaDto resultado = mapper.paraDto(useCase.agendar(mapper.paraDomain(novaConsulta)));
         ResponseDto<ConsultaDto> resposta = new ResponseDto<>(resultado);
 
@@ -54,7 +56,7 @@ public class ConsultaController {
     ){
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
 
-        Page<ConsultaDto> resultado = mapper.paraDto(useCase.consultarConsultasFuturas(idPaciente, idPsicologo, pageable));
+        Page<ConsultaDto> resultado = useCase.consultarConsultasFuturas(idPaciente, idPsicologo, pageable).map(mapper::paraDto);
         ResponseDto<Page<ConsultaDto>> resposta = new ResponseDto<>(resultado);
 
         return ResponseEntity.ok(resposta);
@@ -70,13 +72,13 @@ public class ConsultaController {
     ){
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
 
-        Page<ConsultaDto> resultado = mapper.paraDto(useCase.consultarHistorico(idPaciente, idPsicologo, pageable));
+        Page<ConsultaDto> resultado = useCase.consultarHistorico(idPaciente, idPsicologo, pageable).map(mapper::paraDto);
         ResponseDto<Page<ConsultaDto>> resposta = new ResponseDto<>(resultado);
 
         return ResponseEntity.ok(resposta);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{idConsulta}")
     public ResponseEntity<ResponseDto<ConsultaDto>> alterarData(@PathVariable UUID idConsulta, @RequestBody LocalDateTime novaData) {
         ConsultaDto resultado = mapper.paraDto(useCase.alterarData(idConsulta, novaData));
         ResponseDto<ConsultaDto> resposta = new ResponseDto<>(resultado);
@@ -84,7 +86,7 @@ public class ConsultaController {
         return ResponseEntity.ok(resposta);
     }
 
-    @PatchMapping("/finalizar/{id}")
+    @PatchMapping("/finalizar/{idConsulta}")
     public ResponseEntity<ResponseDto<ConsultaDto>> finalizar(@PathVariable UUID idConsulta) {
         ConsultaDto resultado = mapper.paraDto(useCase.finalizar(idConsulta));
         ResponseDto<ConsultaDto> resposta = new ResponseDto<>(resultado);
