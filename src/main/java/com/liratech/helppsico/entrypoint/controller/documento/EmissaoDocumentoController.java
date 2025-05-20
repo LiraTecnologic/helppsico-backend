@@ -7,6 +7,10 @@ import com.liratech.helppsico.entrypoint.dto.ResponseDto;
 import com.liratech.helppsico.entrypoint.dto.documento.DocumentoDto;
 import com.liratech.helppsico.entrypoint.mapper.DocumentoMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -36,4 +40,16 @@ public class EmissaoDocumentoController {
         ).body(response);
     }
 
+    @GetMapping
+    public ResponseEntity<ResponseDto<Page<DocumentoDto>>> listar(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "paciente, asc") String sort){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
+        Page<DocumentoDto> documentoDtoPage = useCase.listar(pageable).map(mapper::paraDto);
+
+        ResponseDto<Page<DocumentoDto>> response = new ResponseDto<>(documentoDtoPage);
+
+        return ResponseEntity.ok(response);
+    }
 }

@@ -4,6 +4,7 @@ import com.liratech.helppsico.application.usecases.ConsultaUseCase;
 import com.liratech.helppsico.entrypoint.dto.ResponseDto;
 import com.liratech.helppsico.entrypoint.dto.consulta.ConsultaDto;
 import com.liratech.helppsico.entrypoint.mapper.ConsultaMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,7 +26,7 @@ public class ConsultaController {
     private final ConsultaMapper mapper;
 
     @PostMapping
-    public ResponseEntity<ResponseDto<ConsultaDto>> agendar(@RequestBody ConsultaDto novaConsulta) {
+    public ResponseEntity<ResponseDto<ConsultaDto>> agendar(@RequestBody @Valid ConsultaDto novaConsulta) {
 
         ConsultaDto resultado = mapper.paraDto(useCase.agendar(mapper.paraDomain(novaConsulta)));
         ResponseDto<ConsultaDto> resposta = new ResponseDto<>(resultado);

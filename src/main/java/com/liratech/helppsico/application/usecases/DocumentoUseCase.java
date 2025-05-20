@@ -10,6 +10,8 @@ import com.liratech.helppsico.entrypoint.mapper.PacienteMapper;
 import com.liratech.helppsico.entrypoint.mapper.PsicologoMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -33,5 +35,14 @@ public class DocumentoUseCase {
 
         log.info("Documento criado e salvo com sucesso. Documento: {}", documentoSalvo);
         return documentoSalvo;
+    }
+
+    public Page<Documento> listar (Pageable pageable) {
+        log.info("Iniciando processo para listar os documentos.");
+
+        Page<Documento> listagemDoc = gateway.listar(pageable);
+
+        log.info("Listagem de documentos completa. Listagem: {}", listagemDoc);
+        return listagemDoc;
     }
 }
