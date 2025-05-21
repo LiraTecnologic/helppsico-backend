@@ -22,7 +22,6 @@ public class ValidacaoCrpUseCase {
 
     private final ValidacaoCrpGateway gateway;
     private final PsicologoUseCase psicologoUseCase;
-
     public static final String MENSAGEM_VALIDACAO_CRP_EXISTENTE = "Validação CRP já existente";
     public static final String MENSAGEM_VALIDACAO_CRP_NAO_EXISTENTE = "Validação CRP não existe";
 
@@ -78,7 +77,7 @@ public class ValidacaoCrpUseCase {
         return validacaoCrpPage;
     }
 
-    public ValidacaoCrp consultarPorId (UUID id){
+    private ValidacaoCrp consultarPorId (UUID id){
         Optional<ValidacaoCrp> validacaoCrpBuscado = gateway.consultarPorId(id);
 
         if(validacaoCrpBuscado.isEmpty()){

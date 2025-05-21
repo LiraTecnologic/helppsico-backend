@@ -1,6 +1,10 @@
 package com.liratech.helppsico.entrypoint.controller;
 
+import com.liratech.helppsico.application.usecases.ValidacaoCrpUseCase;
 import com.liratech.helppsico.entrypoint.dto.ResponseDto;
+import com.liratech.helppsico.entrypoint.dto.ValidacaoCrpDto;
+import com.liratech.helppsico.entrypoint.mapper.ValidacaoCrpMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +23,7 @@ public class ValidacaoCrpController {
     private final ValidacaoCrpMapper mapper;
 
     @PostMapping
-    public ResponseEntity<ResponseDto<ValidacaoCrpDto>> criar(@RequestBody ValidacaoCrpDto validacaoCrpDto){
+    public ResponseEntity<ResponseDto<ValidacaoCrpDto>> criar(@RequestBody @Valid ValidacaoCrpDto validacaoCrpDto){
         ValidacaoCrpDto validacaoCrpResultado = mapper.paraDto(useCase.criar(mapper.paraDomain(validacaoCrpDto)));
         ResponseDto<ValidacaoCrpDto> resultado = new ResponseDto<ValidacaoCrpDto>(validacaoCrpResultado);
 
@@ -36,10 +40,10 @@ public class ValidacaoCrpController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDto<ValidacaoCrpDto>> validar(
-            @RequestBody ValidacaoCrpDto validacaoCrpDto,
+            @RequestBody @Valid ValidacaoCrpDto validacaoCrpDto,
             @PathVariable UUID id){
 
-        ValidacaoCrpDto validacaoCrpResultado = mapper.paraDto(useCase.validar(mapper.paraDomain(validacaoCrpDto)));
+        ValidacaoCrpDto validacaoCrpResultado = mapper.paraDto(useCase.validar(mapper.paraDomain(validacaoCrpDto), id));
         ResponseDto<ValidacaoCrpDto> resultado = new ResponseDto<>(validacaoCrpResultado);
 
         return ResponseEntity.ok(resultado);

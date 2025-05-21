@@ -3,6 +3,7 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.application.gateways.ValidacaoCrpGateway;
 import com.liratech.helppsico.domain.ValidacaoCrp;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
+import com.liratech.helppsico.infrastructure.mapper.ValidacaoCrpMapper;
 import com.liratech.helppsico.infrastructure.repositories.ValidacaoCrpRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.ValidacaoCrpEntity;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +22,11 @@ public class ValidacaoCrpDataProvider implements ValidacaoCrpGateway {
 
     private final ValidacaoCrpRepository repository;
     private final ValidacaoCrpMapper mapper;
-
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar Validação de Crp";
     public static final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar Validação de Crp por ID";
     public static final String MENSAGEM_ERRO_LISTAR = "Erro ao listar Validações de Cpr";
     public static final String MENSAGEM_ERRO_DELETAR = "Erro ao deletar Validação de Crp";
+    public static final String MENSAGEM_ERRO_CONSULTAR_POR_PSICOLOGO = "Erro ao consultar validacao por psicologo";
 
     @Override
     public ValidacaoCrp salvar(ValidacaoCrp validacaoCrp){
@@ -71,7 +72,16 @@ public class ValidacaoCrpDataProvider implements ValidacaoCrpGateway {
 
     @Override
     public Optional<ValidacaoCrp> consultarPorPsicologo(UUID id) {
-        return Optional.empty();
+        Optional<ValidacaoCrpEntity> validacaoCrp;
+
+        try {
+            validacaoCrp = repository.findByPsicologoId(id);
+        }catch (Exception ex){
+            log.error(MENSAGEM_ERRO_CONSULTAR_POR_PSICOLOGO, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_PSICOLOGO, ex.getCause());
+        }
+
+        return validacaoCrp.map(mapper::paraDomain);
     }
 
     @Override
