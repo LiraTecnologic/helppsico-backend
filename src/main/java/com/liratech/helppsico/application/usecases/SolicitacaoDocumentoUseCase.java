@@ -1,7 +1,5 @@
 package com.liratech.helppsico.application.usecases;
 
-import com.liratech.helppsico.application.exceptions.paciente.PacienteNaoEncontradoException;
-import com.liratech.helppsico.application.exceptions.psicologo.PsicologoNaoEncontradoException;
 import com.liratech.helppsico.application.exceptions.solicitacaoDocumento.SolicitacaoDocumentoNaoEncontradoException;
 import com.liratech.helppsico.application.gateways.SolicitacaoDocumentoGateway;
 import com.liratech.helppsico.domain.Paciente;
@@ -18,10 +16,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 public class SolicitacaoDocumentoUseCase {
+
     private final PsicologoUseCase psicologoUseCase;
     private final PacienteUseCase pacienteUseCase;
     private final SolicitacaoDocumentoGateway gateway;
-
     public static final String MENSAGEM_SOLICITACAO_DOCUMENTO_NAO_ENCONTRADO = "Solicitação de Docuemnto não encontrado";
 
     public SolicitacaoDocumento criarSolicitacao(SolicitacaoDocumento solicitacao){
@@ -57,7 +55,7 @@ public class SolicitacaoDocumentoUseCase {
         log.info("ID enviado pra deletar Solicitação. ID: {}", id);
         buscarPorId(id);
 
-        log.info("Solicitação deletada com sucesso.");
         gateway.deletar(id);
+        log.info("Solicitação deletada com sucesso.");
     }
 }

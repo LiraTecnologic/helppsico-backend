@@ -1,7 +1,10 @@
 package com.liratech.helppsico.infrastructure.dataprovider;
 
+import com.liratech.helppsico.application.gateways.SolicitacaoDocumentoGateway;
 import com.liratech.helppsico.domain.documento.SolicitacaoDocumento;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
+import com.liratech.helppsico.infrastructure.mapper.SolicitacaoDocumentoMapper;
+import com.liratech.helppsico.infrastructure.repositories.SolicitacaoDocumentoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.documento.SolicitacaoDocumentoEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
