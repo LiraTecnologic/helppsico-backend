@@ -1,6 +1,7 @@
 package com.liratech.helppsico.application.usecases;
 
 import com.liratech.helppsico.application.exceptions.vinculo.VinculoInvalidoException;
+import com.liratech.helppsico.application.exceptions.vinculo.VinculoNaoEncontradoException;
 import com.liratech.helppsico.application.gateways.VinculoGateway;
 import com.liratech.helppsico.builders.VinculoBuilder;
 import com.liratech.helppsico.domain.Paciente;
@@ -22,6 +23,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.liratech.helppsico.application.usecases.VinculoUseCase.ERRO_VINCULO_INVALIDO;
+import static com.liratech.helppsico.application.usecases.VinculoUseCase.ERRO_VINCULO_NAO_ENCONRADO;
 
 @ExtendWith(MockitoExtension.class)
 @AllArgsConstructor
@@ -126,12 +128,24 @@ public class VinculoUseCaseTest {
     }
 
     @Test
-    void testeConsultarVinculoPorId(){
+    void testeConsultarVinculoPorIdPaciente(){
         Mockito.when(gateway.consultarPorIdPaciente(Mockito.any())).thenReturn(Optional.of(vinculoTeste));
 
         Vinculo vinculoResultado = useCase.consultarPorIdPaciente(pacienteTeste.getId());
 
         Assertions.assertNotNull(vinculoResultado.getId());
         VinculoValidator.validaVinculoDomain(vinculoTeste, vinculoResultado);
+    }
+
+    @Test
+    void testeVinculoNaoEncontradoException(){
+        Mockito.when(gateway.consultarPorIdPaciente(Mockito.any())).thenReturn(Optional.empty());
+
+        VinculoNaoEncontradoException exception = Assertions.assertThrows(
+                VinculoNaoEncontradoException.class,
+                () -> useCase.consultarPorIdPaciente(pacienteTeste.getId())
+        );
+
+        Assertions.assertEquals(ERRO_VINCULO_NAO_ENCONRADO, exception.getMessage());
     }
 }
