@@ -59,12 +59,10 @@ public class VinculoUseCase {
     public void desvincular(UUID id){
         log.info("Iniciando processo de desvinculação. Id do vinculo: {}", id);
 
-        Vinculo vinculo = consultarPorId(id);
-        vinculo.setStatus(StatusVinculo.INATIVO);
+        consultarPorId(id);
+        gateway.deletar(id);
 
-        Vinculo vinculoSalvo = gateway.salvar(vinculo);
-
-        log.info("Vinculo. Vinculo: {}");
+        log.info("Desvinculado com sucesso.");
     }
 
     public Page<Vinculo> listarPorIdPsicologo(UUID id, Pageable pageable){
