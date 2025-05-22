@@ -78,5 +78,8 @@ public class VinculoUseCaseTest {
         Assertions.assertEquals(ERRO_VINCULO_INVALIDO, exception.getMessage());
     }
 
+    void testeAceitarSolicitacao(){
+
+    }
 
 }

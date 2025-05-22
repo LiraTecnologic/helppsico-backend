@@ -45,7 +45,7 @@ public class VinculoUseCase {
         return vinculoSalvo;
     }
 
-    public void aceitarSolicitacao(UUID id){
+    public Vinculo aceitarSolicitacao(UUID id){
         log.info("Iniciando processo para aceitar a solicitação de vinculo: Id do vinculo: {}", id);
 
         Vinculo vinculo = consultarPorId(id);
@@ -54,6 +54,7 @@ public class VinculoUseCase {
         Vinculo vinculoSalvo = gateway.salvar(vinculo);
 
         log.info("Solicitação de vinculo aceita. Vinculo: {}", vinculoSalvo);
+        return vinculoSalvo;
     }
 
     public void desvincular(UUID id){
