@@ -1,9 +1,11 @@
 package com.liratech.helppsico.application.usecases;
 
+import com.liratech.helppsico.application.exceptions.vinculo.VinculoInvalidoException;
 import com.liratech.helppsico.application.exceptions.vinculo.VinculoNaoEncontradoException;
 import com.liratech.helppsico.application.gateways.VinculoGateway;
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.Psicologo;
+import com.liratech.helppsico.domain.StatusVinculo;
 import com.liratech.helppsico.domain.Vinculo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,13 +20,18 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 public class VinculoUseCase {
-    private static final String ERRO_VINCULO_NAO_ENCONRADO = "Vinculo não encontrado";
     private final PsicologoUseCase psicologoUseCase;
     private final PacienteUseCase pacienteUseCase;
     private final VinculoGateway gateway;
+    public static final String ERRO_VINCULO_NAO_ENCONRADO = "Vinculo não encontrado.";
+    public static final String ERRO_VINCULO_INVALIDO = "Status do vinculo inválido.";
 
     public Vinculo criarSolicitacaoVinculo(Vinculo vinculo){
         log.info("Iniciando criação da solicitação de vinculo: Vinculo: {}", vinculo);
+
+        if (vinculo.getStatus() != StatusVinculo.PENDENTE){
+            throw new VinculoInvalidoException(ERRO_VINCULO_INVALIDO);
+        }
 
         Paciente paciente = pacienteUseCase.consultarPorId(vinculo.getPaciente().getId());
         vinculo.setPaciente(paciente);
@@ -38,30 +45,50 @@ public class VinculoUseCase {
         return vinculoSalvo;
     }
 
-    public Vinculo aceitarSolicitacao(UUID id){
+    public void aceitarSolicitacao(UUID id){
         log.info("Iniciando processo para aceitar a solicitação de vinculo: Id do vinculo: {}", id);
 
+        Vinculo vinculo = consultarPorId(id);
+        vinculo.setStatus(StatusVinculo.ATIVO);
 
+        Vinculo vinculoSalvo = gateway.salvar(vinculo);
 
-        log.info("Solicitação de vinculo aceita. Vinculo: {}");
+        log.info("Solicitação de vinculo aceita. Vinculo: {}", vinculoSalvo);
     }
 
     public void desvincular(UUID id){
-        log.info("Iniciando processo de desvinculação de vinculo: Id do vinculo: {}", id);
+        log.info("Iniciando processo de desvinculação. Id do vinculo: {}", id);
 
-        log.info("Solicitação de vinculo criada. Vinculo: {}");
+        Vinculo vinculo = consultarPorId(id);
+        vinculo.setStatus(StatusVinculo.INATIVO);
+
+        Vinculo vinculoSalvo = gateway.salvar(vinculo);
+
+        log.info("Vinculo. Vinculo: {}");
     }
 
     public Page<Vinculo> listarPorIdPsicologo(UUID id, Pageable pageable){
         log.info("Iniciando listagem da solicitação de vinculo por id psicologo: Id do vinculo: {}", id);
 
-        log.info("Solicitação de vinculo criada. Vinculo: {}");
+        Page<Vinculo> vinculos = gateway.listarPorIdPsicologo(id, pageable);
+
+        log.info("Listagem de solicitações completa. Vinculos: {}", vinculos);
+        return vinculos;
     }
 
     public Vinculo consultarPorIdPaciente(UUID id){
         log.info("Iniciando busca da solicitação de vinculo por paciente: Id do vinculo: {}", id);
 
-        log.info("Solicitação de vinculo criada. Vinculo: {}");
+        Optional<Vinculo> vinculo = gateway.consultarPorIdPaciente(id);
+
+        if (vinculo.isEmpty()){
+            throw new VinculoNaoEncontradoException(ERRO_VINCULO_NAO_ENCONRADO);
+        }
+
+        Vinculo vinculoBuscado = vinculo.get();
+
+        log.info("Solicitação buscada com sucesso. Vinculo: {}", vinculoBuscado);
+        return vinculoBuscado;
     }
 
     private Vinculo consultarPorId(UUID id){
