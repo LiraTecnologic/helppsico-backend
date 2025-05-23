@@ -1,11 +1,8 @@
 package com.liratech.helppsico.builders;
 
-import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.domain.StatusVinculo;
 import com.liratech.helppsico.domain.Vinculo;
-import com.liratech.helppsico.entrypoint.dto.StatusVinculoDto;
 import com.liratech.helppsico.entrypoint.dto.VinculoDto;
-import com.liratech.helppsico.infrastructure.repositories.entities.StatusVinculoEntity;
 import com.liratech.helppsico.infrastructure.repositories.entities.VinculoEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,7 +19,7 @@ public class VinculoBuilder {
                 .id(UUID.randomUUID())
                 .paciente(PacienteBuilder.criarPaciente())
                 .psicologo(PsicologoBuilder.criarPsicologo())
-                .status(StatusVinculo.ATIVO)
+                .status(StatusVinculo.PENDENTE)
                 .build();
     }
 
@@ -31,7 +28,7 @@ public class VinculoBuilder {
                 .id(UUID.randomUUID())
                 .paciente(PacienteBuilder.criarPacienteDto())
                 .psicologo(PsicologoBuilder.criarPsicologoDto())
-                .status(StatusVinculoDto.ATIVO)
+                .status(StatusVinculo.PENDENTE)
                 .build();
     }
 
@@ -40,7 +37,7 @@ public class VinculoBuilder {
                 .id(UUID.randomUUID())
                 .paciente(PacienteBuilder.criarPacienteEntity())
                 .psicologo(PsicologoBuilder.criarPsicologoEntity())
-                .status(StatusVinculoEntity.ATIVO)
+                .status(StatusVinculo.PENDENTE)
                 .build();
     }
 
