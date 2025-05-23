@@ -24,7 +24,6 @@ import java.util.Map;
 public class TokenDataProvider implements TokenGateway {
 
     private final String chaveSecreta;
-
     public static final String ERRO_TOKEN_INVALIDO = "Token inválido.";
     public static final String ERRO_TOKEN_TIPO_NAO_ENCONTRADO = "Claim tipo do token não exncontrado.";
     public static final String ERRO_TOKEN_EXPIRADO = "Token expirado.";
