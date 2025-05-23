@@ -22,7 +22,6 @@ public class FotoDataProvider implements FotoGateway {
     public static final String DIRETORIO_LOCAL = "C:/" ;
     public static final String MENSAGEM_ERRO_SALVAR_FOTO_LOCAL = "Erro ao salvar foto localmente";
 
-
     @Override
     public String salvarLocal(MultipartFile foto) {
         try {
