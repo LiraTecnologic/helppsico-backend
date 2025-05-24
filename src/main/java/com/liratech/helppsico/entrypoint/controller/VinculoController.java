@@ -40,7 +40,7 @@ public class VinculoController {
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDto<VinculoDto>> aceitarVinculo(@PathVariable UUID id){
         VinculoDto vinculoAceito = mapper.paraDto(useCase.aceitarSolicitacao(id));
-        ResponseDto<VinculoDto> response = new ResponseDto<>(vinculoSalvo);
+        ResponseDto<VinculoDto> response = new ResponseDto<>(vinculoAceito);
 
         return ResponseEntity.ok(response);
     }
