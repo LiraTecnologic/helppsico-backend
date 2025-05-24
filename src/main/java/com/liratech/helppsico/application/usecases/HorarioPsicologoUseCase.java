@@ -23,7 +23,8 @@ public class HorarioPsicologoUseCase {
     public static final String ERRO_HORARIO_NAO_ENCONTRADO = "Horario não encontrado.";
 
     public HorarioPsicologo cadastrar(HorarioPsicologo horarioPsicologo){
-        log.info("Iniciando o processo de cadastrar horário no sistema. Horario: {}", horarioPsicologo);
+        log.info("Iniciando o processo de cadastrar h" +
+                "orário no sistema. Horario: {}", horarioPsicologo);
 
         Psicologo psicologo = psicologoUseCase.consultarPorId(horarioPsicologo.getId());
         horarioPsicologo.setPsicologo(psicologo);
