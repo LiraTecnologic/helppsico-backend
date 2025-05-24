@@ -108,7 +108,7 @@ public class ProntuarioControllerTest {
     @DisplayName("Deve alterar um prontuário existente")
     void deveAlterarProntuarioExistente() throws Exception {
 
-        when(repository.findById(Mockito.any())).thenReturn(Optional.of(prontuario))
+        when(repository.findById(Mockito.any())).thenReturn(Optional.of(prontuario));
         when(repository.save(Mockito.any())).thenReturn(prontuario);
 
 

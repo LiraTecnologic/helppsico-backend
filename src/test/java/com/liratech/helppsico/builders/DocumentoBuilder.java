@@ -37,8 +37,8 @@ public class DocumentoBuilder {
                 dadosGeraisDocumentoDto.getDataAtendimento(),
                 enderecoMapper.paraDomain(dadosGeraisDocumentoDto.getLocal()),
                 dadosGeraisDocumentoDto.getDescricao(),
-                dadosGeraisDocumentoDto.getDescrcaoEstadoPsicologico(),
-                dadosGeraisDocumentoDto.getPeridoAfastamento(),
+                dadosGeraisDocumentoDto.getDescricaoEstadoPsicologico(),
+                dadosGeraisDocumentoDto.getPeriodoAfastamento(),
                 dadosGeraisDocumentoDto.getFinalidade()
         );
     }

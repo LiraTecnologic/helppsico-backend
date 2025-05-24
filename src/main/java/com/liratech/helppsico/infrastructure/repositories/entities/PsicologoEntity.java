@@ -1,5 +1,6 @@
 package com.liratech.helppsico.infrastructure.repositories.entities;
 
+import com.liratech.helppsico.domain.StatusPsicologo;
 import com.liratech.helppsico.domain.TipoGenero;
 import jakarta.persistence.*;
 import lombok.*;
@@ -42,4 +43,5 @@ public class PsicologoEntity {
     private String fotoUrl;
 
     private String biografia;
+    private StatusPsicologo statusPsicologo;
 }

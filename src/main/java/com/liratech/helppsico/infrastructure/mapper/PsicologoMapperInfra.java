@@ -4,14 +4,9 @@ import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.infrastructure.repositories.entities.PsicologoEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
-import org.springframework.data.domain.Page;
 
-import java.util.List;
-
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
-public interface PsicologoMapper {
+@Mapper(componentModel = "spring",implementationName = "PsicologoMapperInfraImpl", unmappedTargetPolicy = ReportingPolicy.ERROR)
+public interface PsicologoMapperInfra {
     PsicologoEntity paraEntity (Psicologo psicologo);
     Psicologo paraDomain (PsicologoEntity psicologoEntity);
-    List<Psicologo> paraDomains (List<PsicologoEntity> psicologoEntities);
-    Page<Psicologo> paraDomainsPage (Page<PsicologoEntity> psicologoEntitiesPage);
 }

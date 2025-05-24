@@ -3,7 +3,7 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.application.gateways.ConsultaGateway;
 import com.liratech.helppsico.domain.Consulta;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.ConsultaMapper;
+import com.liratech.helppsico.infrastructure.mapper.ConsultaMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.ConsultaRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.ConsultaEntity;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.UUID;
 @Slf4j
 public class ConsultaDataProvider implements ConsultaGateway {
 
-    private final ConsultaMapper mapper;
+    private final ConsultaMapperInfra mapper;
     private final ConsultaRepository repository;
 
     public static final String MENSAGEM_ERRO_DELETAR_CONSULTA = "Erro ao deletar uma consulta pelo id.";

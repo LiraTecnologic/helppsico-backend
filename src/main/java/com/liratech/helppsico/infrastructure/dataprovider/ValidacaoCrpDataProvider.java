@@ -3,7 +3,7 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.application.gateways.ValidacaoCrpGateway;
 import com.liratech.helppsico.domain.ValidacaoCrp;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.ValidacaoCrpMapper;
+import com.liratech.helppsico.infrastructure.mapper.ValidacaoCrpMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.ValidacaoCrpRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.ValidacaoCrpEntity;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.UUID;
 public class ValidacaoCrpDataProvider implements ValidacaoCrpGateway {
 
     private final ValidacaoCrpRepository repository;
-    private final ValidacaoCrpMapper mapper;
+    private final ValidacaoCrpMapperInfra mapper;
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar Validação de Crp";
     public static final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar Validação de Crp por ID";
     public static final String MENSAGEM_ERRO_LISTAR = "Erro ao listar Validações de Cpr";

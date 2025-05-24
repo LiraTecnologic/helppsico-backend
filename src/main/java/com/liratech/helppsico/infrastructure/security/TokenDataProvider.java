@@ -8,8 +8,10 @@ import com.liratech.helppsico.application.exceptions.token.TokenInvalidoExceptio
 import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -18,23 +20,22 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@RequiredArgsConstructor
 @Component
 @Slf4j
 public class TokenDataProvider implements TokenGateway {
 
-    private final String chaveSecreta;
+    @Value("${jwt.secret.key}")
+    private String chaveSecreta;
     public static final String ERRO_TOKEN_INVALIDO = "Token inválido.";
     public static final String ERRO_TOKEN_TIPO_NAO_ENCONTRADO = "Claim tipo do token não exncontrado.";
     public static final String ERRO_TOKEN_EXPIRADO = "Token expirado.";
 
-    public TokenDataProvider(){
-        Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
-        this.chaveSecreta = dotenv.get("JWT_SECRET_KEY");
+    public TokenDataProvider( @Value("${jwt.secret.key}") String chaveSecreta){
+        this.chaveSecreta = chaveSecreta;
 
-        if (chaveSecreta == null || chaveSecreta.isBlank()) {
-            throw new IllegalStateException("Chave JWT não configurada no .env");
-        }
+//        if (this.chaveSecreta == null || this.chaveSecreta.isBlank()) {
+//            throw new IllegalStateException("Chave JWT não configurada no .env");
+//        }
     }
 
     @Override

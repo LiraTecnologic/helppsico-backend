@@ -3,7 +3,7 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.builders.HorarioPsicologoBuilder;
 import com.liratech.helppsico.domain.HorarioPsicologo;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.HorarioPsicologoMapper;
+import com.liratech.helppsico.infrastructure.mapper.HorarioPsicologoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.HorarioPsicologoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.HorarioPsicologoEntity;
 import com.liratech.helppsico.validators.HorarioPsicologoValidator;
@@ -35,7 +35,7 @@ public class HorarioPsicologoDataProviderTest {
 
     private HorarioPsicologo horarioPsicologoDomain;
     private HorarioPsicologoEntity horarioPsicologoEntity;
-    private HorarioPsicologoMapper mapper;
+    private HorarioPsicologoMapperInfra mapper;
     private Page<HorarioPsicologo> horarioPsicologoPage;
     private Page<HorarioPsicologoEntity> horarioPsicologoEntityPage;
     private UUID id;

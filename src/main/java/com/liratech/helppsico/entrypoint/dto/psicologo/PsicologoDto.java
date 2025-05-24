@@ -1,6 +1,7 @@
 package com.liratech.helppsico.entrypoint.dto.psicologo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.liratech.helppsico.domain.StatusPsicologo;
 import com.liratech.helppsico.domain.TipoGenero;
 import com.liratech.helppsico.entrypoint.dto.EnderecoDto;
 import jakarta.persistence.EnumType;
@@ -75,6 +76,10 @@ public class PsicologoDto {
     @JsonProperty("biografia")
     private String biografia;
 
-    @JsonProperty("urlFoto")
-    private String urlFoto;
+    @JsonProperty("fotoUrl")
+    private String fotoUrl;
+
+    @JsonProperty("statusPsicologo")
+    @Enumerated(EnumType.STRING)
+    private StatusPsicologo statusPsicologo;
 }

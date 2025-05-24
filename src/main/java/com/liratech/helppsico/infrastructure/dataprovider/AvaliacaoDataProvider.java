@@ -3,7 +3,7 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.application.gateways.AvaliacaoGateway;
 import com.liratech.helppsico.domain.Avaliacao;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.AvaliacaoMapper;
+import com.liratech.helppsico.infrastructure.mapper.AvaliacaoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.AvaliacaoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.AvaliacaoEntity;
 import lombok.RequiredArgsConstructor;
@@ -12,17 +12,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class AvaliacaoDataProvider implements AvaliacaoGateway {
 
-    private final AvaliacaoMapper mapper;
+    private final AvaliacaoMapperInfra mapper;
     private final AvaliacaoRepository repository;
 
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar avaliação.";

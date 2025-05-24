@@ -12,8 +12,9 @@ import lombok.experimental.SuperBuilder;
 import java.time.LocalDate;
 import java.util.UUID;
 
-@MappedSuperclass
+@Entity(name = "Documento")
 @Table(name = "documentos")
+@Inheritance(strategy = InheritanceType.JOINED)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

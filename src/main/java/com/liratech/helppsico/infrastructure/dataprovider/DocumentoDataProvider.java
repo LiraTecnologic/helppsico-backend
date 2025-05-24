@@ -3,7 +3,7 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.application.gateways.DocumentoGateway;
 import com.liratech.helppsico.domain.documento.Documento;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.DocumentoMapper;
+import com.liratech.helppsico.infrastructure.mapper.DocumentoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.DocumentoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.documento.DocumentoEntity;
 import org.springframework.data.domain.Page;
@@ -19,8 +19,7 @@ import org.springframework.stereotype.Component;
 public class DocumentoDataProvider implements DocumentoGateway {
 
     private final DocumentoRepository repository;
-    private final DocumentoMapper mapper;
-
+    private final DocumentoMapperInfra mapper;
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar documento.";
     public static final String MENSAGEM_ERRO_LISTAR = "Erro ao listar documento.";
 

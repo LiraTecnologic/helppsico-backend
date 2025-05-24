@@ -3,7 +3,7 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.application.gateways.PacienteGateway;
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.PacienteMapper;
+import com.liratech.helppsico.infrastructure.mapper.PacienteMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.PacienteRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.PacienteEntity;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.UUID;
 public class PacienteDataProvider implements PacienteGateway {
 
     private final PacienteRepository repository;
-    private final PacienteMapper mapper;
+    private final PacienteMapperInfra mapper;
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar paciente.";
     public static final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar paciente pelo id.";
     public static final String MENSAGEM_ERRO_CONSULTAR_POR_EMAIL = "Erro ao consultar paciente pelo email.";

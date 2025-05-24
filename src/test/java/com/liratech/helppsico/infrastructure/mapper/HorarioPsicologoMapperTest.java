@@ -11,7 +11,7 @@ import org.mapstruct.factory.Mappers;
 
 class HorarioPsicologoMapperTest {
 
-    private final HorarioPsicologoMapper horarioPsicologoMapper = Mappers.getMapper(HorarioPsicologoMapper.class);
+    private final HorarioPsicologoMapperInfra horarioPsicologoMapper = Mappers.getMapper(HorarioPsicologoMapperInfra.class);
 
     @Test
     @DisplayName("Caso de sucesso na tranformação de HorarioPsicologo Domain para Entity")

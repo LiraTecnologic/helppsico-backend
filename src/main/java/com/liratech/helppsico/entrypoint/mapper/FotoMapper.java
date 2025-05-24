@@ -8,10 +8,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
+@Mapper(componentModel = "spring", implementationName = "FotoMapperImpl", unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface FotoMapper {
     Foto paraDomain (FotoDto fotoDto);
-
-    @Mapping(target = "psicologo.foto", ignore = true)
     FotoDto paraDto (Foto foto);
 }

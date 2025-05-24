@@ -3,7 +3,7 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.application.gateways.VinculoGateway;
 import com.liratech.helppsico.domain.Vinculo;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.VinculoMapper;
+import com.liratech.helppsico.infrastructure.mapper.VinculoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.VinculoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.VinculoEntity;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ import java.util.UUID;
 public class VinculoDataProvider implements VinculoGateway {
 
     private final VinculoRepository repository;
-    private final VinculoMapper mapper;
+    private final VinculoMapperInfra mapper;
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar o vinculo.";
     public static final String MENSAGEM_ERRO_CONSULTAR_ID = "Erro ao consultar vinculo por id.";
     public static final String MENSAGEM_ERRO_DELETAR = "Erro ao deletar o vinculo.";

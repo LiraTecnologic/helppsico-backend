@@ -8,13 +8,12 @@ import com.liratech.helppsico.builders.DadosGeraisDocumentoBuilder;
 import com.liratech.helppsico.builders.DocumentoBuilder;
 import com.liratech.helppsico.builders.SolicitacaoDocumentoBuilder;
 import com.liratech.helppsico.domain.documento.*;
-import com.liratech.helppsico.entrypoint.mapper.DocumentoMapper;
+import com.liratech.helppsico.infrastructure.mapper.DocumentoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.DocumentoRepository;
 import com.liratech.helppsico.infrastructure.repositories.SolicitacaoDocumentoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.documento.SolicitacaoDocumentoEntity;
 import com.liratech.helppsico.validators.json.DocumentoValidatorJson;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -25,8 +24,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-
-import javax.xml.stream.Location;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -50,7 +47,7 @@ public class EmissaoDocumentoControllerTest {
     private DocumentoRepository repository;
 
     private final DocumentoMapper mapperEntry;
-    private final com.liratech.helppsico.infrastructure.mapper.DocumentoMapper mapperInfra;
+    private final DocumentoMapperInfra mapperInfra;
     private DadosGeraisDocumentoDto dadosGeraisTeste;
     private SolicitacaoDocumentoEntity solicitacaoDocumentoRetorno;
     private Documento documentoRetorno;

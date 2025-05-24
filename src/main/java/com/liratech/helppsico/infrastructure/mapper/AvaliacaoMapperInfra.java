@@ -5,8 +5,8 @@ import com.liratech.helppsico.infrastructure.repositories.entities.AvaliacaoEnti
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
-public interface AvaliacaoMapper {
+@Mapper(componentModel = "spring", implementationName = "AvaliacaoMapperInfraImpl",  unmappedTargetPolicy = ReportingPolicy.ERROR)
+public interface AvaliacaoMapperInfra {
     AvaliacaoEntity paraEntity (Avaliacao avaliacao);
     Avaliacao paraDomain (AvaliacaoEntity avaliacaoEntity);
 }

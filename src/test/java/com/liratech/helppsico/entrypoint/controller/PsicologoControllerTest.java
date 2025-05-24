@@ -8,7 +8,8 @@ import com.liratech.helppsico.builders.PsicologoBuilder;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
 import com.liratech.helppsico.entrypoint.mapper.PsicologoMapper;
-import com.liratech.helppsico.infrastructure.mapper.EnderecoMapper;
+import com.liratech.helppsico.infrastructure.mapper.EnderecoMapperInfra;
+import com.liratech.helppsico.infrastructure.mapper.PsicologoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.EnderecoRepository;
 import com.liratech.helppsico.infrastructure.repositories.PsicologoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.EnderecoEntity;
@@ -19,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -47,8 +47,8 @@ public class PsicologoControllerTest {
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
     private final PsicologoMapper mapperEntry;
-    private final com.liratech.helppsico.infrastructure.mapper.PsicologoMapper mapperInfra;
-    private final EnderecoMapper enderecoMapper;
+    private final PsicologoMapperInfra mapperInfra;
+    private final EnderecoMapperInfra enderecoMapper;
 
     @MockitoSpyBean
     private final PsicologoRepository repository;

@@ -4,8 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liratech.helppsico.builders.SolicitacaoDocumentoBuilder;
 import com.liratech.helppsico.domain.documento.SolicitacaoDocumento;
 import com.liratech.helppsico.entrypoint.dto.documento.SolicitacaoDocumentoDto;
-import com.liratech.helppsico.infrastructure.mapper.PacienteMapper;
-import com.liratech.helppsico.infrastructure.mapper.PsicologoMapper;
+import com.liratech.helppsico.infrastructure.mapper.PacienteMapperInfra;
+import com.liratech.helppsico.infrastructure.mapper.PsicologoMapperInfra;
+import com.liratech.helppsico.infrastructure.mapper.SolicitacaoDocumentoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.PacienteRepository;
 import com.liratech.helppsico.infrastructure.repositories.PsicologoRepository;
 import com.liratech.helppsico.infrastructure.repositories.SolicitacaoDocumentoRepository;
@@ -40,10 +41,10 @@ class SolicitacaoDocumentoControllerTest {
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
 
-    private final PsicologoMapper mapperPsicologo;
-    private final PacienteMapper mapperPaciente;
+    private final PsicologoMapperInfra mapperPsicologo;
+    private final PacienteMapperInfra mapperPaciente;
     private final SolicitacaoDocumentoMapper mapperEntry;
-    private final com.liratech.helppsico.infrastructure.mapper.SolicitacaoDocumentoMapper mapperInfra;
+    private final SolicitacaoDocumentoMapperInfra mapperInfra;
 
     @MockitoSpyBean
     private SolicitacaoDocumentoRepository repository;
@@ -63,9 +64,9 @@ class SolicitacaoDocumentoControllerTest {
     private PacienteEntity pacienteEntity;
     private PsicologoEntity psicologoEntity;
 
-    public SolicitacaoDocumentoControllerTest(MockMvc mockMvc, ObjectMapper objectMapper, PsicologoMapper mapperPsicologo,
-                                              PacienteMapper mapperPaciente, SolicitacaoDocumentoMapper mapperEntry,
-                                              com.liratech.helppsico.infrastructure.mapper.SolicitacaoDocumentoMapper mapperInfra,
+    public SolicitacaoDocumentoControllerTest(MockMvc mockMvc, ObjectMapper objectMapper, PsicologoMapperInfra mapperPsicologo,
+                                              PacienteMapperInfra mapperPaciente, SolicitacaoDocumentoMapper mapperEntry,
+                                              SolicitacaoDocumentoMapperInfra mapperInfra,
                                               SolicitacaoDocumentoDto solicitacaoDtoEntrada, SolicitacaoDocumento solicitacaoDomain,
                                               SolicitacaoDocumentoEntity solicitacaoEntity) {
         this.mockMvc = mockMvc;

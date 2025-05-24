@@ -1,6 +1,5 @@
 package com.liratech.helppsico.entrypoint.controller.documento;
 
-import com.liratech.helppsico.application.exceptions.TipoDocumentoInvalidoException;
 import com.liratech.helppsico.application.usecases.DocumentoUseCase;
 import com.liratech.helppsico.application.usecases.dto.DadosGeraisDocumentoDto;
 import com.liratech.helppsico.entrypoint.dto.ResponseDto;
@@ -26,7 +25,7 @@ public class EmissaoDocumentoController {
     private DocumentoMapper mapper;
 
     @PostMapping("/{id}")
-    public ResponseEntity<ResponseDto<DocumentoDto>> emitirDocumento(@RequestBody DadosGeraisDocumentoDto dadosGerais, @PathVariable UUID idSolicitacao) throws TipoDocumentoInvalidoException {
+    public ResponseEntity<ResponseDto<DocumentoDto>> emitirDocumento(@RequestBody DadosGeraisDocumentoDto dadosGerais, @PathVariable UUID idSolicitacao) {
         DocumentoDto documentoDto = mapper.paraDto(useCase.salvar(idSolicitacao, dadosGerais));
 
         ResponseDto<DocumentoDto> response = new ResponseDto<>(documentoDto);

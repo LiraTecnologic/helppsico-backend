@@ -16,7 +16,7 @@ public class DocumentoFactory {
     private static final EnderecoMapper enderecoMapper = null;
     public static final String MENSAGEM_TIPO_DOCUMENTO_INVALIDO = "Tipo do documento inválido";
 
-    public static Documento criar(DadosGeraisDocumentoDto dadosGeraisDocumentoDto, TipoDocumento tipoDocumento) throws TipoDocumentoInvalidoException {
+    public static Documento criar(DadosGeraisDocumentoDto dadosGeraisDocumentoDto, TipoDocumento tipoDocumento) {
         switch (tipoDocumento.getCodigo()){
             case 1:
                 return new Atestado(
@@ -29,8 +29,8 @@ public class DocumentoFactory {
                         dadosGeraisDocumentoDto.getDataAtendimento(),
                         enderecoMapper.paraDomain(dadosGeraisDocumentoDto.getLocal()),
                         dadosGeraisDocumentoDto.getDescricao(),
-                        dadosGeraisDocumentoDto.getDescrcaoEstadoPsicologico(),
-                        dadosGeraisDocumentoDto.getPeridoAfastamento(),
+                        dadosGeraisDocumentoDto.getDescricaoEstadoPsicologico(),
+                        dadosGeraisDocumentoDto.getPeriodoAfastamento(),
                         dadosGeraisDocumentoDto.getFinalidade()
                 );
             case 2:

@@ -8,8 +8,8 @@ import com.liratech.helppsico.builders.FotoBuilder;
 import com.liratech.helppsico.entrypoint.dto.FotoDto;
 import com.liratech.helppsico.entrypoint.mapper.FotoMapper;
 import com.liratech.helppsico.infrastructure.dataprovider.FotoDataProvider;
-import com.liratech.helppsico.infrastructure.mapper.PacienteMapper;
-import com.liratech.helppsico.infrastructure.mapper.PsicologoMapper;
+import com.liratech.helppsico.infrastructure.mapper.PacienteMapperInfra;
+import com.liratech.helppsico.infrastructure.mapper.PsicologoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.FotoRepository;
 import com.liratech.helppsico.infrastructure.repositories.PacienteRepository;
 import com.liratech.helppsico.infrastructure.repositories.PsicologoRepository;
@@ -43,8 +43,8 @@ class FotoControllerTest {
     private final ObjectMapper objectMapper;
     private final FotoMapper mapperEntry;
     private final com.liratech.helppsico.infrastructure.mapper.FotoMapper mapperInfra;
-    private final PacienteMapper pacienteMapper;
-    private final PsicologoMapper psicologoMapper;
+    private final PacienteMapperInfra pacienteMapper;
+    private final PsicologoMapperInfra psicologoMapper;
 
     @MockitoSpyBean
     private FotoRepository fotoRepository;
@@ -64,7 +64,7 @@ class FotoControllerTest {
     private Foto fotoDomainPsicologo;
     private MockMultipartFile arquivoFoto;
 
-    public FotoControllerTest(MockMvc mockMvc, ObjectMapper objectMapper, FotoMapper mapper, FotoMapper mapperEntry, com.liratech.helppsico.infrastructure.mapper.FotoMapper mapperInfra, PacienteMapper pacienteMapper, PsicologoMapper psicologoMapper, MockMultipartFile arquivoFoto, Foto fotoDomainPaciente, FotoDto fotoDtoPaciente, FotoDto fotoDtoPsicologo, Foto fotoDomainPsicologo) {
+    public FotoControllerTest(MockMvc mockMvc, ObjectMapper objectMapper, FotoMapper mapper, FotoMapper mapperEntry, com.liratech.helppsico.infrastructure.mapper.FotoMapper mapperInfra, PacienteMapperInfra pacienteMapper, PsicologoMapperInfra psicologoMapper, MockMultipartFile arquivoFoto, Foto fotoDomainPaciente, FotoDto fotoDtoPaciente, FotoDto fotoDtoPsicologo, Foto fotoDomainPsicologo) {
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;
         this.mapperEntry = mapperEntry;

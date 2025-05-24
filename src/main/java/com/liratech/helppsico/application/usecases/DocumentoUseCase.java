@@ -23,7 +23,7 @@ public class DocumentoUseCase {
     private final SolicitacaoDocumentoUseCase solicitacaoDocumentoUseCase;
     private final DocumentoGateway gateway;
 
-    public Documento salvar(UUID idSolicitacao, DadosGeraisDocumentoDto dadosGeraisDocumentoDto) throws TipoDocumentoInvalidoException {
+    public Documento salvar(UUID idSolicitacao, DadosGeraisDocumentoDto dadosGeraisDocumentoDto) {
         log.info("Iniciando salvamento do documento. ID da solicitação: {}, Dados gerais: {}", idSolicitacao, dadosGeraisDocumentoDto);
 
         SolicitacaoDocumento solicitacaoDocumento = solicitacaoDocumentoUseCase.buscarPorId(idSolicitacao);

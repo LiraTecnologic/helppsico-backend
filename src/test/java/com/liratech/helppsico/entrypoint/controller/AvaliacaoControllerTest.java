@@ -2,21 +2,18 @@ package com.liratech.helppsico.entrypoint.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liratech.helppsico.builders.AvaliacaoBuilder;
-import com.liratech.helppsico.builders.PsicologoBuilder;
 import com.liratech.helppsico.domain.Avaliacao;
-import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.entrypoint.dto.psicologo.AvaliacaoDto;
 import com.liratech.helppsico.entrypoint.mapper.AvaliacaoMapper;
-import com.liratech.helppsico.infrastructure.mapper.PacienteMapper;
-import com.liratech.helppsico.infrastructure.mapper.PsicologoMapper;
+import com.liratech.helppsico.infrastructure.mapper.AvaliacaoMapperInfra;
+import com.liratech.helppsico.infrastructure.mapper.PacienteMapperInfra;
+import com.liratech.helppsico.infrastructure.mapper.PsicologoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.AvaliacaoRepository;
 import com.liratech.helppsico.infrastructure.repositories.PacienteRepository;
 import com.liratech.helppsico.infrastructure.repositories.PsicologoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.AvaliacaoEntity;
-import com.liratech.helppsico.validators.AvaliacaoValidator;
 import com.liratech.helppsico.validators.json.AvaliacaoValidatorJson;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -44,9 +41,9 @@ public class AvaliacaoControllerTest {
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
     private final AvaliacaoMapper mapperEntry;
-    private final com.liratech.helppsico.infrastructure.mapper.AvaliacaoMapper mapperInfra;
-    private final PsicologoMapper mapperPsicologo;
-    private final PacienteMapper mapperPaciente;
+    private final AvaliacaoMapperInfra mapperInfra;
+    private final PsicologoMapperInfra mapperPsicologo;
+    private final PacienteMapperInfra mapperPaciente;
 
     @MockitoSpyBean
     private final AvaliacaoRepository repository;

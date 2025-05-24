@@ -3,7 +3,7 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.application.gateways.PsicologoGateway;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.PsicologoMapper;
+import com.liratech.helppsico.infrastructure.mapper.PsicologoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.PsicologoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.PsicologoEntity;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -23,7 +21,7 @@ import java.util.stream.Collectors;
 public class PsicologoDataProvider implements PsicologoGateway {
 
     private final PsicologoRepository repository;
-    private final PsicologoMapper mapper;
+    private final PsicologoMapperInfra mapper;
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar psicologo.";
     public static final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar psicologo pelo id.";
     public static final String MENSAGEM_ERRO_CONSULTAR_POR_NOME = "Erro ao consultar psicologos pelo nome.";

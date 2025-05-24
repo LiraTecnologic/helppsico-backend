@@ -5,8 +5,8 @@ import com.liratech.helppsico.infrastructure.repositories.entities.ProntuarioEnt
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "service", unmappedTargetPolicy = ReportingPolicy.ERROR)
-public interface ProntuarioMapper {
+@Mapper(componentModel = "spring",implementationName = "ProntuarioMapperInfraImpl", unmappedTargetPolicy = ReportingPolicy.ERROR)
+public interface ProntuarioMapperInfra {
     ProntuarioEntity paraEntity (Prontuario prontuario);
     Prontuario paraDomain (ProntuarioEntity prontuarioEntity);
 }

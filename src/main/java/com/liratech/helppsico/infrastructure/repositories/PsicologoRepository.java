@@ -18,9 +18,9 @@ public interface PsicologoRepository extends JpaRepository<PsicologoEntity, UUID
 
     @Query("""
             SELECT p
-            FROM psicologos p
-            LEFT JOIN avaliacoes a ON a.id_psicologo = p.id_psicologo
-            GROUP BY p.id_psicologo
+            FROM Psicologo p
+            LEFT JOIN Avaliacao a ON a.psicologo.id = p.id
+            GROUP BY p.id
             ORDER BY AVG(a.nota) DESC
             """)
     Page<PsicologoEntity> consultarMelhoresAvaliados(Pageable pageable);

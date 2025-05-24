@@ -4,6 +4,7 @@ import com.liratech.helppsico.application.gateways.FotoGateway;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,8 +16,7 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 @Component
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class FotoDataProvider implements FotoGateway {
     public static final String DIRETORIO_LOCAL = "C:/" ;

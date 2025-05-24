@@ -8,15 +8,8 @@ import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
+@Mapper(componentModel = "spring", implementationName = "ConsultaMapperImpl", unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface ConsultaMapper {
     Consulta paraDomain (ConsultaDto consultaDto);
-
-    @Mapping(target = "psicologo.foto", ignore = true)
-    @Mapping(target = "paciente.foto", ignore = true)
     ConsultaDto paraDto (Consulta consulta);
-
-    @Mapping(target = "psicologo.foto", ignore = true)
-    @Mapping(target = "paciente.foto", ignore = true)
-    List<ConsultaDto> paraDtos (List<Consulta> consultas);
 }

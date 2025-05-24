@@ -5,8 +5,8 @@ import com.liratech.helppsico.infrastructure.repositories.entities.documento.Sol
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
-public interface SolicitacaoDocumentoMapper {
+@Mapper(componentModel = "spring",implementationName = "SolicitacaoDocumentoMapperInfraImpl", unmappedTargetPolicy = ReportingPolicy.ERROR)
+public interface SolicitacaoDocumentoMapperInfra {
     SolicitacaoDocumentoEntity paraEntity(SolicitacaoDocumento domain);
     SolicitacaoDocumento paraDomain(SolicitacaoDocumentoEntity entity);
 }

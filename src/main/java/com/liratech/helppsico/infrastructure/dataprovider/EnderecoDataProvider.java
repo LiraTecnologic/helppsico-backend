@@ -2,7 +2,7 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 
 import com.liratech.helppsico.application.gateways.EnderecoGateway;
 import com.liratech.helppsico.domain.Endereco;
-import com.liratech.helppsico.infrastructure.mapper.EnderecoMapper;
+import com.liratech.helppsico.infrastructure.mapper.EnderecoMapperInfra;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
 import com.liratech.helppsico.infrastructure.repositories.EnderecoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.EnderecoEntity;
@@ -19,7 +19,7 @@ import java.util.UUID;
 public class EnderecoDataProvider implements EnderecoGateway {
 
     private final EnderecoRepository repository;
-    private final EnderecoMapper mapper;
+    private final EnderecoMapperInfra mapper;
 
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar endereço.";
     public static final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar endereço pelo id.";

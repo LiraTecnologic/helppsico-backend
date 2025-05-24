@@ -8,7 +8,8 @@ import com.liratech.helppsico.domain.HorarioPsicologo;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.entrypoint.dto.psicologo.HorarioPsicologoDto;
 import com.liratech.helppsico.entrypoint.mapper.HorarioPsicologoMapper;
-import com.liratech.helppsico.infrastructure.mapper.PsicologoMapper;
+import com.liratech.helppsico.infrastructure.mapper.HorarioPsicologoMapperInfra;
+import com.liratech.helppsico.infrastructure.mapper.PsicologoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.HorarioPsicologoRepository;
 import com.liratech.helppsico.infrastructure.repositories.PsicologoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.HorarioPsicologoEntity;
@@ -44,8 +45,8 @@ class HorarioPsicologoControllerTest {
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
     private final HorarioPsicologoMapper mapperEntry;
-    private final com.liratech.helppsico.infrastructure.mapper.HorarioPsicologoMapper mapperInfra;
-    private final PsicologoMapper psicologoMapper;
+    private final HorarioPsicologoMapperInfra mapperInfra;
+    private final PsicologoMapperInfra psicologoMapper;
 
     @MockitoSpyBean
     private HorarioPsicologoRepository repository;

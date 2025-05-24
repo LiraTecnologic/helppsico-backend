@@ -15,7 +15,7 @@ import org.mapstruct.factory.Mappers;
 
 class VinculoMapperTest {
 
-    private final VinculoMapper vinculoMapper = Mappers.getMapper(VinculoMapper.class);
+    private final VinculoMapperInfra vinculoMapper = Mappers.getMapper(VinculoMapperInfra.class);
 
     @Test
     @DisplayName("Caso de sucesso na trasnformação de Vinculo Domain para Entity")

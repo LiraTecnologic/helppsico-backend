@@ -16,7 +16,7 @@ import java.util.List;
 
 class PsicologoMapperTest {
 
-    private final PsicologoMapper psicologoMapper = Mappers.getMapper(PsicologoMapper.class);
+    private final PsicologoMapperInfra psicologoMapper = Mappers.getMapper(PsicologoMapperInfra.class);
 
     @Test
     @DisplayName("Caso de sucesso na transformação de Psicologo Domian para Entity")

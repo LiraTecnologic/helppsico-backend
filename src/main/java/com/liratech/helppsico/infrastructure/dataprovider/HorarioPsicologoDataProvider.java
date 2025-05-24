@@ -3,7 +3,7 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.application.gateways.HorarioPsicologoGateway;
 import com.liratech.helppsico.domain.HorarioPsicologo;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.HorarioPsicologoMapper;
+import com.liratech.helppsico.infrastructure.mapper.HorarioPsicologoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.HorarioPsicologoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.HorarioPsicologoEntity;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.UUID;
 public class HorarioPsicologoDataProvider implements HorarioPsicologoGateway {
 
     private final HorarioPsicologoRepository repository;
-    private final HorarioPsicologoMapper mapper;
+    private final HorarioPsicologoMapperInfra mapper;
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar horario.";
     public static final String MENSAGEM_ERRO_BUSCAR_POR_PSICOLOGO = "Erro ao buscar horarios por psicologo.";
     public static final String MENSAGEM_ERRO_BUSCAR_POR_ID = "Erro ao buscar horario por id.";

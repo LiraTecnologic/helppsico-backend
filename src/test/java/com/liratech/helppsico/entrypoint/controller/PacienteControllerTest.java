@@ -8,6 +8,7 @@ import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.entrypoint.dto.PacienteDto;
 import com.liratech.helppsico.entrypoint.mapper.EnderecoMapper;
 import com.liratech.helppsico.entrypoint.mapper.PacienteMapper;
+import com.liratech.helppsico.infrastructure.mapper.PacienteMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.PacienteRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.EnderecoEntity;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,7 @@ class PacienteControllerTest {
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
     private final PacienteMapper mapperEntry;
-    private final com.liratech.helppsico.infrastructure.mapper.PacienteMapper mapperInfra;
+    private final PacienteMapperInfra mapperInfra;
     private final EnderecoMapper enderecoMapper;
 
     @MockitoSpyBean

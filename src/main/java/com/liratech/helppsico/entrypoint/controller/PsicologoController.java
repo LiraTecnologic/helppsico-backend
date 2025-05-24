@@ -49,7 +49,7 @@ public class PsicologoController {
             @RequestParam(defaultValue = "nome,asc") String sort){
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
 
-        Page<PsicologoDto> psicologos = mapper.paraDtosPage(useCase.listar(pageable));
+        Page<PsicologoDto> psicologos = useCase.listar(pageable).map(mapper::paraDto);
         ResponseDto<Page<PsicologoDto>> resposta = new ResponseDto<>(psicologos);
 
         return ResponseEntity.ok(resposta);
@@ -74,7 +74,7 @@ public class PsicologoController {
 
         String nomeFormatado = nome.replace("-", " ");
 
-        Page<PsicologoDto> psicologos = mapper.paraDtosPage(useCase.consultarPorNome(nomeFormatado, pageable));
+    Page<PsicologoDto> psicologos = useCase.consultarPorNome(nomeFormatado, pageable).map(mapper::paraDto);
         ResponseDto<Page<PsicologoDto>> resposta = new ResponseDto<>(psicologos);
 
         return ResponseEntity.ok(resposta);
@@ -87,7 +87,7 @@ public class PsicologoController {
             @RequestParam(defaultValue = "nome,asc") String sort){
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
 
-        Page<PsicologoDto> psicologos = mapper.paraDtosPage(useCase.consultarMelhoresAvaliados(pageable));
+        Page<PsicologoDto> psicologos = useCase.consultarMelhoresAvaliados(pageable).map(mapper::paraDto);
         ResponseDto<Page<PsicologoDto>> resposta = new ResponseDto<>(psicologos);
 
         return ResponseEntity.ok(resposta);

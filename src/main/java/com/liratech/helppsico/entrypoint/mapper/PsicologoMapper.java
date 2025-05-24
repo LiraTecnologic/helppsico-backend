@@ -9,9 +9,8 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
+@Mapper(componentModel = "spring", implementationName = "PsicologoMapperImpl",  unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface PsicologoMapper {
-
     Psicologo paraDomain (PsicologoDto psicologoDto);
     PsicologoDto paraDto (Psicologo psicologo);
 }

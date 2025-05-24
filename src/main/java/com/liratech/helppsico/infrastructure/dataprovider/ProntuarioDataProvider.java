@@ -1,13 +1,11 @@
 package com.liratech.helppsico.infrastructure.dataprovider;
 
 import com.liratech.helppsico.application.gateways.ProntuarioGateway;
-import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.Prontuario;
-import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.PacienteMapper;
-import com.liratech.helppsico.infrastructure.mapper.ProntuarioMapper;
-import com.liratech.helppsico.infrastructure.mapper.PsicologoMapper;
+import com.liratech.helppsico.infrastructure.mapper.PacienteMapperInfra;
+import com.liratech.helppsico.infrastructure.mapper.ProntuarioMapperInfra;
+import com.liratech.helppsico.infrastructure.mapper.PsicologoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.ProntuarioRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.ProntuarioEntity;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +23,9 @@ import java.util.UUID;
 public class ProntuarioDataProvider implements ProntuarioGateway {
 
     private final ProntuarioRepository repository;
-    private final ProntuarioMapper mapper;
-    private final PacienteMapper pacienteMapper;
-    private final PsicologoMapper psicologoMapper;
+    private final ProntuarioMapperInfra mapper;
+    private final PacienteMapperInfra pacienteMapper;
+    private final PsicologoMapperInfra psicologoMapper;
     public final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar prontuário.";
     public final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar prontuário pelo id.";
     public final String MENSAGEM_ERRO_LISTAR_PACIENTE = "Erro ao listar prontuários pelo paciente.";

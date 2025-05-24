@@ -6,7 +6,7 @@ import com.liratech.helppsico.entrypoint.dto.ValidacaoCrpDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
+@Mapper(componentModel = "spring", implementationName = "ValidacaoCrpMapperImpl", unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface ValidacaoCrpMapper {
     ValidacaoCrpDto paraDto(ValidacaoCrp domain);
     ValidacaoCrp paraDomain(ValidacaoCrpDto dto);

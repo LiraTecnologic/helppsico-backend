@@ -3,7 +3,7 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.builders.EnderecoBuilder;
 import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.EnderecoMapper;
+import com.liratech.helppsico.infrastructure.mapper.EnderecoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.entities.EnderecoEntity;
 import com.liratech.helppsico.validators.EnderecoValidator;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ class EnderecoDataProviderTest {
     @InjectMocks
     private final EnderecoDataProvider dataProvider;
 
-    private final EnderecoMapper mapper;
+    private final EnderecoMapperInfra mapper;
 
     @Test
     void testeSalvarEndereco() {

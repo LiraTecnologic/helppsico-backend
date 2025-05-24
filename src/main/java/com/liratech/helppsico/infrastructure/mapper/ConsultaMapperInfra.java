@@ -5,11 +5,8 @@ import com.liratech.helppsico.infrastructure.repositories.entities.ConsultaEntit
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-import java.util.List;
-
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
-public interface ConsultaMapper {
+@Mapper(componentModel = "spring", implementationName = "ConsultaMapperInfraImpl", unmappedTargetPolicy = ReportingPolicy.ERROR)
+public interface ConsultaMapperInfra {
     ConsultaEntity paraEntity (Consulta consulta);
     Consulta paraDomain (ConsultaEntity consultaEntity);
-    List<Consulta> paraDomains(List<ConsultaEntity> consultaEntities);
 }

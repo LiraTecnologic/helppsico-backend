@@ -17,8 +17,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class EnderecoController {
 
-    private EnderecoUseCase useCase;
-    private EnderecoMapper mapper;
+    private final EnderecoUseCase useCase;
+    private final EnderecoMapper mapper;
 
     @PostMapping
     public ResponseEntity<ResponseDto<EnderecoDto>> cadastrar(@RequestBody @Valid EnderecoDto enderecoDto){

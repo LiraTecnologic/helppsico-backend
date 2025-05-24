@@ -6,10 +6,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
+@Mapper(componentModel = "spring", implementationName = "HorarioPsicologoMapperImpl", unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface HorarioPsicologoMapper {
     HorarioPsicologo paraDomain (HorarioPsicologoDto horarioPsicologoDto);
-
-    @Mapping(target = "psicologo.foto", ignore = true)
     HorarioPsicologoDto paraDto (HorarioPsicologo horarioPsicologo);
 }

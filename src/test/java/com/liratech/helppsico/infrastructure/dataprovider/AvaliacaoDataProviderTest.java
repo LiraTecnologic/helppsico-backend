@@ -1,17 +1,13 @@
 package com.liratech.helppsico.infrastructure.dataprovider;
 
 import com.liratech.helppsico.builders.AvaliacaoBuilder;
-import com.liratech.helppsico.builders.PsicologoBuilder;
 import com.liratech.helppsico.domain.Avaliacao;
-import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.AvaliacaoMapper;
+import com.liratech.helppsico.infrastructure.mapper.AvaliacaoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.AvaliacaoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.AvaliacaoEntity;
 import com.liratech.helppsico.validators.AvaliacaoValidator;
-import com.liratech.helppsico.validators.PsicologoValidator;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,11 +18,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 
-import java.net.DatagramPacket;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.IntStream;
 
 import static com.liratech.helppsico.infrastructure.dataprovider.AvaliacaoDataProvider.MENSAGEM_ERRO_CONSULTAR_POR_PACIENTE;
 
@@ -40,7 +33,7 @@ public class AvaliacaoDataProviderTest {
     @InjectMocks
     private AvaliacaoDataProvider dataProvider;
 
-    private AvaliacaoMapper mapper;
+    private AvaliacaoMapperInfra mapper;
     private Avaliacao avaliacaoTeste;
     private AvaliacaoEntity avaliacaoEntityTeste;
 
