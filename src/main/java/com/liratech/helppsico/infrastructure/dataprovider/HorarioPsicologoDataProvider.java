@@ -30,6 +30,7 @@ public class HorarioPsicologoDataProvider implements HorarioPsicologoGateway {
     @Override
     public HorarioPsicologo salvar(HorarioPsicologo horario) {
         HorarioPsicologoEntity horarioEntity = mapper.paraEntity(horario);
+        System.out.println(horarioEntity.toString() + "\n" + horario.toString());
 
         try {
             horarioEntity = repository.save(horarioEntity);

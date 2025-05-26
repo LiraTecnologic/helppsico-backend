@@ -2,6 +2,10 @@ package com.liratech.helppsico.infrastructure.repositories.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
+
 import java.util.UUID;
 
 @Entity(name = "Endereco")
@@ -12,9 +16,10 @@ import java.util.UUID;
 @Setter
 @Builder
 public class EnderecoEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id_endereco")
+    @Column(name = "id_endereco", columnDefinition = "BINARY(16)")
     private UUID id;
 
     private String rua;

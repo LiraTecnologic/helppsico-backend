@@ -28,6 +28,7 @@ public class PsicologoController {
 
     @PostMapping
     public ResponseEntity<ResponseDto<PsicologoDto>> cadastrar (@RequestBody @Valid PsicologoDto psicologo){
+
         PsicologoDto psicologoSalvo = mapper.paraDto(useCase.cadastrar(mapper.paraDomain(psicologo)));
         ResponseDto<PsicologoDto> resposta = new ResponseDto<>(psicologoSalvo);
 
@@ -71,10 +72,11 @@ public class PsicologoController {
             @RequestParam(defaultValue = "nome,asc") String sort
     ){
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
-
         String nomeFormatado = nome.replace("-", " ");
 
-    Page<PsicologoDto> psicologos = useCase.consultarPorNome(nomeFormatado, pageable).map(mapper::paraDto);
+        System.out.println(nomeFormatado);
+
+        Page<PsicologoDto> psicologos = useCase.consultarPorNome(nomeFormatado, pageable).map(mapper::paraDto);
         ResponseDto<Page<PsicologoDto>> resposta = new ResponseDto<>(psicologos);
 
         return ResponseEntity.ok(resposta);

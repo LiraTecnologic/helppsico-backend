@@ -118,7 +118,8 @@ public class PsicologoUseCase {
 
         Psicologo psicologoExistente = this.consultarPorId(id);
 
-        enderecoUseCase.cadastrar(novosDados.getEnderecoAtendimento());
+        Endereco enderecoNovo = enderecoUseCase.cadastrar(novosDados.getEnderecoAtendimento());
+        novosDados.setEnderecoAtendimento(enderecoNovo);
 
         psicologoExistente.alterarDados(novosDados);
 

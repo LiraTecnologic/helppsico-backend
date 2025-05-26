@@ -23,7 +23,7 @@ public class EnderecoController {
     @PostMapping
     public ResponseEntity<ResponseDto<EnderecoDto>> cadastrar(@RequestBody @Valid EnderecoDto enderecoDto){
         EnderecoDto enderecoNovo = mapper.paraDto(useCase.cadastrar(mapper.paraDomain(enderecoDto)));
-        ResponseDto<EnderecoDto> retorno = new ResponseDto<>(enderecoDto);
+        ResponseDto<EnderecoDto> retorno = new ResponseDto<>(enderecoNovo);
 
         return ResponseEntity
                 .created(

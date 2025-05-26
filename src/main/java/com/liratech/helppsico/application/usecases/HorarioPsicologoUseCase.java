@@ -1,7 +1,9 @@
 package com.liratech.helppsico.application.usecases;
 
 import com.liratech.helppsico.application.exceptions.horario.HorarioNaoEncontradoException;
+import com.liratech.helppsico.application.gateways.HorarioGateway;
 import com.liratech.helppsico.application.gateways.HorarioPsicologoGateway;
+import com.liratech.helppsico.domain.Horario;
 import com.liratech.helppsico.domain.HorarioPsicologo;
 import com.liratech.helppsico.domain.Psicologo;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,14 +23,22 @@ public class HorarioPsicologoUseCase {
 
     private final PsicologoUseCase psicologoUseCase;
     private final HorarioPsicologoGateway gateway;
+    private final HorarioGateway horarioGateway;
     public static final String ERRO_HORARIO_NAO_ENCONTRADO = "Horario não encontrado.";
 
     public HorarioPsicologo cadastrar(HorarioPsicologo horarioPsicologo){
         log.info("Iniciando o processo de cadastrar h" +
                 "orário no sistema. Horario: {}", horarioPsicologo);
 
-        Psicologo psicologo = psicologoUseCase.consultarPorId(horarioPsicologo.getId());
+        Psicologo psicologo = psicologoUseCase.consultarPorId(horarioPsicologo.getPsicologo().getId());
         horarioPsicologo.setPsicologo(psicologo);
+
+        List<Horario> horarioListSalvo = horarioPsicologo.getHorarios();
+        horarioListSalvo.forEach(horario -> {
+            horario = horarioGateway.salvar(horario);
+        });
+
+        horarioPsicologo.setHorarios(horarioListSalvo);
 
         HorarioPsicologo horarioSalvo = gateway.salvar(horarioPsicologo);
 

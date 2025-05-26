@@ -69,10 +69,9 @@ public class PsicologoDto {
     private TipoGenero genero;
 
     @NotNull(message = "O endereço é obrigatório")
-    @JsonProperty("endereco")
+    @JsonProperty("enderecoAtendimento")
     private EnderecoDto enderecoAtendimento;
 
-    @NotBlank(message = "A biografia é obrigatória")
     @JsonProperty("biografia")
     private String biografia;
 
