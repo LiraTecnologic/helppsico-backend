@@ -14,6 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Builder
 public class SolicitacaoDocumentoEntity {
     @Id

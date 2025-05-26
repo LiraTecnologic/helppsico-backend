@@ -3,10 +3,7 @@ package com.liratech.helppsico.infrastructure.repositories.entities.documento;
 import com.liratech.helppsico.infrastructure.repositories.entities.PacienteEntity;
 import com.liratech.helppsico.infrastructure.repositories.entities.PsicologoEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
@@ -18,6 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@ToString
 @SuperBuilder
 public abstract class DocumentoEntity {
     @Id

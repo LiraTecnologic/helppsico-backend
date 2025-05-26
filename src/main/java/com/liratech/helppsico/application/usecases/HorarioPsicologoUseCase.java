@@ -36,6 +36,7 @@ public class HorarioPsicologoUseCase {
         List<Horario> horarioListSalvo = horarioPsicologo.getHorarios();
         horarioListSalvo.forEach(horario -> {
             horario = horarioGateway.salvar(horario);
+            System.out.println(horario.getId());
         });
 
         horarioPsicologo.setHorarios(horarioListSalvo);
