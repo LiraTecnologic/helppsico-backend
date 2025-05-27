@@ -29,4 +29,8 @@ public class HorarioEntity {
     private LocalTime inicio;
     private LocalTime fim;
     private Boolean disponivel;
+
+    @ManyToOne
+    @JoinColumn(name = "id_horario_psicologo")
+    private HorarioPsicologoEntity horarioPsicologo;
 }

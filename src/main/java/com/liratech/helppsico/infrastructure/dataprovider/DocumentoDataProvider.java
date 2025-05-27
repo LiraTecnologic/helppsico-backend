@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -38,11 +40,11 @@ public class DocumentoDataProvider implements DocumentoGateway {
     }
 
     @Override
-    public Page<Documento> listar(Pageable pageable){
+    public Page<Documento> listarPorPaciente(UUID idPaciente, Pageable pageable){
         Page<DocumentoEntity> pageEntity;
 
         try{
-            pageEntity = repository.findAll(pageable);
+            pageEntity = repository.findAllByPacienteId(idPaciente, pageable);
         } catch (Exception ex){
             log.error(MENSAGEM_ERRO_LISTAR, ex);
             throw new DataProviderException(MENSAGEM_ERRO_LISTAR, ex.getCause());

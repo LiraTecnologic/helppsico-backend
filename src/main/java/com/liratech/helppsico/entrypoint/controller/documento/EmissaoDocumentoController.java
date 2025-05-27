@@ -21,10 +21,10 @@ import java.util.UUID;
 @RequestMapping("/documentos")
 public class EmissaoDocumentoController {
 
-    private DocumentoUseCase useCase;
-    private DocumentoMapper mapper;
+    private final DocumentoUseCase useCase;
+    private final DocumentoMapper mapper;
 
-    @PostMapping("/{id}")
+    @PostMapping("/{idSolicitacao}")
     public ResponseEntity<ResponseDto<DocumentoDto>> emitirDocumento(@RequestBody DadosGeraisDocumentoDto dadosGerais, @PathVariable UUID idSolicitacao) {
         DocumentoDto documentoDto = mapper.paraDto(useCase.salvar(idSolicitacao, dadosGerais));
 
@@ -39,13 +39,14 @@ public class EmissaoDocumentoController {
         ).body(response);
     }
 
-    @GetMapping
-    public ResponseEntity<ResponseDto<Page<DocumentoDto>>> listar(
+    @GetMapping("/{idPaciente}")
+    public ResponseEntity<ResponseDto<Page<DocumentoDto>>> listarPorPaciente(
+            @PathVariable UUID idPaciente,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "paciente, asc") String sort){
+            @RequestParam(defaultValue = "paciente,asc") String sort){
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
-        Page<DocumentoDto> documentoDtoPage = useCase.listar(pageable).map(mapper::paraDto);
+        Page<DocumentoDto> documentoDtoPage = useCase.listarPorPaciente(idPaciente, pageable).map(mapper::paraDto);
 
         ResponseDto<Page<DocumentoDto>> response = new ResponseDto<>(documentoDtoPage);
 

@@ -3,6 +3,7 @@ package com.liratech.helppsico.application.usecases;
 import com.liratech.helppsico.application.exceptions.TipoDocumentoInvalidoException;
 import com.liratech.helppsico.application.gateways.DocumentoGateway;
 import com.liratech.helppsico.application.usecases.dto.DadosGeraisDocumentoDto;
+import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.domain.documento.*;
 import com.liratech.helppsico.entrypoint.mapper.EnderecoMapper;
@@ -21,7 +22,12 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class DocumentoUseCase {
     private final SolicitacaoDocumentoUseCase solicitacaoDocumentoUseCase;
+    private final PacienteUseCase pacienteUseCase;
+    private final PacienteMapper pacienteMapper;
+    private final PsicologoUseCase psicologoUseCase;
+    private final PsicologoMapper psicologoMapper;
     private final DocumentoGateway gateway;
+    private final DocumentoFactory factory;
 
     public Documento salvar(UUID idSolicitacao, DadosGeraisDocumentoDto dadosGeraisDocumentoDto) {
         log.info("Iniciando salvamento do documento. ID da solicitação: {}, Dados gerais: {}", idSolicitacao, dadosGeraisDocumentoDto);
@@ -29,7 +35,13 @@ public class DocumentoUseCase {
         SolicitacaoDocumento solicitacaoDocumento = solicitacaoDocumentoUseCase.buscarPorId(idSolicitacao);
         TipoDocumento tipoDocumento = solicitacaoDocumento.getTipoDocumento();
 
-        Documento documento = DocumentoFactory.criar(dadosGeraisDocumentoDto, tipoDocumento);
+        Paciente paciente = pacienteUseCase.consultarPorId(dadosGeraisDocumentoDto.getPaciente().getId());
+        dadosGeraisDocumentoDto.setPaciente(pacienteMapper.paraDto(paciente));
+
+        Psicologo psicologo = psicologoUseCase.consultarPorId(dadosGeraisDocumentoDto.getPsicologo().getId());
+        dadosGeraisDocumentoDto.setPsicologo(psicologoMapper.paraDto(psicologo));
+
+        Documento documento = factory.criar(dadosGeraisDocumentoDto, tipoDocumento);
 
         Documento documentoSalvo = gateway.salvar(documento);
 
@@ -37,10 +49,12 @@ public class DocumentoUseCase {
         return documentoSalvo;
     }
 
-    public Page<Documento> listar (Pageable pageable) {
+    public Page<Documento> listarPorPaciente (UUID idPaciente, Pageable pageable) {
         log.info("Iniciando processo para listar os documentos.");
 
-        Page<Documento> listagemDoc = gateway.listar(pageable);
+        pacienteUseCase.consultarPorId(idPaciente);
+
+        Page<Documento> listagemDoc = gateway.listarPorPaciente(idPaciente, pageable);
 
         log.info("Listagem de documentos completa. Listagem: {}", listagemDoc);
         return listagemDoc;

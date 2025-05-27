@@ -15,54 +15,36 @@ public class DocumentoMapperInfra {
     public ParecerPsicologicoMapperInfra parecerPsicologicoMapper;
 
     public DocumentoEntity paraEntity(Documento domain) {
-        DocumentoEntity documentoEntity = null;
 
         if (domain instanceof Atestado){
-            documentoEntity = atestadoMapper.paraEntity((Atestado) domain);
+            return atestadoMapper.paraEntity((Atestado) domain);
+        }else if (domain instanceof Declaracao){
+            return declaracaoMapper.paraEntity((Declaracao) domain);
+        }else if (domain instanceof RelatorioPsicologico){
+            return relatorioPsicologicoMapper.paraEntity((RelatorioPsicologico) domain);
+        }else if (domain instanceof LaudoPsicologico){
+            return laudoPsicologicoMapper.paraEntity((LaudoPsicologico) domain);
+        }else if (domain instanceof ParecerPsicologico){
+            return parecerPsicologicoMapper.paraEntity((ParecerPsicologico) domain);
         }
 
-        if (domain instanceof Declaracao){
-            documentoEntity = declaracaoMapper.paraEntity((Declaracao) domain);
-        }
-
-        if (domain instanceof RelatorioPsicologico){
-            documentoEntity = relatorioPsicologicoMapper.paraEntity((RelatorioPsicologico) domain);
-        }
-
-        if (domain instanceof LaudoPsicologico){
-            documentoEntity = laudoPsicologicoMapper.paraEntity((LaudoPsicologico) domain);
-        }
-
-        if (domain instanceof ParecerPsicologico){
-            documentoEntity = parecerPsicologicoMapper.paraEntity((ParecerPsicologico) domain);
-        }
-
-        return documentoEntity;
+        throw new IllegalArgumentException("Tipo de documento não reconhecido: " + domain.getClass().getName());
     }
 
     public Documento paraDomain(DocumentoEntity entity) {
-        Documento documentoDomain = null;
 
         if (entity instanceof AtestadoEntity){
-            documentoDomain = atestadoMapper.paraDomain((AtestadoEntity) entity);
+            return atestadoMapper.paraDomain((AtestadoEntity) entity);
+        }else if (entity instanceof DeclaracaoEntity){
+            return declaracaoMapper.paraDomain((DeclaracaoEntity) entity);
+        }else if (entity instanceof RelatorioPsicologicoEntity){
+            return relatorioPsicologicoMapper.paraDomain((RelatorioPsicologicoEntity) entity);
+        }else if (entity instanceof LaudoPsicologicoEntity){
+            return laudoPsicologicoMapper.paraDomain((LaudoPsicologicoEntity) entity);
+        }else if (entity instanceof ParecerPsicologicoEntity){
+            return parecerPsicologicoMapper.paraDomain((ParecerPsicologicoEntity) entity);
         }
 
-        if (entity instanceof DeclaracaoEntity){
-            documentoDomain = declaracaoMapper.paraDomain((DeclaracaoEntity) entity);
-        }
-
-        if (entity instanceof RelatorioPsicologicoEntity){
-            documentoDomain = relatorioPsicologicoMapper.paraDomain((RelatorioPsicologicoEntity) entity);
-        }
-
-        if (entity instanceof LaudoPsicologicoEntity){
-            documentoDomain = laudoPsicologicoMapper.paraDomain((LaudoPsicologicoEntity) entity);
-        }
-
-        if (entity instanceof ParecerPsicologicoEntity){
-            documentoDomain = parecerPsicologicoMapper.paraDomain((ParecerPsicologicoEntity) entity);
-        }
-
-        return documentoDomain;
+        throw new IllegalArgumentException("Tipo de documento não reconhecido: " + entity.getClass().getName());
     }
 }

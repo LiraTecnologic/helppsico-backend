@@ -7,6 +7,8 @@ import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.domain.documento.SolicitacaoDocumento;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -35,6 +37,17 @@ public class SolicitacaoDocumentoUseCase {
 
         log.info("Solicitação cadastrada com sucesso. Solicitação: {}", solicitacaoDocumento);
         return solicitacaoDocumento;
+    }
+
+    public Page<SolicitacaoDocumento> listarPorPsicologo(UUID idPsicologo, Pageable pageable){
+        log.info("Listando todas as solicitações por psicologo. Id do Psicologo: {}", idPsicologo);
+
+        psicologoUseCase.consultarPorId(idPsicologo);
+
+        Page<SolicitacaoDocumento> solicitacaoDocumentoPage = gateway.listarPorPsicologo(idPsicologo, pageable);
+
+        log.info("Todas as solicitações buscadas. Solicitações: {}", solicitacaoDocumentoPage);
+        return solicitacaoDocumentoPage;
     }
 
     public SolicitacaoDocumento buscarPorId(UUID id){

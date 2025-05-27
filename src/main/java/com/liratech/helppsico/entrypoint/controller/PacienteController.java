@@ -17,8 +17,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PacienteController {
 
-    private PacienteUseCase useCase;
-    private PacienteMapper mapper;
+    private final PacienteUseCase useCase;
+    private final PacienteMapper mapper;
 
     @PostMapping
     public ResponseEntity<ResponseDto<PacienteDto>> cadastrar(@RequestBody @Valid PacienteDto paciente){

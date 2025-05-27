@@ -3,7 +3,9 @@ package com.liratech.helppsico.entrypoint.mapper;
 import com.liratech.helppsico.domain.documento.Atestado;
 import com.liratech.helppsico.entrypoint.dto.documento.AtestadoDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 public class AtestadoMapper {
 

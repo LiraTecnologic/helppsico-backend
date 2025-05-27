@@ -3,7 +3,9 @@ package com.liratech.helppsico.entrypoint.mapper;
 import com.liratech.helppsico.domain.documento.ParecerPsicologico;
 import com.liratech.helppsico.entrypoint.dto.documento.ParecerPsicologicoDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 public class ParecerPsicologicoMapper {
 

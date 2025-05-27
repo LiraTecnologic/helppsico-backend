@@ -8,6 +8,8 @@ import com.liratech.helppsico.infrastructure.repositories.SolicitacaoDocumentoRe
 import com.liratech.helppsico.infrastructure.repositories.entities.documento.SolicitacaoDocumentoEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -20,9 +22,10 @@ public class SolicitacaoDocumentoDataProvider implements SolicitacaoDocumentoGat
 
     private final SolicitacaoDocumentoRepository repository;
     private final SolicitacaoDocumentoMapperInfra mapper;
-    public static final String MENSSAGEM_ERRO_SALVAR = "Erro ao salvar Solicitação de documento";
-    public static final String MENSSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar Solicitação de documento por id";
-    public static final String MENSSAGEM_ERRO_DELETAR = "Erro ao deletar Solicitação de documento";
+    public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar Solicitação de documento";
+    public static final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar Solicitação de documento por id";
+    public static final String MENSAGEM_ERRO_DELETAR = "Erro ao deletar Solicitação de documento";
+    public static final String MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO = "Erro ao listar Solicitações por psicologo.";
 
     @Override
     public SolicitacaoDocumento salvar(SolicitacaoDocumento solicitacaoDocumento){
@@ -31,8 +34,8 @@ public class SolicitacaoDocumentoDataProvider implements SolicitacaoDocumentoGat
         try{
             entity = repository.save(entity);
         } catch (Exception ex){
-            log.error(MENSSAGEM_ERRO_SALVAR, ex);
-            throw new DataProviderException(MENSSAGEM_ERRO_SALVAR, ex.getCause());
+            log.error(MENSAGEM_ERRO_SALVAR, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_SALVAR, ex.getCause());
         }
 
         return mapper.paraDomain(entity);
@@ -45,11 +48,25 @@ public class SolicitacaoDocumentoDataProvider implements SolicitacaoDocumentoGat
         try {
             entity = repository.findById(id);
         } catch (Exception ex){
-            log.error(MENSSAGEM_ERRO_CONSULTAR_POR_ID, ex);
-            throw new DataProviderException(MENSSAGEM_ERRO_CONSULTAR_POR_ID, ex.getCause());
+            log.error(MENSAGEM_ERRO_CONSULTAR_POR_ID, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_ID, ex.getCause());
         }
 
         return entity.map(mapper::paraDomain);
+    }
+
+    @Override
+    public Page<SolicitacaoDocumento> listarPorPsicologo(UUID idPsicologo, Pageable pageable){
+        Page<SolicitacaoDocumentoEntity> solicitacaoDocumentoEntityPage;
+
+        try {
+            solicitacaoDocumentoEntityPage = repository.findAllByPsicologoId(idPsicologo, pageable);
+        }catch (Exception ex){
+            log.info(MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO, ex.getCause());
+        }
+
+        return solicitacaoDocumentoEntityPage.map(mapper::paraDomain);
     }
 
     @Override
@@ -57,8 +74,8 @@ public class SolicitacaoDocumentoDataProvider implements SolicitacaoDocumentoGat
         try {
             repository.deleteById(id);
         } catch (Exception ex){
-            log.error(MENSSAGEM_ERRO_DELETAR, ex);
-            throw new DataProviderException(MENSSAGEM_ERRO_DELETAR, ex.getCause());
+            log.error(MENSAGEM_ERRO_DELETAR, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_DELETAR, ex.getCause());
         }
     }
 }

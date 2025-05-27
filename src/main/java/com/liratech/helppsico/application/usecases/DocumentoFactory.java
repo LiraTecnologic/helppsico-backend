@@ -7,16 +7,18 @@ import com.liratech.helppsico.entrypoint.mapper.EnderecoMapper;
 import com.liratech.helppsico.entrypoint.mapper.PacienteMapper;
 import com.liratech.helppsico.entrypoint.mapper.PsicologoMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 public class DocumentoFactory {
 
-    private static final PacienteMapper pacienteMapper = null;
-    private static final PsicologoMapper psicologoMapper = null;
-    private static final EnderecoMapper enderecoMapper = null;
-    public static final String MENSAGEM_TIPO_DOCUMENTO_INVALIDO = "Tipo do documento inválido";
+    private final PacienteMapper pacienteMapper;
+    private final PsicologoMapper psicologoMapper;
+    private final EnderecoMapper enderecoMapper;
+    public final String MENSAGEM_TIPO_DOCUMENTO_INVALIDO = "Tipo do documento inválido";
 
-    public static Documento criar(DadosGeraisDocumentoDto dadosGeraisDocumentoDto, TipoDocumento tipoDocumento) {
+    public Documento criar(DadosGeraisDocumentoDto dadosGeraisDocumentoDto, TipoDocumento tipoDocumento) {
         switch (tipoDocumento.getCodigo()){
             case 1:
                 return new Atestado(

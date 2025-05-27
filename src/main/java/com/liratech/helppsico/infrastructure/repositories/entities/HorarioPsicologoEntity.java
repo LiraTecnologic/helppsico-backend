@@ -26,7 +26,6 @@ public class HorarioPsicologoEntity {
     @JoinColumn(name = "id_psicologo")
     private PsicologoEntity psicologo;
 
-    @OneToMany
-    @JoinColumn(name = "id_horario_psicologo")
+    @OneToMany(mappedBy = "horarioPsicologo")
     private List<HorarioEntity> horarios;
 }
