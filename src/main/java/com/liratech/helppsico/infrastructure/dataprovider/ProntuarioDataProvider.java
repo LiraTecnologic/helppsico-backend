@@ -24,8 +24,6 @@ public class ProntuarioDataProvider implements ProntuarioGateway {
 
     private final ProntuarioRepository repository;
     private final ProntuarioMapperInfra mapper;
-    private final PacienteMapperInfra pacienteMapper;
-    private final PsicologoMapperInfra psicologoMapper;
     public final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar prontuário.";
     public final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar prontuário pelo id.";
     public final String MENSAGEM_ERRO_LISTAR_PACIENTE = "Erro ao listar prontuários pelo paciente.";

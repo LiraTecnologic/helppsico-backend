@@ -33,10 +33,11 @@ public class ConsultaDataProvider implements ConsultaGateway {
 
     @Override
     public Consulta salvar(Consulta consulta) {
-        ConsultaEntity consultaEntity;
+        ConsultaEntity consultaEntity = mapper.paraEntity(consulta);
+        System.out.println(consultaEntity.toString());
 
         try {
-            consultaEntity = repository.save(mapper.paraEntity(consulta));
+            consultaEntity = repository.save(consultaEntity);
         } catch (Exception ex) {
             log.error(MENSAGEM_ERRO_SALVAR, ex);
             throw new DataProviderException(MENSAGEM_ERRO_SALVAR, ex.getCause());
@@ -60,11 +61,11 @@ public class ConsultaDataProvider implements ConsultaGateway {
     }
 
     @Override
-    public Page<Consulta> consultarConsultasFuturas(UUID idPsicologo, UUID idPaciente, Pageable pageable) {
+    public Page<Consulta> consultarConsultasFuturas(UUID idPaciente, UUID idPsicologo, Pageable pageable) {
         Page<ConsultaEntity> consultaEntities;
 
         try {
-            consultaEntities = repository.consultarConsultasFuturas(idPsicologo, idPaciente, pageable);
+            consultaEntities = repository.consultarConsultasFuturas(idPaciente, idPsicologo, pageable);
         } catch (Exception ex) {
             log.error(MENSAGEM_ERRO_CONSULTAR_SESSOES_FUTURAS, ex);
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_SESSOES_FUTURAS, ex.getCause());
@@ -74,11 +75,11 @@ public class ConsultaDataProvider implements ConsultaGateway {
     }
 
     @Override
-    public Page<Consulta> consultarHistorico(UUID idPsicologo, UUID idPaciente, Pageable pageable) {
+    public Page<Consulta> consultarHistorico(UUID idPaciente, UUID idPsicologo, Pageable pageable) {
         Page<ConsultaEntity> consultaEntities;
         
         try {
-            consultaEntities = repository.consultarHistorico(idPsicologo, idPaciente, pageable);
+            consultaEntities = repository.consultarHistorico(idPaciente, idPsicologo, pageable);
         } catch (Exception ex) {
             log.error(MENSAGEM_ERRO_CONSULTAR_HISTORICO, ex);
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_HISTORICO, ex.getCause());

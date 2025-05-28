@@ -61,6 +61,9 @@ public class ConsultaUseCase {
     public Page<Consulta> consultarConsultasFuturas(UUID idPaciente, UUID idPsicologo, Pageable pageable) {
         log.info("Consultando consultas futuras. Id paciente: {}, Id psicologo: {}", idPaciente, idPsicologo);
 
+        pacienteUseCase.consultarPorId(idPaciente);
+        psicologoUseCase.consultarPorId(idPsicologo);
+
         Page<Consulta> consultasFuturas = gateway.consultarConsultasFuturas(idPaciente, idPsicologo, pageable);
 
         log.info("Consulta de cosultas futuras feita com sucesso. Consultas: {}", consultasFuturas);
@@ -69,6 +72,9 @@ public class ConsultaUseCase {
 
     public Page<Consulta> consultarHistorico(UUID idPaciente, UUID idPsicologo, Pageable pageable) {
         log.info("Consultando histórico de consultas. Id paciente: {}, Id psicólogo: {}", idPaciente, idPsicologo);
+
+        pacienteUseCase.consultarPorId(idPaciente);
+        psicologoUseCase.consultarPorId(idPsicologo);
 
         Page<Consulta> historico = gateway.consultarHistorico(idPaciente, idPsicologo, pageable);
         
@@ -117,7 +123,7 @@ public class ConsultaUseCase {
         }
     }
 
-    private Consulta consultarPorId(UUID id) {
+    public Consulta consultarPorId(UUID id) {
         Optional<Consulta> consulta = gateway.consultarPorId(id);
 
         if(consulta.isEmpty()) {

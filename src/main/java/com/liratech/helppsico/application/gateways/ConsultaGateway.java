@@ -11,8 +11,8 @@ import java.util.UUID;
 public interface ConsultaGateway {
     Consulta salvar(Consulta consulta);
     Optional<Consulta> consultarPorId(UUID id);
-    Page<Consulta> consultarConsultasFuturas(UUID idPsicologo, UUID idPaciente, Pageable pageable);
-    Page<Consulta> consultarHistorico(UUID idPsicologo, UUID idPaciente, Pageable pageable);
+    Page<Consulta> consultarConsultasFuturas(UUID idPaciente, UUID idPsicologo, Pageable pageable);
+    Page<Consulta> consultarHistorico(UUID idPaciente, UUID idPsicologo, Pageable pageable);
     List<Consulta> consultarConsultasMesmoDia(int dayOfMonth);
     void deletar(UUID id);
 }

@@ -18,8 +18,8 @@ public interface ConsultaRepository extends JpaRepository<ConsultaEntity, UUID> 
             "FROM Consulta c " +
             "WHERE c.finalizada = false AND c.psicologo.id = :idPsicologo AND c.paciente.id = :idPaciente")
     Page<ConsultaEntity> consultarConsultasFuturas(
-            @Param("idPsicologo") UUID idPsicologo,
             @Param("idPaciente") UUID idPaciente,
+            @Param("idPsicologo") UUID idPsicologo,
             Pageable pageable
     );
 
@@ -27,8 +27,8 @@ public interface ConsultaRepository extends JpaRepository<ConsultaEntity, UUID> 
             "FROM Consulta c " +
             "WHERE c.finalizada = true AND c.psicologo.id = :idPsicologo AND c.paciente.id = :idPaciente")
     Page<ConsultaEntity> consultarHistorico(
-            @Param("idPsicologo") UUID idPsicologo,
             @Param("idPaciente") UUID idPaciente,
+            @Param("idPsicologo") UUID idPsicologo,
             Pageable pageable
     );
 

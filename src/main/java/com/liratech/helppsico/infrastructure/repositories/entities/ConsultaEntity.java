@@ -33,7 +33,7 @@ public class ConsultaEntity {
 
     private BigDecimal valor;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_endereco")
     private EnderecoEntity endereco;
 
