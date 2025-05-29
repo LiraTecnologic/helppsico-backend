@@ -2,6 +2,7 @@ package com.liratech.helppsico.entrypoint.dto.psicologo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.liratech.helppsico.entrypoint.dto.PacienteDto;
+import com.liratech.helppsico.entrypoint.dto.consulta.ConsultaDto;
 import com.liratech.helppsico.infrastructure.repositories.entities.ConsultaEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -32,7 +33,7 @@ public class ProntuarioDto {
 
     @NotNull(message = "A consulta é obrigatoria")
     @JsonProperty("consulta")
-    private ConsultaEntity consulta;
+    private ConsultaDto consulta;
 
     @NotBlank(message = "O titulo é obrigatório")
     @JsonProperty("titulo")

@@ -5,7 +5,12 @@ import com.liratech.helppsico.entrypoint.dto.documento.SolicitacaoDocumentoDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", implementationName = "SolicitacaoDocumentoMapperImpl",  unmappedTargetPolicy = ReportingPolicy.ERROR)
+@Mapper(
+        componentModel = "spring",
+        implementationName = "SolicitacaoDocumentoMapperImpl",
+        unmappedTargetPolicy = ReportingPolicy.ERROR,
+        uses = {PacienteMapper.class, PsicologoMapper.class}
+)
 public interface SolicitacaoDocumentoMapper {
     SolicitacaoDocumentoDto paraDto(SolicitacaoDocumento domain);
     SolicitacaoDocumento paraDomain(SolicitacaoDocumentoDto dto);

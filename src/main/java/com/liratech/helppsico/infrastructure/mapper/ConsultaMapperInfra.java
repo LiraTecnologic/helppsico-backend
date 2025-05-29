@@ -5,7 +5,12 @@ import com.liratech.helppsico.infrastructure.repositories.entities.ConsultaEntit
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", implementationName = "ConsultaMapperInfraImpl", unmappedTargetPolicy = ReportingPolicy.ERROR)
+@Mapper(
+        componentModel = "spring",
+        implementationName = "ConsultaMapperInfraImpl",
+        unmappedTargetPolicy = ReportingPolicy.ERROR,
+        uses = {PsicologoMapperInfra.class, PacienteMapperInfra.class, EnderecoMapperInfra.class}
+)
 public interface ConsultaMapperInfra {
     ConsultaEntity paraEntity (Consulta consulta);
     Consulta paraDomain (ConsultaEntity consultaEntity);

@@ -5,7 +5,12 @@ import com.liratech.helppsico.infrastructure.repositories.entities.ValidacaoCrpE
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", implementationName = "ValidacaoCrpMapperInfraImpl", unmappedTargetPolicy = ReportingPolicy.ERROR)
+@Mapper(
+        componentModel = "spring",
+        implementationName = "ValidacaoCrpMapperInfraImpl",
+        unmappedTargetPolicy = ReportingPolicy.ERROR,
+        uses = {PsicologoMapperInfra.class}
+)
 public interface ValidacaoCrpMapperInfra {
     ValidacaoCrpEntity paraEntity(ValidacaoCrp domain);
     ValidacaoCrp paraDomain(ValidacaoCrpEntity entity);

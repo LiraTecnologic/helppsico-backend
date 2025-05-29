@@ -5,7 +5,12 @@ import com.liratech.helppsico.infrastructure.repositories.entities.PsicologoEnti
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring",implementationName = "PsicologoMapperInfraImpl", unmappedTargetPolicy = ReportingPolicy.ERROR)
+@Mapper(
+        componentModel = "spring",
+        implementationName = "PsicologoMapperInfraImpl",
+        unmappedTargetPolicy = ReportingPolicy.ERROR,
+        uses = {EnderecoMapperInfra.class}
+)
 public interface PsicologoMapperInfra {
     PsicologoEntity paraEntity (Psicologo psicologo);
     Psicologo paraDomain (PsicologoEntity psicologoEntity);

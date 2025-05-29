@@ -3,6 +3,7 @@ package com.liratech.helppsico.application.usecases;
 import com.liratech.helppsico.application.exceptions.prontuarios.ErroAtualizarCamposEspecificosExcpetion;
 import com.liratech.helppsico.application.exceptions.prontuarios.ProntuarioNaoEncontradoException;
 import com.liratech.helppsico.application.gateways.ProntuarioGateway;
+import com.liratech.helppsico.domain.Consulta;
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.Prontuario;
 import com.liratech.helppsico.domain.Psicologo;
@@ -25,15 +26,18 @@ public class ProntuarioUseCase {
     private final ProntuarioGateway gateway;
     private final PsicologoUseCase psicologoUseCase;
     private final PacienteUseCase pacienteUseCase;
+    private final ConsultaUseCase consultaUseCase;
 
     public Prontuario registrar(Prontuario novoProntuario) {
         log.info("Registrando novo prontuário. Prontuario: {}", novoProntuario);
 
         Psicologo psicologo = psicologoUseCase.consultarPorId(novoProntuario.getPsicologo().getId());
         Paciente paciente = pacienteUseCase.consultarPorId(novoProntuario.getPaciente().getId());
+        Consulta consulta = consultaUseCase.consultarPorId(novoProntuario.getConsulta().getId());
 
         novoProntuario.setPsicologo(psicologo);
         novoProntuario.setPaciente(paciente);
+        novoProntuario.setConsulta(consulta);
 
         Prontuario prontuarioSalvo = gateway.salvar(novoProntuario);
 

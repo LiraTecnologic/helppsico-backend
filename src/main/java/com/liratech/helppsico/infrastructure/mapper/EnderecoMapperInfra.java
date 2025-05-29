@@ -5,8 +5,11 @@ import com.liratech.helppsico.infrastructure.repositories.entities.EnderecoEntit
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring",implementationName = "EnderecoMapperInfraImpl", unmappedTargetPolicy = ReportingPolicy.ERROR)
+@Mapper(
+        componentModel = "spring",
+        implementationName = "EnderecoMapperInfraImpl",
+        unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface EnderecoMapperInfra {
-    Endereco paraDomain (EnderecoEntity enderecoEntity);
-    EnderecoEntity paraEntity (Endereco endereco);
+    Endereco paraDomain (EnderecoEntity entity);
+    EnderecoEntity paraEntity (Endereco domain);
 }

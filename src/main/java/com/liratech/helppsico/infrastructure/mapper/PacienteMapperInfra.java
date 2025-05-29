@@ -5,8 +5,13 @@ import com.liratech.helppsico.infrastructure.repositories.entities.PacienteEntit
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring",implementationName = "PacienteMapperInfraImpl", unmappedTargetPolicy = ReportingPolicy.ERROR)
+@Mapper(
+        componentModel = "spring",
+        implementationName = "PacienteMapperInfraImpl",
+        unmappedTargetPolicy = ReportingPolicy.ERROR,
+        uses = {EnderecoMapperInfra.class}
+)
 public interface PacienteMapperInfra {
-    PacienteEntity paraEntity(Paciente paciente);
-    Paciente paraDomain(PacienteEntity pacienteEntity);
+    PacienteEntity paraEntity(Paciente domain);
+    Paciente paraDomain(PacienteEntity entity);
 }

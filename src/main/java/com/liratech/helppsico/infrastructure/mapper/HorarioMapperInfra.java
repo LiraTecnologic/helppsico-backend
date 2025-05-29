@@ -5,7 +5,10 @@ import com.liratech.helppsico.infrastructure.repositories.entities.HorarioEntity
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", implementationName = "HorarioMapperInfraImpl", unmappedTargetPolicy = ReportingPolicy.ERROR)
+@Mapper(
+        componentModel = "spring",
+        implementationName = "HorarioMapperInfraImpl",
+        unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface HorarioMapperInfra {
     HorarioEntity paraEntity(Horario domain);
     Horario paraDomain(HorarioEntity entity);
