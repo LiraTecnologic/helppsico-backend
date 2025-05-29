@@ -1,6 +1,5 @@
 package com.liratech.helppsico.infrastructure.security;
 
-import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.infrastructure.repositories.PacienteRepository;
 import com.liratech.helppsico.infrastructure.repositories.PsicologoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.PacienteEntity;
