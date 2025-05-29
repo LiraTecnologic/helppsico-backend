@@ -7,7 +7,9 @@ import com.liratech.helppsico.entrypoint.mapper.ValidacaoCrpMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -50,7 +52,12 @@ public class ValidacaoCrpController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponseDto<Page<ValidacaoCrpDto>>> listar(Pageable pageable){
+    public ResponseEntity<ResponseDto<Page<ValidacaoCrpDto>>> listar(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = ",asc") String sort){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
+
         Page<ValidacaoCrpDto> validacoesCrpResultado = useCase.listar(pageable).map(mapper::paraDto);
         ResponseDto<Page<ValidacaoCrpDto>> resultado = new ResponseDto<>(validacoesCrpResultado);
 

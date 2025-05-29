@@ -1,5 +1,6 @@
 package com.liratech.helppsico.application.usecases;
 
+import com.liratech.helppsico.application.exceptions.validacaoCrp.CrpIncorretoException;
 import com.liratech.helppsico.application.exceptions.validacaoCrp.ValidacaoCrpExistenteException;
 import com.liratech.helppsico.application.exceptions.validacaoCrp.ValidacaoCrpNaoExistenteException;
 import com.liratech.helppsico.application.gateways.ValidacaoCrpGateway;
@@ -24,12 +25,17 @@ public class ValidacaoCrpUseCase {
     private final PsicologoUseCase psicologoUseCase;
     public static final String MENSAGEM_VALIDACAO_CRP_EXISTENTE = "Validação CRP já existente";
     public static final String MENSAGEM_VALIDACAO_CRP_NAO_EXISTENTE = "Validação CRP não existe";
+    public static final String MENSAGEM_CRP_INCORRETO = "CRP do psicologo está incorreto.";
 
     public ValidacaoCrp criar(ValidacaoCrp validacaoCrp){
         log.info("Criando Validação de CRP. Nova Validação: {}", validacaoCrp);
 
         Psicologo psicologo = psicologoUseCase.consultarPorId(validacaoCrp.getPsicologo().getId());
         validacaoCrp.setPsicologo(psicologo);
+
+        if (!psicologo.getCrp().equals(validacaoCrp.getCrp())){
+            throw new CrpIncorretoException(MENSAGEM_CRP_INCORRETO);
+        }
 
         Optional<ValidacaoCrp> validacaoConsulta = gateway.consultarPorPsicologo(psicologo.getId());
 
