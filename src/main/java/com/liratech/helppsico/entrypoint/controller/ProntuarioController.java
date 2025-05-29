@@ -46,7 +46,7 @@ public class ProntuarioController {
             @PathVariable UUID idPaciente,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "nome,asc") String sort
+            @RequestParam(defaultValue = "paciente.nome,asc") String sort
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
 
@@ -57,11 +57,11 @@ public class ProntuarioController {
     }
 
     @GetMapping("/psicologo/{idPsicologo}")
-    public ResponseEntity<ResponseDto<Page<ProntuarioDto>>> listarPorPsicolopo(
+    public ResponseEntity<ResponseDto<Page<ProntuarioDto>>> listarPorPsicologo(
             @PathVariable UUID idPsicologo,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "nome,asc") String sort
+            @RequestParam(defaultValue = "paciente.nome,asc") String sort
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
 

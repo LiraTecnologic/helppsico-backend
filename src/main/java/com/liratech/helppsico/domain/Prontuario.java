@@ -23,6 +23,6 @@ public class Prontuario {
     public void alterarDado(Prontuario prontuarioAlterado) {
         this.titulo = prontuarioAlterado.getTitulo();
         this.conteudo = prontuarioAlterado.getConteudo();
-        this.dataEdicao = prontuarioAlterado.getDataEdicao();
+        this.dataEdicao = LocalDate.now();
     }
 }

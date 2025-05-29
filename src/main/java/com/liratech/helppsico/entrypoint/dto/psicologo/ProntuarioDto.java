@@ -23,15 +23,12 @@ public class ProntuarioDto {
     @JsonProperty("id")
     private UUID id;
 
-    @NotNull(message = "O psicologo é obrigatório")
     @JsonProperty("psicologo")
     private PsicologoDto psicologo;
 
-    @NotNull(message = "O paciente é obrigatório")
     @JsonProperty("paciente")
     private PacienteDto paciente;
 
-    @NotNull(message = "A consulta é obrigatoria")
     @JsonProperty("consulta")
     private ConsultaDto consulta;
 

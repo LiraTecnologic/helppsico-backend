@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -94,6 +95,7 @@ public class ProntuarioUseCase {
             }
         });
 
+        prontuario.setDataEdicao(LocalDate.now());
         Prontuario prontuarioSalvo = gateway.salvar(prontuario);
 
         log.info("Alteração parcial de prontuário realizada com sucesso. Prontuario: {}", prontuario);

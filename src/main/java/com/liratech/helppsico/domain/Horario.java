@@ -16,4 +16,5 @@ public class Horario {
     private LocalTime inicio;
     private LocalTime fim;
     private Boolean disponivel;
+    private HorarioPsicologo horarioPsicologo;
 }
