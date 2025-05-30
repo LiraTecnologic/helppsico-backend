@@ -41,11 +41,9 @@ public class ConsultaUseCase {
         novaConsulta.setEndereco(psicologo.getEnderecoAtendimento());
         novaConsulta.setFinalizada(false);
 
-
         Consulta consultaSalva = gateway.salvar(novaConsulta);
 
         log.info("Consulta agendada com sucesso. Consulta: {}", consultaSalva);
-
         return consultaSalva;
     }
 

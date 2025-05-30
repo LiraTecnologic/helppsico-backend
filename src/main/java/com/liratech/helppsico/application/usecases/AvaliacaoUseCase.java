@@ -4,10 +4,7 @@ import com.liratech.helppsico.application.exceptions.avaliacao.AvaliacaoJaCadast
 import com.liratech.helppsico.application.exceptions.avaliacao.AvaliacaoNaoEncontradaException;
 import com.liratech.helppsico.application.exceptions.avaliacao.PsicologoNaoVinculado;
 import com.liratech.helppsico.application.gateways.AvaliacaoGateway;
-import com.liratech.helppsico.domain.Avaliacao;
-import com.liratech.helppsico.domain.Paciente;
-import com.liratech.helppsico.domain.Psicologo;
-import com.liratech.helppsico.domain.Vinculo;
+import com.liratech.helppsico.domain.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -41,11 +38,16 @@ public class AvaliacaoUseCase {
         Psicologo psicologo = psicologoUseCase.consultarPorId(idPsicologo);
         Paciente paciente = pacienteUseCase.consultarPorId(idPaciente);
 
-//        Page<Vinculo> vinculo = vinculoUseCase.listarPorIdPaciente(idPaciente, PageRequest.of(0,10));
-//
-//        if (vinculo.getPsicologo().getId() != idPsicologo){
-//            throw new PsicologoNaoVinculado(MENSAGEM_PSICOLOGO_NAO_VINCULADO);
-//        }
+        Page<Vinculo> vinculoPage = vinculoUseCase.listarPorIdPaciente(idPaciente, PageRequest.of(0,10));
+
+        Optional<Vinculo> vinculoAtivo = vinculoPage
+                .stream()
+                .filter(v -> v.getStatus() == StatusVinculo.ATIVO)
+                .findFirst();
+
+        if (vinculoAtivo.isEmpty()) {
+            throw new PsicologoNaoVinculado(MENSAGEM_PSICOLOGO_NAO_VINCULADO);
+        }
 
         avaliacao.setPsicologo(psicologo);
         avaliacao.setPaciente(paciente);
