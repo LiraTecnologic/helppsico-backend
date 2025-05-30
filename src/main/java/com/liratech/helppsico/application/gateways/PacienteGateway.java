@@ -13,6 +13,4 @@ public interface PacienteGateway {
     Optional<Paciente> consultarPorId(UUID id);
 
     Optional<Paciente> consultarPorEmail(String email);
-
-    Page<Paciente> listarPorPsicologo(UUID idPsicologo, Pageable pageable);
 }

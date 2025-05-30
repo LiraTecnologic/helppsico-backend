@@ -72,15 +72,4 @@ public class PacienteUseCase {
         log.info("Paciente consultado com sucesso. Paciente: {}", paciente);
         return paciente;
     }
-
-    public Page<Paciente> listarPorPsicologo(UUID idPsicologo, Pageable pageable) {
-        log.info("Iniciando listagem de pacientes por psicologo. Id Psicologo: {}", idPsicologo);
-
-        psicologoUseCase.consultarPorId(idPsicologo);
-
-        Page<Paciente> pacientes = gateway.listarPorPsicologo(idPsicologo, pageable);
-
-        log.info("Listagem bem sucedida. Pacientes: {}", pacientes);
-        return pacientes;
-    }
 }

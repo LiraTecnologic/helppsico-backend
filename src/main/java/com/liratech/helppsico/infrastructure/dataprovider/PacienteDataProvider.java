@@ -69,18 +69,4 @@ public class PacienteDataProvider implements PacienteGateway {
         return pacienteEntity.map(mapper::paraDomain);
     }
 
-    @Override
-    public Page<Paciente> listarPorPsicologo(UUID idPsicologo, Pageable pageable){
-        Page<PacienteEntity> pacienteEntityPage;
-
-        try {
-            pacienteEntityPage = repository.
-        }catch (Exception ex){
-            log.info(MENSAGEM_ERRO_LISTAR_PACIENTE, ex);
-            throw new DataProviderException(MENSAGEM_ERRO_LISTAR_PACIENTE, ex.getCause());
-        }
-
-        return
-    }
-
 }

@@ -109,7 +109,7 @@ public class ConsultaUseCase {
     }
 
     private void validarHorarioConsulta(Consulta novaConsulta) {
-        List<Consulta> consultasMesmoDia = gateway.consultarConsultasMesmoDia(novaConsulta.getDataHora().getDayOfMonth());
+        List<Consulta> consultasMesmoDia = gateway.consultarConsultasMesmoDia(novaConsulta.getDataHora().getDayOfMonth(), novaConsulta.getPsicologo().getId());
 
         if(!consultasMesmoDia.isEmpty()) {
             Optional<Consulta> consultaRepetida = consultasMesmoDia.stream()

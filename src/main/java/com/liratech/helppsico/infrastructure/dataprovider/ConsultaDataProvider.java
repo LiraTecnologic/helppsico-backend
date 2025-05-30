@@ -89,11 +89,11 @@ public class ConsultaDataProvider implements ConsultaGateway {
     }
 
     @Override
-    public List<Consulta> consultarConsultasMesmoDia(int diaDoMes) {
+    public List<Consulta> consultarConsultasMesmoDia(int diaDoMes, UUID idPsicologo) {
         List<ConsultaEntity> consultaEntities;
 
         try {
-            consultaEntities = repository.consultarConsultasMesmoDia(diaDoMes);
+            consultaEntities = repository.consultarConsultasMesmoDia(diaDoMes, idPsicologo);
         } catch (Exception ex) {
             log.error(MENSAGEM_ERRO_CONSULTAR_SESSOES_MESMO_DIA, ex);
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_SESSOES_MESMO_DIA, ex.getCause());

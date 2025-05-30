@@ -13,6 +13,6 @@ public interface ConsultaGateway {
     Optional<Consulta> consultarPorId(UUID id);
     Page<Consulta> consultarConsultasFuturas(UUID idPaciente, UUID idPsicologo, Pageable pageable);
     Page<Consulta> consultarHistorico(UUID idPaciente, UUID idPsicologo, Pageable pageable);
-    List<Consulta> consultarConsultasMesmoDia(int dayOfMonth);
+    List<Consulta> consultarConsultasMesmoDia(int dayOfMonth, UUID idPsicologo);
     void deletar(UUID id);
 }

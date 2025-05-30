@@ -47,15 +47,4 @@ public class PacienteController {
 
         return ResponseEntity.ok(retorno);
     }
-
-    @GetMapping("/psicologo/{idPsicologo}")
-    public ResponseEntity<ResponseDto<Page<PacienteDto>>> listarPorPsicologo (
-            @PathVariable UUID idPsicologo,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "nome,asc") String sort){
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
-
-        Page<PacienteDto> pacienteDtoPage = useCase.listarPorPsicologo(idPsicologo, pageable).map(mapper::paraDto);
-    }
 }

@@ -11,5 +11,4 @@ import java.util.UUID;
 @Repository
 public interface PacienteRepository extends JpaRepository<PacienteEntity, UUID> {
     Optional<PacienteEntity> findByEmail (String email);
-    Page<PacienteEntity> findByPsicologoId (UUID idPsicologo);
 }
