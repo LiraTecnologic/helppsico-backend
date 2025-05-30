@@ -33,6 +33,8 @@ public class VinculoUseCase {
             throw new VinculoInvalidoException(ERRO_VINCULO_INVALIDO);
         }
 
+        consultarPorPacientePsicologo(vinculo.getPaciente().getId(), vinculo.getPsicologo().getId());
+
         Paciente paciente = pacienteUseCase.consultarPorId(vinculo.getPaciente().getId());
         Psicologo psicologo = psicologoUseCase.consultarPorId(vinculo.getPsicologo().getId());
 
@@ -98,6 +100,15 @@ public class VinculoUseCase {
         return vinculos;
     }
 
+    private Vinculo consultarPorPacientePsicologo(UUID idPaciente, UUID idPsicologo){
+        Optional<Vinculo> vinculoOptional = gateway.consultarPorPacientePsicologo(idPaciente, idPsicologo);
+
+        if (vinculoOptional.isEmpty()){
+            throw new VinculoNaoEncontradoException(ERRO_VINCULO_NAO_ENCONRADO);
+        }
+
+        return vinculoOptional.get();
+    }
 
     private Vinculo consultarPorId(UUID id){
         Optional<Vinculo> vinculo = gateway.consultarPorId(id);

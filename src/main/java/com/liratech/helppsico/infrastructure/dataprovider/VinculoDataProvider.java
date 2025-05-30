@@ -95,4 +95,18 @@ public class VinculoDataProvider implements VinculoGateway {
 
         return vinculoEntityPage.map(mapper::paraDomain);
     }
+
+    @Override
+    public Optional<Vinculo> consultarPorPacientePsicologo(UUID idPaciente, UUID idPsicologo) {
+        Optional<VinculoEntity> vinculoEntity;
+
+        try {
+            vinculoEntity = repository.findByPacienteIdPsicologoId(idPaciente, idPsicologo);
+        }catch (Exception exception){
+            log.error(MENSAGEM_ERRO_CONSULTAR_ID, exception);
+            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_ID, exception.getCause());
+        }
+
+        return vinculoEntity.map(mapper::paraDomain);
+    }
 }
