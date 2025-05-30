@@ -24,7 +24,7 @@ public class AvaliacaoController {
     private final AvaliacaoUseCase useCase;
     private final AvaliacaoMapper mapper;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<ResponseDto<AvaliacaoDto>> avaliar(@RequestBody @Valid AvaliacaoDto avaliacao){
         AvaliacaoDto avaliacaoResultado = mapper.paraDto(useCase.avaliar(mapper.paraDomain(avaliacao)));
         ResponseDto<AvaliacaoDto> resposta = new ResponseDto<>(avaliacaoResultado);

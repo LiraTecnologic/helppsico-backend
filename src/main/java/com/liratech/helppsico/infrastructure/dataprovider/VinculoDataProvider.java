@@ -27,6 +27,7 @@ public class VinculoDataProvider implements VinculoGateway {
     public static final String MENSAGEM_ERRO_CONSULTAR_ID = "Erro ao consultar vinculo por id.";
     public static final String MENSAGEM_ERRO_DELETAR = "Erro ao deletar o vinculo.";
     public static final String MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO = "Erro ao listar vinculo por psicologo.";
+    public static final String MENSAGEM_ERRO_LISTAR_POR_PACIENTE = "Erro ao listar vinculo por paciente.";
     public static final String MENSAGEM_ERRO_CONSULTAR_POR_PACIENTE = "Erro ao consultar vinculo por paciente.";
 
     @Override
@@ -82,16 +83,16 @@ public class VinculoDataProvider implements VinculoGateway {
     }
 
     @Override
-    public Optional<Vinculo> consultarPorIdPaciente(UUID idPaciente) {
-        Optional<VinculoEntity> vinculoEntity;
+    public Page<Vinculo> listarPorIdPaciente(UUID idPaciente, Pageable pageable) {
+        Page<VinculoEntity> vinculoEntityPage;
 
-        try {
-            vinculoEntity = repository.findByPacienteId(idPaciente);
-        }catch (DataProviderException exception){
-            log.error(MENSAGEM_ERRO_CONSULTAR_POR_PACIENTE, exception);
-            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_PACIENTE, exception.getCause());
+        try{
+            vinculoEntityPage = repository.findAllByPacienteId(idPaciente, pageable);
+        }catch (Exception exception){
+            log.error(MENSAGEM_ERRO_LISTAR_POR_PACIENTE, exception);
+            throw new DataProviderException(MENSAGEM_ERRO_LISTAR_POR_PACIENTE, exception.getCause());
         }
 
-        return vinculoEntity.map(mapper::paraDomain);
+        return vinculoEntityPage.map(mapper::paraDomain);
     }
 }

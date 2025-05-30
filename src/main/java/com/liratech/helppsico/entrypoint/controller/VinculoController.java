@@ -37,22 +37,7 @@ public class VinculoController {
         ).body(response);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ResponseDto<VinculoDto>> aceitarVinculo(@PathVariable UUID id){
-        VinculoDto vinculoAceito = mapper.paraDto(useCase.aceitarSolicitacao(id));
-        ResponseDto<VinculoDto> response = new ResponseDto<>(vinculoAceito);
-
-        return ResponseEntity.ok(response);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> desvincular(@PathVariable UUID id){
-        useCase.desvincular(id);
-
-        return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/psicologo/{id}")
+    @GetMapping("/listar/psicologo/{id}")
     public ResponseEntity<ResponseDto<Page<VinculoDto>>> listarPorIdPsicologo(
             @PathVariable UUID id,
             @RequestParam(defaultValue = "0") int page,
@@ -66,11 +51,40 @@ public class VinculoController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/paciente/{id}")
-    public ResponseEntity<ResponseDto<VinculoDto>> consultarPorIdPaciente(@PathVariable UUID id){
-        VinculoDto vinculoConsultado = mapper.paraDto(useCase.consultarPorIdPaciente(id));
-        ResponseDto<VinculoDto> response = new ResponseDto<>(vinculoConsultado);
+    @GetMapping("/listar/paciente/{id}")
+    public ResponseEntity<ResponseDto<Page<VinculoDto>>> listarPorIdPaciente(
+            @PathVariable UUID id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "psicologo.nome,asc") String sort){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
+        Page<VinculoDto> vinculoDtoPage = useCase.listarPorIdPaciente(id, pageable).map(mapper::paraDto);
+
+        ResponseDto<Page<VinculoDto>> response = new ResponseDto<>(vinculoDtoPage);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/aceitar/{id}")
+    public ResponseEntity<ResponseDto<VinculoDto>> aceitarVinculo(@PathVariable UUID id){
+        VinculoDto vinculoAceito = mapper.paraDto(useCase.aceitarSolicitacao(id));
+        ResponseDto<VinculoDto> response = new ResponseDto<>(vinculoAceito);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/recusar/{id}")
+    public ResponseEntity<ResponseDto<VinculoDto>> recusarVinculo(@PathVariable UUID id){
+        VinculoDto vinculoRecusado = mapper.paraDto(useCase.recusarSolicitacao(id));
+        ResponseDto<VinculoDto> response = new ResponseDto<>(vinculoRecusado);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> desvincular(@PathVariable UUID id){
+        useCase.desvincular(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

@@ -34,9 +34,9 @@ public class VinculoUseCase {
         }
 
         Paciente paciente = pacienteUseCase.consultarPorId(vinculo.getPaciente().getId());
-        vinculo.setPaciente(paciente);
-
         Psicologo psicologo = psicologoUseCase.consultarPorId(vinculo.getPsicologo().getId());
+
+        vinculo.setPaciente(paciente);
         vinculo.setPsicologo(psicologo);
 
         Vinculo vinculoSalvo = gateway.salvar(vinculo);
@@ -57,6 +57,18 @@ public class VinculoUseCase {
         return vinculoSalvo;
     }
 
+    public Vinculo recusarSolicitacao(UUID id) {
+        log.info("Iniciando processo para recusar a solicitação de vinculo: Id do vinculo: {}", id);
+
+        Vinculo vinculo = consultarPorId(id);
+        vinculo.setStatus(StatusVinculo.RECUSADO);
+
+        Vinculo vinculoSalvo = gateway.salvar(vinculo);
+
+        log.info("Solicitação de vinculo recusada. Vinculo: {}", vinculoSalvo);
+        return vinculoSalvo;
+    }
+
     public void desvincular(UUID id){
         log.info("Iniciando processo de desvinculação. Id do vinculo: {}", id);
 
@@ -67,28 +79,25 @@ public class VinculoUseCase {
     }
 
     public Page<Vinculo> listarPorIdPsicologo(UUID id, Pageable pageable){
-        log.info("Iniciando listagem da solicitação de vinculo por id psicologo: Id do vinculo: {}", id);
+        log.info("Iniciando listagem da solicitação de vinculo por id psicologo. Id do psicologo: {}", id);
 
+        psicologoUseCase.consultarPorId(id);
         Page<Vinculo> vinculos = gateway.listarPorIdPsicologo(id, pageable);
 
         log.info("Listagem de solicitações completa. Vinculos: {}", vinculos);
         return vinculos;
     }
 
-    public Vinculo consultarPorIdPaciente(UUID id){
-        log.info("Iniciando busca da solicitação de vinculo por paciente: Id do vinculo: {}", id);
+    public Page<Vinculo> listarPorIdPaciente(UUID idPaciente, Pageable pageable){
+        log.info("Iniciando listagem da solicitação de vinculo por paciente. Id do paciente: {}", idPaciente);
 
-        Optional<Vinculo> vinculo = gateway.consultarPorIdPaciente(id);
+        pacienteUseCase.consultarPorId(idPaciente);
+        Page<Vinculo> vinculos = gateway.listarPorIdPaciente(idPaciente, pageable);
 
-        if (vinculo.isEmpty()){
-            throw new VinculoNaoEncontradoException(ERRO_VINCULO_NAO_ENCONRADO);
-        }
-
-        Vinculo vinculoBuscado = vinculo.get();
-
-        log.info("Solicitação buscada com sucesso. Vinculo: {}", vinculoBuscado);
-        return vinculoBuscado;
+        log.info("Listagem de solicitações completa. Listagem: {}", vinculos);
+        return vinculos;
     }
+
 
     private Vinculo consultarPorId(UUID id){
         Optional<Vinculo> vinculo = gateway.consultarPorId(id);
