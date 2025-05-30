@@ -6,6 +6,10 @@ import com.liratech.helppsico.entrypoint.dto.ResponseDto;
 import com.liratech.helppsico.entrypoint.mapper.PacienteMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -42,5 +46,16 @@ public class PacienteController {
         ResponseDto<PacienteDto> retorno = new ResponseDto<>(pacienteDto);
 
         return ResponseEntity.ok(retorno);
+    }
+
+    @GetMapping("/psicologo/{idPsicologo}")
+    public ResponseEntity<ResponseDto<Page<PacienteDto>>> listarPorPsicologo (
+            @PathVariable UUID idPsicologo,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "nome,asc") String sort){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
+
+        Page<PacienteDto> pacienteDtoPage = useCase.listarPorPsicologo(idPsicologo, pageable).map(mapper::paraDto);
     }
 }

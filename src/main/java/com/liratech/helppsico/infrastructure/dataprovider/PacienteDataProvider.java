@@ -8,6 +8,8 @@ import com.liratech.helppsico.infrastructure.repositories.PacienteRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.PacienteEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -23,6 +25,7 @@ public class PacienteDataProvider implements PacienteGateway {
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar paciente.";
     public static final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar paciente pelo id.";
     public static final String MENSAGEM_ERRO_CONSULTAR_POR_EMAIL = "Erro ao consultar paciente pelo email.";
+    public static final String MENSAGEM_ERRO_LISTAR_PACIENTE = "Erro ao listar pacientes";
 
     @Override
     public Paciente salvar(Paciente paciente) {
@@ -64,6 +67,20 @@ public class PacienteDataProvider implements PacienteGateway {
         }
 
         return pacienteEntity.map(mapper::paraDomain);
+    }
+
+    @Override
+    public Page<Paciente> listarPorPsicologo(UUID idPsicologo, Pageable pageable){
+        Page<PacienteEntity> pacienteEntityPage;
+
+        try {
+            pacienteEntityPage = repository.
+        }catch (Exception ex){
+            log.info(MENSAGEM_ERRO_LISTAR_PACIENTE, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_LISTAR_PACIENTE, ex.getCause());
+        }
+
+        return
     }
 
 }

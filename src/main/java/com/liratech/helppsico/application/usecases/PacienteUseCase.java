@@ -7,6 +7,8 @@ import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.domain.Paciente;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,6 +21,7 @@ public class PacienteUseCase {
     private final PacienteGateway gateway;
     private final CriptografiaUseCase criptografiaUseCase;
     private final EnderecoUseCase enderecoUseCase;
+    private final PsicologoUseCase psicologoUseCase;
     public static final String MENSAGEM_PACIENTE_JA_EXISTE = "Paciente já está cadastrado";
     public static final String MENSAGEM_PACIENTE_NAO_ENCONTRADO = "Paciente não encontrado";
 
@@ -68,5 +71,16 @@ public class PacienteUseCase {
         Paciente paciente = pacienteOptional.get();
         log.info("Paciente consultado com sucesso. Paciente: {}", paciente);
         return paciente;
+    }
+
+    public Page<Paciente> listarPorPsicologo(UUID idPsicologo, Pageable pageable) {
+        log.info("Iniciando listagem de pacientes por psicologo. Id Psicologo: {}", idPsicologo);
+
+        psicologoUseCase.consultarPorId(idPsicologo);
+
+        Page<Paciente> pacientes = gateway.listarPorPsicologo(idPsicologo, pageable);
+
+        log.info("Listagem bem sucedida. Pacientes: {}", pacientes);
+        return pacientes;
     }
 }
