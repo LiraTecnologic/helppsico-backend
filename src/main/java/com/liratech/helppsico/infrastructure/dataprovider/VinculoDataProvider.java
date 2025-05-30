@@ -72,7 +72,7 @@ public class VinculoDataProvider implements VinculoGateway {
         Page<VinculoEntity> vinculoEntityPage;
 
         try{
-            vinculoEntityPage = repository.findAllByPsicologo_Id(idPsicologo, pageable);
+            vinculoEntityPage = repository.findAllByPsicologoId(idPsicologo, pageable);
         }catch (Exception exception){
             log.error(MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO, exception);
             throw new DataProviderException(MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO, exception.getCause());
@@ -86,7 +86,7 @@ public class VinculoDataProvider implements VinculoGateway {
         Optional<VinculoEntity> vinculoEntity;
 
         try {
-            vinculoEntity = repository.findByPaciente_Id(idPaciente);
+            vinculoEntity = repository.findByPacienteId(idPaciente);
         }catch (DataProviderException exception){
             log.error(MENSAGEM_ERRO_CONSULTAR_POR_PACIENTE, exception);
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_PACIENTE, exception.getCause());

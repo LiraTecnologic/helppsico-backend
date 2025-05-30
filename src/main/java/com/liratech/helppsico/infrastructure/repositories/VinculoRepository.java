@@ -11,6 +11,6 @@ import java.util.UUID;
 
 @Repository
 public interface VinculoRepository extends JpaRepository<VinculoEntity, UUID> {
-    Page<VinculoEntity> findAllByPsicologo_Id(UUID idPsicologo, Pageable pageable);
-    Optional<VinculoEntity> findByPaciente_Id(UUID idPaciente);
+    Page<VinculoEntity> findAllByPsicologoId(UUID idPsicologo, Pageable pageable);
+    Optional<VinculoEntity> findByPacienteId(UUID idPaciente);
 }

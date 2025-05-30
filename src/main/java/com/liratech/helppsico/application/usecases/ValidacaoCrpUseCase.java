@@ -50,7 +50,7 @@ public class ValidacaoCrpUseCase {
         return validacaoSalva;
     }
 
-    public ValidacaoCrp validar(ValidacaoCrp validacaoCrpNovo, UUID id){
+    public void validar(ValidacaoCrp validacaoCrpNovo, UUID id){
         log.info("Validando o CRP. Validacao: {}", validacaoCrpNovo);
 
         ValidacaoCrp validacaoConsultado = consultarPorId(id);
@@ -64,13 +64,11 @@ public class ValidacaoCrpUseCase {
             psicologo.setStatusPsicologo(StatusPsicologo.NAO_APROVADO);
         }
 
-        ValidacaoCrp validacaoSalva = gateway.salvar(validacaoConsultado);
+        gateway.deletar(validacaoConsultado.getId());
 
         psicologoUseCase.alterar(psicologo, psicologo.getId());
 
-        log.info("Validação realizada com sucesso. Validação: {}", validacaoSalva);
-
-        return validacaoSalva;
+        log.info("Validação realizada com sucesso.");
     }
 
     public Page<ValidacaoCrp> listar(Pageable pageable){

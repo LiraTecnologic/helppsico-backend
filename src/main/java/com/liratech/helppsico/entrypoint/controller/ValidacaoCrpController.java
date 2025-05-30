@@ -40,15 +40,14 @@ public class ValidacaoCrpController {
                 .body(resultado);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ResponseDto<ValidacaoCrpDto>> validar(
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> validar(
             @RequestBody @Valid ValidacaoCrpDto validacaoCrpDto,
             @PathVariable UUID id){
 
-        ValidacaoCrpDto validacaoCrpResultado = mapper.paraDto(useCase.validar(mapper.paraDomain(validacaoCrpDto), id));
-        ResponseDto<ValidacaoCrpDto> resultado = new ResponseDto<>(validacaoCrpResultado);
+        useCase.validar(mapper.paraDomain(validacaoCrpDto), id);
 
-        return ResponseEntity.ok(resultado);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping
