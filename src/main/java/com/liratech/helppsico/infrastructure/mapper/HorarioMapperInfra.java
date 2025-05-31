@@ -7,8 +7,9 @@ import org.mapstruct.ReportingPolicy;
 
 @Mapper(
         componentModel = "spring",
-        implementationName = "HorarioMapperInfraImpl",
-        unmappedTargetPolicy = ReportingPolicy.ERROR
+        implementationName = "HorarioMapperInfraImp",
+        unmappedTargetPolicy = ReportingPolicy.ERROR,
+        uses = {PsicologoMapperInfra.class}
 )
 public interface HorarioMapperInfra {
     HorarioEntity paraEntity(Horario domain);

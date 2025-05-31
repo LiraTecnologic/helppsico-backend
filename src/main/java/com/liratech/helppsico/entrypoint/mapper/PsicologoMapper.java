@@ -7,7 +7,7 @@ import org.mapstruct.ReportingPolicy;
 
 @Mapper(
         componentModel = "spring",
-        implementationName = "PsicologoMapperImpl",
+        implementationName = "PsicologoMapperImp",
         unmappedTargetPolicy = ReportingPolicy.ERROR,
         uses = {EnderecoMapper.class}
 )

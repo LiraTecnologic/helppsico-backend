@@ -1,5 +1,6 @@
 package com.liratech.helppsico.domain;
 
+import com.liratech.helppsico.application.gateways.HorarioGateway;
 import lombok.*;
 
 import java.time.LocalTime;
@@ -16,5 +17,12 @@ public class Horario {
     private LocalTime inicio;
     private LocalTime fim;
     private Boolean disponivel;
-    private HorarioPsicologo horarioPsicologo;
+    private Psicologo psicologo;
+
+    public void alterarDados(Horario horarioNovo){
+        this.diaSemana = horarioNovo.getDiaSemana();
+        this.inicio = horarioNovo.getInicio();
+        this.fim = horarioNovo.getFim();
+        this.disponivel = horarioNovo.getDisponivel();
+    }
 }

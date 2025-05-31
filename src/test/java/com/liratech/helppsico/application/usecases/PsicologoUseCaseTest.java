@@ -6,7 +6,7 @@ import com.liratech.helppsico.builders.PsicologoBuilder;
 import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.domain.TipoGenero;
-import com.liratech.helppsico.validator.PsicologoValidator;
+import com.liratech.helppsico.validators.PsicologoValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

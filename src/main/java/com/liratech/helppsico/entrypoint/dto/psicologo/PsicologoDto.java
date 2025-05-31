@@ -9,6 +9,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -81,4 +83,8 @@ public class PsicologoDto {
     @JsonProperty("statusPsicologo")
     @Enumerated(EnumType.STRING)
     private StatusPsicologo statusPsicologo;
+
+    @JsonProperty("valorSessao")
+    private BigDecimal valorSessao;
+    private Integer tempoSessao;
 }

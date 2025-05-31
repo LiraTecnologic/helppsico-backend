@@ -84,7 +84,7 @@ public class ConsultaUseCase {
         log.info("Alterando data da consulta. Id da consulta: {}, Nova data: {}", idConsulta, novaData);
 
         Consulta consulta = this.consultarPorId(idConsulta);
-        consulta.setDataHora(novaData);
+//        consulta.setDataHora(novaData);
         this.validarHorarioConsulta(consulta);
         Consulta consultaSalva = gateway.salvar(consulta);
 
@@ -107,12 +107,12 @@ public class ConsultaUseCase {
     }
 
     private void validarHorarioConsulta(Consulta novaConsulta) {
-        List<Consulta> consultasMesmoDia = gateway.consultarConsultasMesmoDia(novaConsulta.getDataHora().getDayOfMonth(), novaConsulta.getPsicologo().getId());
+        List<Consulta> consultasMesmoDia = gateway.consultarConsultasMesmoDia(novaConsulta.getData().getDayOfMonth(), novaConsulta.getPsicologo().getId());
 
         if(!consultasMesmoDia.isEmpty()) {
             Optional<Consulta> consultaRepetida = consultasMesmoDia.stream()
                     .filter(consulta
-                            -> consulta.getDataHora().getHour() == novaConsulta.getDataHora().getHour()
+                            -> consulta.getHorario().getInicio() == novaConsulta.getHorario().getInicio()
                     ).findFirst();
 
             if(consultaRepetida.isPresent()) {

@@ -7,11 +7,11 @@ import org.mapstruct.ReportingPolicy;
 
 @Mapper(
         componentModel = "spring",
-        implementationName = "ConsultaMapperInfraImpl",
+        implementationName = "ConsultaMapperInfraImp",
         unmappedTargetPolicy = ReportingPolicy.ERROR,
-        uses = {PsicologoMapperInfra.class, PacienteMapperInfra.class, EnderecoMapperInfra.class}
+        uses = {PsicologoMapperInfra.class, PacienteMapperInfra.class, EnderecoMapperInfra.class, HorarioMapperInfra.class}
 )
 public interface ConsultaMapperInfra {
-    ConsultaEntity paraEntity (Consulta consulta);
-    Consulta paraDomain (ConsultaEntity consultaEntity);
+    ConsultaEntity paraEntity (Consulta domain);
+    Consulta paraDomain (ConsultaEntity entity);
 }

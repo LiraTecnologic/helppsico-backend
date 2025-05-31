@@ -3,11 +3,13 @@ package com.liratech.helppsico.entrypoint.dto.consulta;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.liratech.helppsico.entrypoint.dto.EnderecoDto;
 import com.liratech.helppsico.entrypoint.dto.PacienteDto;
+import com.liratech.helppsico.entrypoint.dto.psicologo.HorarioDto;
 import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -34,9 +36,13 @@ public class ConsultaDto {
     @JsonProperty("valor")
     private BigDecimal valor;
 
-    @NotNull(message = "A data e hora são obrigatórios")
-    @JsonProperty("dataHora")
-    private LocalDateTime dataHora;
+    @NotNull(message = "O horario é obrigatório")
+    @JsonProperty("horario")
+    private HorarioDto horario;
+
+    @NotNull(message = "A data é obrigatória")
+    @JsonProperty("data")
+    private LocalDate data;
 
     @NotNull(message = "O endereço é obrigatório")
     @JsonProperty("endereco")

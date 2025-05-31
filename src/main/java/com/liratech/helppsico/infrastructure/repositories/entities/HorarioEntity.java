@@ -31,6 +31,6 @@ public class HorarioEntity {
     private Boolean disponivel;
 
     @ManyToOne
-    @JoinColumn(name = "id_horario_psicologo")
-    private HorarioPsicologoEntity horarioPsicologo;
+    @JoinColumn(name = "id_psicologo")
+    private PsicologoEntity psicologo;
 }

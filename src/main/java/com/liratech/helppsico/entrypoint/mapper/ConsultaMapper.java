@@ -10,9 +10,9 @@ import java.util.List;
 
 @Mapper(
         componentModel = "spring",
-        implementationName = "ConsultaMapperImpl",
+        implementationName = "ConsultaMapperImp",
         unmappedTargetPolicy = ReportingPolicy.ERROR,
-        uses = {PsicologoMapper.class, PacienteMapper.class, EnderecoMapper.class}
+        uses = {PsicologoMapper.class, PacienteMapper.class, EnderecoMapper.class, HorarioMapper.class}
 )
 public interface ConsultaMapper {
     Consulta paraDomain (ConsultaDto consultaDto);

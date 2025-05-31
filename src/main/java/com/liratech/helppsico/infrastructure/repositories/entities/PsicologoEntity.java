@@ -45,4 +45,10 @@ public class PsicologoEntity {
 
     private String biografia;
     private StatusPsicologo statusPsicologo;
+
+    @Column(name = "valor_sessao")
+    private BigDecimal valorSessao;
+
+    @Column(name = "tempo_sessao")
+    private Integer tempoSessao;
 }

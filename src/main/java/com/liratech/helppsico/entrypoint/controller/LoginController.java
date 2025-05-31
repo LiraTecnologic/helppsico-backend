@@ -19,7 +19,7 @@ public class LoginController {
     @PostMapping("/paciente")
     public ResponseEntity<ResponseDto<LoginRespostaDto>> logarPaciente(@RequestBody @Valid LoginDto loginCorpo){
         LoginRespostaDto loginResposta = useCase.logarPaciente(loginCorpo.getEmail(), loginCorpo.getSenha());
-        ResponseDto<LoginRespostaDto> resposta = new ResponseDto<LoginRespostaDto>();
+        ResponseDto<LoginRespostaDto> resposta = new ResponseDto<>(loginResposta);
 
         return ResponseEntity.ok(resposta);
     }
@@ -27,7 +27,7 @@ public class LoginController {
     @PostMapping("/psicologo")
     public ResponseEntity<ResponseDto<LoginRespostaDto>> logarPsicologo(@RequestBody @Valid LoginDto loginCorpo){
         LoginRespostaDto loginResposta = useCase.logarPsicologo(loginCorpo.getCrp(), loginCorpo.getSenha());
-        ResponseDto<LoginRespostaDto> resposta = new ResponseDto<LoginRespostaDto>();
+        ResponseDto<LoginRespostaDto> resposta = new ResponseDto<>(loginResposta);
 
         return ResponseEntity.ok(resposta);
     }

@@ -101,7 +101,7 @@ public class VinculoDataProvider implements VinculoGateway {
         Optional<VinculoEntity> vinculoEntity;
 
         try {
-            vinculoEntity = repository.findByPacienteIdPsicologoId(idPaciente, idPsicologo);
+            vinculoEntity = repository.findByPacienteIdAndPsicologoId(idPaciente, idPsicologo);
         }catch (Exception exception){
             log.error(MENSAGEM_ERRO_CONSULTAR_ID, exception);
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_ID, exception.getCause());

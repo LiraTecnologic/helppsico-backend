@@ -35,8 +35,7 @@ public interface ConsultaRepository extends JpaRepository<ConsultaEntity, UUID> 
     @Query("""
             SELECT c
             FROM Consulta c
-            WHERE DAY(c.dataHora) = :diaDoMes
-            AND c.psicologo.id = :idPsicologo 
+            WHERE FUNCTION('DAY', c.data) = :diaDoMes AND c.psicologo.id = :idPsicologo
             """)
     List<ConsultaEntity> consultarConsultasMesmoDia(
             @Param("diaDoMes") int diaDoMes,

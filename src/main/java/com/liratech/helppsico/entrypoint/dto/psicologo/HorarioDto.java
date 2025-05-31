@@ -36,6 +36,6 @@ public class HorarioDto {
     @JsonProperty("disponivel")
     private Boolean disponivel;
 
-    @JsonProperty("horarioPsicologo")
-    private HorarioPsicologoDto horarioPsicologo;
+    @JsonProperty("psicologo")
+    private PsicologoDto psicologo;
 }
