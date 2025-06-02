@@ -71,6 +71,14 @@ public class ProntuarioController {
         return ResponseEntity.ok(resposta);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseDto<ProntuarioDto>> consultarPorId(@PathVariable UUID id){
+        ProntuarioDto prontuario = mapper.paraDto(useCase.consultarPorId(id));
+        ResponseDto<ProntuarioDto> response = new ResponseDto<>(prontuario);
+
+        return ResponseEntity.ok(response);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDto<ProntuarioDto>> alterar(@RequestBody @Valid ProntuarioDto novosDados, @PathVariable UUID id) {
         ProntuarioDto resultado = mapper.paraDto(useCase.alterar(mapper.paraDomain(novosDados), id));

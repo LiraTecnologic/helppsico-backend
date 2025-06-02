@@ -112,7 +112,7 @@ public class ProntuarioUseCase {
         log.info("Deleção de prontuário realizada com sucesso.");
     }
 
-    private Prontuario consultarPorId(UUID idProntuario) {
+    public Prontuario consultarPorId(UUID idProntuario) {
         log.info("Consultando prontuário pelo id. Id: {}", idProntuario);
 
         Optional<Prontuario> prontuario = gateway.consultarPorId(idProntuario);
