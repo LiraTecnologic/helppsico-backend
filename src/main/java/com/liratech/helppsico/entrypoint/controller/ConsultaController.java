@@ -86,7 +86,7 @@ public class ConsultaController {
     ){
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
 
-        Page<ConsultaDto> resultado = useCase.consultarConsultasFuturas(idPaciente, idPsicologo, pageable).map(mapper::paraDto);
+        Page<ConsultaDto> resultado = useCase.consultarConsultasFuturasPsicologo(idPsicologo, pageable).map(mapper::paraDto);
         ResponseDto<Page<ConsultaDto>> resposta = new ResponseDto<>(resultado);
 
         return ResponseEntity.ok(resposta);
@@ -101,7 +101,7 @@ public class ConsultaController {
     ){
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
 
-        Page<ConsultaDto> resultado = useCase.consultarHistorico(idPaciente, idPsicologo, pageable).map(mapper::paraDto);
+        Page<ConsultaDto> resultado = useCase.consultarHistoricoPsicologo(idPsicologo, pageable).map(mapper::paraDto);
         ResponseDto<Page<ConsultaDto>> resposta = new ResponseDto<>(resultado);
 
         return ResponseEntity.ok(resposta);

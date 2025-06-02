@@ -90,6 +90,37 @@ public class ConsultaDataProvider implements ConsultaGateway {
     }
 
     @Override
+    public Page<Consulta> consultarConsultasFuturasPsicologo(UUID idPsicologo, Pageable pageable) {
+        Page<ConsultaEntity> consultaEntities;
+
+        try {
+            consultaEntities = repository.consultarConsultasFuturasPsicologo(
+                    idPsicologo,
+                    LocalDate.now(),
+                    pageable);
+        } catch (Exception ex) {
+            log.error(MENSAGEM_ERRO_CONSULTAR_SESSOES_FUTURAS, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_SESSOES_FUTURAS, ex.getCause());
+        }
+
+        return consultaEntities.map(mapper::paraDomain);
+    }
+
+    @Override
+    public Page<Consulta> consultarHistoricoPsicologo(UUID idPsicologo, Pageable pageable) {
+        Page<ConsultaEntity> consultaEntities;
+
+        try {
+            consultaEntities = repository.consultarHistoricoPsicologo(idPsicologo, pageable);
+        } catch (Exception ex) {
+            log.error(MENSAGEM_ERRO_CONSULTAR_HISTORICO, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_HISTORICO, ex.getCause());
+        }
+
+        return consultaEntities.map(mapper::paraDomain);
+    }
+
+    @Override
     public List<Consulta> consultarConsultasMesmoDia(int diaDoMes, UUID idPsicologo) {
         List<ConsultaEntity> consultaEntities;
 

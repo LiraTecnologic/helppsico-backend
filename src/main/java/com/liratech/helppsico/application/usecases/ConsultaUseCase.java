@@ -82,6 +82,28 @@ public class ConsultaUseCase {
         return historico;
     }
 
+    public Page<Consulta> consultarConsultasFuturasPsicologo(UUID idPsicologo, Pageable pageable) {
+        log.info("Consultando consultas futuras por psicologo. Id psicologo: {}", idPsicologo);
+
+        psicologoUseCase.consultarPorId(idPsicologo);
+
+        Page<Consulta> consultasFuturas = gateway.consultarConsultasFuturasPsicologo(idPsicologo, pageable);
+
+        log.info("Consulta de sessões futuras feita com sucesso. Consultas: {}", consultasFuturas);
+        return consultasFuturas;
+    }
+
+    public Page<Consulta> consultarHistoricoPsicologo(UUID idPsicologo, Pageable pageable) {
+        log.info("Consultando histórico de consultas do psicologo. Id psicologo: {}", idPsicologo);
+
+        psicologoUseCase.consultarPorId(idPsicologo);
+
+        Page<Consulta> historico = gateway.consultarHistoricoPsicologo(idPsicologo, pageable);
+
+        log.info("Histórico de consultas consultados com sucesso. Histórico: {}", historico);
+        return historico;
+    }
+
     public Consulta alterarData(UUID idConsulta, LocalDateTime novaData) {
         log.info("Alterando data da consulta. Id da consulta: {}, Nova data: {}", idConsulta, novaData);
 

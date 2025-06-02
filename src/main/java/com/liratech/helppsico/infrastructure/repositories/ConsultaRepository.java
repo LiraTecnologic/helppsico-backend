@@ -39,6 +39,26 @@ public interface ConsultaRepository extends JpaRepository<ConsultaEntity, UUID> 
             Pageable pageable
     );
 
+    @Query("SELECT c " +
+            "FROM Consulta c " +
+            "WHERE c.finalizada = false " +
+            "AND c.psicologo.id = :idPsicologo " +
+            "AND c.data >= :hoje")
+    Page<ConsultaEntity> consultarConsultasFuturasPsicologo(
+            @Param("idPsicologo") UUID idPsicologo,
+            @Param("hoje") LocalDate hoje,
+            Pageable pageable
+    );
+
+    @Query("SELECT c " +
+            "FROM Consulta c " +
+            "WHERE c.finalizada = true " +
+            "AND c.psicologo.id = :idPsicologo ")
+    Page<ConsultaEntity> consultarHistoricoPsicologo(
+            @Param("idPsicologo") UUID idPsicologo,
+            Pageable pageable
+    );
+
     @Query("""
             SELECT c
             FROM Consulta c
