@@ -97,11 +97,11 @@ public class VinculoDataProvider implements VinculoGateway {
     }
 
     @Override
-    public Optional<Vinculo> consultarPorPacientePsicologo(UUID idPaciente, UUID idPsicologo) {
+    public Optional<Vinculo> consultarAtivoPorPaciente(UUID idPaciente) {
         Optional<VinculoEntity> vinculoEntity;
 
         try {
-            vinculoEntity = repository.findByPacienteIdAndPsicologoId(idPaciente, idPsicologo);
+            vinculoEntity = repository.consultarAtivoPorPaciente(idPaciente);
         }catch (Exception exception){
             log.error(MENSAGEM_ERRO_CONSULTAR_ID, exception);
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_ID, exception.getCause());

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -61,11 +62,11 @@ public class ConsultaDataProvider implements ConsultaGateway {
     }
 
     @Override
-    public Page<Consulta> consultarConsultasFuturas(UUID idPaciente, UUID idPsicologo, Pageable pageable) {
+    public Page<Consulta> consultarConsultasFuturasPaciente(UUID idPaciente, UUID idPsicologo, Pageable pageable) {
         Page<ConsultaEntity> consultaEntities;
 
         try {
-            consultaEntities = repository.consultarConsultasFuturas(idPaciente, idPsicologo, pageable);
+            consultaEntities = repository.consultarConsultasFuturasPaciente(idPaciente, idPsicologo, LocalDate.now(), pageable);
         } catch (Exception ex) {
             log.error(MENSAGEM_ERRO_CONSULTAR_SESSOES_FUTURAS, ex);
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_SESSOES_FUTURAS, ex.getCause());

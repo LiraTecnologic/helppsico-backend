@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,10 +17,14 @@ public interface ConsultaRepository extends JpaRepository<ConsultaEntity, UUID> 
 
     @Query("SELECT c " +
             "FROM Consulta c " +
-            "WHERE c.finalizada = false AND c.psicologo.id = :idPsicologo AND c.paciente.id = :idPaciente")
-    Page<ConsultaEntity> consultarConsultasFuturas(
+            "WHERE c.finalizada = false " +
+            "AND c.psicologo.id = :idPsicologo " +
+            "AND c.paciente.id = :idPaciente" +
+            "AND c.data >= :hoje")
+    Page<ConsultaEntity> consultarConsultasFuturasPaciente(
             @Param("idPaciente") UUID idPaciente,
             @Param("idPsicologo") UUID idPsicologo,
+            @Param("hoje") LocalDate hoje,
             Pageable pageable
     );
 

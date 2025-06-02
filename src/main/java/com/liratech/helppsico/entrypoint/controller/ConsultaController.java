@@ -47,8 +47,38 @@ public class ConsultaController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/futuras/{idPaciente}/{idPsicologo}")
-    public ResponseEntity<ResponseDto<Page<ConsultaDto>>> consultarConsultasFuturas(
+    @GetMapping("/paciente/futuras/{idPaciente}")
+    public ResponseEntity<ResponseDto<Page<ConsultaDto>>> consultarConsultasFuturasPaciente(
+            @PathVariable("idPaciente") UUID idPaciente,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "dataHora,asc") String sort
+    ){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
+
+        Page<ConsultaDto> resultado = useCase.consultarConsultasFuturasPaciente(idPaciente, pageable).map(mapper::paraDto);
+        ResponseDto<Page<ConsultaDto>> resposta = new ResponseDto<>(resultado);
+
+        return ResponseEntity.ok(resposta);
+    }
+
+    @GetMapping("/paciente/historico/{idPaciente}")
+    public ResponseEntity<ResponseDto<Page<ConsultaDto>>> consultarHistoricoPaciente(
+            @PathVariable("idPaciente") UUID idPaciente,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "dataHora,asc") String sort
+    ){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
+
+        Page<ConsultaDto> resultado = useCase.consultarHistorico(idPaciente, idPsicologo, pageable).map(mapper::paraDto);
+        ResponseDto<Page<ConsultaDto>> resposta = new ResponseDto<>(resultado);
+
+        return ResponseEntity.ok(resposta);
+    }
+
+    @GetMapping("/psicologo/futuras/{idPsicologo}")
+    public ResponseEntity<ResponseDto<Page<ConsultaDto>>> consultarConsultasFuturasPsicologo(
             @PathVariable("idPaciente") UUID idPaciente,
             @PathVariable("idPsicologo") UUID idPsicologo,
             @RequestParam(defaultValue = "0") int page,
@@ -63,9 +93,8 @@ public class ConsultaController {
         return ResponseEntity.ok(resposta);
     }
 
-    @GetMapping("/historico/{idPaciente}/{idPsicologo}")
-    public ResponseEntity<ResponseDto<Page<ConsultaDto>>> consultarHistorico(
-            @PathVariable("idPaciente") UUID idPaciente,
+    @GetMapping("/psicologo/historico/{idPsicologo}")
+    public ResponseEntity<ResponseDto<Page<ConsultaDto>>> consultarHistoricoPsicologo(
             @PathVariable("idPsicologo") UUID idPsicologo,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,

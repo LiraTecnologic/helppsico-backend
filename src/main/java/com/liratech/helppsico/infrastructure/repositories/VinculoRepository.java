@@ -27,5 +27,10 @@ public interface VinculoRepository extends JpaRepository<VinculoEntity, UUID> {
             """)
     Page<VinculoEntity> findAllByPacienteId(@Param("idPaciente") UUID idPaciente, Pageable pageable);
 
-    Optional<VinculoEntity> findByPacienteIdAndPsicologoId(UUID idPaciente, UUID idPsicologo);
+    @Query("""
+            SELECT v
+            FROM Vinculo v
+            WHERE v.paciente.id = :idPaciente AND v.status = 2
+            """)
+    Optional<VinculoEntity> consultarAtivoPorPaciente(UUID idPaciente);
 }

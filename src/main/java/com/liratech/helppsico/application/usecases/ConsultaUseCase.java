@@ -3,9 +3,7 @@ package com.liratech.helppsico.application.usecases;
 import com.liratech.helppsico.application.exceptions.consulta.ConsultaJaExistenteNaDataException;
 import com.liratech.helppsico.application.exceptions.consulta.ConsultaNaoEncontradaException;
 import com.liratech.helppsico.application.gateways.ConsultaGateway;
-import com.liratech.helppsico.domain.Consulta;
-import com.liratech.helppsico.domain.Paciente;
-import com.liratech.helppsico.domain.Psicologo;
+import com.liratech.helppsico.domain.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -25,6 +23,8 @@ public class ConsultaUseCase {
     private final ConsultaGateway gateway;
     private final PacienteUseCase pacienteUseCase;
     private final PsicologoUseCase psicologoUseCase;
+    private final HorarioUseCase horarioUseCase;
+    private final VinculoUseCase vinculoUseCase;
     public final String MENSAGEM_CONSULTA_JA_EXISTENTE_NA_DATA = "Consulta já existe na data epecíficada para agendar.";
     public final String MENSAGEM_CONSULTA_NAO_ENCONTRADA = "Consulta não encontrada com o id específicado.";
 
@@ -35,9 +35,11 @@ public class ConsultaUseCase {
 
         Paciente paciente = pacienteUseCase.consultarPorId(novaConsulta.getPaciente().getId());
         Psicologo psicologo = psicologoUseCase.consultarPorId(novaConsulta.getPsicologo().getId());
+        Horario horario = horarioUseCase.consultarPorId(novaConsulta.getHorario().getId());
 
         novaConsulta.setPaciente(paciente);
         novaConsulta.setPsicologo(psicologo);
+        novaConsulta.setHorario(horario);
         novaConsulta.setEndereco(psicologo.getEnderecoAtendimento());
         novaConsulta.setFinalizada(false);
 
@@ -56,13 +58,13 @@ public class ConsultaUseCase {
         log.info("Consulta cancelada com sucesso.");
     }
 
-    public Page<Consulta> consultarConsultasFuturas(UUID idPaciente, UUID idPsicologo, Pageable pageable) {
-        log.info("Consultando consultas futuras. Id paciente: {}, Id psicologo: {}", idPaciente, idPsicologo);
+    public Page<Consulta> consultarConsultasFuturasPaciente(UUID idPaciente, Pageable pageable) {
+        log.info("Consultando consultas futuras por paciente. Id paciente: {}", idPaciente);
 
         pacienteUseCase.consultarPorId(idPaciente);
-        psicologoUseCase.consultarPorId(idPsicologo);
+        Vinculo vinculo = vinculoUseCase.consultarAtivoPorPaciente(idPaciente);
 
-        Page<Consulta> consultasFuturas = gateway.consultarConsultasFuturas(idPaciente, idPsicologo, pageable);
+        Page<Consulta> consultasFuturas = gateway.consultarConsultasFuturasPaciente(idPaciente, vinculo.getPsicologo().getId(), pageable);
 
         log.info("Consulta de cosultas futuras feita com sucesso. Consultas: {}", consultasFuturas);
         return consultasFuturas;
