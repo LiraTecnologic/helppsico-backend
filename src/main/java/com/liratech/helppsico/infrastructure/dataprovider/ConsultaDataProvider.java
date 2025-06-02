@@ -76,11 +76,11 @@ public class ConsultaDataProvider implements ConsultaGateway {
     }
 
     @Override
-    public Page<Consulta> consultarHistorico(UUID idPaciente, UUID idPsicologo, Pageable pageable) {
+    public Page<Consulta> consultarHistoricoPaciente(UUID idPaciente, UUID idPsicologo, Pageable pageable) {
         Page<ConsultaEntity> consultaEntities;
         
         try {
-            consultaEntities = repository.consultarHistorico(idPaciente, idPsicologo, pageable);
+            consultaEntities = repository.consultarHistoricoPaciente(idPaciente, idPsicologo, pageable);
         } catch (Exception ex) {
             log.error(MENSAGEM_ERRO_CONSULTAR_HISTORICO, ex);
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_HISTORICO, ex.getCause());

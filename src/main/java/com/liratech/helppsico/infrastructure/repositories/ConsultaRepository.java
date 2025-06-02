@@ -30,8 +30,10 @@ public interface ConsultaRepository extends JpaRepository<ConsultaEntity, UUID> 
 
     @Query("SELECT c " +
             "FROM Consulta c " +
-            "WHERE c.finalizada = true AND c.psicologo.id = :idPsicologo AND c.paciente.id = :idPaciente")
-    Page<ConsultaEntity> consultarHistorico(
+            "WHERE c.finalizada = true " +
+            "AND c.psicologo.id = :idPsicologo " +
+            "AND c.paciente.id = :idPaciente")
+    Page<ConsultaEntity> consultarHistoricoPaciente(
             @Param("idPaciente") UUID idPaciente,
             @Param("idPsicologo") UUID idPsicologo,
             Pageable pageable

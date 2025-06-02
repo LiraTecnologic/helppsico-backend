@@ -71,7 +71,7 @@ public class ConsultaController {
     ){
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc(sort.split(",")[0])));
 
-        Page<ConsultaDto> resultado = useCase.consultarHistorico(idPaciente, idPsicologo, pageable).map(mapper::paraDto);
+        Page<ConsultaDto> resultado = useCase.consultarHistoricoPaciente(idPaciente, pageable).map(mapper::paraDto);
         ResponseDto<Page<ConsultaDto>> resposta = new ResponseDto<>(resultado);
 
         return ResponseEntity.ok(resposta);
@@ -79,7 +79,6 @@ public class ConsultaController {
 
     @GetMapping("/psicologo/futuras/{idPsicologo}")
     public ResponseEntity<ResponseDto<Page<ConsultaDto>>> consultarConsultasFuturasPsicologo(
-            @PathVariable("idPaciente") UUID idPaciente,
             @PathVariable("idPsicologo") UUID idPsicologo,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
