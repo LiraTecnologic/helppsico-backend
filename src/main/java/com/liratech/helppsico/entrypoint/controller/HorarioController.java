@@ -29,13 +29,12 @@ public class HorarioController {
         HorarioDto horarioCadastrado = mapper.paraDto(
                 useCase.cadastrar(mapper.paraDomain(horarioDto)));
 
-        ResponseDto<HorarioDto> response = new ResponseDto<>(horarioDto);
+        ResponseDto<HorarioDto> response = new ResponseDto<>(horarioCadastrado);
 
-        return ResponseEntity
-                .created(
+        return ResponseEntity.created(
                 UriComponentsBuilder
                         .newInstance()
-                        .path("/horarios-psicologos/{id}")
+                        .path("/horarios/{id}")
                         .buildAndExpand(horarioDto.getId())
                         .toUri())
                 .body(response);

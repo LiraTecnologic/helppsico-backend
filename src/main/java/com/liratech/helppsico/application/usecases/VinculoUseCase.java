@@ -1,6 +1,7 @@
 package com.liratech.helppsico.application.usecases;
 
 import com.liratech.helppsico.application.exceptions.vinculo.VinculoInvalidoException;
+import com.liratech.helppsico.application.exceptions.vinculo.VinculoJaAtivoException;
 import com.liratech.helppsico.application.exceptions.vinculo.VinculoNaoEncontradoException;
 import com.liratech.helppsico.application.gateways.VinculoGateway;
 import com.liratech.helppsico.domain.Paciente;
@@ -25,6 +26,7 @@ public class VinculoUseCase {
     private final VinculoGateway gateway;
     public static final String ERRO_VINCULO_NAO_ENCONRADO = "Vinculo não encontrado.";
     public static final String ERRO_VINCULO_INVALIDO = "Status do vinculo inválido.";
+    public static final String ERRO_VINCULO_JA_ATIVO = "Paciente com vinculo ja ativado.";
 
     public Vinculo criarSolicitacaoVinculo(Vinculo vinculo){
         log.info("Iniciando criação da solicitação de vinculo: Vinculo: {}", vinculo);
@@ -33,7 +35,11 @@ public class VinculoUseCase {
             throw new VinculoInvalidoException(ERRO_VINCULO_INVALIDO);
         }
 
-        consultarAtivoPorPaciente(vinculo.getPaciente().getId());
+        Optional<Vinculo> vinculoOptional = gateway.consultarAtivoPorPaciente(vinculo.getPaciente().getId());
+
+        if (vinculoOptional.isPresent()){
+            throw new VinculoJaAtivoException(ERRO_VINCULO_JA_ATIVO);
+        }
 
         Paciente paciente = pacienteUseCase.consultarPorId(vinculo.getPaciente().getId());
         Psicologo psicologo = psicologoUseCase.consultarPorId(vinculo.getPsicologo().getId());

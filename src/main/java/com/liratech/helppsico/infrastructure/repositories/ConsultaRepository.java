@@ -19,7 +19,7 @@ public interface ConsultaRepository extends JpaRepository<ConsultaEntity, UUID> 
             "FROM Consulta c " +
             "WHERE c.finalizada = false " +
             "AND c.psicologo.id = :idPsicologo " +
-            "AND c.paciente.id = :idPaciente" +
+            "AND c.paciente.id = :idPaciente " +
             "AND c.data >= :hoje")
     Page<ConsultaEntity> consultarConsultasFuturasPaciente(
             @Param("idPaciente") UUID idPaciente,
