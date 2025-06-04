@@ -11,6 +11,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@ToString
 public class Psicologo {
     private UUID id;
     private String nome;

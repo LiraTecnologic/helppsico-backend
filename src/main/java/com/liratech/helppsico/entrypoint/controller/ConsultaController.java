@@ -1,6 +1,9 @@
 package com.liratech.helppsico.entrypoint.controller;
 
 import com.liratech.helppsico.application.usecases.ConsultaUseCase;
+import com.liratech.helppsico.domain.Consulta;
+import com.liratech.helppsico.domain.Horario;
+import com.liratech.helppsico.entrypoint.dto.DataConsultaDto;
 import com.liratech.helppsico.entrypoint.dto.ResponseDto;
 import com.liratech.helppsico.entrypoint.dto.consulta.ConsultaDto;
 import com.liratech.helppsico.entrypoint.mapper.ConsultaMapper;
@@ -108,8 +111,13 @@ public class ConsultaController {
     }
 
     @PatchMapping("/{idConsulta}")
-    public ResponseEntity<ResponseDto<ConsultaDto>> alterarData(@PathVariable UUID idConsulta, @RequestBody LocalDateTime novaData) {
-        ConsultaDto resultado = mapper.paraDto(useCase.alterarData(idConsulta, novaData));
+    public ResponseEntity<ResponseDto<ConsultaDto>> alterarData(@PathVariable UUID idConsulta, @RequestBody DataConsultaDto novaData) {
+        ConsultaDto resultado = mapper.paraDto(useCase.alterarData(
+                idConsulta,
+                mapper.paraDomain(ConsultaDto.builder()
+                                .horario(novaData.getHorario())
+                                .data(novaData.getData())
+                        .build())));
         ResponseDto<ConsultaDto> resposta = new ResponseDto<>(resultado);
 
         return ResponseEntity.ok(resposta);

@@ -5,6 +5,7 @@ import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.application.exceptions.psicologo.PsicologoExistenteException;
 import com.liratech.helppsico.application.exceptions.psicologo.PsicologoNaoEncontradoException;
+import com.liratech.helppsico.domain.ValidacaoCrp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

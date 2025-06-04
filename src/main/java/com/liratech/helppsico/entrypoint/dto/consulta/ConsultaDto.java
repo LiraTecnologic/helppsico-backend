@@ -31,8 +31,6 @@ public class ConsultaDto {
     @JsonProperty("paciente")
     private PacienteDto paciente;
 
-    @NotNull(message = "O valor é obrigatório")
-    @PositiveOrZero(message = "O valor tem que ser maior ou igual a zero")
     @JsonProperty("valor")
     private BigDecimal valor;
 
@@ -44,7 +42,6 @@ public class ConsultaDto {
     @JsonProperty("data")
     private LocalDate data;
 
-    @NotNull(message = "O endereço é obrigatório")
     @JsonProperty("endereco")
     private EnderecoDto endereco;
 

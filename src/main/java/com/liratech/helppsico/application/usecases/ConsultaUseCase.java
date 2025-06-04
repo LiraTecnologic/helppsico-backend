@@ -1,5 +1,6 @@
 package com.liratech.helppsico.application.usecases;
 
+import com.liratech.helppsico.application.exceptions.consulta.ConsultaInvalidaException;
 import com.liratech.helppsico.application.exceptions.consulta.ConsultaJaExistenteNaDataException;
 import com.liratech.helppsico.application.exceptions.consulta.ConsultaNaoEncontradaException;
 import com.liratech.helppsico.application.gateways.ConsultaGateway;
@@ -10,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,6 +27,7 @@ public class ConsultaUseCase {
     private final VinculoUseCase vinculoUseCase;
     public final String MENSAGEM_CONSULTA_JA_EXISTENTE_NA_DATA = "Consulta já existe na data epecíficada para agendar.";
     public final String MENSAGEM_CONSULTA_NAO_ENCONTRADA = "Consulta não encontrada com o id específicado.";
+    public final String MENSAGEM_PSICOLOGO_PACIENTE_NAO_VINCULADOS = "Pacientes e psicologos nao são vinculados";
 
     public Consulta agendar(Consulta novaConsulta) {
         log.info("Agendando nova consulta. Nova consulta: {}", novaConsulta);
@@ -37,13 +38,22 @@ public class ConsultaUseCase {
         Psicologo psicologo = psicologoUseCase.consultarPorId(novaConsulta.getPsicologo().getId());
         Horario horario = horarioUseCase.consultarPorId(novaConsulta.getHorario().getId());
 
+        Vinculo vinculo = vinculoUseCase.consultarAtivoPorPaciente(paciente.getId());
+        if (vinculo.getPsicologo().getId() != psicologo.getId()){
+            throw new ConsultaInvalidaException(MENSAGEM_PSICOLOGO_PACIENTE_NAO_VINCULADOS);
+        }
+
         novaConsulta.setPaciente(paciente);
         novaConsulta.setPsicologo(psicologo);
         novaConsulta.setHorario(horario);
         novaConsulta.setEndereco(psicologo.getEnderecoAtendimento());
+        novaConsulta.setValor(psicologo.getValorSessao());
         novaConsulta.setFinalizada(false);
 
+        horario.setDisponivel(false);
+
         Consulta consultaSalva = gateway.salvar(novaConsulta);
+        horarioUseCase.cadastrar(horario);
 
         log.info("Consulta agendada com sucesso. Consulta: {}", consultaSalva);
         return consultaSalva;
@@ -52,7 +62,12 @@ public class ConsultaUseCase {
     public void cancelar(UUID id) {
         log.info("Cancelando consulta pelo seu id. Id: {}", id);
 
-        this.consultarPorId(id);
+        Consulta consulta = this.consultarPorId(id);
+        Horario horario = consulta.getHorario();
+
+        horario.setDisponivel(true);
+        horarioUseCase.cadastrar(horario);
+
         gateway.deletar(id);
 
         log.info("Consulta cancelada com sucesso.");
@@ -78,7 +93,7 @@ public class ConsultaUseCase {
 
         Page<Consulta> historico = gateway.consultarHistoricoPaciente(idPaciente, vinculo.getPsicologo().getId(), pageable);
         
-        log.info("Histórico de consultas consultados com sucesso. Histórico: {}", historico);
+        log.info("Histórico de consultas por paciente buscadas. Histórico: {}", historico);
         return historico;
     }
 
@@ -100,16 +115,19 @@ public class ConsultaUseCase {
 
         Page<Consulta> historico = gateway.consultarHistoricoPsicologo(idPsicologo, pageable);
 
-        log.info("Histórico de consultas consultados com sucesso. Histórico: {}", historico);
+        log.info("Histórico de consultas por psicologo buscadas. Histórico: {}", historico);
         return historico;
     }
 
-    public Consulta alterarData(UUID idConsulta, LocalDateTime novaData) {
+    public Consulta alterarData(UUID idConsulta, Consulta novaData) {
         log.info("Alterando data da consulta. Id da consulta: {}, Nova data: {}", idConsulta, novaData);
 
         Consulta consulta = this.consultarPorId(idConsulta);
-//        consulta.setDataHora(novaData);
+        consulta.setHorario(novaData.getHorario());
+        consulta.setData(novaData.getData());
+
         this.validarHorarioConsulta(consulta);
+
         Consulta consultaSalva = gateway.salvar(consulta);
 
         log.info("Alteração de data feita com sucesso. Consulta: {}", consultaSalva);

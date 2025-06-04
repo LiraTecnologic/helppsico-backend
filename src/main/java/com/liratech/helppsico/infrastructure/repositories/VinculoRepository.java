@@ -30,7 +30,7 @@ public interface VinculoRepository extends JpaRepository<VinculoEntity, UUID> {
     @Query("""
             SELECT v
             FROM Vinculo v
-            WHERE v.paciente.id = :idPaciente AND v.status = 2
+            WHERE v.paciente.id = :idPaciente AND v.status = 1
             """)
     Optional<VinculoEntity> consultarAtivoPorPaciente(UUID idPaciente);
 }

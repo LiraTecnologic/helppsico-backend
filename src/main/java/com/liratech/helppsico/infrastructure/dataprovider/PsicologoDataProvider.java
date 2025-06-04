@@ -104,7 +104,7 @@ public class PsicologoDataProvider implements PsicologoGateway {
         Page<PsicologoEntity> psicologosEntities;
 
         try {
-            psicologosEntities = repository.findAll(pageable);
+            psicologosEntities = repository.consultarPsicologosAprovados(pageable);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_LISTAR, ex);
             throw new DataProviderException(MENSAGEM_ERRO_LISTAR, ex.getCause());

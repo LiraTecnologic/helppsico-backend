@@ -86,5 +86,7 @@ public class PsicologoDto {
 
     @JsonProperty("valorSessao")
     private BigDecimal valorSessao;
+
+    @JsonProperty("tempoSessao")
     private Integer tempoSessao;
 }
