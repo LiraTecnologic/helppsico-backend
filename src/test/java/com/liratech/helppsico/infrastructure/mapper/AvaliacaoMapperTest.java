@@ -12,7 +12,7 @@ import org.mapstruct.factory.Mappers;
 
 class AvaliacaoMapperTest {
 
-    private final AvaliacaoMapper avaliacaoMapper = Mappers.getMapper(AvaliacaoMapper.class);
+    private final AvaliacaoMapperInfra avaliacaoMapper = Mappers.getMapper(AvaliacaoMapperInfra.class);
 
     @Test
     @DisplayName("Caso de sucesso na transformação de Domain para Entity")

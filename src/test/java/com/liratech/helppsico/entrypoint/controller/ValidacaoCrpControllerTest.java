@@ -2,15 +2,15 @@ package com.liratech.helppsico.entrypoint.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liratech.helppsico.builders.ValidacaoCrpBuilder;
-import com.liratech.helppsico.infrastructure.mapper.PacienteMapper;
-import com.liratech.helppsico.infrastructure.mapper.PsicologoMapper;
+import com.liratech.helppsico.infrastructure.mapper.PacienteMapperInfra;
+import com.liratech.helppsico.infrastructure.mapper.PsicologoMapperInfra;
+import com.liratech.helppsico.infrastructure.mapper.ValidacaoCrpMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.PacienteRepository;
 import com.liratech.helppsico.infrastructure.repositories.PsicologoRepository;
 import com.liratech.helppsico.infrastructure.repositories.ValidacaoCrpRepository;
 import com.liratech.helppsico.validators.ValidacaoCrpValidator;
 import com.liratech.helppsico.validators.json.ValidacaoCrpValidatorJson;
 import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -24,7 +24,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.awt.*;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -44,10 +43,10 @@ public class ValidacaoCrpControllerTest {
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
     private final ValidacaoCrpMapper mapperEntry;
-    private final com.liratech.helppsico.infrastructure.mapper.ValidacaoCrpMapper mapperInfra;
+    private final ValidacaoCrpMapperInfra mapperInfra;
 
-    private final PacienteMapper pacienteMapper;
-    private final PsicologoMapper psicologoMapper;
+    private final PacienteMapperInfra pacienteMapper;
+    private final PsicologoMapperInfra psicologoMapper;
 
     @MockitoSpyBean
     private final ValidacaoCrpRepository repository;
@@ -63,11 +62,11 @@ public class ValidacaoCrpControllerTest {
     private ValidacaoCrpEntity validacaoEntity;
 
     public ValidacaoCrpControllerTest(MockMvc mockMvc, ObjectMapper objectMapper, ValidacaoCrpMapper mapperEntry,
-                                      com.liratech.helppsico.infrastructure.mapper.ValidacaoCrpMapper mapperInfra,
+                                      ValidacaoCrpMapperInfra mapperInfra,
                                       ValidacaoCrpRepository repository, PacienteRepository pacienteRepository,
-                                      PsicologoRepository psicologoRepository, PacienteMapper pacienteMapper,
-                                      PsicologoMapper psicologoMapper, PacienteMapper pacienteMapper1,
-                                      PsicologoMapper psicologoMapper1, PacienteRepository pacienteRepository1,
+                                      PsicologoRepository psicologoRepository, PacienteMapperInfra pacienteMapper,
+                                      PsicologoMapperInfra psicologoMapper, PacienteMapperInfra pacienteMapper1,
+                                      PsicologoMapperInfra psicologoMapper1, PacienteRepository pacienteRepository1,
                                       PsicologoRepository psicologoRepository1) {
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;

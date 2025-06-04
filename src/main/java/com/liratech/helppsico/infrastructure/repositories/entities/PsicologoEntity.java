@@ -1,5 +1,6 @@
 package com.liratech.helppsico.infrastructure.repositories.entities;
 
+import com.liratech.helppsico.domain.StatusPsicologo;
 import com.liratech.helppsico.domain.TipoGenero;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,6 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Builder
 public class PsicologoEntity {
     @Id
@@ -42,4 +44,11 @@ public class PsicologoEntity {
     private String fotoUrl;
 
     private String biografia;
+    private StatusPsicologo statusPsicologo;
+
+    @Column(name = "valor_sessao")
+    private BigDecimal valorSessao;
+
+    @Column(name = "tempo_sessao")
+    private Integer tempoSessao;
 }

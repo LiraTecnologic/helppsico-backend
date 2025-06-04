@@ -11,15 +11,12 @@ import com.liratech.helppsico.domain.Avaliacao;
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.validators.AvaliacaoValidator;
-import jdk.incubator.vector.VectorOperators;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -57,7 +54,7 @@ public class AvaliacaoUseCaseTest {
 
         Mockito.when(psicologoUseCase.consultarPorId(Mockito.any())).thenReturn(psicologoTeste);
         Mockito.when(pacienteUseCase.consultarPorId(Mockito.any())).thenReturn(pacienteTeste);
-        Mockito.when(useCase.consultarPorPacientePsicologo(Mockito.any(), Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(gateway.consultarPorPacientePsicologo(Mockito.any(), Mockito.any())).thenReturn(Optional.empty());
         Mockito.when(gateway.salvar(captor.capture())).thenReturn(avaliacaoTeste);
 
         Avaliacao avaliacao = useCase.avaliar(avaliacaoTeste);

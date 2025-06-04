@@ -35,4 +35,7 @@ public class HorarioDto {
     @NotNull(message = "O valor de 'disponivel' deve ser verdadeiro ou falso.")
     @JsonProperty("disponivel")
     private Boolean disponivel;
+
+    @JsonProperty("psicologo")
+    private PsicologoDto psicologo;
 }

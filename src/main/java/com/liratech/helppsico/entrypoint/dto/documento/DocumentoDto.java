@@ -39,6 +39,4 @@ public class DocumentoDto {
     @NotBlank(message = "A assinatura do psicólogo é obrigatória")
     @JsonProperty("assinaturaPsicologo")
     protected String assinaturaPsicologo;
-
-
 }

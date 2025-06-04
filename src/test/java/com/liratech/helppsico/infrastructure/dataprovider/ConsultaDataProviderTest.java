@@ -7,14 +7,10 @@ import com.liratech.helppsico.domain.Consulta;
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.ConsultaMapper;
+import com.liratech.helppsico.infrastructure.mapper.ConsultaMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.ConsultaRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.ConsultaEntity;
-import com.liratech.helppsico.infrastructure.repositories.entities.PacienteEntity;
-import com.liratech.helppsico.infrastructure.repositories.entities.PsicologoEntity;
 import com.liratech.helppsico.validators.ConsultaValidator;
-import com.liratech.helppsico.validators.PacienteValidator;
-import com.liratech.helppsico.validators.PsicologoValidator;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -48,7 +44,7 @@ class ConsultaDataProviderTest {
     private final Paciente pacienteDomainTeste = PacienteBuilder.criarPaciente();
     private final Psicologo psicologoDomainTeste = PsicologoBuilder.criarPsicologo();
 
-    private final ConsultaMapper mapper;
+    private final ConsultaMapperInfra mapper;
 
     @Test
     void testeSalvar() {

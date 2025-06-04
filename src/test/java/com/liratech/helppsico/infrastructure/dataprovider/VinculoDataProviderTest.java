@@ -3,7 +3,7 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.builders.VinculoBuilder;
 import com.liratech.helppsico.domain.Vinculo;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.VinculoMapper;
+import com.liratech.helppsico.infrastructure.mapper.VinculoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.VinculoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.VinculoEntity;
 import com.liratech.helppsico.validators.VinculoValidator;
@@ -19,7 +19,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.yaml.snakeyaml.events.Event;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -35,7 +34,7 @@ public class VinculoDataProviderTest {
     @InjectMocks
     private VinculoDataProvider dataProvider;
 
-    private final VinculoMapper mapper;
+    private final VinculoMapperInfra mapper;
     private Vinculo vinculoDomain;
     private VinculoEntity vinculoEntity;
     private UUID id;

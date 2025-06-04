@@ -7,7 +7,7 @@ import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.Prontuario;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.ProntuarioMapper;
+import com.liratech.helppsico.infrastructure.mapper.ProntuarioMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.ProntuarioRepository;
 import com.liratech.helppsico.validators.ProntuarioValidator;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ class ProntuarioDataProviderTest {
     @InjectMocks
     private ProntuarioDataProvider dataProvider;
 
-    private final ProntuarioMapper mapper;
+    private final ProntuarioMapperInfra mapper;
 
     @Test
     void testaSalvarProntuario() {

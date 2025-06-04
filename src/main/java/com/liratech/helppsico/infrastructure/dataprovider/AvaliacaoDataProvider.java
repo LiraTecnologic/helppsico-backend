@@ -3,25 +3,24 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.application.gateways.AvaliacaoGateway;
 import com.liratech.helppsico.domain.Avaliacao;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.AvaliacaoMapper;
+import com.liratech.helppsico.infrastructure.mapper.AvaliacaoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.AvaliacaoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.AvaliacaoEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class AvaliacaoDataProvider implements AvaliacaoGateway {
 
-    private final AvaliacaoMapper mapper;
+    private final AvaliacaoMapperInfra mapper;
     private final AvaliacaoRepository repository;
 
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar avaliação.";
@@ -45,11 +44,11 @@ public class AvaliacaoDataProvider implements AvaliacaoGateway {
     }
 
     @Override
-    public Page<Avaliacao> listarPorPsicologo(UUID id) {
+    public Page<Avaliacao> listarPorPsicologo(UUID id, Pageable pageable) {
         Page<AvaliacaoEntity> avaliacaoList;
 
         try {
-            avaliacaoList = repository.findAllByPsicologo(id);
+            avaliacaoList = repository.findAllByPsicologoId(id, pageable);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO, ex);
             throw new DataProviderException(MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO, ex.getCause());

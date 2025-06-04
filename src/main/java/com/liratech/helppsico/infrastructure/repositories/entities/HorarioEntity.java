@@ -13,6 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Builder
 public class HorarioEntity {
 
@@ -28,4 +29,8 @@ public class HorarioEntity {
     private LocalTime inicio;
     private LocalTime fim;
     private Boolean disponivel;
+
+    @ManyToOne
+    @JoinColumn(name = "id_psicologo")
+    private PsicologoEntity psicologo;
 }

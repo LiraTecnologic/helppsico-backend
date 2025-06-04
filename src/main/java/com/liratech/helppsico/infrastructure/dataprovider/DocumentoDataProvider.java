@@ -3,7 +3,7 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.application.gateways.DocumentoGateway;
 import com.liratech.helppsico.domain.documento.Documento;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.DocumentoMapper;
+import com.liratech.helppsico.infrastructure.mapper.DocumentoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.DocumentoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.documento.DocumentoEntity;
 import org.springframework.data.domain.Page;
@@ -13,14 +13,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class DocumentoDataProvider implements DocumentoGateway {
 
     private final DocumentoRepository repository;
-    private final DocumentoMapper mapper;
-
+    private final DocumentoMapperInfra mapper;
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar documento.";
     public static final String MENSAGEM_ERRO_LISTAR = "Erro ao listar documento.";
 
@@ -39,11 +40,11 @@ public class DocumentoDataProvider implements DocumentoGateway {
     }
 
     @Override
-    public Page<Documento> listar(Pageable pageable){
+    public Page<Documento> listarPorPaciente(UUID idPaciente, Pageable pageable){
         Page<DocumentoEntity> pageEntity;
 
         try{
-            pageEntity = repository.findAll(pageable);
+            pageEntity = repository.findAllByPacienteId(idPaciente, pageable);
         } catch (Exception ex){
             log.error(MENSAGEM_ERRO_LISTAR, ex);
             throw new DataProviderException(MENSAGEM_ERRO_LISTAR, ex.getCause());

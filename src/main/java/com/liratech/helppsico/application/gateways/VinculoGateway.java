@@ -12,5 +12,6 @@ public interface VinculoGateway {
     Optional<Vinculo> consultarPorId(UUID id);
     void deletar(UUID id);
     Page<Vinculo> listarPorIdPsicologo(UUID idPsicologo, Pageable pageable);
-    Optional<Vinculo> consultarPorIdPaciente(UUID idPaciente);
+    Page<Vinculo> listarPorIdPaciente(UUID idPaciente, Pageable pageable);
+    Optional<Vinculo> consultarAtivoPorPaciente(UUID idPaciente);
 }

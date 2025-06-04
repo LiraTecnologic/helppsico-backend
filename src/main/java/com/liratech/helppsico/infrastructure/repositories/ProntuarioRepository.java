@@ -12,6 +12,6 @@ import java.util.UUID;
 
 @Repository
 public interface ProntuarioRepository extends JpaRepository<ProntuarioEntity, UUID> {
-    Page<ProntuarioEntity> findByPaciente(PacienteEntity pacienteEntity, Pageable pageable);
-    Page<ProntuarioEntity> findByPsicologo(PsicologoEntity psicologoEntity, Pageable pageable);
+    Page<ProntuarioEntity> findAllByPacienteId(UUID idPaciente, Pageable pageable);
+    Page<ProntuarioEntity> findAllByPsicologoId(UUID idPsicologo, Pageable pageable);
 }

@@ -15,7 +15,7 @@ import java.util.List;
 
 class ConsultaMapperTest {
 
-    private final ConsultaMapper consultaMapper = Mappers.getMapper(ConsultaMapper.class);
+    private final ConsultaMapperInfra consultaMapper = Mappers.getMapper(ConsultaMapperInfra.class);
 
     @Test
     @DisplayName("Caso de sucesso na transformação de Domain para Entity")

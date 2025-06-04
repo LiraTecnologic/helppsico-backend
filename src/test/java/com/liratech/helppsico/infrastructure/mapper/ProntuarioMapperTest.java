@@ -12,7 +12,7 @@ import org.mapstruct.factory.Mappers;
 
 class ProntuarioMapperTest {
 
-    private final ProntuarioMapper prontuarioMapper = Mappers.getMapper(ProntuarioMapper.class);
+    private final ProntuarioMapperInfra prontuarioMapper = Mappers.getMapper(ProntuarioMapperInfra.class);
 
     @Test
     @DisplayName("Caso de sucesso na transformação de Prontuario Domain para Entity")

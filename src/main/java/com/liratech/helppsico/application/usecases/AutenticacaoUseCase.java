@@ -13,7 +13,6 @@ import com.liratech.helppsico.application.exceptions.token.TokenInvalidoExceptio
 @Slf4j
 public class AutenticacaoUseCase {
     private final TokenGateway gateway;
-
     public static final String MENSAGEM_GERACAO_TOKEN_INVALIDA = "Geração de token inválida.";
     public static final String MENSAGEM_TOKEN_NULO = "Token recebido é nulo ou vazio.";
 

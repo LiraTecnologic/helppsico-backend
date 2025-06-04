@@ -11,7 +11,7 @@ import org.mapstruct.factory.Mappers;
 
 class EnderecoMapperTest {
 
-    private final EnderecoMapper enderecoMapper = Mappers.getMapper(EnderecoMapper.class);
+    private final EnderecoMapperInfra enderecoMapper = Mappers.getMapper(EnderecoMapperInfra.class);
 
     @Test
     @DisplayName("Caso de sucesso na transformação de Endereco Entity para Domain")

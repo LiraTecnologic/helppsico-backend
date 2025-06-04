@@ -3,7 +3,7 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.application.gateways.ConsultaGateway;
 import com.liratech.helppsico.domain.Consulta;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.ConsultaMapper;
+import com.liratech.helppsico.infrastructure.mapper.ConsultaMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.ConsultaRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.ConsultaEntity;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,7 +22,7 @@ import java.util.UUID;
 @Slf4j
 public class ConsultaDataProvider implements ConsultaGateway {
 
-    private final ConsultaMapper mapper;
+    private final ConsultaMapperInfra mapper;
     private final ConsultaRepository repository;
 
     public static final String MENSAGEM_ERRO_DELETAR_CONSULTA = "Erro ao deletar uma consulta pelo id.";
@@ -33,10 +34,11 @@ public class ConsultaDataProvider implements ConsultaGateway {
 
     @Override
     public Consulta salvar(Consulta consulta) {
-        ConsultaEntity consultaEntity;
+        ConsultaEntity consultaEntity = mapper.paraEntity(consulta);
+        System.out.println(consultaEntity.toString());
 
         try {
-            consultaEntity = repository.save(mapper.paraEntity(consulta));
+            consultaEntity = repository.save(consultaEntity);
         } catch (Exception ex) {
             log.error(MENSAGEM_ERRO_SALVAR, ex);
             throw new DataProviderException(MENSAGEM_ERRO_SALVAR, ex.getCause());
@@ -60,11 +62,11 @@ public class ConsultaDataProvider implements ConsultaGateway {
     }
 
     @Override
-    public Page<Consulta> consultarConsultasFuturas(UUID idPsicologo, UUID idPaciente, Pageable pageable) {
+    public Page<Consulta> consultarConsultasFuturasPaciente(UUID idPaciente, UUID idPsicologo, Pageable pageable) {
         Page<ConsultaEntity> consultaEntities;
 
         try {
-            consultaEntities = repository.consultarConsultasFuturas(idPsicologo, idPaciente, pageable);
+            consultaEntities = repository.consultarConsultasFuturasPaciente(idPaciente, idPsicologo, LocalDate.now(), pageable);
         } catch (Exception ex) {
             log.error(MENSAGEM_ERRO_CONSULTAR_SESSOES_FUTURAS, ex);
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_SESSOES_FUTURAS, ex.getCause());
@@ -74,11 +76,11 @@ public class ConsultaDataProvider implements ConsultaGateway {
     }
 
     @Override
-    public Page<Consulta> consultarHistorico(UUID idPsicologo, UUID idPaciente, Pageable pageable) {
+    public Page<Consulta> consultarHistoricoPaciente(UUID idPaciente, UUID idPsicologo, Pageable pageable) {
         Page<ConsultaEntity> consultaEntities;
         
         try {
-            consultaEntities = repository.consultarHistorico(idPsicologo, idPaciente, pageable);
+            consultaEntities = repository.consultarHistoricoPaciente(idPaciente, idPsicologo, pageable);
         } catch (Exception ex) {
             log.error(MENSAGEM_ERRO_CONSULTAR_HISTORICO, ex);
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_HISTORICO, ex.getCause());
@@ -88,11 +90,42 @@ public class ConsultaDataProvider implements ConsultaGateway {
     }
 
     @Override
-    public List<Consulta> consultarConsultasMesmoDia(int diaDoMes) {
+    public Page<Consulta> consultarConsultasFuturasPsicologo(UUID idPsicologo, Pageable pageable) {
+        Page<ConsultaEntity> consultaEntities;
+
+        try {
+            consultaEntities = repository.consultarConsultasFuturasPsicologo(
+                    idPsicologo,
+                    LocalDate.now(),
+                    pageable);
+        } catch (Exception ex) {
+            log.error(MENSAGEM_ERRO_CONSULTAR_SESSOES_FUTURAS, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_SESSOES_FUTURAS, ex.getCause());
+        }
+
+        return consultaEntities.map(mapper::paraDomain);
+    }
+
+    @Override
+    public Page<Consulta> consultarHistoricoPsicologo(UUID idPsicologo, Pageable pageable) {
+        Page<ConsultaEntity> consultaEntities;
+
+        try {
+            consultaEntities = repository.consultarHistoricoPsicologo(idPsicologo, pageable);
+        } catch (Exception ex) {
+            log.error(MENSAGEM_ERRO_CONSULTAR_HISTORICO, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_HISTORICO, ex.getCause());
+        }
+
+        return consultaEntities.map(mapper::paraDomain);
+    }
+
+    @Override
+    public List<Consulta> consultarConsultasMesmoDia(int diaDoMes, UUID idPsicologo) {
         List<ConsultaEntity> consultaEntities;
 
         try {
-            consultaEntities = repository.consultarConsultasMesmoDia(diaDoMes);
+            consultaEntities = repository.consultarConsultasMesmoDia(diaDoMes, idPsicologo);
         } catch (Exception ex) {
             log.error(MENSAGEM_ERRO_CONSULTAR_SESSOES_MESMO_DIA, ex);
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_SESSOES_MESMO_DIA, ex.getCause());

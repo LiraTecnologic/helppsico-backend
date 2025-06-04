@@ -1,7 +1,5 @@
 package com.liratech.helppsico.application.usecases;
 
-import com.liratech.helppsico.application.exceptions.paciente.PacienteNaoEncontradoException;
-import com.liratech.helppsico.application.exceptions.psicologo.PsicologoNaoEncontradoException;
 import com.liratech.helppsico.application.exceptions.solicitacaoDocumento.SolicitacaoDocumentoNaoEncontradoException;
 import com.liratech.helppsico.application.gateways.SolicitacaoDocumentoGateway;
 import com.liratech.helppsico.domain.Paciente;
@@ -9,6 +7,8 @@ import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.domain.documento.SolicitacaoDocumento;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,10 +18,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 public class SolicitacaoDocumentoUseCase {
+
     private final PsicologoUseCase psicologoUseCase;
     private final PacienteUseCase pacienteUseCase;
     private final SolicitacaoDocumentoGateway gateway;
-
     public static final String MENSAGEM_SOLICITACAO_DOCUMENTO_NAO_ENCONTRADO = "Solicitação de Docuemnto não encontrado";
 
     public SolicitacaoDocumento criarSolicitacao(SolicitacaoDocumento solicitacao){
@@ -37,6 +37,17 @@ public class SolicitacaoDocumentoUseCase {
 
         log.info("Solicitação cadastrada com sucesso. Solicitação: {}", solicitacaoDocumento);
         return solicitacaoDocumento;
+    }
+
+    public Page<SolicitacaoDocumento> listarPorPsicologo(UUID idPsicologo, Pageable pageable){
+        log.info("Listando todas as solicitações por psicologo. Id do Psicologo: {}", idPsicologo);
+
+        psicologoUseCase.consultarPorId(idPsicologo);
+
+        Page<SolicitacaoDocumento> solicitacaoDocumentoPage = gateway.listarPorPsicologo(idPsicologo, pageable);
+
+        log.info("Todas as solicitações buscadas. Solicitações: {}", solicitacaoDocumentoPage);
+        return solicitacaoDocumentoPage;
     }
 
     public SolicitacaoDocumento buscarPorId(UUID id){
@@ -57,7 +68,7 @@ public class SolicitacaoDocumentoUseCase {
         log.info("ID enviado pra deletar Solicitação. ID: {}", id);
         buscarPorId(id);
 
-        log.info("Solicitação deletada com sucesso.");
         gateway.deletar(id);
+        log.info("Solicitação deletada com sucesso.");
     }
 }

@@ -5,10 +5,7 @@ import com.liratech.helppsico.infrastructure.repositories.entities.PsicologoEnti
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -17,6 +14,7 @@ import java.util.UUID;
 @Table(name = "pareceres_psicologicos")
 @NoArgsConstructor
 @Getter
+@ToString
 public class ParecerPsicologicoEntity extends DocumentoEntity {
 
     private String solicitante;

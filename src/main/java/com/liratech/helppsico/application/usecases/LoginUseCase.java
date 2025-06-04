@@ -17,7 +17,6 @@ public class LoginUseCase {
     private final PsicologoUseCase psicologoUseCase;
     private final AutenticacaoUseCase autenticacaoUseCase;
     private final CriptografiaUseCase criptografiaUseCase;
-
     public static final String MENSAGEM_SENHA_INVALIDA = "Senha do usuario inválida.";
 
     public LoginRespostaDto logarPaciente(String email, String senha){

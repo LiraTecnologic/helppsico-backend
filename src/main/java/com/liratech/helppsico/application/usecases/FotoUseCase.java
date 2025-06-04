@@ -20,14 +20,14 @@ import java.util.UUID;
 @Slf4j
 public class FotoUseCase {
     private final FotoGateway gateway;
-    private Paciente paciente = new Paciente();
-    private Psicologo psicologo = new Psicologo();
     private final PacienteUseCase pacienteUseCase;
     private final PsicologoUseCase psicologoUseCase;
     public static final String ERRO_CAMINHO_NAO_SALVO = "Caminho do arquivo da foto nulo.";
 
     public Foto salvar(MultipartFile arquivoFoto, Foto foto){
         log.info("Iniciando processo de salvar imagem localmente e no banco de dados. Foto: {}", arquivoFoto);
+        Paciente paciente;
+        Psicologo psicologo;
 
         String urlFoto = gateway.salvarLocal(arquivoFoto);
         if (urlFoto == null){

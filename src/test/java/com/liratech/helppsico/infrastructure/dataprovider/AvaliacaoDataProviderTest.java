@@ -1,17 +1,15 @@
 package com.liratech.helppsico.infrastructure.dataprovider;
 
 import com.liratech.helppsico.builders.AvaliacaoBuilder;
-import com.liratech.helppsico.builders.PsicologoBuilder;
 import com.liratech.helppsico.domain.Avaliacao;
-import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.AvaliacaoMapper;
+import com.liratech.helppsico.infrastructure.mapper.AvaliacaoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.AvaliacaoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.AvaliacaoEntity;
 import com.liratech.helppsico.validators.AvaliacaoValidator;
-import com.liratech.helppsico.validators.PsicologoValidator;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,39 +18,39 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 
-import java.net.DatagramPacket;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.IntStream;
 
 import static com.liratech.helppsico.infrastructure.dataprovider.AvaliacaoDataProvider.MENSAGEM_ERRO_CONSULTAR_POR_PACIENTE;
 
 @ExtendWith(MockitoExtension.class)
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class AvaliacaoDataProviderTest {
 
     @Mock
-    private final AvaliacaoRepository repository;
+    private AvaliacaoRepository repository;
 
     @InjectMocks
-    private final AvaliacaoDataProvider dataProvider;
+    private AvaliacaoDataProvider dataProvider;
 
-    private final AvaliacaoMapper mapper;
+    private AvaliacaoMapperInfra mapper;
+    private Avaliacao avaliacaoTeste;
+    private AvaliacaoEntity avaliacaoEntityTeste;
+
+    @BeforeEach
+    void inicializarAtributos() {
+        avaliacaoTeste = AvaliacaoBuilder.criarAvaliacao();
+        avaliacaoEntityTeste = mapper.paraEntity(avaliacaoTeste);
+    }
 
     @Test
     void testeSalvarPsicologo() {
-        Avaliacao avaliacao = AvaliacaoBuilder.criarAvaliacao();
-        avaliacao.setId(null);
+        avaliacaoTeste.setId(null);
 
-        AvaliacaoEntity avaliacaoSalvo = mapper.paraEntity(avaliacao);
-        UUID idGerado = UUID.randomUUID();
-        avaliacaoSalvo.setId(idGerado);
+        Mockito.when(repository.save(Mockito.any())).thenReturn(avaliacaoEntityTeste);
 
-        Mockito.when(repository.save(Mockito.any())).thenReturn(avaliacaoSalvo);
-
-        Avaliacao avaliacaoResultado = dataProvider.salvar(avaliacao);
-        AvaliacaoValidator.validaAvaliacaoDomain(mapper.paraDomain(avaliacaoSalvo), avaliacaoResultado);
+        Avaliacao avaliacaoResultado = dataProvider.salvar(avaliacaoTeste);
+        AvaliacaoValidator.validaAvaliacaoDomain(mapper.paraDomain(avaliacaoEntityTeste), avaliacaoResultado);
     }
 
     @Test
@@ -95,7 +93,7 @@ public class AvaliacaoDataProviderTest {
         avaliacaoTeste.getContent().get(1).setId(idProcurado);
         avaliacaoTeste.getContent().get(2).setId(idProcurado);
 
-        Mockito.when(repository.findAllByPsicologo(Mockito.any())).thenReturn(avaliacaoTeste);
+        Mockito.when(repository.findAllByPsicologoId(Mockito.any(), Mockito.any())).thenReturn(avaliacaoTeste);
 
         Page<Avaliacao> avaliacaoResultado = dataProvider.listarPorPsicologo(idProcurado);
 
@@ -108,7 +106,7 @@ public class AvaliacaoDataProviderTest {
 
     @Test
     void testeExceptionListarPorPsicologo() {
-        Mockito.when(repository.findAllByPsicologo(Mockito.any())).thenThrow(DataProviderException.class);
+        Mockito.when(repository.findAllByPsicologoId(Mockito.any())).thenThrow(DataProviderException.class);
 
         DataProviderException exception = Assertions
                 .assertThrows(DataProviderException.class, () -> dataProvider.listarPorPsicologo(AvaliacaoBuilder.criarAvaliacao().getId()));

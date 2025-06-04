@@ -3,7 +3,6 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.builders.FotoBuilder;
 import com.liratech.helppsico.domain.Foto;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.FotoMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

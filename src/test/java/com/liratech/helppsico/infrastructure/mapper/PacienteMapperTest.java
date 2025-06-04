@@ -11,7 +11,7 @@ import org.mapstruct.factory.Mappers;
 
 class PacienteMapperTest {
 
-    private final PacienteMapper pacienteMapper = Mappers.getMapper(PacienteMapper.class);
+    private final PacienteMapperInfra pacienteMapper = Mappers.getMapper(PacienteMapperInfra.class);
 
     @Test
     @DisplayName("Caso de sucesso na transformação de Paciente Domain para Entity")

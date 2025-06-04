@@ -4,10 +4,7 @@ import com.liratech.helppsico.infrastructure.repositories.entities.PacienteEntit
 import com.liratech.helppsico.infrastructure.repositories.entities.PsicologoEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -16,6 +13,7 @@ import java.util.UUID;
 @Table(name = "declaracoes")
 @NoArgsConstructor
 @Getter
+@ToString
 public class DeclaracaoEntity extends DocumentoEntity {
     private String motivo;
     private String descricao;

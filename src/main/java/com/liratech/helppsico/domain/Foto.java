@@ -2,8 +2,6 @@ package com.liratech.helppsico.domain;
 
 import lombok.*;
 
-import java.util.UUID;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

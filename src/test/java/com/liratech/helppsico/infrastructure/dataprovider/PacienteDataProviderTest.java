@@ -3,7 +3,7 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.builders.PacienteBuilder;
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.PacienteMapper;
+import com.liratech.helppsico.infrastructure.mapper.PacienteMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.PacienteRepository;
 import com.liratech.helppsico.validators.PacienteValidator;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ class PacienteDataProviderTest {
     @InjectMocks
     private PacienteDataProvider dataProvider;
 
-    private final PacienteMapper mapper;
+    private final PacienteMapperInfra mapper;
 
 
     @Test

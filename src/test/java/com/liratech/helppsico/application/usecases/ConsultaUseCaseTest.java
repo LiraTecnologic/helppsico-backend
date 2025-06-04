@@ -8,8 +8,7 @@ import com.liratech.helppsico.builders.EnderecoBuilder;
 import com.liratech.helppsico.builders.PacienteBuilder;
 import com.liratech.helppsico.builders.PsicologoBuilder;
 import com.liratech.helppsico.domain.Consulta;
-import com.liratech.helppsico.domain.Psicologo;
-import com.liratech.helppsico.infrastructure.mapper.ConsultaMapper;
+import com.liratech.helppsico.infrastructure.mapper.ConsultaMapperInfra;
 import com.liratech.helppsico.validators.ConsultaValidator;
 import com.liratech.helppsico.validators.EnderecoValidator;
 import com.liratech.helppsico.validators.PacienteValidator;
@@ -31,8 +30,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(MockitoExtension.class)
 @RequiredArgsConstructor
 class ConsultaUseCaseTest {
@@ -52,7 +49,7 @@ class ConsultaUseCaseTest {
     @InjectMocks
     private ConsultaUseCase useCase;
 
-    private final ConsultaMapper mapperInfra;
+    private final ConsultaMapperInfra mapperInfra;
 
     private final Consulta consultaTeste = ConsultaBuilder.criarConsulta();
 

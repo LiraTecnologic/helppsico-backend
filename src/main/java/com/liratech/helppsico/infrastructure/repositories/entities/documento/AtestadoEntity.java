@@ -4,10 +4,8 @@ import com.liratech.helppsico.infrastructure.repositories.entities.EnderecoEntit
 import com.liratech.helppsico.infrastructure.repositories.entities.PacienteEntity;
 import com.liratech.helppsico.infrastructure.repositories.entities.PsicologoEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -15,6 +13,7 @@ import java.util.UUID;
 @Table(name = "atestados")
 @NoArgsConstructor
 @Getter
+@ToString
 public class AtestadoEntity extends DocumentoEntity {
     @Column(name = "data_atendimento")
     private LocalDate dataAtendimento;
