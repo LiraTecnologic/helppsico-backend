@@ -2,6 +2,8 @@ package com.liratech.helppsico.validators;
 
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.documento.*;
+import com.liratech.helppsico.entrypoint.dto.documento.AtestadoDto;
+import com.liratech.helppsico.infrastructure.repositories.entities.documento.AtestadoEntity;
 import org.junit.jupiter.api.Assertions;
 
 public class DocumentoValidator {
@@ -16,11 +18,29 @@ public class DocumentoValidator {
 
     public static void validaAtestado (Atestado esperado, Atestado resultado){
         Assertions.assertEquals(esperado.getDataAtendimento(), resultado.getDataAtendimento());
-        Assertions.assertEquals(esperado.getLocal(), resultado.getLocal());
+        EnderecoValidator.validaEnderecoDomain(esperado.getLocal(), resultado.getLocal());
         Assertions.assertEquals(esperado.getDescricao(), resultado.getDescricao());
         Assertions.assertEquals(esperado.getDescricaoEstadoPsicologico(), resultado.getDescricaoEstadoPsicologico());
         Assertions.assertEquals(esperado.getPeriodoAfastamento(), resultado.getPeriodoAfastamento());
         Assertions.assertEquals(esperado.getFinalidade(), resultado.getFinalidade());
+    }
+
+    public static void validaAtestadoMapperInfra (Atestado domain, AtestadoEntity entity){
+        Assertions.assertEquals(domain.getDataAtendimento(), entity.getDataAtendimento());
+        EnderecoValidator.validaEnderecoMapperInfra(domain.getLocal(), entity.getLocal());
+        Assertions.assertEquals(domain.getDescricao(), entity.getDescricao());
+        Assertions.assertEquals(domain.getDescricaoEstadoPsicologico(), entity.getDescricaoEstadoPsicologico());
+        Assertions.assertEquals(domain.getPeriodoAfastamento(), entity.getPeriodoAfastamento());
+        Assertions.assertEquals(domain.getFinalidade(), entity.getFinalidade());
+    }
+
+    public static void validaAtestadoMapperEntry (Atestado domain, AtestadoDto dto){
+        Assertions.assertEquals(domain.getDataAtendimento(), dto.getDataAtendimento());
+        EnderecoValidator.validaEnderecoMapperEntry(domain.getLocal(), dto.getLocal());
+        Assertions.assertEquals(domain.getDescricao(), dto.getDescricao());
+        Assertions.assertEquals(domain.getDescricaoEstadoPsicologico(), dto.getDescricaoEstadoPsicologico());
+        Assertions.assertEquals(domain.getPeriodoAfastamento(), dto.getPeriodoAfastamento());
+        Assertions.assertEquals(domain.getFinalidade(), dto.getFinalidade());
     }
 
     public static void validaDeclaracao (Declaracao esperado, Declaracao resultado){

@@ -17,6 +17,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -36,15 +38,19 @@ public class AvaliacaoDataProviderTest {
     private AvaliacaoMapperInfra mapper;
     private Avaliacao avaliacaoTeste;
     private AvaliacaoEntity avaliacaoEntityTeste;
+    private Page<Avaliacao> avaliacaoPage;
+    private Pageable pageable;
 
     @BeforeEach
     void inicializarAtributos() {
         avaliacaoTeste = AvaliacaoBuilder.criarAvaliacao();
         avaliacaoEntityTeste = mapper.paraEntity(avaliacaoTeste);
+
+        pageable = PageRequest.of(0,10);
     }
 
     @Test
-    void testeSalvarPsicologo() {
+    void testeSalvarAvaliacao() {
         avaliacaoTeste.setId(null);
 
         Mockito.when(repository.save(Mockito.any())).thenReturn(avaliacaoEntityTeste);
@@ -54,7 +60,7 @@ public class AvaliacaoDataProviderTest {
     }
 
     @Test
-    void testeExceptionSalvarPsicologo() {
+    void testeExceptionSalvarAvaliacao() {
         Mockito.when(repository.save(Mockito.any())).thenThrow(DataProviderException.class);
 
         DataProviderException exception = Assertions
@@ -65,9 +71,7 @@ public class AvaliacaoDataProviderTest {
 
     @Test
     void testeBuscarPorId(){
-        Avaliacao avaliacaoTeste = AvaliacaoBuilder.criarAvaliacao();
-
-        Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(mapper.paraEntity(avaliacaoTeste)));
+        Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(avaliacaoEntityTeste));
 
         Optional<Avaliacao> avaliacaoResultado = dataProvider.buscarPorId(avaliacaoTeste.getId());
 
@@ -95,7 +99,7 @@ public class AvaliacaoDataProviderTest {
 
         Mockito.when(repository.findAllByPsicologoId(Mockito.any(), Mockito.any())).thenReturn(avaliacaoTeste);
 
-        Page<Avaliacao> avaliacaoResultado = dataProvider.listarPorPsicologo(idProcurado);
+        Page<Avaliacao> avaliacaoResultado = dataProvider.listarPorPsicologo(idProcurado, pageable);
 
         Page<Avaliacao> avaliacaoTesteDomain = avaliacaoTeste.map(mapper::paraDomain);
 
