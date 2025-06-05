@@ -3,14 +3,13 @@ package com.liratech.helppsico.infrastructure.mapper;
 import com.liratech.helppsico.builders.DocumentoBuilder;
 import com.liratech.helppsico.domain.documento.*;
 import com.liratech.helppsico.entrypoint.dto.documento.*;
-import com.liratech.helppsico.infrastructure.repositories.entities.documento.AtestadoEntity;
-import com.liratech.helppsico.infrastructure.repositories.entities.documento.DeclaracaoEntity;
-import com.liratech.helppsico.infrastructure.repositories.entities.documento.DocumentoEntity;
-import com.liratech.helppsico.infrastructure.repositories.entities.documento.RelatorioPsicologicoEntity;
+import com.liratech.helppsico.infrastructure.repositories.entities.documento.*;
 import com.liratech.helppsico.validators.DocumentoValidator;
+import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+@AllArgsConstructor
 public class DocumentoMapperInfraTest {
     private DocumentoMapperInfra mapper;
     private Documento domainTest;
@@ -21,7 +20,7 @@ public class DocumentoMapperInfraTest {
         domainTest = DocumentoBuilder.criarAtestado();
         entityTest = mapper.paraEntity(domainTest);
 
-        Assertions.assertTrue(entityTest instanceof AtestadoEntity);
+        Assertions.assertInstanceOf(AtestadoEntity.class, entityTest);
         Assertions.assertEquals(domainTest.getId(), entityTest.getId());
         DocumentoValidator.validaDocumentoInfra(domainTest, entityTest);
         DocumentoValidator.validaAtestadoMapperInfra((Atestado) domainTest, (AtestadoEntity) entityTest);
@@ -32,7 +31,7 @@ public class DocumentoMapperInfraTest {
         domainTest = DocumentoBuilder.criarDeclaracao();
         entityTest = mapper.paraEntity(domainTest);
 
-        Assertions.assertTrue(entityTest instanceof DeclaracaoEntity);
+        Assertions.assertInstanceOf(DeclaracaoEntity.class, entityTest);
         Assertions.assertEquals(domainTest.getId(), entityTest.getId());
         DocumentoValidator.validaDocumentoInfra(domainTest, entityTest);
         DocumentoValidator.validaDeclaracaoMapperInfra((Declaracao) domainTest, (DeclaracaoEntity) entityTest);
@@ -43,86 +42,86 @@ public class DocumentoMapperInfraTest {
         domainTest = DocumentoBuilder.criarRelatorioPsicologico();
         entityTest = mapper.paraEntity(domainTest);
 
-        Assertions.assertTrue(entityTest instanceof RelatorioPsicologicoEntity);
+        Assertions.assertInstanceOf(RelatorioPsicologicoEntity.class, entityTest);
         Assertions.assertEquals(domainTest.getId(), entityTest.getId());
         DocumentoValidator.validaDocumentoInfra(domainTest, entityTest);
-        DocumentoValidator.validaRelatorioPsicologicoMapperInfra((RelatorioPsicologico) domainTest, (RelatorioPsicologicoDto) dtoTest);
+        DocumentoValidator.validaRelatorioPsicologicoMapperInfra((RelatorioPsicologico) domainTest, (RelatorioPsicologicoEntity) entityTest);
     }
 
     @Test
     void testeDocumentoInstanciaDeLaudoPsicologicoParaEntity(){
         domainTest = DocumentoBuilder.criarLaudoPsicologico();
-        dtoTest = mapper.paraDto(domainTest);
+        entityTest = mapper.paraEntity(domainTest);
 
-        Assertions.assertTrue(dtoTest instanceof LaudoPsicologicoDto);
-        Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
-        DocumentoValidator.validaDocumentoEntry(domainTest, dtoTest);
-        DocumentoValidator.validaLaudoPsicologicoMapperEntry((LaudoPsicologico) domainTest, (LaudoPsicologicoDto) dtoTest);
+        Assertions.assertInstanceOf(LaudoPsicologicoEntity.class, entityTest);
+        Assertions.assertEquals(domainTest.getId(), entityTest.getId());
+        DocumentoValidator.validaDocumentoInfra(domainTest, entityTest);
+        DocumentoValidator.validaLaudoPsicologicoMapperInfra((LaudoPsicologico) domainTest, (LaudoPsicologicoEntity) entityTest);
     }
 
     @Test
     void testeDocumentoInstanciaDeParecerPsicologicoParaEntity(){
         domainTest = DocumentoBuilder.criarParecerPsicologico();
-        dtoTest = mapper.paraDto(domainTest);
+        entityTest = mapper.paraEntity(domainTest);
 
-        Assertions.assertTrue(dtoTest instanceof ParecerPsicologicoDto);
-        Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
-        DocumentoValidator.validaDocumentoEntry(domainTest, dtoTest);
-        DocumentoValidator.validaParecerPsicologicoMapperEntry((ParecerPsicologico) domainTest, (ParecerPsicologicoDto) dtoTest);
+        Assertions.assertInstanceOf(ParecerPsicologicoEntity.class, entityTest);
+        Assertions.assertEquals(domainTest.getId(), entityTest.getId());
+        DocumentoValidator.validaDocumentoInfra(domainTest, entityTest);
+        DocumentoValidator.validaParecerPsicologicoMapperInfra((ParecerPsicologico) domainTest, (ParecerPsicologicoEntity) entityTest);
     }
 
     @Test
     void testeDocumentoInstanciaDeAtestadoParaDomain(){
-        domainTest = DocumentoBuilder.criarAtestado();
-        dtoTest = mapper.paraDto(domainTest);
+        entityTest = DocumentoBuilder.criarAtestadoEntity();
+        domainTest = mapper.paraDomain(entityTest);
 
-        Assertions.assertTrue(dtoTest instanceof AtestadoDto);
-        Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
-        DocumentoValidator.validaDocumentoEntry(domainTest, dtoTest);
-        DocumentoValidator.validaAtestadoMapperEntry((Atestado) domainTest, (AtestadoDto) dtoTest);
+        Assertions.assertInstanceOf(Atestado.class, domainTest);
+        Assertions.assertEquals(domainTest.getId(), entityTest.getId());
+        DocumentoValidator.validaDocumentoInfra(domainTest, entityTest);
+        DocumentoValidator.validaAtestadoMapperInfra((Atestado) domainTest, (AtestadoEntity) entityTest);
     }
 
     @Test
     void testeDocumentoInstanciaDeDeclaracaoParaDomain(){
-        domainTest = DocumentoBuilder.criarDeclaracao();
-        dtoTest = mapper.paraDto(domainTest);
+        entityTest = DocumentoBuilder.criarDeclaracaoEntity();
+        domainTest = mapper.paraDomain(entityTest);
 
-        Assertions.assertTrue(dtoTest instanceof DeclaracaoDto);
-        Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
-        DocumentoValidator.validaDocumentoEntry(domainTest, dtoTest);
-        DocumentoValidator.validaDeclaracaoMapperEntry((Declaracao) domainTest, (DeclaracaoDto) dtoTest);
+        Assertions.assertInstanceOf(Declaracao.class, domainTest);
+        Assertions.assertEquals(domainTest.getId(), entityTest.getId());
+        DocumentoValidator.validaDocumentoInfra(domainTest, entityTest);
+        DocumentoValidator.validaDeclaracaoMapperInfra((Declaracao) domainTest, (DeclaracaoEntity) entityTest);
     }
 
     @Test
     void testeDocumentoInstanciaDeRelatorioPsicologicoParaDomain(){
-        domainTest = DocumentoBuilder.criarRelatorioPsicologico();
-        dtoTest = mapper.paraDto(domainTest);
+        entityTest = DocumentoBuilder.criarRelatorioPsicologicoEntity();
+        domainTest = mapper.paraDomain(entityTest);
 
-        Assertions.assertTrue(dtoTest instanceof RelatorioPsicologicoDto);
-        Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
-        DocumentoValidator.validaDocumentoEntry(domainTest, dtoTest);
-        DocumentoValidator.validaRelatorioPsicologicoMapperEntry((RelatorioPsicologico) domainTest, (RelatorioPsicologicoDto) dtoTest);
+        Assertions.assertInstanceOf(RelatorioPsicologico.class, domainTest);
+        Assertions.assertEquals(domainTest.getId(), entityTest.getId());
+        DocumentoValidator.validaDocumentoInfra(domainTest, entityTest);
+        DocumentoValidator.validaRelatorioPsicologicoMapperInfra((RelatorioPsicologico) domainTest, (RelatorioPsicologicoEntity) entityTest);
     }
 
     @Test
     void testeDocumentoInstanciaDeLaudoPsicologicoParaDomain(){
-        domainTest = DocumentoBuilder.criarLaudoPsicologico();
-        dtoTest = mapper.paraDto(domainTest);
+        entityTest = DocumentoBuilder.criarLaudoPsicologicoEntiy();
+        domainTest = mapper.paraDomain(entityTest);
 
-        Assertions.assertTrue(dtoTest instanceof LaudoPsicologicoDto);
-        Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
-        DocumentoValidator.validaDocumentoEntry(domainTest, dtoTest);
-        DocumentoValidator.validaLaudoPsicologicoMapperEntry((LaudoPsicologico) domainTest, (LaudoPsicologicoDto) dtoTest);
+        Assertions.assertInstanceOf(LaudoPsicologico.class, domainTest);
+        Assertions.assertEquals(domainTest.getId(), entityTest.getId());
+        DocumentoValidator.validaDocumentoInfra(domainTest, entityTest);
+        DocumentoValidator.validaLaudoPsicologicoMapperInfra((LaudoPsicologico) domainTest, (LaudoPsicologicoEntity) entityTest);
     }
 
     @Test
     void testeDocumentoInstanciaDeParecerPsicologicoParaDomain(){
-        domainTest = DocumentoBuilder.criarParecerPsicologico();
-        dtoTest = mapper.paraDto(domainTest);
+        entityTest = DocumentoBuilder.criarParecerPsicologicoEntity();
+        domainTest = mapper.paraDomain(entityTest);
 
-        Assertions.assertTrue(dtoTest instanceof ParecerPsicologicoDto);
-        Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
-        DocumentoValidator.validaDocumentoEntry(domainTest, dtoTest);
-        DocumentoValidator.validaParecerPsicologicoMapperEntry((ParecerPsicologico) domainTest, (ParecerPsicologicoDto) dtoTest);
+        Assertions.assertInstanceOf(ParecerPsicologico.class, domainTest);
+        Assertions.assertEquals(domainTest.getId(), entityTest.getId());
+        DocumentoValidator.validaDocumentoInfra(domainTest, entityTest);
+        DocumentoValidator.validaParecerPsicologicoMapperInfra((ParecerPsicologico) domainTest, (ParecerPsicologicoEntity) entityTest);
     }
 }

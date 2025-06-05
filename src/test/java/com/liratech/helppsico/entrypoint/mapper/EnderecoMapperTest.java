@@ -4,32 +4,34 @@ import com.liratech.helppsico.builders.EnderecoBuilder;
 import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.entrypoint.dto.EnderecoDto;
 import com.liratech.helppsico.validators.EnderecoValidator;
+import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
+@AllArgsConstructor
 class EnderecoMapperTest {
 
-    private final EnderecoMapper enderecoMapper = Mappers.getMapper(EnderecoMapper.class);
+    private EnderecoMapper mapper;
+    private Endereco domainTest;
+    private EnderecoDto dtoTest;
 
     @Test
-    @DisplayName("Caso de sucesso na tranformação de DTO para Domain")
-    void testeTransformacaoEnderecoDtoParaDomain() {
-        EnderecoDto enderecoDto = EnderecoBuilder.criarEnderecoDto();
-        Endereco endereco = enderecoMapper.paraDomain(enderecoDto);
+    void testeEnderecoDtoParaDomain() {
+        dtoTest = EnderecoBuilder.criarEnderecoDto();
+        domainTest = mapper.paraDomain(dtoTest);
 
-        Assertions.assertNotNull(endereco);
-        EnderecoValidator.validaEnderecoDtoParaDomain(enderecoDto, endereco);
+        Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
+        EnderecoValidator.validaEnderecoMapperEntry(domainTest, dtoTest);
     }
 
     @Test
-    @DisplayName("Caso de sucesso na tranformação de Domain para DTO")
-    void testeTransformacaoEnderecoDomainParaDto() {
-        Endereco endereco = EnderecoBuilder.criarEndereco();
-        EnderecoDto enderecoDto = enderecoMapper.paraDto(endereco);
+    void testeEnderecoDomainParaDto() {
+        domainTest = EnderecoBuilder.criarEndereco();
+        dtoTest = mapper.paraDto(domainTest);
 
-        Assertions.assertNotNull(enderecoDto);
-        EnderecoValidator.validaEnderecoDomainParaDto(endereco, enderecoDto);
+        Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
+        EnderecoValidator.validaEnderecoMapperEntry(domainTest, dtoTest);
     }
 }

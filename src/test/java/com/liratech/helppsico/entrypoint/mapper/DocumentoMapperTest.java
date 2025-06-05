@@ -20,7 +20,7 @@ public class DocumentoMapperTest {
         domainTest = DocumentoBuilder.criarAtestado();
         dtoTest = mapper.paraDto(domainTest);
 
-        Assertions.assertTrue(dtoTest instanceof AtestadoDto);
+        Assertions.assertInstanceOf(AtestadoDto.class, dtoTest);
         Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
         DocumentoValidator.validaDocumentoEntry(domainTest, dtoTest);
         DocumentoValidator.validaAtestadoMapperEntry((Atestado) domainTest, (AtestadoDto) dtoTest);
@@ -31,7 +31,7 @@ public class DocumentoMapperTest {
         domainTest = DocumentoBuilder.criarDeclaracao();
         dtoTest = mapper.paraDto(domainTest);
 
-        Assertions.assertTrue(dtoTest instanceof DeclaracaoDto);
+        Assertions.assertInstanceOf(DeclaracaoDto.class, dtoTest);
         Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
         DocumentoValidator.validaDocumentoEntry(domainTest, dtoTest);
         DocumentoValidator.validaDeclaracaoMapperEntry((Declaracao) domainTest, (DeclaracaoDto) dtoTest);
@@ -42,7 +42,7 @@ public class DocumentoMapperTest {
         domainTest = DocumentoBuilder.criarRelatorioPsicologico();
         dtoTest = mapper.paraDto(domainTest);
 
-        Assertions.assertTrue(dtoTest instanceof RelatorioPsicologicoDto);
+        Assertions.assertInstanceOf(RelatorioPsicologicoDto.class, dtoTest);
         Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
         DocumentoValidator.validaDocumentoEntry(domainTest, dtoTest);
         DocumentoValidator.validaRelatorioPsicologicoMapperEntry((RelatorioPsicologico) domainTest, (RelatorioPsicologicoDto) dtoTest);
@@ -53,7 +53,7 @@ public class DocumentoMapperTest {
         domainTest = DocumentoBuilder.criarLaudoPsicologico();
         dtoTest = mapper.paraDto(domainTest);
 
-        Assertions.assertTrue(dtoTest instanceof LaudoPsicologicoDto);
+        Assertions.assertInstanceOf(LaudoPsicologicoDto.class, dtoTest);
         Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
         DocumentoValidator.validaDocumentoEntry(domainTest, dtoTest);
         DocumentoValidator.validaLaudoPsicologicoMapperEntry((LaudoPsicologico) domainTest, (LaudoPsicologicoDto) dtoTest);
@@ -64,7 +64,7 @@ public class DocumentoMapperTest {
         domainTest = DocumentoBuilder.criarParecerPsicologico();
         dtoTest = mapper.paraDto(domainTest);
 
-        Assertions.assertTrue(dtoTest instanceof ParecerPsicologicoDto);
+        Assertions.assertInstanceOf(ParecerPsicologicoDto.class, dtoTest);
         Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
         DocumentoValidator.validaDocumentoEntry(domainTest, dtoTest);
         DocumentoValidator.validaParecerPsicologicoMapperEntry((ParecerPsicologico) domainTest, (ParecerPsicologicoDto) dtoTest);
