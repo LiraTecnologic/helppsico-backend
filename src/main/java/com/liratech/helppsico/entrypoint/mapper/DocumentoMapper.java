@@ -3,16 +3,17 @@ package com.liratech.helppsico.entrypoint.mapper;
 import com.liratech.helppsico.domain.documento.*;
 import com.liratech.helppsico.entrypoint.dto.documento.DocumentoDto;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DocumentoMapper {
-    public AtestadoMapper atestadoMapper;
-    public DeclaracaoMapper declaracaoMapper;
-    public LaudoPsicologicoMapper laudoPsicologicoMapper;
-    public ParecerPsicologicoMapper parecerPsicologicoMapper;
-    public RelatorioPsicologicoMapper relatorioPsicologicoMapper;
+    private final AtestadoMapper atestadoMapper;
+    private final DeclaracaoMapper declaracaoMapper;
+    private final LaudoPsicologicoMapper laudoPsicologicoMapper;
+    private final ParecerPsicologicoMapper parecerPsicologicoMapper;
+    private final RelatorioPsicologicoMapper relatorioPsicologicoMapper;
 
     public DocumentoDto paraDto(Documento domain){
 
