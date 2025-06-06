@@ -35,7 +35,7 @@ public class PacienteBuilder {
                 .telefone("(11) 98765-4321")
                 .dataNascimento(LocalDate.now())
                 .senha("senhaSegura@123")
-                .genero(TipoGeneroDto.MASCULINO)
+                .genero(TipoGenero.MASCULINO)
                 .endereco(EnderecoBuilder.criarEnderecoDto())
                 .fotoUrl("url-salvo")
                 .build();
@@ -50,7 +50,7 @@ public class PacienteBuilder {
                 .telefone("(11) 98765-4321")
                 .dataNascimento(LocalDate.now())
                 .senha("senhaSegura@123")
-                .genero(TipoGeneroEntity.MASCULINO)
+                .genero(TipoGenero.MASCULINO)
                 .endereco(EnderecoBuilder.criarEnderecoEntity())
                 .fotoUrl("url-salvo")
                 .build();

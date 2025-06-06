@@ -4,32 +4,34 @@ import com.liratech.helppsico.builders.PacienteBuilder;
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.entrypoint.dto.PacienteDto;
 import com.liratech.helppsico.validators.PacienteValidator;
+import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
+@AllArgsConstructor
 class PacienteMapperTest {
 
-    private final PacienteMapper pacienteMapper = Mappers.getMapper(PacienteMapper.class);
+    private PacienteMapper mapper;
+    private Paciente domainTest;
+    private PacienteDto dtoTest;
 
     @Test
-    @DisplayName("Caso de sucesso na tranformação de DTO para Domain")
-    void testeTransformacaoPacienteDeDtoParaDomain() {
-        PacienteDto pacienteDto = PacienteBuilder.criarPacienteDto();
-        Paciente paciente = pacienteMapper.paraDomain(pacienteDto);
+    void testePacienteDomainParaDto() {
+        domainTest = PacienteBuilder.criarPaciente();
+        dtoTest = mapper.paraDto(domainTest);
 
-        Assertions.assertNotNull(paciente.getEndereco());
-        PacienteValidator.validaPacienteDtoParaDomain(pacienteDto, paciente);
+        Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
+        PacienteValidator.validaPacienteMapperEntry(domainTest, dtoTest);
     }
 
     @Test
-    @DisplayName("Caso de sucesso na tranformação de Domain para Dto")
-    void testeTransformacaoPacienteDeDomainParaDto() {
-        Paciente paciente = PacienteBuilder.criarPaciente();
-        PacienteDto pacienteDto = pacienteMapper.paraDto(paciente);
+    void testePacienteDtoParaDomain() {
+        dtoTest = PacienteBuilder.criarPacienteDto();
+        domainTest = mapper.paraDomain(dtoTest);
 
-        Assertions.assertNotNull(pacienteDto);
-        PacienteValidator.validaPacienteDomainParaDto(paciente, pacienteDto);
+        Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
+        PacienteValidator.validaPacienteMapperEntry(domainTest, dtoTest);
     }
 }

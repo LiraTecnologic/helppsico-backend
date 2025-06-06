@@ -12,6 +12,6 @@ import org.mapstruct.ReportingPolicy;
         uses = {PsicologoMapper.class, PacienteMapper.class, ConsultaMapper.class}
 )
 public interface ProntuarioMapper {
-    Prontuario paraDomain (ProntuarioDto prontuarioDto);
-    ProntuarioDto paraDto (Prontuario prontuario);
+    Prontuario paraDomain (ProntuarioDto dto);
+    ProntuarioDto paraDto (Prontuario domain);
 }

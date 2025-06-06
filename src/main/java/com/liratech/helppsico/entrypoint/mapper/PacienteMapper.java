@@ -12,6 +12,6 @@ import org.mapstruct.ReportingPolicy;
         uses = {EnderecoMapper.class}
 )
 public interface PacienteMapper {
-    Paciente paraDomain(PacienteDto pacienteDto);
-    PacienteDto paraDto(Paciente paciente);
+    Paciente paraDomain(PacienteDto dto);
+    PacienteDto paraDto(Paciente domain);
 }
