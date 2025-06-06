@@ -2,15 +2,12 @@ package com.liratech.helppsico.validators;
 
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.documento.*;
-import com.liratech.helppsico.entrypoint.dto.documento.AtestadoDto;
-import com.liratech.helppsico.entrypoint.dto.documento.DeclaracaoDto;
-import com.liratech.helppsico.entrypoint.dto.documento.DocumentoDto;
-import com.liratech.helppsico.infrastructure.repositories.entities.documento.AtestadoEntity;
-import com.liratech.helppsico.infrastructure.repositories.entities.documento.DeclaracaoEntity;
-import com.liratech.helppsico.infrastructure.repositories.entities.documento.DocumentoEntity;
+import com.liratech.helppsico.entrypoint.dto.documento.*;
+import com.liratech.helppsico.infrastructure.repositories.entities.documento.*;
 import org.junit.jupiter.api.Assertions;
 
 public class DocumentoValidator {
+
     public static void validaDocumentoDomain (Documento esperado, Documento resultado){
         Assertions.assertEquals(esperado.getDataEmissao(), resultado.getDataEmissao());
         Assertions.assertEquals(esperado.getDataValidade(), resultado.getDataValidade());
@@ -84,6 +81,26 @@ public class DocumentoValidator {
         Assertions.assertEquals(esperado.getRecomendacoes(), resultado.getRecomendacoes());
         Assertions.assertEquals(esperado.getSigilo(), resultado.getSigilo());
     }
+    public static void validaRelatorioPsicologicoMapperEntry (RelatorioPsicologico domain, RelatorioPsicologicoDto dto){
+        Assertions.assertEquals(domain.getSolicitante(), dto.getSolicitante());
+        Assertions.assertEquals(domain.getObjetivo(), dto.getObjetivo());
+        Assertions.assertEquals(domain.getHistorico(), dto.getHistorico());
+        Assertions.assertEquals(domain.getProcedimentosUtilizados(), dto.getProcedimentosUtilizados());
+        Assertions.assertEquals(domain.getDescricaoResultados(), dto.getDescricaoResultados());
+        Assertions.assertEquals(domain.getConclusao(), dto.getConclusao());
+        Assertions.assertEquals(domain.getRecomendacoes(), dto.getRecomendacoes());
+        Assertions.assertEquals(domain.getSigilo(), dto.getSigilo());
+    }
+    public static void validaRelatorioPsicologicoMapperInfra (RelatorioPsicologico domain, RelatorioPsicologicoEntity entity){
+        Assertions.assertEquals(domain.getSolicitante(), entity.getSolicitante());
+        Assertions.assertEquals(domain.getObjetivo(), entity.getObjetivo());
+        Assertions.assertEquals(domain.getHistorico(), entity.getHistorico());
+        Assertions.assertEquals(domain.getProcedimentosUtilizados(), entity.getProcedimentosUtilizados());
+        Assertions.assertEquals(domain.getDescricaoResultados(), entity.getDescricaoResultados());
+        Assertions.assertEquals(domain.getConclusao(), entity.getConclusao());
+        Assertions.assertEquals(domain.getRecomendacoes(), entity.getRecomendacoes());
+        Assertions.assertEquals(domain.getSigilo(), entity.getSigilo());
+    }
 
     public static void validaLaudoPsicologico (LaudoPsicologico esperado, LaudoPsicologico resultado){
         Assertions.assertEquals(esperado.getSolicitante(), resultado.getSolicitante());
@@ -96,6 +113,28 @@ public class DocumentoValidator {
         Assertions.assertEquals(esperado.getRecomendacoes(), resultado.getRecomendacoes());
         Assertions.assertEquals(esperado.getSigilo(), resultado.getSigilo());
     }
+    public static void validaLaudoPsicologicoMapperEntry (LaudoPsicologico domain, LaudoPsicologicoDto dto){
+        Assertions.assertEquals(domain.getSolicitante(), dto.getSolicitante());
+        Assertions.assertEquals(domain.getObjetivo(), dto.getObjetivo());
+        Assertions.assertEquals(domain.getHistorico(), dto.getHistorico());
+        Assertions.assertEquals(domain.getProcedimentosUtilizados(), dto.getProcedimentosUtilizados());
+        Assertions.assertEquals(domain.getDescricaoResultados(), dto.getDescricaoResultados());
+        Assertions.assertEquals(domain.getConclusao(), dto.getConclusao());
+        Assertions.assertEquals(domain.getRespostaDemanda(), dto.getRespostaDemanda());
+        Assertions.assertEquals(domain.getRecomendacoes(), dto.getRecomendacoes());
+        Assertions.assertEquals(domain.getSigilo(), dto.getSigilo());
+    }
+    public static void validaLaudoPsicologicoMapperInfra (LaudoPsicologico domain, LaudoPsicologicoEntity entity){
+        Assertions.assertEquals(domain.getSolicitante(), entity.getSolicitante());
+        Assertions.assertEquals(domain.getObjetivo(), entity.getObjetivo());
+        Assertions.assertEquals(domain.getHistorico(), entity.getHistorico());
+        Assertions.assertEquals(domain.getProcedimentosUtilizados(), entity.getProcedimentosUtilizados());
+        Assertions.assertEquals(domain.getDescricaoResultados(), entity.getDescricaoResultados());
+        Assertions.assertEquals(domain.getConclusao(), entity.getConclusao());
+        Assertions.assertEquals(domain.getRespostaDemanda(), entity.getRespostaDemanda());
+        Assertions.assertEquals(domain.getRecomendacoes(), entity.getRecomendacoes());
+        Assertions.assertEquals(domain.getSigilo(), entity.getSigilo());
+    }
 
     public static void validaParecerPsicologico (ParecerPsicologico esperado, ParecerPsicologico resultado){
         Assertions.assertEquals(esperado.getSolicitante(), resultado.getSolicitante());
@@ -105,5 +144,23 @@ public class DocumentoValidator {
         Assertions.assertEquals(esperado.getContextualizacao(), resultado.getContextualizacao());
         Assertions.assertEquals(esperado.getFundamentacao(), resultado.getFundamentacao());
         Assertions.assertEquals(esperado.getAnaliseDoCaso(), resultado.getAnaliseDoCaso());
+    }
+    public static void validaParecerPsicologicoMapperEntry (ParecerPsicologico domain, ParecerPsicologicoDto dto){
+        Assertions.assertEquals(domain.getSolicitante(), dto.getSolicitante());
+        Assertions.assertEquals(domain.getObjetivo(), dto.getObjetivo());
+        Assertions.assertEquals(domain.getConclusao(), dto.getConclusao());
+        Assertions.assertEquals(domain.getSigilo(), dto.getSigilo());
+        Assertions.assertEquals(domain.getContextualizacao(), dto.getContextualizacao());
+        Assertions.assertEquals(domain.getFundamentacao(), dto.getFundamentacao());
+        Assertions.assertEquals(domain.getAnaliseDoCaso(), dto.getAnaliseDoCaso());
+    }
+    public static void validaParecerPsicologicoMapperInfra (ParecerPsicologico domain, ParecerPsicologicoEntity entity){
+        Assertions.assertEquals(domain.getSolicitante(), entity.getSolicitante());
+        Assertions.assertEquals(domain.getObjetivo(), entity.getObjetivo());
+        Assertions.assertEquals(domain.getConclusao(), entity.getConclusao());
+        Assertions.assertEquals(domain.getSigilo(), entity.getSigilo());
+        Assertions.assertEquals(domain.getContextualizacao(), entity.getContextualizacao());
+        Assertions.assertEquals(domain.getFundamentacao(), entity.getFundamentacao());
+        Assertions.assertEquals(domain.getAnaliseDoCaso(), entity.getAnaliseDoCaso());
     }
 }
