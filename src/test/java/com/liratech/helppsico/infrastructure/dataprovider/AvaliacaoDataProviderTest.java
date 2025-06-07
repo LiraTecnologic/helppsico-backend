@@ -45,6 +45,7 @@ public class AvaliacaoDataProviderTest {
     void inicializarAtributos() {
         avaliacaoTeste = AvaliacaoBuilder.criarAvaliacao();
         avaliacaoEntityTeste = mapper.paraEntity(avaliacaoTeste);
+        avaliacaoPage = AvaliacaoBuilder.criarPageDeAvaliacoes();
 
         pageable = PageRequest.of(0,10);
     }
@@ -92,49 +93,40 @@ public class AvaliacaoDataProviderTest {
 
     @Test
     void testeListarPorPsicologo(){
-        Page<AvaliacaoEntity> avaliacaoTeste = AvaliacaoBuilder.criarPageDeAvaliacoesEntity();
-        UUID idProcurado = avaliacaoTeste.getContent().get(1).getId();
-        avaliacaoTeste.getContent().get(1).setId(idProcurado);
-        avaliacaoTeste.getContent().get(2).setId(idProcurado);
+        UUID idProcurado = avaliacaoPage.getContent().get(1).getPsicologo().getId();
 
-        Mockito.when(repository.findAllByPsicologoId(Mockito.any(), Mockito.any())).thenReturn(avaliacaoTeste);
+        Mockito.when(repository.findAllByPsicologoId(Mockito.any(), Mockito.any())).thenReturn(avaliacaoPage.map(mapper::paraEntity));
 
         Page<Avaliacao> avaliacaoResultado = dataProvider.listarPorPsicologo(idProcurado, pageable);
 
-        Page<Avaliacao> avaliacaoTesteDomain = avaliacaoTeste.map(mapper::paraDomain);
-
         for (int i = 0; i < avaliacaoResultado.getNumberOfElements(); i++) {
-            AvaliacaoValidator.validaAvaliacaoDomain(avaliacaoTesteDomain.getContent().get(i), avaliacaoResultado.getContent().get(i));
+            AvaliacaoValidator.validaAvaliacaoDomain(avaliacaoPage.getContent().get(i), avaliacaoResultado.getContent().get(i));
         }
     }
 
     @Test
     void testeExceptionListarPorPsicologo() {
-        Mockito.when(repository.findAllByPsicologoId(Mockito.any())).thenThrow(DataProviderException.class);
+        Mockito.when(repository.findAllByPsicologoId(Mockito.any(), Mockito.any())).thenThrow(DataProviderException.class);
 
         DataProviderException exception = Assertions
-                .assertThrows(DataProviderException.class, () -> dataProvider.listarPorPsicologo(AvaliacaoBuilder.criarAvaliacao().getId()));
+                .assertThrows(DataProviderException.class, () -> dataProvider.listarPorPsicologo(AvaliacaoBuilder.criarAvaliacao().getId(), pageable));
 
         Assertions.assertEquals(AvaliacaoDataProvider.MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO, exception.getMessage());
     }
 
     @Test
     void testeConsultarPorPacientePsicologo(){
-        AvaliacaoEntity avaliacaoTeste = AvaliacaoBuilder.criarAvaliacaoEntity();
-
-        Mockito.when(repository.findByPacienteIdAndPsicologoId(Mockito.any(), Mockito.any())).thenReturn(Optional.of(avaliacaoTeste));
+        Mockito.when(repository.findByPacienteIdAndPsicologoId(Mockito.any(), Mockito.any())).thenReturn(Optional.of(avaliacaoEntityTeste));
 
         Optional<Avaliacao> avaliacaoResposta = dataProvider.consultarPorPacientePsicologo(avaliacaoTeste.getPaciente().getId(), avaliacaoTeste.getPsicologo().getId());
 
         avaliacaoResposta.ifPresent(avaliacao ->
-                AvaliacaoValidator.validaAvaliacaoDomain(mapper.paraDomain(avaliacaoTeste), avaliacao)
+                AvaliacaoValidator.validaAvaliacaoDomain(avaliacaoTeste, avaliacao)
         );
     }
 
     @Test
     void testeExceptionConsultarPorPacientePsicologo(){
-        Avaliacao avaliacaoTeste = AvaliacaoBuilder.criarAvaliacao();
-
         Mockito.when(repository.findByPacienteIdAndPsicologoId(Mockito.any(), Mockito.any()))
                 .thenThrow(DataProviderException.class);
 
@@ -146,7 +138,7 @@ public class AvaliacaoDataProviderTest {
 
     @Test
     void testeDeletarAvaliacao() {
-        UUID idGerado = AvaliacaoBuilder.criarAvaliacao().getId();
+        UUID idGerado = avaliacaoEntityTeste.getId();
 
         Mockito.doNothing().when(repository).deleteById(Mockito.any());
 

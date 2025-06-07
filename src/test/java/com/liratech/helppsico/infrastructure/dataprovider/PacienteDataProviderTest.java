@@ -29,7 +29,6 @@ class PacienteDataProviderTest {
 
     private final PacienteMapperInfra mapper;
 
-
     @Test
     void testaSalvarPsicologo() {
         Paciente pacienteTeste = PacienteBuilder.criarPaciente();

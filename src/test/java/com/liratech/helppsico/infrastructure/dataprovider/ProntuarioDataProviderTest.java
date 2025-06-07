@@ -39,7 +39,7 @@ class ProntuarioDataProviderTest {
     private final ProntuarioMapperInfra mapper;
 
     @Test
-    void testaSalvarProntuario() {
+    void testeSalvarProntuario() {
         Prontuario prontuarioTeste = ProntuarioBuilder.criarProntuario();
         Mockito.when(repository.save(Mockito.any())).thenReturn(mapper.paraEntity(prontuarioTeste));
 
@@ -48,7 +48,7 @@ class ProntuarioDataProviderTest {
         Prontuario resultado = dataProvider.salvar(prontuarioTeste);
 
         Assertions.assertNotNull(resultado.getId());
-        ProntuarioValidator.validaProntuarioDoamain(resultado, prontuarioTeste);
+        ProntuarioValidator.validaProntuarioDomain(resultado, prontuarioTeste);
     }
 
     @Test
@@ -70,7 +70,7 @@ class ProntuarioDataProviderTest {
         Optional<Prontuario> resultado = dataProvider.consultarPorId(prontuarioTeste.getId());
 
         resultado.ifPresent(prontuario -> {
-            ProntuarioValidator.validaProntuarioDoamain(prontuario, prontuarioTeste);
+            ProntuarioValidator.validaProntuarioDomain(prontuario, prontuarioTeste);
         });
     }
 
@@ -87,13 +87,13 @@ class ProntuarioDataProviderTest {
     @Test
     void testeListagemProntuarioPorPaciente() {
         Page<Prontuario> prontuarioTeste = ProntuarioBuilder.criarPageProntuarioEntity().map(mapper::paraDomain);
-        Mockito.when(repository.findByPaciente(Mockito.any(), Mockito.any())).thenReturn(prontuarioTeste.map(mapper::paraEntity));
+        Mockito.when(repository.findAllByPacienteId(Mockito.any(), Mockito.any())).thenReturn(prontuarioTeste.map(mapper::paraEntity));
 
         List<Prontuario> resultado = dataProvider
-                .listarPorPaciente(PacienteBuilder.criarPaciente(), PageRequest.of(0, 10)).getContent();
+                .listarPorPaciente(PacienteBuilder.criarPaciente().getId(), PageRequest.of(0, 10)).getContent();
 
         IntStream.range(0, resultado.size())
-                .forEach(i -> ProntuarioValidator.validaProntuarioDoamain(
+                .forEach(i -> ProntuarioValidator.validaProntuarioDomain(
                         prontuarioTeste.getContent().get(i),
                         resultado.get(i)
                 ));
@@ -103,10 +103,10 @@ class ProntuarioDataProviderTest {
     void testeExceptionListagemProntuarioPorPaciente() {
         Paciente pacienteTeste = PacienteBuilder.criarPaciente();
 
-        Mockito.when(repository.findByPaciente(Mockito.any(), Mockito.any())).thenThrow(RuntimeException.class);
+        Mockito.when(repository.findAllByPacienteId(Mockito.any(), Mockito.any())).thenThrow(RuntimeException.class);
 
         DataProviderException exception = Assertions.assertThrows(DataProviderException.class,
-                () -> dataProvider.listarPorPaciente(pacienteTeste, PageRequest.of(0, 10)));
+                () -> dataProvider.listarPorPaciente(pacienteTeste.getId(), PageRequest.of(0, 10)));
 
         Assertions.assertEquals(dataProvider.MENSAGEM_ERRO_LISTAR_PACIENTE, exception.getMessage());
     }
@@ -114,13 +114,13 @@ class ProntuarioDataProviderTest {
     @Test
     void testaListagemPorPsicologo() {
         Page<Prontuario> prontuarioTeste = ProntuarioBuilder.criarPageProntuarioEntity().map(mapper::paraDomain);
-        Mockito.when(repository.findByPsicologo(Mockito.any(), Mockito.any())).thenReturn(prontuarioTeste.map(mapper::paraEntity));
+        Mockito.when(repository.findAllByPsicologoId(Mockito.any(), Mockito.any())).thenReturn(prontuarioTeste.map(mapper::paraEntity));
 
         List<Prontuario> resultado = dataProvider
-                .listarPorPsicologo(PsicologoBuilder.criarPsicologo(), PageRequest.of(0, 10)).getContent();
+                .listarPorPsicologo(PsicologoBuilder.criarPsicologo().getId(), PageRequest.of(0, 10)).getContent();
 
         IntStream.range(0, resultado.size())
-                .forEach(i -> ProntuarioValidator.validaProntuarioDoamain(
+                .forEach(i -> ProntuarioValidator.validaProntuarioDomain(
                         prontuarioTeste.getContent().get(i),
                         resultado.get(i)
                 ));
@@ -130,10 +130,10 @@ class ProntuarioDataProviderTest {
     void testeExceptionListagemPorPsicologo() {
         Psicologo psicologo = PsicologoBuilder.criarPsicologo();
 
-        Mockito.when(repository.findByPaciente(Mockito.any(), Mockito.any())).thenThrow(RuntimeException.class);
+        Mockito.when(repository.findAllByPsicologoId(Mockito.any(), Mockito.any())).thenThrow(RuntimeException.class);
 
         DataProviderException exception = Assertions.assertThrows(DataProviderException.class,
-                () -> dataProvider.listarPorPsicologo(psicologo, PageRequest.of(0, 10)));
+                () -> dataProvider.listarPorPsicologo(psicologo.getId(), PageRequest.of(0, 10)));
 
         Assertions.assertEquals(dataProvider.MENSAGEM_ERRO_LISTAR_PSICOLOGO, exception.getMessage());
     }

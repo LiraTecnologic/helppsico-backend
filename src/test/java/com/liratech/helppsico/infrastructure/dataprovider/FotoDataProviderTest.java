@@ -3,6 +3,7 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.builders.FotoBuilder;
 import com.liratech.helppsico.domain.Foto;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
+import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,21 +25,16 @@ import java.util.UUID;
 import static com.liratech.helppsico.infrastructure.dataprovider.FotoDataProvider.*;
 
 @ExtendWith(MockitoExtension.class)
+@AllArgsConstructor
 class FotoDataProviderTest {
-
-    @Mock
-    private FotoRepository repository;
 
     @Mock
     private MultipartFile foto;
 
-    @InjectMocks
     private FotoDataProvider dataProvider;
 
     private String nomeArquivo;
     private File arquivoTemporario;
-    private Foto fotoDomain;
-    private FotoMapper mapper;
     private static final String DIRETORIO_TESTE = "C:/temp/teste_fotos";
 
 
@@ -68,7 +64,6 @@ class FotoDataProviderTest {
 
         nomeArquivo = "foto_teste.png";
         arquivoTemporario = File.createTempFile("test_", ".png");
-        fotoDomain = FotoBuilder.criarFotoDomain();
     }
 
     @Test

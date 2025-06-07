@@ -11,6 +11,7 @@ import com.liratech.helppsico.infrastructure.mapper.ConsultaMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.ConsultaRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.ConsultaEntity;
 import com.liratech.helppsico.validators.ConsultaValidator;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -33,18 +34,18 @@ import java.util.stream.IntStream;
 class ConsultaDataProviderTest {
 
     @Mock
-    private final ConsultaRepository repository;
+    private ConsultaRepository repository;
 
     @InjectMocks
-    private final ConsultaDataProvider dataProvider;
+    private ConsultaDataProvider dataProvider;
 
     private final ConsultaEntity consultaEntityTeste = ConsultaBuilder.criarConsultaEntity();
     private final Consulta consultaDomainTeste = ConsultaBuilder.criarConsulta();
     private final Page<ConsultaEntity> pageConsultaEntitiesTeste = ConsultaBuilder.criarPageConsultaEntity();
-    private final Paciente pacienteDomainTeste = PacienteBuilder.criarPaciente();
-    private final Psicologo psicologoDomainTeste = PsicologoBuilder.criarPsicologo();
-
+    private final Paciente pacienteDomainTeste = consultaDomainTeste.getPaciente();
+    private final Psicologo psicologoDomainTeste = consultaDomainTeste.getPsicologo();
     private final ConsultaMapperInfra mapper;
+    private final Pageable pageable = PageRequest.of(0, 10);
 
     @Test
     void testeSalvar() {
@@ -79,7 +80,7 @@ class ConsultaDataProviderTest {
     }
 
     @Test
-    void testaExceptionConsultaPorId() {
+    void testeExceptionConsultaPorId() {
         Mockito.when(repository.findById(Mockito.any())).thenThrow(RuntimeException.class);
 
         DataProviderException exception = Assertions.assertThrows(DataProviderException.class,
@@ -89,14 +90,11 @@ class ConsultaDataProviderTest {
     }
 
     @Test
-    void consultarConsultasFuturas() {
-        Pageable pageable = PageRequest.of(0, 10);
+    void testeConsultarConsultasFuturasPorPaciente() {
+        Mockito.when(repository.consultarConsultasFuturasPaciente(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(pageConsultaEntitiesTeste);
 
-        Mockito.when(repository.consultarConsultasFuturas(Mockito.any(), Mockito.any(), Mockito.any()))
-                .thenReturn(pageConsultaEntitiesTeste);
-
-        Page<Consulta> resultado = dataProvider.consultarConsultasFuturas(
-                        psicologoDomainTeste.getId(), pacienteDomainTeste.getId(), pageable
+        Page<Consulta> resultado = dataProvider.consultarConsultasFuturasPaciente(
+                        pacienteDomainTeste.getId(), psicologoDomainTeste.getId(), pageable
                 );
 
         Assertions.assertEquals(resultado.getTotalElements(), pageConsultaEntitiesTeste.getTotalElements());
@@ -111,14 +109,21 @@ class ConsultaDataProviderTest {
     }
 
     @Test
-    void testeConsultaHistorico() {
-        Pageable pageable = PageRequest.of(0, 10);
+    void testeExceptionConsultarConsultasFuturasPorPaciente() {
+        Mockito.when(repository.consultarConsultasFuturasPaciente(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenThrow(RuntimeException.class);
 
-        Mockito.when(repository.consultarHistorico(Mockito.any(), Mockito.any(), Mockito.any()))
-                .thenReturn(pageConsultaEntitiesTeste);
+        DataProviderException exception = Assertions.assertThrows(DataProviderException.class,
+                () -> dataProvider.consultarConsultasFuturasPaciente(pacienteDomainTeste.getId(), psicologoDomainTeste.getId(), pageable));
 
-        Page<Consulta> resultado = dataProvider.consultarHistorico(
-                psicologoDomainTeste.getId(), pacienteDomainTeste.getId(), pageable
+        Assertions.assertEquals(exception.getMessage(), ConsultaDataProvider.MENSAGEM_ERRO_CONSULTAR_SESSOES_FUTURAS);
+    }
+
+    @Test
+    void testeConsultarConsultasFuturasPorPsicologo() {
+        Mockito.when(repository.consultarConsultasFuturasPsicologo(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(pageConsultaEntitiesTeste);
+
+        Page<Consulta> resultado = dataProvider.consultarConsultasFuturasPsicologo(
+                psicologoDomainTeste.getId(), pageable
         );
 
         Assertions.assertEquals(resultado.getTotalElements(), pageConsultaEntitiesTeste.getTotalElements());
@@ -133,25 +138,80 @@ class ConsultaDataProviderTest {
     }
 
     @Test
-    void testeExceptionConsultarHistorico() {
-        Pageable pageable = PageRequest.of(0, 10);
-
-        Mockito.when(repository.consultarHistorico(Mockito.any(), Mockito.any(), Mockito.any()))
-                .thenThrow(RuntimeException.class);
+    void testeExceptionConsultarConsultasFuturasPorPsicologo() {
+        Mockito.when(repository.consultarConsultasFuturasPsicologo(Mockito.any(), Mockito.any(), Mockito.any())).thenThrow(RuntimeException.class);
 
         DataProviderException exception = Assertions.assertThrows(DataProviderException.class,
-                () -> dataProvider.consultarHistorico(psicologoDomainTeste.getId(), pacienteDomainTeste.getId(), pageable));
+                () -> dataProvider.consultarConsultasFuturasPsicologo(psicologoDomainTeste.getId(), pageable));
+
+        Assertions.assertEquals(exception.getMessage(), ConsultaDataProvider.MENSAGEM_ERRO_CONSULTAR_SESSOES_FUTURAS);
+    }
+
+    @Test
+    void testeConsultarHistoricoPorPaciente() {
+        Mockito.when(repository.consultarHistoricoPaciente(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(pageConsultaEntitiesTeste);
+
+        Page<Consulta> resultado = dataProvider.consultarHistoricoPaciente(
+                pacienteDomainTeste.getId(), psicologoDomainTeste.getId(), pageable
+        );
+
+        Assertions.assertEquals(resultado.getTotalElements(), pageConsultaEntitiesTeste.getTotalElements());
+
+        List<Consulta> resultadoList = resultado.getContent();
+
+        IntStream.range(0, resultadoList.size())
+                .forEach(i -> ConsultaValidator.validaConsultaDomain(
+                        mapper.paraDomain(pageConsultaEntitiesTeste.getContent().get(i)),
+                        resultadoList.get(i)
+                ));
+    }
+
+    @Test
+    void testeExceptionConsultarHistoricoPaciente() {
+        Mockito.when(repository.consultarHistoricoPaciente(Mockito.any(), Mockito.any(), Mockito.any())).thenThrow(RuntimeException.class);
+
+        DataProviderException exception = Assertions.assertThrows(DataProviderException.class,
+                () -> dataProvider.consultarHistoricoPaciente(pacienteDomainTeste.getId(), psicologoDomainTeste.getId(), pageable));
 
         Assertions.assertEquals(exception.getMessage(), ConsultaDataProvider.MENSAGEM_ERRO_CONSULTAR_HISTORICO);
     }
 
     @Test
-    void testeConsultaSessoesDoMesmoDia() {
+    void testeConsultarHistoricoPorPsicologo() {
+        Mockito.when(repository.consultarHistoricoPsicologo(Mockito.any(), Mockito.any())).thenReturn(pageConsultaEntitiesTeste);
+
+        Page<Consulta> resultado = dataProvider.consultarHistoricoPsicologo(
+                psicologoDomainTeste.getId(), pageable
+        );
+
+        Assertions.assertEquals(resultado.getTotalElements(), pageConsultaEntitiesTeste.getTotalElements());
+
+        List<Consulta> resultadoList = resultado.getContent();
+
+        IntStream.range(0, resultadoList.size())
+                .forEach(i -> ConsultaValidator.validaConsultaDomain(
+                        mapper.paraDomain(pageConsultaEntitiesTeste.getContent().get(i)),
+                        resultadoList.get(i)
+                ));
+    }
+
+    @Test
+    void testeExceptionConsultarHistoricoPsicologo() {
+        Mockito.when(repository.consultarHistoricoPsicologo(Mockito.any(), Mockito.any())).thenThrow(RuntimeException.class);
+
+        DataProviderException exception = Assertions.assertThrows(DataProviderException.class,
+                () -> dataProvider.consultarHistoricoPsicologo(psicologoDomainTeste.getId(), pageable));
+
+        Assertions.assertEquals(exception.getMessage(), ConsultaDataProvider.MENSAGEM_ERRO_CONSULTAR_HISTORICO);
+    }
+
+    @Test
+    void testeConsultarSessoesDoMesmoDia() {
         List<ConsultaEntity> listTeste = ConsultaBuilder.criarListaConsultaEntity();
 
-        Mockito.when(repository.consultarConsultasMesmoDia(Mockito.any())).thenReturn(listTeste);
+        Mockito.when(repository.consultarConsultasMesmoDia(Mockito.any(), Mockito.any())).thenReturn(listTeste);
 
-        List<Consulta> resultado = dataProvider.consultarConsultasMesmoDia(12);
+        List<Consulta> resultado = dataProvider.consultarConsultasMesmoDia(12, consultaDomainTeste.getPsicologo().getId());
 
         Assertions.assertEquals(listTeste.size(), resultado.size());
 
@@ -164,10 +224,10 @@ class ConsultaDataProviderTest {
 
     @Test
     void testeExceptionConsultaSessoesDoMesmoDia() {
-        Mockito.when(repository.consultarConsultasMesmoDia(Mockito.any())).thenThrow(RuntimeException.class);
+        Mockito.when(repository.consultarConsultasMesmoDia(Mockito.any(), Mockito.any())).thenThrow(RuntimeException.class);
 
         DataProviderException exception = Assertions.assertThrows(DataProviderException.class,
-                () -> dataProvider.consultarConsultasMesmoDia(12));
+                () -> dataProvider.consultarConsultasMesmoDia(12, consultaDomainTeste.getPsicologo().getId()));
 
         Assertions.assertEquals(exception.getMessage(), ConsultaDataProvider.MENSAGEM_ERRO_CONSULTAR_SESSOES_MESMO_DIA);
     }
@@ -193,6 +253,4 @@ class ConsultaDataProviderTest {
 
         Assertions.assertEquals(exception.getMessage(), ConsultaDataProvider.MENSAGEM_ERRO_DELETAR_CONSULTA);
     }
-
-
 }

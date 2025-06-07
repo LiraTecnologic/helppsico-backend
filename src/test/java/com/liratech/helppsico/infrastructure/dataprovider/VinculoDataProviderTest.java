@@ -7,6 +7,7 @@ import com.liratech.helppsico.infrastructure.mapper.VinculoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.VinculoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.VinculoEntity;
 import com.liratech.helppsico.validators.VinculoValidator;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +26,7 @@ import java.util.UUID;
 
 import static com.liratech.helppsico.infrastructure.dataprovider.VinculoDataProvider.*;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @ExtendWith(MockitoExtension.class)
 public class VinculoDataProviderTest {
     @Mock
@@ -34,7 +35,7 @@ public class VinculoDataProviderTest {
     @InjectMocks
     private VinculoDataProvider dataProvider;
 
-    private final VinculoMapperInfra mapper;
+    private VinculoMapperInfra mapper;
     private Vinculo vinculoDomain;
     private VinculoEntity vinculoEntity;
     private UUID id;
@@ -123,7 +124,7 @@ public class VinculoDataProviderTest {
 
     @Test
     void testeListarVinculoPorIdPsicologo(){
-        Mockito.when(repository.findAllByPsicologo_Id(Mockito.any(), Mockito.any())).thenReturn(vinculoPage.map(mapper::paraEntity));
+        Mockito.when(repository.findAllByPsicologoId(Mockito.any(), Mockito.any())).thenReturn(vinculoPage.map(mapper::paraEntity));
 
         Page<Vinculo> vinculoPageResultado = dataProvider.listarPorIdPsicologo(vinculoDomain.getPsicologo().getId(), pageable);
 
@@ -136,7 +137,7 @@ public class VinculoDataProviderTest {
 
     @Test
     void testeExceptionListarVinculoPorIdPsicologo(){
-        Mockito.doThrow(DataProviderException.class).when(repository).findAllByPsicologo_Id(Mockito.any(), Mockito.any());
+        Mockito.doThrow(DataProviderException.class).when(repository).findAllByPsicologoId(Mockito.any(), Mockito.any());
 
         DataProviderException exception = Assertions.assertThrows(
                 DataProviderException.class,
@@ -147,24 +148,47 @@ public class VinculoDataProviderTest {
     }
 
     @Test
-    void testeConsultarVinculoPorIdPaciente(){
-        Mockito.when(repository.findByPaciente_Id(Mockito.any())).thenReturn(Optional.of(vinculoEntity));
+    void testeListarVinculoPorIdPaciente(){
+        Mockito.when(repository.findAllByPacienteId(Mockito.any(), Mockito.any())).thenReturn(vinculoPage.map(mapper::paraEntity));
 
-        Optional<Vinculo> vinculoOptional = dataProvider.consultarPorIdPaciente(vinculoDomain.getPaciente().getId());
+        Page<Vinculo> vinculoPage = dataProvider.listarPorIdPaciente(vinculoDomain.getPaciente().getId(), pageable);
 
-        vinculoOptional.ifPresent(vinculo -> {
+        vinculoPage.forEach(vinculo -> {
             Assertions.assertNotNull(vinculo.getId());
             VinculoValidator.validaVinculoDomain(vinculoDomain, vinculo);
         });
     }
 
     @Test
-    void testeExceptionConsultarVinculoPorIdPaciente(){
-        Mockito.doThrow(DataProviderException.class).when(repository).findByPaciente_Id(Mockito.any());
+    void testeExceptionListarVinculoPorIdPaciente(){
+        Mockito.doThrow(DataProviderException.class).when(repository).findAllByPacienteId(Mockito.any(), Mockito.any());
 
         DataProviderException exception = Assertions.assertThrows(
                 DataProviderException.class,
-                () -> dataProvider.consultarPorIdPaciente(id)
+                () -> dataProvider.listarPorIdPaciente(id, pageable)
+        );
+
+        Assertions.assertEquals(MENSAGEM_ERRO_LISTAR_POR_PACIENTE, exception.getMessage());
+    }
+
+    @Test
+    void testeConsultarAtivoPorPaciente(){
+        Mockito.when(repository.consultarAtivoPorPaciente(Mockito.any())).thenReturn(Optional.of(vinculoEntity));
+
+        Optional<Vinculo> vinculoOptional = dataProvider.consultarAtivoPorPaciente(vinculoDomain.getPaciente().getId());
+
+        vinculoOptional.ifPresent(vinculo -> {
+            VinculoValidator.validaVinculoDomain(vinculoDomain, vinculo);
+        });
+    }
+
+    @Test
+    void testeExceptionConsultarAtivoPorPaciente(){
+        Mockito.when(repository.consultarAtivoPorPaciente(Mockito.any())).thenThrow(RuntimeException.class);
+
+        DataProviderException exception = Assertions.assertThrows(
+                DataProviderException.class,
+                () -> dataProvider.listarPorIdPaciente(id, pageable)
         );
 
         Assertions.assertEquals(MENSAGEM_ERRO_CONSULTAR_POR_PACIENTE, exception.getMessage());

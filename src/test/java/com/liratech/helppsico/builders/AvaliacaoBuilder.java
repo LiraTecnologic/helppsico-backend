@@ -44,16 +44,6 @@ public class AvaliacaoBuilder {
                 .build();
     }
 
-    public static List<AvaliacaoEntity> criarListaDeAvaliacaoEntity() {
-        List<AvaliacaoEntity> avaliacaoList = new ArrayList<>();
-
-        for (int i = 0; i < 3; i++) {
-            avaliacaoList.add(criarAvaliacaoEntity());
-        }
-
-        return avaliacaoList;
-    }
-
     public static Page<AvaliacaoEntity> criarPageDeAvaliacoesEntity() {
         List<AvaliacaoEntity> avaliacaoList = new ArrayList<>();
 
@@ -64,15 +54,6 @@ public class AvaliacaoBuilder {
         return transformarListaEmPaginaEntity(avaliacaoList, PageRequest.of(0,10));
     }
 
-    private static Page<AvaliacaoEntity> transformarListaEmPaginaEntity(List<AvaliacaoEntity> lista, Pageable pageable) {
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), lista.size());
-
-        List<AvaliacaoEntity> sublist = lista.subList(start, end);
-
-        return new PageImpl<>(sublist, pageable, lista.size());
-    }
-
     public static Page<Avaliacao> criarPageDeAvaliacoes() {
         List<Avaliacao> avaliacaoList = new ArrayList<>();
 
@@ -81,6 +62,15 @@ public class AvaliacaoBuilder {
         }
 
         return transformarListaEmPagina(avaliacaoList, PageRequest.of(0,10));
+    }
+
+    private static Page<AvaliacaoEntity> transformarListaEmPaginaEntity(List<AvaliacaoEntity> lista, Pageable pageable) {
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), lista.size());
+
+        List<AvaliacaoEntity> sublist = lista.subList(start, end);
+
+        return new PageImpl<>(sublist, pageable, lista.size());
     }
 
     private static Page<Avaliacao> transformarListaEmPagina(List<Avaliacao> lista, Pageable pageable) {

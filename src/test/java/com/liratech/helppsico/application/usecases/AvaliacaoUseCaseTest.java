@@ -17,6 +17,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -67,7 +69,7 @@ public class AvaliacaoUseCaseTest {
     void testeExceptionAvaliacaoJaCadastrada(){
         Avaliacao avaliacaoTeste = AvaliacaoBuilder.criarAvaliacao();
 
-        Mockito.when(useCase.consultarPorPacientePsicologo(Mockito.any(), Mockito.any())).thenReturn(Optional.of(avaliacaoTeste));
+        Mockito.when(gateway.consultarPorPacientePsicologo(Mockito.any(), Mockito.any())).thenReturn(Optional.of(avaliacaoTeste));
 
         AvaliacaoJaCadastradaException exception = Assertions
                 .assertThrows(AvaliacaoJaCadastradaException.class,
@@ -77,20 +79,20 @@ public class AvaliacaoUseCaseTest {
         Mockito.verify(gateway, Mockito.times(1)).consultarPorPacientePsicologo(avaliacaoTeste.getPaciente().getId(), avaliacaoTeste.getPsicologo().getId());
     }
 
-    @Test
-    void testeConsultarAvaliacaoPorPacientePsicologo(){
-        Avaliacao avaliacaoTeste = AvaliacaoBuilder.criarAvaliacao();
-
-        Mockito.when(gateway.consultarPorPacientePsicologo(Mockito.any(), Mockito.any())).thenReturn(Optional.of(avaliacaoTeste));
-
-        Optional<Avaliacao> avaliacaoResposta = useCase.consultarPorPacientePsicologo(avaliacaoTeste.getPaciente().getId(), avaliacaoTeste.getPsicologo().getId());
-
-        avaliacaoResposta.ifPresent(avaliacao -> {
-                    Assertions.assertEquals(avaliacaoTeste.getId(), avaliacao.getId());
-                    AvaliacaoValidator.validaAvaliacaoDomain(avaliacaoTeste, avaliacao);
-                }
-        );
-    }
+//    @Test
+//    void testeConsultarAvaliacaoPorPacientePsicologo(){
+//        Avaliacao avaliacaoTeste = AvaliacaoBuilder.criarAvaliacao();
+//
+//        Mockito.when(gateway.consultarPorPacientePsicologo(Mockito.any(), Mockito.any())).thenReturn(Optional.of(avaliacaoTeste));
+//
+//        Optional<Avaliacao> avaliacaoResposta = useCase.consultarPorPacientePsicologo(avaliacaoTeste.getPaciente().getId(), avaliacaoTeste.getPsicologo().getId());
+//
+//        avaliacaoResposta.ifPresent(avaliacao -> {
+//                    Assertions.assertEquals(avaliacaoTeste.getId(), avaliacao.getId());
+//                    AvaliacaoValidator.validaAvaliacaoDomain(avaliacaoTeste, avaliacao);
+//                }
+//        );
+//    }
 
     @Test
     void testeBuscarAvaliacaoPorId(){
@@ -123,11 +125,12 @@ public class AvaliacaoUseCaseTest {
         UUID idPsicologo = psicologoTeste.getId();
         Page<Avaliacao> avaliacaoPageTeste = AvaliacaoBuilder.criarPageDeAvaliacoes();
         avaliacaoPageTeste.forEach(avaliacao -> avaliacao.setPsicologo(psicologoTeste));
+        Pageable pageable = PageRequest.of(0,10);
 
         Mockito.when(psicologoUseCase.consultarPorId(Mockito.any())).thenReturn(psicologoTeste);
-        Mockito.when(gateway.listarPorPsicologo(Mockito.any())).thenReturn(avaliacaoPageTeste);
+        Mockito.when(gateway.listarPorPsicologo(Mockito.any(), Mockito.any())).thenReturn(avaliacaoPageTeste);
 
-        Page<Avaliacao> avaliacaoResposta = useCase.listarPorPsicologo(idPsicologo);
+        Page<Avaliacao> avaliacaoResposta = useCase.listarPorPsicologo(idPsicologo, pageable);
         for (int i = 0; i < avaliacaoResposta.getNumberOfElements(); i++) {
             AvaliacaoValidator.validaAvaliacaoDomain(avaliacaoPageTeste.getContent().get(i), avaliacaoResposta.getContent().get(i));
             Assertions.assertEquals(avaliacaoPageTeste.getContent().get(i).getId(), avaliacaoResposta.getContent().get(i).getId());

@@ -4,6 +4,7 @@ import com.liratech.helppsico.builders.EnderecoBuilder;
 import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
 import com.liratech.helppsico.infrastructure.mapper.EnderecoMapperInfra;
+import com.liratech.helppsico.infrastructure.repositories.EnderecoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.EnderecoEntity;
 import com.liratech.helppsico.validators.EnderecoValidator;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +24,10 @@ import java.util.UUID;
 class EnderecoDataProviderTest {
 
     @Mock
-    private final EnderecoRepository repository;
+    private EnderecoRepository repository;
 
     @InjectMocks
-    private final EnderecoDataProvider dataProvider;
+    private EnderecoDataProvider dataProvider;
 
     private final EnderecoMapperInfra mapper;
 
@@ -46,7 +47,7 @@ class EnderecoDataProviderTest {
     }
 
     @Test
-    void testeErroSalvarEndereco() {
+    void testeExceptionSalvarEndereco() {
         Mockito.when(repository.save(Mockito.any())).thenThrow(RuntimeException.class);
 
         DataProviderException exception = Assertions
@@ -60,7 +61,7 @@ class EnderecoDataProviderTest {
 
         Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(mapper.paraEntity(enderecoTeste)));
 
-        Optional<Endereco> enderecoResultado = dataProvider.consultarPorId(endereco.getId());
+        Optional<Endereco> enderecoResultado = dataProvider.consultarPorId(enderecoTeste.getId());
 
         enderecoResultado.ifPresent(endereco -> {
             EnderecoValidator.validaEnderecoDomain(enderecoTeste, endereco);
@@ -68,7 +69,7 @@ class EnderecoDataProviderTest {
     }
 
     @Test
-    void testeErroConsultarEnderecoPorId() {
+    void testeExceptionConsultarEnderecoPorId() {
         Mockito.when(repository.findById(Mockito.any())).thenThrow(RuntimeException.class);
 
         DataProviderException exception = Assertions

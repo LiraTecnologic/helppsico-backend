@@ -25,6 +25,7 @@ public class HorarioDataProvider implements HorarioGateway {
     public static final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar horarios por id.";
     public static final String MENSAGEM_ERRO_DELETAR = "Erro ao deletar os horarios";
 
+    @Override
     public Horario salvar(Horario horario){
         HorarioEntity entity = mapperInfra.paraEntity(horario);
 
