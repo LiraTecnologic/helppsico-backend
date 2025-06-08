@@ -148,6 +148,16 @@ public class ConsultaUseCase {
         return consultaSalva;
     }
 
+    public Consulta consultarPorId(UUID id) {
+        Optional<Consulta> consulta = gateway.consultarPorId(id);
+
+        if(consulta.isEmpty()) {
+            throw new ConsultaNaoEncontradaException(MENSAGEM_CONSULTA_NAO_ENCONTRADA);
+        }
+
+        return consulta.get();
+    }
+
     private void validarHorarioConsulta(Consulta novaConsulta) {
         List<Consulta> consultasMesmoDia = gateway.consultarConsultasMesmoDia(novaConsulta.getData().getDayOfMonth(), novaConsulta.getPsicologo().getId());
 
@@ -161,16 +171,6 @@ public class ConsultaUseCase {
                 throw new ConsultaJaExistenteNaDataException(MENSAGEM_CONSULTA_JA_EXISTENTE_NA_DATA);
             }
         }
-    }
-
-    public Consulta consultarPorId(UUID id) {
-        Optional<Consulta> consulta = gateway.consultarPorId(id);
-
-        if(consulta.isEmpty()) {
-            throw new ConsultaNaoEncontradaException(MENSAGEM_CONSULTA_NAO_ENCONTRADA);
-        }
-
-        return consulta.get();
     }
 
 }

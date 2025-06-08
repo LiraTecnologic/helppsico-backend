@@ -1,8 +1,10 @@
 package com.liratech.helppsico.application.usecases;
 
+import com.liratech.helppsico.application.exceptions.avaliacao.AvaliacaoInvalidaException;
 import com.liratech.helppsico.application.exceptions.avaliacao.AvaliacaoJaCadastradaException;
 import com.liratech.helppsico.application.exceptions.avaliacao.AvaliacaoNaoEncontradaException;
 import com.liratech.helppsico.application.exceptions.avaliacao.PsicologoNaoVinculado;
+import com.liratech.helppsico.application.exceptions.consulta.ConsultaInvalidaException;
 import com.liratech.helppsico.application.gateways.AvaliacaoGateway;
 import com.liratech.helppsico.domain.*;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +29,7 @@ public class AvaliacaoUseCase {
     private final VinculoUseCase vinculoUseCase;
     public static final String MENSAGEM_AVALIACAO_NAO_ENCONTRADA = "Avaliação não encontrada.";
     public static final String MENSAGEM_AVALIACAO_JA_CADASTRADA = "Avaliação já está cadastrada.";
-    public static final String MENSAGEM_PSICOLOGO_NAO_VINCULADO = "Psicologo não vinculado ao paciente.";
+    public static final String MENSAGEM_PSICOLOGO_PACIENTE_NAO_VINCULADOS = "Pacientes e psicologos nao são vinculados";
 
     public Avaliacao avaliar(Avaliacao avaliacao){
         log.info("Salvando avaliação. Avaliação: {}", avaliacao);
@@ -38,17 +40,10 @@ public class AvaliacaoUseCase {
         Psicologo psicologo = psicologoUseCase.consultarPorId(idPsicologo);
         Paciente paciente = pacienteUseCase.consultarPorId(idPaciente);
 
-        Page<Vinculo> vinculoPage = vinculoUseCase.listarPorIdPaciente(idPaciente, PageRequest.of(0,10));
-
-        Optional<Vinculo> vinculoAtivo = vinculoPage
-                .stream()
-                .filter(v -> v.getStatus() == StatusVinculo.ATIVO)
-                .findFirst();
-
-        if (vinculoAtivo.isEmpty()) {
-            throw new PsicologoNaoVinculado(MENSAGEM_PSICOLOGO_NAO_VINCULADO);
+        Vinculo vinculoAtivo = vinculoUseCase.consultarAtivoPorPaciente(idPaciente);
+        if (vinculoAtivo.getPsicologo().getId() != psicologo.getId()){
+            throw new AvaliacaoInvalidaException(MENSAGEM_PSICOLOGO_PACIENTE_NAO_VINCULADOS);
         }
-
         avaliacao.setPsicologo(psicologo);
         avaliacao.setPaciente(paciente);
 

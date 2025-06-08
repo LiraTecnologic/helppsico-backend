@@ -26,7 +26,7 @@ public class ValidacaoCrpDataProvider implements ValidacaoCrpGateway {
     public static final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar Validação de Crp por ID";
     public static final String MENSAGEM_ERRO_LISTAR = "Erro ao listar Validações de Cpr";
     public static final String MENSAGEM_ERRO_DELETAR = "Erro ao deletar Validação de Crp";
-    public static final String MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO = "Erro ao listar validacao por psicologo";
+    public static final String MENSAGEM_ERRO_CONSULTAR_POR_PSICOLOGO = "Erro ao consultar validacao por psicologo";
 
     @Override
     public ValidacaoCrp salvar(ValidacaoCrp validacaoCrp){
@@ -77,8 +77,8 @@ public class ValidacaoCrpDataProvider implements ValidacaoCrpGateway {
         try {
             validacaoCrp = repository.findByPsicologoId(id);
         }catch (Exception ex){
-            log.error(MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO, ex);
-            throw new DataProviderException(MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO, ex.getCause());
+            log.error(MENSAGEM_ERRO_CONSULTAR_POR_PSICOLOGO, ex);
+            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_PSICOLOGO, ex.getCause());
         }
 
         return validacaoCrp.map(mapper::paraDomain);

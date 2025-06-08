@@ -113,6 +113,30 @@ class ValidacaoCrpDataProviderTest {
         Assertions.assertEquals(ValidacaoCrpDataProvider.MENSAGEM_ERRO_LISTAR, exception.getMessage());
     }
 
+
+    @Test
+    void testeConsultarPorPsicologo(){
+        ValidacaoCrp validacaoTeste = ValidacaoCrpBuilder.criarValidacaoCrp();
+
+        Mockito.when(repository.findByPsicologoId(Mockito.any())).thenReturn(Optional.of(mapper.paraEntity(validacaoTeste)));
+
+        Optional<ValidacaoCrp> validacaoResultado = dataProvider.consultarPorId(validacaoTeste.getPsicologo().getId());
+
+        validacaoResultado.ifPresent(validacaoCrp -> {
+            ValidacaoCrpValidator.validaValidacaoCrpDomain(validacaoTeste, validacaoCrp);
+        });
+    }
+
+    @Test
+    void testeConsultarPorPsicologoId(){
+        Mockito.when(repository.findByPsicologoId(Mockito.any())).thenThrow(DataProviderException.class);
+
+        DataProviderException exception = Assertions
+                .assertThrows(DataProviderException.class, () -> dataProvider.consultarPorId(ValidacaoCrpBuilder.criarValidacaoCrp().getPsicologo().getId()));
+
+        Assertions.assertEquals(ValidacaoCrpDataProvider.MENSAGEM_ERRO_CONSULTAR_POR_PSICOLOGO, exception.getMessage());
+    }
+
     @Test
     void testeDeletarValidacaoCrp() {
         UUID idGerado = ValidacaoCrpBuilder.criarValidacaoCrp().getId();

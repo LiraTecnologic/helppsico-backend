@@ -7,6 +7,8 @@ import com.liratech.helppsico.builders.DadosGeraisDocumentoBuilder;
 import com.liratech.helppsico.builders.DocumentoBuilder;
 import com.liratech.helppsico.builders.SolicitacaoDocumentoBuilder;
 import com.liratech.helppsico.domain.documento.*;
+import com.liratech.helppsico.entrypoint.mapper.PacienteMapper;
+import com.liratech.helppsico.entrypoint.mapper.PsicologoMapper;
 import com.liratech.helppsico.validators.DocumentoValidator;
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Assertions;
@@ -28,6 +30,12 @@ class DocumentoUseCaseTest {
     @Mock
     private DocumentoGateway documentoGateway;
 
+    @Mock
+    private PsicologoUseCase psicologoUseCase;
+
+    @Mock
+    private PacienteUseCase pacienteUseCase;
+
     @InjectMocks
     private DocumentoUseCase documentoUseCase;
 
@@ -43,6 +51,8 @@ class DocumentoUseCaseTest {
     private LaudoPsicologico laudoPsicologico;
     private ParecerPsicologico parecerPsicologico;
     private DocumentoBuilder builder;
+    private PsicologoMapper psicologoMapper;
+    private PacienteMapper pacienteMapper;
 
     @BeforeEach()
     void inicializarAtributos(){
@@ -56,6 +66,8 @@ class DocumentoUseCaseTest {
         atestado = builder.criarAtestadoDadosGerais(dadosGeraisDocumentoDto);
 
         Mockito.when(solicitacaoDocumentoUseCase.buscarPorId(Mockito.any())).thenReturn(solicitacaoDocumento);
+        Mockito.when(pacienteUseCase.consultarPorId(Mockito.any())).thenReturn(pacienteMapper.paraDomain(dadosGeraisDocumentoDto.getPaciente()));
+        Mockito.when(psicologoUseCase.consultarPorId(Mockito.any())).thenReturn(psicologoMapper.paraDomain(dadosGeraisDocumentoDto.getPsicologo()));
         Mockito.when(documentoGateway.salvar(captor.capture())).thenReturn(atestado);
 
         documentoUseCase.salvar(idSolicitacao, dadosGeraisDocumentoDto);
@@ -72,6 +84,8 @@ class DocumentoUseCaseTest {
         declaracao = builder.criarDeclaracaoDadosGerais(dadosGeraisDocumentoDto);
 
         Mockito.when(solicitacaoDocumentoUseCase.buscarPorId(Mockito.any())).thenReturn(solicitacaoDocumento);
+        Mockito.when(pacienteUseCase.consultarPorId(Mockito.any())).thenReturn(pacienteMapper.paraDomain(dadosGeraisDocumentoDto.getPaciente()));
+        Mockito.when(psicologoUseCase.consultarPorId(Mockito.any())).thenReturn(psicologoMapper.paraDomain(dadosGeraisDocumentoDto.getPsicologo()));
         Mockito.when(documentoGateway.salvar(captor.capture())).thenReturn(declaracao);
 
         documentoUseCase.salvar(idSolicitacao, dadosGeraisDocumentoDto);
@@ -88,6 +102,8 @@ class DocumentoUseCaseTest {
         laudoPsicologico = builder.criarLaudoPsicologicoDadosGerais(dadosGeraisDocumentoDto);
 
         Mockito.when(solicitacaoDocumentoUseCase.buscarPorId(Mockito.any())).thenReturn(solicitacaoDocumento);
+        Mockito.when(pacienteUseCase.consultarPorId(Mockito.any())).thenReturn(pacienteMapper.paraDomain(dadosGeraisDocumentoDto.getPaciente()));
+        Mockito.when(psicologoUseCase.consultarPorId(Mockito.any())).thenReturn(psicologoMapper.paraDomain(dadosGeraisDocumentoDto.getPsicologo()));
         Mockito.when(documentoGateway.salvar(captor.capture())).thenReturn(laudoPsicologico);
 
         documentoUseCase.salvar(idSolicitacao, dadosGeraisDocumentoDto);
@@ -104,6 +120,8 @@ class DocumentoUseCaseTest {
         parecerPsicologico = builder.criarParecerPsicologicoDadosGerais(dadosGeraisDocumentoDto);
 
         Mockito.when(solicitacaoDocumentoUseCase.buscarPorId(Mockito.any())).thenReturn(solicitacaoDocumento);
+        Mockito.when(pacienteUseCase.consultarPorId(Mockito.any())).thenReturn(pacienteMapper.paraDomain(dadosGeraisDocumentoDto.getPaciente()));
+        Mockito.when(psicologoUseCase.consultarPorId(Mockito.any())).thenReturn(psicologoMapper.paraDomain(dadosGeraisDocumentoDto.getPsicologo()));
         Mockito.when(documentoGateway.salvar(captor.capture())).thenReturn(parecerPsicologico);
 
         documentoUseCase.salvar(idSolicitacao, dadosGeraisDocumentoDto);
@@ -120,6 +138,8 @@ class DocumentoUseCaseTest {
         relatorioPsicologico = builder.criarRelatorioPsicologicoDadosGerais(dadosGeraisDocumentoDto);
 
         Mockito.when(solicitacaoDocumentoUseCase.buscarPorId(Mockito.any())).thenReturn(solicitacaoDocumento);
+        Mockito.when(pacienteUseCase.consultarPorId(Mockito.any())).thenReturn(pacienteMapper.paraDomain(dadosGeraisDocumentoDto.getPaciente()));
+        Mockito.when(psicologoUseCase.consultarPorId(Mockito.any())).thenReturn(psicologoMapper.paraDomain(dadosGeraisDocumentoDto.getPsicologo()));
         Mockito.when(documentoGateway.salvar(captor.capture())).thenReturn(relatorioPsicologico);
 
         documentoUseCase.salvar(idSolicitacao, dadosGeraisDocumentoDto);

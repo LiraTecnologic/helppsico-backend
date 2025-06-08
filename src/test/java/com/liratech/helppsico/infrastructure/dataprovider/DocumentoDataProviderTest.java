@@ -92,7 +92,7 @@ class DocumentoDataProviderTest {
     }
 
     @Test
-    void testeErroListarDocumentosPorPaciente(){
+    void testeExceptionListarDocumentosPorPaciente(){
         Mockito.when(repository.findAll()).thenThrow(Exception.class);
 
         DataProviderException exception = Assertions.assertThrows(

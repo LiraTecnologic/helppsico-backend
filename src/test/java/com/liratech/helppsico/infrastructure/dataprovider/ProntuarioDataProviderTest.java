@@ -112,7 +112,7 @@ class ProntuarioDataProviderTest {
     }
 
     @Test
-    void testaListagemPorPsicologo() {
+    void testeListagemProntuarioPorPsicologo() {
         Page<Prontuario> prontuarioTeste = ProntuarioBuilder.criarPageProntuarioEntity().map(mapper::paraDomain);
         Mockito.when(repository.findAllByPsicologoId(Mockito.any(), Mockito.any())).thenReturn(prontuarioTeste.map(mapper::paraEntity));
 
@@ -127,7 +127,7 @@ class ProntuarioDataProviderTest {
     }
 
     @Test
-    void testeExceptionListagemPorPsicologo() {
+    void testeExceptionListagemProntuarioPorPsicologo() {
         Psicologo psicologo = PsicologoBuilder.criarPsicologo();
 
         Mockito.when(repository.findAllByPsicologoId(Mockito.any(), Mockito.any())).thenThrow(RuntimeException.class);

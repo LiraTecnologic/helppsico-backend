@@ -23,7 +23,7 @@ class EnderecoUseCaseTest {
     private EnderecoGateway gateway;
 
     @Captor
-    ArgumentCaptor<Endereco> captor;
+    private ArgumentCaptor<Endereco> captor;
 
     @InjectMocks
     private EnderecoUseCase useCase;
@@ -52,7 +52,7 @@ class EnderecoUseCaseTest {
     }
 
     @Test
-    void testeErroConsultarEnderecoPorId() {
+    void testeExceptionConsultarEnderecoPorId() {
         UUID id = UUID.randomUUID();
 
         Mockito.when(gateway.consultarPorId(Mockito.any())).thenReturn(Optional.empty());
