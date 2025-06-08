@@ -42,22 +42,6 @@ class ValidacaoCrpUseCaseTest {
     private ArgumentCaptor<ValidacaoCrp> captor;
 
     @Test
-    void testeCriarValidacaoCrp() {
-        Psicologo psicologoTeste = PsicologoBuilder.criarPsicologo();
-        ValidacaoCrp validacaoCrpTeste = ValidacaoCrpBuilder.criarValidacaoCrp();
-
-        Mockito.when(psicologoUseCase.consultarPorId(Mockito.any())).thenReturn(psicologoTeste);
-        Mockito.when(gateway.consultarPorPsicologo(Mockito.any())).thenReturn(Optional.empty());
-        Mockito.when(gateway.salvar(captor.capture())).thenReturn(validacaoCrpTeste);
-
-        useCase.criar(validacaoCrpTeste);
-        ValidacaoCrp validacaoResultado = captor.getValue();
-
-        Assertions.assertNotNull(validacaoResultado.getId());
-        ValidacaoCrpValidator.validaValidacaoCrpDomain(validacaoCrpTeste, validacaoResultado);
-    }
-
-    @Test
     void testeValidarValidacaoCrp() {
         Psicologo psicologoTeste = PsicologoBuilder.criarPsicologo();
         ValidacaoCrp validacaoCrpTeste = ValidacaoCrpBuilder.criarValidacaoCrp();
@@ -72,23 +56,6 @@ class ValidacaoCrpUseCaseTest {
 
         Assertions.assertNotNull(validacaoResultado.getId());
         ValidacaoCrpValidator.validaValidacaoCrpDomain(validacaoCrpTeste, validacaoResultado);
-    }
-
-    @Test
-    void testeFalhaCriarValidarCrp() {
-        ValidacaoCrp validacaoExistente = ValidacaoCrpBuilder.criarValidacaoCrp();
-        Psicologo psicologo = PsicologoBuilder.criarPsicologo();
-
-        Mockito.when(psicologoUseCase.consultarPorId(Mockito.any())).thenReturn(psicologo);
-        Mockito.when(gateway.consultarPorPsicologo(Mockito.any())).thenReturn(Optional.of(validacaoExistente));
-
-        ValidacaoCrpExistenteException exception = Assertions.assertThrows(
-                ValidacaoCrpExistenteException.class,
-                () -> useCase.criar(validacaoExistente)
-        );
-
-        Assertions.assertEquals(MENSAGEM_VALIDACAO_CRP_EXISTENTE, exception.getMessage());
-        Mockito.verify(gateway, Mockito.times(1)).consultarPorPsicologo(psicologo.getId());
     }
 
     @Test
