@@ -42,6 +42,7 @@ class DocumentoUseCaseTest {
     private RelatorioPsicologico relatorioPsicologico;
     private LaudoPsicologico laudoPsicologico;
     private ParecerPsicologico parecerPsicologico;
+    private DocumentoBuilder builder;
 
     @BeforeEach()
     void inicializarAtributos(){
@@ -52,7 +53,7 @@ class DocumentoUseCaseTest {
 
     @Test
     void testeSalvarAtestado() throws TipoDocumentoInvalidoException {
-        atestado = DocumentoBuilder.criarAtestadoDadosGerais(dadosGeraisDocumentoDto);
+        atestado = builder.criarAtestadoDadosGerais(dadosGeraisDocumentoDto);
 
         Mockito.when(solicitacaoDocumentoUseCase.buscarPorId(Mockito.any())).thenReturn(solicitacaoDocumento);
         Mockito.when(documentoGateway.salvar(captor.capture())).thenReturn(atestado);
@@ -68,7 +69,7 @@ class DocumentoUseCaseTest {
 
     @Test
     void testeSalvarDeclaracao() throws TipoDocumentoInvalidoException {
-        declaracao = DocumentoBuilder.criarDeclaracaoDadosGerais(dadosGeraisDocumentoDto);
+        declaracao = builder.criarDeclaracaoDadosGerais(dadosGeraisDocumentoDto);
 
         Mockito.when(solicitacaoDocumentoUseCase.buscarPorId(Mockito.any())).thenReturn(solicitacaoDocumento);
         Mockito.when(documentoGateway.salvar(captor.capture())).thenReturn(declaracao);
@@ -84,7 +85,7 @@ class DocumentoUseCaseTest {
 
     @Test
     void testeSalvarLaudoPsicologico() throws TipoDocumentoInvalidoException {
-        laudoPsicologico = DocumentoBuilder.criarLaudoPsicologicoDadosGerais(dadosGeraisDocumentoDto);
+        laudoPsicologico = builder.criarLaudoPsicologicoDadosGerais(dadosGeraisDocumentoDto);
 
         Mockito.when(solicitacaoDocumentoUseCase.buscarPorId(Mockito.any())).thenReturn(solicitacaoDocumento);
         Mockito.when(documentoGateway.salvar(captor.capture())).thenReturn(laudoPsicologico);
@@ -100,7 +101,7 @@ class DocumentoUseCaseTest {
 
     @Test
     void testeSalvarParecerPsicologico() throws TipoDocumentoInvalidoException {
-        parecerPsicologico = DocumentoBuilder.criarParecerPsicologicoDadosGerais(dadosGeraisDocumentoDto);
+        parecerPsicologico = builder.criarParecerPsicologicoDadosGerais(dadosGeraisDocumentoDto);
 
         Mockito.when(solicitacaoDocumentoUseCase.buscarPorId(Mockito.any())).thenReturn(solicitacaoDocumento);
         Mockito.when(documentoGateway.salvar(captor.capture())).thenReturn(parecerPsicologico);
@@ -116,7 +117,7 @@ class DocumentoUseCaseTest {
 
     @Test
     void testeSalvarRelatorioPsicologico() throws TipoDocumentoInvalidoException {
-        relatorioPsicologico = DocumentoBuilder.criarRelatorioPsicologicoDadosGerais(dadosGeraisDocumentoDto);
+        relatorioPsicologico = builder.criarRelatorioPsicologicoDadosGerais(dadosGeraisDocumentoDto);
 
         Mockito.when(solicitacaoDocumentoUseCase.buscarPorId(Mockito.any())).thenReturn(solicitacaoDocumento);
         Mockito.when(documentoGateway.salvar(captor.capture())).thenReturn(relatorioPsicologico);

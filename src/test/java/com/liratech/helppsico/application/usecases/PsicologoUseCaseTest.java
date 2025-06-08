@@ -35,7 +35,7 @@ class PsicologoUseCaseTest {
     private FotoUseCase fotoUseCase;
 
     @Mock
-    private EderecoUseCase enderecoUseCase;
+    private EnderecoUseCase enderecoUseCase;
 
     @Captor
     ArgumentCaptor<Psicologo> captor;
@@ -49,8 +49,6 @@ class PsicologoUseCaseTest {
 
         Mockito.when(gateway.consultarPorCrp(Mockito.any())).thenReturn(Optional.empty());
         Mockito.when(gateway.salvar(Mockito.any())).thenReturn(psicologoNovo);
-
-        Mockito.when(fotoUseCase.salvarImagem(Mockito.any())).thenReturn(psicologoNovo.getFotoUrl());
         Mockito.when(enderecoUseCase.cadastrar(Mockito.any())).thenReturn(psicologoNovo.getEnderecoAtendimento());
 
         Psicologo psicologoCadastrado = useCase.cadastrar(psicologoNovo);
@@ -103,21 +101,22 @@ class PsicologoUseCaseTest {
     @Test
     void testeConsultaPsicologosPeloNome() {
         String nomeTeste = PsicologoBuilder.criarPsicologo().getNome();
-        List<Psicologo> psicologoList = PsicologoBuilder.gerarListaDePsicologos();
+        Page<Psicologo> psicologoList = PsicologoBuilder.criarPageDePsicologos();
+        Pageable pageable = PageRequest.of(0,10);
 
-        Mockito.when(gateway.consultarPorNome(Mockito.any()))
+        Mockito.when(gateway.consultarPorNome(Mockito.any(), Mockito.any()))
                 .thenReturn(psicologoList);
 
-        List<Psicologo> psicologos = useCase.consultarPorNome(nomeTeste);
+        Page<Psicologo> psicologos = useCase.consultarPorNome(nomeTeste, pageable);
 
-        for (int i = 0; i < psicologoList.size(); i++) {
-            PsicologoValidator.validaPsicologoDomain(psicologoList.get(i), psicologos.get(i));
+        for (int i = 0; i < psicologoList.getSize(); i++) {
+            PsicologoValidator.validaPsicologoDomain(psicologoList.getContent().get(i), psicologos.getContent().get(i));
         }
     }
 
     @Test
     void testeConsultaMelhoresPsicologosAvaliados() {
-        Page<Psicologo> psicologosPage = PsicologoBuilder.gerarPageDePsicologos();
+        Page<Psicologo> psicologosPage = PsicologoBuilder.criarPageDePsicologos();
         Pageable pageable = PageRequest.of(0, 10);
 
         Mockito.when(gateway.consultarMelhoresAvaliados(Mockito.any()))
@@ -162,15 +161,15 @@ class PsicologoUseCaseTest {
 
     @Test
     void testeListagemPsicologos() {
-        Page<Psicologo> psicologoPage = PsicologoBuilder.gerarPageDePsicologos();
+        Page<Psicologo> psicologoPage = PsicologoBuilder.criarPageDePsicologos();
 
-        Mockito.when(gateway.listar())
+        Mockito.when(gateway.listar(Mockito.any()))
                 .thenReturn(psicologoPage);
 
         Page<Psicologo> psicologos = useCase
                 .listar(PageRequest.of(0, 10));
 
-        for (int i = 0; i < psicologoPage.size(); i++) {
+        for (int i = 0; i < psicologoPage.getSize(); i++) {
             PsicologoValidator.validaPsicologoDomain(psicologoPage.toList().get(i), psicologos.toList().get(i));
         }
     }
