@@ -1,6 +1,7 @@
 package com.liratech.helppsico.application.usecases;
 
 import com.liratech.helppsico.application.gateways.PsicologoGateway;
+import com.liratech.helppsico.application.gateways.ValidacaoCrpGateway;
 import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.application.exceptions.psicologo.PsicologoExistenteException;
@@ -23,6 +24,7 @@ public class PsicologoUseCase {
     private final PsicologoGateway gateway;
     private final CriptografiaUseCase criptografiaUseCase;
     private final EnderecoUseCase enderecoUseCase;
+    private final ValidacaoCrpGateway validacaoCrpGateway;
     public static final String MENSAGEM_PSICOLOGO_JA_EXISTE = "Psicologo já está cadastrado";
     public static final String MENSAGEM_PSICOLOGO_NAO_ENCONTRADO = "Psicologo não encontrado";
 
@@ -39,6 +41,13 @@ public class PsicologoUseCase {
         novoPsicologo.setEnderecoAtendimento(endereco);
 
         Psicologo psicologoSalvo = gateway.salvar(novoPsicologo);
+
+        ValidacaoCrp validacaoCrp = ValidacaoCrp.builder()
+                .psicologo(psicologoSalvo)
+                .crp(psicologoSalvo.getCrp())
+                .build();
+
+        validacaoCrpGateway.salvar(validacaoCrp);
 
         log.info("Psicólogo cadastrado com sucesso. Psicólogo salvo: {}", psicologoSalvo);
 

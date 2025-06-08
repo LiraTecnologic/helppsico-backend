@@ -17,6 +17,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.UUID;
 
@@ -53,12 +55,14 @@ class DocumentoUseCaseTest {
     private DocumentoBuilder builder;
     private PsicologoMapper psicologoMapper;
     private PacienteMapper pacienteMapper;
+    private Page<Documento> documentoPage;
 
     @BeforeEach()
     void inicializarAtributos(){
         dadosGeraisDocumentoDto = DadosGeraisDocumentoBuilder.criarDadosGeraisDocumentos();
         solicitacaoDocumento = SolicitacaoDocumentoBuilder.criarSolicitacaoDocumento();
         idSolicitacao = solicitacaoDocumento.getId();
+        documentoPage = DocumentoBuilder.criarPageDeDocumento();
     }
 
     @Test
@@ -69,6 +73,7 @@ class DocumentoUseCaseTest {
         Mockito.when(pacienteUseCase.consultarPorId(Mockito.any())).thenReturn(pacienteMapper.paraDomain(dadosGeraisDocumentoDto.getPaciente()));
         Mockito.when(psicologoUseCase.consultarPorId(Mockito.any())).thenReturn(psicologoMapper.paraDomain(dadosGeraisDocumentoDto.getPsicologo()));
         Mockito.when(documentoGateway.salvar(captor.capture())).thenReturn(atestado);
+        Mockito.doNothing().when(solicitacaoDocumentoUseCase).deletar(Mockito.any());
 
         documentoUseCase.salvar(idSolicitacao, dadosGeraisDocumentoDto);
         Documento documentoSalvo = captor.getValue();
@@ -87,6 +92,7 @@ class DocumentoUseCaseTest {
         Mockito.when(pacienteUseCase.consultarPorId(Mockito.any())).thenReturn(pacienteMapper.paraDomain(dadosGeraisDocumentoDto.getPaciente()));
         Mockito.when(psicologoUseCase.consultarPorId(Mockito.any())).thenReturn(psicologoMapper.paraDomain(dadosGeraisDocumentoDto.getPsicologo()));
         Mockito.when(documentoGateway.salvar(captor.capture())).thenReturn(declaracao);
+        Mockito.doNothing().when(solicitacaoDocumentoUseCase).deletar(Mockito.any());
 
         documentoUseCase.salvar(idSolicitacao, dadosGeraisDocumentoDto);
         Documento documentoSalvo = captor.getValue();
@@ -105,6 +111,7 @@ class DocumentoUseCaseTest {
         Mockito.when(pacienteUseCase.consultarPorId(Mockito.any())).thenReturn(pacienteMapper.paraDomain(dadosGeraisDocumentoDto.getPaciente()));
         Mockito.when(psicologoUseCase.consultarPorId(Mockito.any())).thenReturn(psicologoMapper.paraDomain(dadosGeraisDocumentoDto.getPsicologo()));
         Mockito.when(documentoGateway.salvar(captor.capture())).thenReturn(laudoPsicologico);
+        Mockito.doNothing().when(solicitacaoDocumentoUseCase).deletar(Mockito.any());
 
         documentoUseCase.salvar(idSolicitacao, dadosGeraisDocumentoDto);
         Documento documentoSalvo = captor.getValue();
@@ -123,6 +130,7 @@ class DocumentoUseCaseTest {
         Mockito.when(pacienteUseCase.consultarPorId(Mockito.any())).thenReturn(pacienteMapper.paraDomain(dadosGeraisDocumentoDto.getPaciente()));
         Mockito.when(psicologoUseCase.consultarPorId(Mockito.any())).thenReturn(psicologoMapper.paraDomain(dadosGeraisDocumentoDto.getPsicologo()));
         Mockito.when(documentoGateway.salvar(captor.capture())).thenReturn(parecerPsicologico);
+        Mockito.doNothing().when(solicitacaoDocumentoUseCase).deletar(Mockito.any());
 
         documentoUseCase.salvar(idSolicitacao, dadosGeraisDocumentoDto);
         Documento documentoSalvo = captor.getValue();
@@ -141,6 +149,7 @@ class DocumentoUseCaseTest {
         Mockito.when(pacienteUseCase.consultarPorId(Mockito.any())).thenReturn(pacienteMapper.paraDomain(dadosGeraisDocumentoDto.getPaciente()));
         Mockito.when(psicologoUseCase.consultarPorId(Mockito.any())).thenReturn(psicologoMapper.paraDomain(dadosGeraisDocumentoDto.getPsicologo()));
         Mockito.when(documentoGateway.salvar(captor.capture())).thenReturn(relatorioPsicologico);
+        Mockito.doNothing().when(solicitacaoDocumentoUseCase).deletar(Mockito.any());
 
         documentoUseCase.salvar(idSolicitacao, dadosGeraisDocumentoDto);
         Documento documentoSalvo = captor.getValue();
@@ -149,5 +158,20 @@ class DocumentoUseCaseTest {
         Assertions.assertNotNull(documentoSalvo.getId());
         DocumentoValidator.validaDocumentoDomain(relatorioPsicologico, relatorioPsicologicoSalvo);
         DocumentoValidator.validaRelatorioPsicologico(relatorioPsicologico, relatorioPsicologicoSalvo);
+    }
+
+    @Test
+    void testeListarPorPaciente() {
+        atestado = DocumentoBuilder.criarAtestado();
+
+        Mockito.when(pacienteUseCase.consultarPorId(Mockito.any())).thenReturn(pacienteMapper.paraDomain(dadosGeraisDocumentoDto.getPaciente()));
+        Mockito.when(documentoGateway.listarPorPaciente(Mockito.any(), Mockito.any())).thenReturn(documentoPage);
+
+        Page<Documento> resultado = documentoUseCase.listarPorPaciente(dadosGeraisDocumentoDto.getPaciente().getId(), PageRequest.of(0,10));
+
+        resultado.forEach(documento -> {
+            DocumentoValidator.validaDocumentoDomain(atestado, documento);
+            DocumentoValidator.validaAtestado(atestado, (Atestado) documento);
+        });
     }
 }
