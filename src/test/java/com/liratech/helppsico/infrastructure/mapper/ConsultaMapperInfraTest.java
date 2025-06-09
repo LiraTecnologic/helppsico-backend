@@ -2,26 +2,15 @@ package com.liratech.helppsico.infrastructure.mapper;
 
 import com.liratech.helppsico.builders.*;
 import com.liratech.helppsico.domain.Consulta;
-import com.liratech.helppsico.entrypoint.dto.consulta.ConsultaDto;
-import com.liratech.helppsico.entrypoint.mapper.ConsultaMapper;
 import com.liratech.helppsico.infrastructure.repositories.entities.ConsultaEntity;
 import com.liratech.helppsico.validators.ConsultaValidator;
-import com.liratech.helppsico.validators.EnderecoValidator;
-import com.liratech.helppsico.validators.PacienteValidator;
-import com.liratech.helppsico.validators.PsicologoValidator;
-import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 class ConsultaMapperInfraTest {

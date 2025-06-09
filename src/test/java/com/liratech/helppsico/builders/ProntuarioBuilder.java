@@ -2,7 +2,6 @@ package com.liratech.helppsico.builders;
 
 import com.liratech.helppsico.domain.Prontuario;
 import com.liratech.helppsico.entrypoint.dto.psicologo.ProntuarioDto;
-import com.liratech.helppsico.infrastructure.repositories.entities.ConsultaEntity;
 import com.liratech.helppsico.infrastructure.repositories.entities.ProntuarioEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,6 +18,7 @@ public class ProntuarioBuilder {
                 .id(UUID.randomUUID())
                 .psicologo(PsicologoBuilder.criarPsicologo())
                 .paciente(PacienteBuilder.criarPaciente())
+                .consulta(ConsultaBuilder.criarConsulta())
                 .titulo("Teste")
                 .conteudo("teste")
                 .build();
@@ -29,6 +29,7 @@ public class ProntuarioBuilder {
                 .id(UUID.randomUUID())
                 .psicologo(PsicologoBuilder.criarPsicologoDto())
                 .paciente(PacienteBuilder.criarPacienteDto())
+                .consulta(ConsultaBuilder.criarConsultaDto())
                 .titulo("Teste")
                 .conteudo("teste")
                 .build();
@@ -39,6 +40,7 @@ public class ProntuarioBuilder {
                 .id(UUID.randomUUID())
                 .psicologo(PsicologoBuilder.criarPsicologoEntity())
                 .paciente(PacienteBuilder.criarPacienteEntity())
+                .consulta(ConsultaBuilder.criarConsultaEntity())
                 .titulo("Teste")
                 .conteudo("teste")
                 .build();

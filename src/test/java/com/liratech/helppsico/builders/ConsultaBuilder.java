@@ -24,7 +24,7 @@ public class ConsultaBuilder {
                 .psicologo(PsicologoBuilder.criarPsicologo())
                 .horario(HorarioBuilder.criarHorario())
                 .data(LocalDate.of(2020,10,20))
-                .valor(new BigDecimal("400"))
+                .valor(new BigDecimal("150.5"))
                 .finalizada(false)
                 .endereco(EnderecoBuilder.criarEndereco())
                 .build();

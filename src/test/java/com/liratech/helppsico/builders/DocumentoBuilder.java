@@ -274,7 +274,7 @@ public class DocumentoBuilder {
                 "Restrito - somente aos responsáveis legais"
         );
     }
-    public static LaudoPsicologicoEntity criarLaudoPsicologicoEntiy() {
+    public static LaudoPsicologicoEntity criarLaudoPsicologicoEntity() {
         return new LaudoPsicologicoEntity(
                 UUID.randomUUID(),
                 PacienteBuilder.criarPacienteEntity(),

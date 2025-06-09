@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class DocumentoMapperInfra {
-    public AtestadoMapperInfra atestadoMapper;
-    public DeclaracaoMapperInfra declaracaoMapper;
-    public RelatorioPsicologicoMapperInfra relatorioPsicologicoMapper;
-    public LaudoPsicologicoMapperInfra laudoPsicologicoMapper;
-    public ParecerPsicologicoMapperInfra parecerPsicologicoMapper;
+    private AtestadoMapperInfra atestadoMapper;
+    private DeclaracaoMapperInfra declaracaoMapper;
+    private RelatorioPsicologicoMapperInfra relatorioPsicologicoMapper;
+    private LaudoPsicologicoMapperInfra laudoPsicologicoMapper;
+    private ParecerPsicologicoMapperInfra parecerPsicologicoMapper;
 
     public DocumentoEntity paraEntity(Documento domain) {
 

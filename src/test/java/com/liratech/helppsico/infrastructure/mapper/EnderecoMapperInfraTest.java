@@ -2,22 +2,23 @@ package com.liratech.helppsico.infrastructure.mapper;
 
 import com.liratech.helppsico.builders.EnderecoBuilder;
 import com.liratech.helppsico.domain.Endereco;
-import com.liratech.helppsico.entrypoint.dto.EnderecoDto;
-import com.liratech.helppsico.entrypoint.mapper.EnderecoMapper;
 import com.liratech.helppsico.infrastructure.repositories.entities.EnderecoEntity;
 import com.liratech.helppsico.validators.EnderecoValidator;
-import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mapstruct.factory.Mappers;
 
-@AllArgsConstructor
 class EnderecoMapperInfraTest {
 
-    private EnderecoMapperInfra mapper;
+    private EnderecoMapperInfraImpl mapper;
+
     private Endereco domainTest;
     private EnderecoEntity entityTest;
+
+    @BeforeEach
+    void inicializar(){
+        mapper = new EnderecoMapperInfraImpl();
+    }
 
     @Test
     void testeEnderecoEntityParaDomain() {

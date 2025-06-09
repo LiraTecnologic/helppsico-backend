@@ -6,7 +6,6 @@ import com.liratech.helppsico.builders.PsicologoBuilder;
 import com.liratech.helppsico.domain.documento.Declaracao;
 import com.liratech.helppsico.infrastructure.repositories.entities.documento.DeclaracaoEntity;
 import com.liratech.helppsico.validators.DocumentoValidator;
-import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
