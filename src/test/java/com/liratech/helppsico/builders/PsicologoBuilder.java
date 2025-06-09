@@ -49,65 +49,6 @@ public class PsicologoBuilder {
                 .build();
     }
 
-
-    public static List<Psicologo> gerarListaDePsicologos() {
-        List<Psicologo> psicologoList = new ArrayList<>();
-
-        for (int i = 0; i < 3; i++) {
-            psicologoList.add(criarPsicologo());
-        }
-
-        return psicologoList;
-    }
-
-    public static List<PsicologoDto> criarListaPsicologoDto() {
-        List<PsicologoDto> psicologoListDtos = new ArrayList<>();
-
-        for(int i =0; i<3; i++){
-            psicologoListDtos.add(criarPsicologoDto());
-        }
-
-        return psicologoListDtos;
-    }
-
-    public static Page<Psicologo> criarPageDePsicologos() {
-        List<Psicologo> psicologoList = new ArrayList<>();
-
-        for (int i = 0; i < 3; i++) {
-            psicologoList.add(criarPsicologo());
-        }
-
-        return transformarListaEmPagina(psicologoList, PageRequest.of(0,10));
-    }
-
-    private static Page<Psicologo> transformarListaEmPagina(List<Psicologo> lista, Pageable pageable) {
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), lista.size());
-
-        List<Psicologo> sublist = lista.subList(start, end);
-
-        return new PageImpl<>(sublist, pageable, lista.size());
-    }
-
-    public static Page<PsicologoDto> criarPageDePsicologosDto() {
-        List<PsicologoDto> psicologoDtoList = new ArrayList<>();
-
-        for (int i = 0; i < 3; i++) {
-            psicologoDtoList.add(criarPsicologoDto());
-        }
-
-        return transformarListaEmPaginaDto(psicologoDtoList, PageRequest.of(0,10));
-    }
-
-    private static Page<PsicologoDto> transformarListaEmPaginaDto(List<PsicologoDto> lista, Pageable pageable) {
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), lista.size());
-
-        List<PsicologoDto> sublist = lista.subList(start, end);
-
-        return new PageImpl<>(sublist, pageable, lista.size());
-    }
-
     public static PsicologoEntity criarPsicologoEntity() {
         return PsicologoEntity.builder()
                 .id(UUID.randomUUID())
@@ -125,16 +66,6 @@ public class PsicologoBuilder {
                 .build();
     }
 
-    public static List<PsicologoEntity> criarListaPsicologoEntity() {
-        List<PsicologoEntity> psicologoEntities = new ArrayList<>();
-
-        for(int i=0; i<3; i++){
-            psicologoEntities.add(criarPsicologoEntity());
-        }
-
-        return psicologoEntities;
-    }
-
     public static Psicologo criarPsicologoNovosDados() {
         return Psicologo.builder()
                 .id(null)
@@ -150,5 +81,42 @@ public class PsicologoBuilder {
                 .fotoUrl("https://example.com/foto.jpg")
                 .biografia("Psicólogo com 10 anos de experiência em terapia de sono.")
                 .build();
+    }
+
+    public static Page<Psicologo> criarPageDePsicologos() {
+        List<Psicologo> psicologoList = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            psicologoList.add(criarPsicologo());
+        }
+
+        return transformarListaEmPagina(psicologoList, PageRequest.of(0,10));
+    }
+
+    public static Page<PsicologoDto> criarPageDePsicologosDto() {
+        List<PsicologoDto> psicologoDtoList = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            psicologoDtoList.add(criarPsicologoDto());
+        }
+
+        return transformarListaEmPaginaDto(psicologoDtoList, PageRequest.of(0,10));
+    }
+
+    private static Page<Psicologo> transformarListaEmPagina(List<Psicologo> lista, Pageable pageable) {
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), lista.size());
+
+        List<Psicologo> sublist = lista.subList(start, end);
+
+        return new PageImpl<>(sublist, pageable, lista.size());
+    }
+    private static Page<PsicologoDto> transformarListaEmPaginaDto(List<PsicologoDto> lista, Pageable pageable) {
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), lista.size());
+
+        List<PsicologoDto> sublist = lista.subList(start, end);
+
+        return new PageImpl<>(sublist, pageable, lista.size());
     }
 }

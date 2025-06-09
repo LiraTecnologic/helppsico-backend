@@ -9,6 +9,7 @@ import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.Prontuario;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.infrastructure.mapper.ProntuarioMapperInfra;
+import com.liratech.helppsico.validators.ProntuarioValidator;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -78,7 +79,7 @@ class ProntuarioUseCaseTest {
     void testeListagemDeProntuarioPorPaciente() {
         Mockito.when(gateway.listarPorPaciente(Mockito.any(), Mockito.any())).thenReturn(prontuarioPage);
 
-        Page<Prontuario> resultado = useCase.listarPorPaciente(pacienteTeste, PageRequest.of(0, 10));
+        Page<Prontuario> resultado = useCase.listarPorPaciente(pacienteTeste.getId(), PageRequest.of(0, 10));
 
         resultado.forEach(prontuario -> ProntuarioValidator.validaProntuarioDomain(prontuario, mapper.paraDomain(ProntuarioBuilder.criarProntuarioEntity())));
     }
@@ -87,7 +88,7 @@ class ProntuarioUseCaseTest {
     void testeListagemDeProntuariosPorPsicologo() {
         Mockito.when(gateway.listarPorPsicologo(Mockito.any(), Mockito.any())).thenReturn(prontuarioPage);
 
-        Page<Prontuario> resultado = useCase.listarPorPsicologo(psicologoTeste, PageRequest.of(0, 10));
+        Page<Prontuario> resultado = useCase.listarPorPsicologo(psicologoTeste.getId(), PageRequest.of(0, 10));
 
         resultado.forEach(prontuario -> ProntuarioValidator.validaProntuarioDomain(prontuario, mapper.paraDomain(ProntuarioBuilder.criarProntuarioEntity())));
     }

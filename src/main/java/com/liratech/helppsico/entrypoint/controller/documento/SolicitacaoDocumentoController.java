@@ -54,11 +54,4 @@ public class SolicitacaoDocumentoController {
 
         return ResponseEntity.ok(response);
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable UUID id){
-        useCase.deletar(id);
-
-        return ResponseEntity.noContent().build();
-    }
 }

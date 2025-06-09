@@ -25,7 +25,6 @@ public class PacienteDataProvider implements PacienteGateway {
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar paciente.";
     public static final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar paciente pelo id.";
     public static final String MENSAGEM_ERRO_CONSULTAR_POR_EMAIL = "Erro ao consultar paciente pelo email.";
-    public static final String MENSAGEM_ERRO_LISTAR_PACIENTE = "Erro ao listar pacientes";
 
     @Override
     public Paciente salvar(Paciente paciente) {

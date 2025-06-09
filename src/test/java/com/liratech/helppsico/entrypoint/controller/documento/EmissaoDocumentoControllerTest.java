@@ -8,6 +8,7 @@ import com.liratech.helppsico.builders.DadosGeraisDocumentoBuilder;
 import com.liratech.helppsico.builders.DocumentoBuilder;
 import com.liratech.helppsico.builders.SolicitacaoDocumentoBuilder;
 import com.liratech.helppsico.domain.documento.*;
+import com.liratech.helppsico.entrypoint.mapper.DocumentoMapper;
 import com.liratech.helppsico.infrastructure.mapper.DocumentoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.DocumentoRepository;
 import com.liratech.helppsico.infrastructure.repositories.SolicitacaoDocumentoRepository;
@@ -46,8 +47,9 @@ public class EmissaoDocumentoControllerTest {
     @MockitoSpyBean
     private DocumentoRepository repository;
 
-    private final DocumentoMapper mapperEntry;
-    private final DocumentoMapperInfra mapperInfra;
+    private DocumentoMapper mapperEntry;
+    private DocumentoMapperInfra mapperInfra;
+    private DocumentoBuilder builder;
     private DadosGeraisDocumentoDto dadosGeraisTeste;
     private SolicitacaoDocumentoEntity solicitacaoDocumentoRetorno;
     private Documento documentoRetorno;
@@ -63,7 +65,7 @@ public class EmissaoDocumentoControllerTest {
 
     @Test
     void testeEmitirAtestado() throws Exception{
-        documentoRetorno = DocumentoBuilder.criarAtestadoDadosGerais(dadosGeraisTeste);
+        documentoRetorno = builder.criarAtestadoDadosGerais(dadosGeraisTeste);
 
         Mockito.when(solicitacaoDocumentoRepository.findById(Mockito.any())).thenReturn(Optional.of(solicitacaoDocumentoRetorno));
         Mockito.when(repository.save(Mockito.any())).thenReturn(mapperInfra.paraEntity(documentoRetorno));
@@ -84,7 +86,7 @@ public class EmissaoDocumentoControllerTest {
 
     @Test
     void testeEmitirDeclaracao() throws Exception{
-        documentoRetorno = DocumentoBuilder.criarDeclaracaoDadosGerais(dadosGeraisTeste);
+        documentoRetorno = builder.criarDeclaracaoDadosGerais(dadosGeraisTeste);
         solicitacaoDocumentoRetorno.setTipoDocumento(TipoDocumento.DECLARACAO);
 
         Mockito.when(solicitacaoDocumentoRepository.findById(Mockito.any())).thenReturn(Optional.of(solicitacaoDocumentoRetorno));
@@ -106,7 +108,7 @@ public class EmissaoDocumentoControllerTest {
 
     @Test
     void testeEmitirLaudoPsicologico() throws Exception{
-        documentoRetorno = DocumentoBuilder.criarLaudoPsicologicoDadosGerais(dadosGeraisTeste);
+        documentoRetorno = builder.criarLaudoPsicologicoDadosGerais(dadosGeraisTeste);
         solicitacaoDocumentoRetorno.setTipoDocumento(TipoDocumento.LAUDO_PSICOLOGICO);
 
         Mockito.when(solicitacaoDocumentoRepository.findById(Mockito.any())).thenReturn(Optional.of(solicitacaoDocumentoRetorno));
@@ -128,7 +130,7 @@ public class EmissaoDocumentoControllerTest {
 
     @Test
     void testeEmitirRelatorioPsicologico() throws Exception{
-        documentoRetorno = DocumentoBuilder.criarRelatorioPsicologicoDadosGerais(dadosGeraisTeste);
+        documentoRetorno = builder.criarRelatorioPsicologicoDadosGerais(dadosGeraisTeste);
         solicitacaoDocumentoRetorno.setTipoDocumento(TipoDocumento.RELATORIO_PSICOLOGICO);
 
         Mockito.when(solicitacaoDocumentoRepository.findById(Mockito.any())).thenReturn(Optional.of(solicitacaoDocumentoRetorno));
@@ -150,7 +152,7 @@ public class EmissaoDocumentoControllerTest {
 
     @Test
     void testeEmitirParecerPsicologico() throws Exception{
-        documentoRetorno = DocumentoBuilder.criarParecerPsicologicoDadosGerais(dadosGeraisTeste);
+        documentoRetorno = builder.criarParecerPsicologicoDadosGerais(dadosGeraisTeste);
         solicitacaoDocumentoRetorno.setTipoDocumento(TipoDocumento.DECLARACAO);
 
         Mockito.when(solicitacaoDocumentoRepository.findById(Mockito.any())).thenReturn(Optional.of(solicitacaoDocumentoRetorno));

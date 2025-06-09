@@ -79,4 +79,5 @@ public class HorarioUseCase {
 
         log.info("Horario deletado com sucesso.");
     }
+
 }

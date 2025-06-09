@@ -1,4 +1,4 @@
-package com.seu.pacote.api.controller;
+package com.liratech.helppsico.entrypoint.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liratech.helppsico.builders.ProntuarioBuilder;
@@ -75,9 +75,8 @@ public class ProntuarioControllerTest {
     }
 
     @Test
-    @DisplayName("Deve listar prontuários por paciente")
     void deveListarProntuariosPorPaciente() throws Exception {
-        when(repository.listarPorPaciente(Mockito.any(), Mockito.any())).thenReturn(pageProntuarios);
+        when(repository.findAllByPacienteId(Mockito.any(), Mockito.any())).thenReturn(pageProntuarios);
 
         ResultActions resultActions = mockMvc.perform(get("/prontuarios/paciente")
                         .param("idPaciente", prontuarioDto.getPaciente().getId().toString())
@@ -90,9 +89,8 @@ public class ProntuarioControllerTest {
     }
 
     @Test
-    @DisplayName("Deve listar prontuários por psicólogo")
     void deveListarProntuariosPorPsicologo() throws Exception {
-        when(repository.listarPorPsicologo(Mockito.any())).thenReturn(pageProntuarios);
+        when(repository.findAllByPsicologoId(Mockito.any(), Mockito.any())).thenReturn(pageProntuarios);
 
         ResultActions resultActions = mockMvc.perform(get("/prontuarios/psicologo")
                         .param("idPsicologo", prontuario.getPsicologo().getId().toString())

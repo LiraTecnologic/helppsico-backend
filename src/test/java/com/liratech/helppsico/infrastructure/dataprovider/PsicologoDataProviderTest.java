@@ -86,37 +86,40 @@ public class PsicologoDataProviderTest {
 
     @Test
     void testeConsultarPorNome(){
-        List<Psicologo> psicologoListTeste = PsicologoBuilder.gerarListaDePsicologos();
-        String nome = psicologoListTeste.getFirst().getNome();
+        Page<Psicologo> psicologoListTeste = PsicologoBuilder.criarPageDePsicologos();
+        String nome = psicologoListTeste.getContent().getFirst().getNome();
+        Pageable pageable = PageRequest.of(0,10);
 
-        Mockito.when(repository.findByNome(Mockito.anyString())).thenReturn(mapper.paraEntities(psicologoListTeste));
+        Mockito.when(repository.findAllByNome(Mockito.any(), Mockito.any())).thenReturn(psicologoListTeste.map(mapper::paraEntity));
 
-        List<Psicologo> psicologosListResultado = dataProvider.consultarPorNome(nome);
+        Page<Psicologo> psicologosListResultado = dataProvider.consultarPorNome(nome, pageable);
 
-        Assertions.assertEquals(psicologoListTeste.size(), psicologosListResultado.size());
-        IntStream.range(0, psicologoListTeste.size())
+        Assertions.assertEquals(psicologoListTeste.getTotalElements(), psicologosListResultado.getTotalElements());
+        IntStream.range(0, psicologoListTeste.getTotalPages())
                 .forEach(i -> PsicologoValidator.validaPsicologoDomain(
-                        psicologoListTeste.get(i),
-                        psicologosListResultado.get(i)
+                        psicologoListTeste.getContent().get(i),
+                        psicologosListResultado.getContent().get(i)
                 ));
     }
 
     @Test
     void testeExceptionConsultarPorNome(){
-        Mockito.when(repository.findByNome(Mockito.anyString())).thenThrow(RuntimeException.class);
+        Pageable pageable = PageRequest.of(0,10);
+
+        Mockito.when(repository.findAllByNome(Mockito.any(), Mockito.any())).thenThrow(RuntimeException.class);
 
         DataProviderException exception = Assertions
-                .assertThrows(DataProviderException.class, () -> dataProvider.consultarPorNome(PsicologoBuilder.criarPsicologo().getNome()));
+                .assertThrows(DataProviderException.class, () -> dataProvider.consultarPorNome(PsicologoBuilder.criarPsicologo().getNome(), pageable));
 
         Assertions.assertEquals(PsicologoDataProvider.MENSAGEM_ERRO_CONSULTAR_POR_NOME, exception.getMessage());
     }
 
     @Test
     void testeConsultarMelhoresAvaliados(){
-        Page<Psicologo> psicologosPageTeste = PsicologoBuilder.gerarPageDePsicologos();
+        Page<Psicologo> psicologosPageTeste = PsicologoBuilder.criarPageDePsicologos();
         Pageable pageable = PageRequest.of(0,10);
 
-        Mockito.when(repository.consultarMelhoresAvaliados(Mockito.any())).thenReturn(mapper.paraEntitiesPage(psicologosPageTeste));
+        Mockito.when(repository.consultarMelhoresAvaliados(Mockito.any())).thenReturn(psicologosPageTeste.map(mapper::paraEntity));
 
         Page<Psicologo> psicologosPageResultado = dataProvider.consultarMelhoresAvaliados(pageable);
 
@@ -166,10 +169,10 @@ public class PsicologoDataProviderTest {
 
     @Test
     void testeListarPsicologos(){
-        Page<Psicologo> psicologosPageTeste = PsicologoBuilder.gerarPageDePsicologos();
+        Page<Psicologo> psicologosPageTeste = PsicologoBuilder.criarPageDePsicologos();
         Pageable pageable = PageRequest.of(0,10);
 
-        Mockito.when(repository.findAll()).thenReturn(mapper.paraEntitiesPage(psicologosPageTeste));
+        Mockito.when(repository.findAll(pageable)).thenReturn(psicologosPageTeste.map(mapper::paraEntity));
 
         Page<Psicologo> psicologosPageResultado = dataProvider.listar(pageable);
 

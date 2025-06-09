@@ -18,11 +18,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 
 @ExtendWith(MockitoExtension.class)
 public class FotoUseCaseTest {
@@ -42,7 +38,6 @@ public class FotoUseCaseTest {
     private Paciente paciente;
     private Paciente pacienteSemUrl;
     private Psicologo psicologo;
-    private Psicologo psicologoSemUrl;
     private Foto fotoPaciente;
     private Foto fotoPsicologo;
 
@@ -54,9 +49,6 @@ public class FotoUseCaseTest {
         pacienteSemUrl.setFotoUrl(null);
 
         psicologo = PsicologoBuilder.criarPsicologo();
-
-        psicologoSemUrl = psicologo;
-        psicologoSemUrl.setFotoUrl(null);
 
         fotoPaciente = FotoBuilder.criarFotoDomainPaciente();
         fotoPaciente.setPaciente(paciente);

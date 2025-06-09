@@ -45,6 +45,8 @@ public class DocumentoUseCase {
 
         Documento documentoSalvo = gateway.salvar(documento);
 
+        solicitacaoDocumentoUseCase.deletar(idSolicitacao);
+
         log.info("Documento criado e salvo com sucesso. Documento: {}", documentoSalvo);
         return documentoSalvo;
     }

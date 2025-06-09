@@ -21,7 +21,6 @@ public class PacienteUseCase {
     private final PacienteGateway gateway;
     private final CriptografiaUseCase criptografiaUseCase;
     private final EnderecoUseCase enderecoUseCase;
-    private final PsicologoUseCase psicologoUseCase;
     public static final String MENSAGEM_PACIENTE_JA_EXISTE = "Paciente já está cadastrado";
     public static final String MENSAGEM_PACIENTE_NAO_ENCONTRADO = "Paciente não encontrado";
 

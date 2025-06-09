@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,16 +17,16 @@ import java.util.UUID;
 
 public class ConsultaBuilder {
 
-
     public static Consulta criarConsulta(){
         return Consulta.builder()
-                .id(UUID.fromString("c56d3bae-f60a-4e69-be27-82e1586ca742"))
-                .psicologo(PsicologoBuilder.criarPsicologo())
+                .id(UUID.fromString("41ad1798-be2a-4a35-9537-e355e80a5737"))
                 .paciente(PacienteBuilder.criarPaciente())
-                .dataHora(LocalDateTime.now())
+                .psicologo(PsicologoBuilder.criarPsicologo())
+                .horario(HorarioBuilder.criarHorario())
+                .data(LocalDate.of(2020,10,20))
                 .valor(new BigDecimal("150.5"))
-                .endereco(EnderecoBuilder.criarEndereco())
                 .finalizada(false)
+                .endereco(EnderecoBuilder.criarEndereco())
                 .build();
     }
 
@@ -34,9 +35,23 @@ public class ConsultaBuilder {
                 .id(UUID.fromString("41ad1798-be2a-4a35-9537-e355e80a5737"))
                 .psicologo(PsicologoBuilder.criarPsicologoDto())
                 .paciente(PacienteBuilder.criarPacienteDto())
-                .dataHora(LocalDateTime.now())
+                .horario(HorarioBuilder.criarHorarioDto())
+                .data(LocalDate.of(2020,10,20))
                 .valor(new BigDecimal("150.5"))
                 .endereco(EnderecoBuilder.criarEnderecoDto())
+                .finalizada(false)
+                .build();
+    }
+
+    public static ConsultaEntity criarConsultaEntity() {
+        return ConsultaEntity.builder()
+                .id(UUID.fromString("977d87f8-b2b4-48f8-b844-1fab663d050a"))
+                .psicologo(PsicologoBuilder.criarPsicologoEntity())
+                .paciente(PacienteBuilder.criarPacienteEntity())
+                .horario(HorarioBuilder.criarHorarioEntity())
+                .data(LocalDate.of(2020,10,20))
+                .valor(new BigDecimal("150.5"))
+                .endereco(EnderecoBuilder.criarEnderecoEntity())
                 .finalizada(false)
                 .build();
     }
@@ -49,18 +64,6 @@ public class ConsultaBuilder {
         }
 
         return consultas;
-    }
-
-    public static ConsultaEntity criarConsultaEntity() {
-        return ConsultaEntity.builder()
-                .id(UUID.fromString("977d87f8-b2b4-48f8-b844-1fab663d050a"))
-                .psicologo(PsicologoBuilder.criarPsicologoEntity())
-                .paciente(PacienteBuilder.criarPacienteEntity())
-                .dataHora(LocalDateTime.now())
-                .valor(new BigDecimal("150.5"))
-                .endereco(EnderecoBuilder.criarEnderecoEntity())
-                .finalizada(false)
-                .build();
     }
 
     public static List<ConsultaEntity> criarListaConsultaEntity() {

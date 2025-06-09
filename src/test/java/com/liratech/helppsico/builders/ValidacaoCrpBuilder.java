@@ -1,6 +1,8 @@
 package com.liratech.helppsico.builders;
 
 import com.liratech.helppsico.domain.ValidacaoCrp;
+import com.liratech.helppsico.entrypoint.dto.ValidacaoCrpDto;
+import com.liratech.helppsico.infrastructure.repositories.entities.ValidacaoCrpEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +26,16 @@ public class ValidacaoCrpBuilder {
         return ValidacaoCrpDto.builder()
                 .id(UUID.randomUUID())
                 .psicologo(PsicologoBuilder.criarPsicologoDto())
-                .crp(PsicologoBuilder.criarPsicologoDto())
+                .crp(PsicologoBuilder.criarPsicologoDto().getCrp())
+                .motivoReprova("Psicologo inativo")
+                .build();
+    }
+
+    public static ValidacaoCrpEntity criarValidacaoCrpEntity(){
+        return ValidacaoCrpEntity.builder()
+                .id(UUID.randomUUID())
+                .psicologo(PsicologoBuilder.criarPsicologoEntity())
+                .crp(PsicologoBuilder.criarPsicologoEntity().getCrp())
                 .motivoReprova("Psicologo inativo")
                 .build();
     }
@@ -39,7 +50,7 @@ public class ValidacaoCrpBuilder {
         return transformarListaEmPage(validacaoCrpList, PageRequest.of(0,10));
     }
 
-    public static Page<ValidacaoCrp> transformarListaEmPage(List<ValidacaoCrp> lista, Pageable pageable){
+    private static Page<ValidacaoCrp> transformarListaEmPage(List<ValidacaoCrp> lista, Pageable pageable){
         int start = (int) pageable.getOffset();
         int end = Math.min((start+pageable.getPageSize()), lista.size());
 

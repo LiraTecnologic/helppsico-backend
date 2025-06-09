@@ -12,13 +12,14 @@ import java.util.UUID;
 
 public class HorarioBuilder {
 
-    public static Horario criarHorarioDomain(){
+    public static Horario criarHorario(){
         return Horario.builder()
                 .id(UUID.randomUUID())
                 .diaSemana(DiaSemana.SABADO)
-                .inicio(LocalTime.now())
-                .fim(LocalTime.now().plusMinutes(30))
+                .inicio(LocalTime.of(14,30))
+                .fim(LocalTime.of(14,40))
                 .disponivel(true)
+                .psicologo(PsicologoBuilder.criarPsicologo())
                 .build();
     }
 
@@ -26,9 +27,10 @@ public class HorarioBuilder {
         return HorarioEntity.builder()
                 .id(UUID.randomUUID())
                 .diaSemana(DiaSemana.SABADO)
-                .inicio(LocalTime.now())
-                .fim(LocalTime.now().plusMinutes(30))
+                .inicio(LocalTime.of(14,30))
+                .fim(LocalTime.of(14,40))
                 .disponivel(true)
+                .psicologo(PsicologoBuilder.criarPsicologoEntity())
                 .build();
     }
 
@@ -36,9 +38,10 @@ public class HorarioBuilder {
         return HorarioDto.builder()
                 .id(UUID.randomUUID())
                 .diaSemana(DiaSemana.SABADO)
-                .inicio(LocalTime.now())
-                .fim(LocalTime.now().plusMinutes(30))
+                .inicio(LocalTime.of(14,30))
+                .fim(LocalTime.of(14,40))
                 .disponivel(true)
+                .psicologo(PsicologoBuilder.criarPsicologoDto())
                 .build();
     }
 
@@ -46,7 +49,7 @@ public class HorarioBuilder {
         List<Horario> horarioList = new ArrayList<>();
 
         for(int i =0; i<3; i++){
-            horarioList.add(criarHorarioDomain());
+            horarioList.add(criarHorario());
         }
 
         return horarioList;
@@ -78,6 +81,7 @@ public class HorarioBuilder {
                 .inicio(LocalTime.now())
                 .fim(LocalTime.now().plusMinutes(30))
                 .disponivel(true)
+                .psicologo(PsicologoBuilder.criarPsicologo())
                 .build();
     }
 }

@@ -41,7 +41,7 @@ class SolicitacaoDocumentoUseCaseTest {
 
     @Test
     void testeCriarSolicitacao() {
-        SolicitacaoDocumento solicitacaoTeste = SolicitacaoDocumentoBuilder.criarSolicitacao();
+        SolicitacaoDocumento solicitacaoTeste = SolicitacaoDocumentoBuilder.criarSolicitacaoDocumento();
 
         Paciente pacienteTeste = PacienteBuilder.criarPaciente();
         pacienteTeste.setId(solicitacaoTeste.getPsicologo().getId());
@@ -56,24 +56,24 @@ class SolicitacaoDocumentoUseCaseTest {
         SolicitacaoDocumento solicitacaoDocumento = useCase.criarSolicitacao(solicitacaoTeste);
 
         SolicitacaoDocumento solicitacaoCapturada = captor.getValue();
-        SolicitacaoDocumentoValidator.validaSolicitacao(solicitacaoDocumento, solicitacaoCapturada);
+        SolicitacaoDocumentoValidator.validaSolicitacaoDocumentoDomain(solicitacaoDocumento, solicitacaoCapturada);
     }
 
     @Test
     void testeBuscarSolicitacaoPorId() {
-        SolicitacaoDocumento solicitacao = SolicitacaoDocumentoBuilder.criarSolicitacao();
+        SolicitacaoDocumento solicitacao = SolicitacaoDocumentoBuilder.criarSolicitacaoDocumento();
         UUID idSolicitacao = solicitacao.getId();
 
         Mockito.when(gateway.consultarPorId(Mockito.any())).thenReturn(Optional.of(solicitacao));
 
         SolicitacaoDocumento solicitacaoRetorno = useCase.buscarPorId(idSolicitacao);
-        SolicitacaoDocumentoValidator.validaSolicitacao(solicitacao, solicitacaoRetorno);
+        SolicitacaoDocumentoValidator.validaSolicitacaoDocumentoDomain(solicitacao, solicitacaoRetorno);
         Assertions.assertEquals(solicitacao.getId(), solicitacaoRetorno.getId());
     }
 
     @Test
     void testeErroBuscarSolicitacaoPorId() {
-        UUID idSolicitacao = SolicitacaoDocumentoBuilder.criarSolicitacao().getId();
+        UUID idSolicitacao = SolicitacaoDocumentoBuilder.criarSolicitacaoDocumento().getId();
 
         Mockito.when(gateway.consultarPorId(Mockito.any())).thenReturn(Optional.empty());
 
@@ -86,7 +86,7 @@ class SolicitacaoDocumentoUseCaseTest {
 
     @Test
     void testeDeletarSolicitacao() {
-        SolicitacaoDocumento solicitacao = SolicitacaoDocumentoBuilder.criarSolicitacao();
+        SolicitacaoDocumento solicitacao = SolicitacaoDocumentoBuilder.criarSolicitacaoDocumento();
         UUID idSolicitacao = solicitacao.getId();
 
         Mockito.when(gateway.consultarPorId(Mockito.any())).thenReturn(Optional.of(solicitacao));

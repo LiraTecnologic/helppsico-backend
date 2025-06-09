@@ -19,7 +19,6 @@ import static com.liratech.helppsico.application.usecases.AutenticacaoUseCase.ME
 import static com.liratech.helppsico.application.usecases.AutenticacaoUseCase.MENSAGEM_TOKEN_NULO;
 
 @ExtendWith(MockitoExtension.class)
-@RequiredArgsConstructor
 public class AutenticacaoUseCaseTest {
     @Mock
     private TokenGateway gateway;

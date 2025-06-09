@@ -29,9 +29,8 @@ class PacienteDataProviderTest {
 
     private final PacienteMapperInfra mapper;
 
-
     @Test
-    void testaSalvarPsicologo() {
+    void testeSalvarPsicologo() {
         Paciente pacienteTeste = PacienteBuilder.criarPaciente();
 
         Mockito.when(repository.save(Mockito.any())).thenReturn(mapper.paraEntity(pacienteTeste));
@@ -43,7 +42,7 @@ class PacienteDataProviderTest {
     }
 
     @Test
-    void testaExceptionSalvarPsicologo() {
+    void testeExceptionSalvarPsicologo() {
         Mockito.when(repository.save(Mockito.any())).thenThrow(RuntimeException.class);
         DataProviderException exception = Assertions
                 .assertThrows(DataProviderException.class, () -> dataProvider.salvar(PacienteBuilder.criarPaciente()));
@@ -51,7 +50,7 @@ class PacienteDataProviderTest {
     }
 
     @Test
-    void testaConsultarPsicologoPorId() {
+    void testeConsultarPsicologoPorId() {
         Paciente pacienteTeste = PacienteBuilder.criarPaciente();
 
         Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(mapper.paraEntity(pacienteTeste)));
@@ -63,7 +62,7 @@ class PacienteDataProviderTest {
     }
 
     @Test
-    void testaExceptionConsultarPsicologoPorId() {
+    void testeExceptionConsultarPsicologoPorId() {
         Mockito.when(repository.findById(Mockito.any())).thenThrow(RuntimeException.class);
         DataProviderException exception = Assertions
                 .assertThrows(DataProviderException.class, () -> dataProvider.consultarPorId(PacienteBuilder.criarPaciente().getId()));
@@ -71,7 +70,7 @@ class PacienteDataProviderTest {
     }
 
     @Test
-    void testaConsultaPsicologoPorEmail() {
+    void testeConsultaPsicologoPorEmail() {
         Paciente pacienteTeste = PacienteBuilder.criarPaciente();
 
         Mockito.when(repository.findByEmail(Mockito.any())).thenReturn(Optional.of(mapper.paraEntity(pacienteTeste)));
@@ -83,7 +82,7 @@ class PacienteDataProviderTest {
     }
 
     @Test
-    void testaExceptionConsultarPsicologoPorEmail() {
+    void testeExceptionConsultarPsicologoPorEmail() {
         Mockito.when(repository.findByEmail(Mockito.any())).thenThrow(RuntimeException.class);
         DataProviderException exception = Assertions
                 .assertThrows(DataProviderException.class, () -> dataProvider.consultarPorEmail(PacienteBuilder.criarPaciente().getEmail()));

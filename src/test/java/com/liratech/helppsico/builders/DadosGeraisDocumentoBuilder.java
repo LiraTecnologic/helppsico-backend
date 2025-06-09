@@ -29,8 +29,8 @@ public class DadosGeraisDocumentoBuilder {
                 .respostaDemanda("Resposta clara e fundamentada")
                 .dataAtendimento(LocalDate.now().minusDays(1))
                 .local(EnderecoBuilder.criarEnderecoDto())
-                .descrcaoEstadoPsicologico("Estado emocional estável")
-                .peridoAfastamento("5 dias")
+                .descricaoEstadoPsicologico("Estado emocional estável")
+                .periodoAfastamento("5 dias")
                 .build();
     }
 }

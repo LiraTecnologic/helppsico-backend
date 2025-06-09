@@ -1,48 +1,57 @@
 package com.liratech.helppsico.entrypoint.mapper;
 
 import com.liratech.helppsico.builders.AvaliacaoBuilder;
+import com.liratech.helppsico.builders.PacienteBuilder;
+import com.liratech.helppsico.builders.PsicologoBuilder;
 import com.liratech.helppsico.domain.Avaliacao;
 import com.liratech.helppsico.entrypoint.dto.psicologo.AvaliacaoDto;
-import com.liratech.helppsico.validators.PacienteValidator;
-import com.liratech.helppsico.validators.PsicologoValidator;
+import com.liratech.helppsico.validators.AvaliacaoValidator;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mapstruct.factory.Mappers;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class AvaliacaoMapperTest {
 
-    private final AvaliacaoMapper avaliacaoMapper = Mappers.getMapper(AvaliacaoMapper.class);
+    @Mock
+    private PsicologoMapper psicologoMapper;
+
+    @Mock
+    private PacienteMapper pacienteMapper;
+
+    @InjectMocks
+    private AvaliacaoMapperImpl mapper;
+
+    private Avaliacao domainTest;
+    private AvaliacaoDto dtoTest;
 
     @Test
-    @DisplayName("Caso de sucesso na transformação de DTO para Domain")
-    void testeTransformacaoAvalicaoDtoParaDomain() {
-        AvaliacaoDto avaliacaoDto = AvaliacaoBuilder.criarAvaliacaoDto();
-        Avaliacao avaliacao = avaliacaoMapper.paraDomain(avaliacaoDto);
+    void testeAvaliacaoDomainParaDto() {
+        domainTest = AvaliacaoBuilder.criarAvaliacao();
 
-        Assertions.assertNotNull(avaliacao);
-        Assertions.assertEquals(avaliacaoDto.getId(), avaliacao.getId());
-        Assertions.assertNotNull(avaliacao.getPsicologo());
-        PsicologoValidator.validaPsicologoDtoParaDomain(avaliacaoDto.getPsicologo(), avaliacao.getPsicologo());
-        Assertions.assertNotNull(avaliacao.getPaciente());
-        PacienteValidator.validaPacienteDtoParaDomain(avaliacaoDto.getPaciente(), avaliacao.getPaciente());
-        Assertions.assertEquals(avaliacaoDto.getNota(), avaliacao.getNota());
-        Assertions.assertEquals(avaliacaoDto.getComentario(), avaliacao.getComentario());
+        Mockito.when(pacienteMapper.paraDto(Mockito.any())).thenReturn(PacienteBuilder.criarPacienteDto());
+        Mockito.when(psicologoMapper.paraDto(Mockito.any())).thenReturn(PsicologoBuilder.criarPsicologoDto());
+
+        dtoTest = mapper.paraDto(domainTest);
+
+        Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
+        AvaliacaoValidator.validaAvaliacaoMapperEntry(domainTest, dtoTest);
     }
 
     @Test
-    @DisplayName("Caso de sucesso na transformação de Domain para DTO")
-    void testeTransformacaoAvaliacaoDomainParaDto() {
-        Avaliacao avaliacao = AvaliacaoBuilder.criarAvaliacao();
-        AvaliacaoDto avaliacaoDto = avaliacaoMapper.paraDto(avaliacao);
+    void testeAvaliacaoDtoParaDomain() {
+        dtoTest = AvaliacaoBuilder.criarAvaliacaoDto();
 
-        Assertions.assertNotNull(avaliacaoDto);
-        Assertions.assertEquals(avaliacao.getId(),avaliacaoDto.getId());
-        Assertions.assertNotNull(avaliacaoDto.getPsicologo());
-        PsicologoValidator.validaPsicologoDomainParaDto(avaliacao.getPsicologo(), avaliacaoDto.getPsicologo());
-        Assertions.assertNotNull(avaliacaoDto.getPaciente());
-        PacienteValidator.validaPacienteDomainParaDto(avaliacao.getPaciente(),avaliacaoDto.getPaciente());
-        Assertions.assertEquals(avaliacao.getNota(), avaliacaoDto.getNota());
-        Assertions.assertEquals(avaliacao.getComentario(), avaliacaoDto.getComentario());
+        Mockito.when(pacienteMapper.paraDomain(Mockito.any())).thenReturn(PacienteBuilder.criarPaciente());
+        Mockito.when(psicologoMapper.paraDomain(Mockito.any())).thenReturn(PsicologoBuilder.criarPsicologo());
+
+        domainTest = mapper.paraDomain(dtoTest);
+
+        Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
+        AvaliacaoValidator.validaAvaliacaoMapperEntry(domainTest, dtoTest);
     }
 }

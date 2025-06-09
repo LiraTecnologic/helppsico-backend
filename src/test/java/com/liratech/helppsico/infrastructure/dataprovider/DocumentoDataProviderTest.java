@@ -1,12 +1,13 @@
 package com.liratech.helppsico.infrastructure.dataprovider;
 
 import com.liratech.helppsico.builders.DocumentoBuilder;
+import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.documento.Documento;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-
+import com.liratech.helppsico.infrastructure.mapper.DocumentoMapperInfra;
+import com.liratech.helppsico.infrastructure.repositories.DocumentoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.documento.DocumentoEntity;
 import com.liratech.helppsico.validators.DocumentoValidator;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,37 +25,40 @@ import static com.liratech.helppsico.infrastructure.dataprovider.DocumentoDataPr
 
 
 @ExtendWith(MockitoExtension.class)
-@RequiredArgsConstructor
 class DocumentoDataProviderTest {
 
     @Mock
-    private final DocumentoRepository repository;
+    private DocumentoMapperInfra mapper;
+
+    @Mock
+    private DocumentoRepository repository;
 
     @InjectMocks
-    private final DocumentoDataProvider dataProvider;
+    private DocumentoDataProvider dataProvider;
 
     private Documento documentoDomain;
     private DocumentoEntity documentoEntity;
-    private DocumentoMapper mapper;
     private Page<Documento> pageDocumentos;
     private Page<DocumentoEntity> pageDocumentosEntity;
     private Pageable pageable;
+    private Paciente pacienteTeste;
 
     @BeforeEach
     void inicializarAtributos(){
         documentoDomain = DocumentoBuilder.criarAtestado();
         documentoEntity = DocumentoBuilder.criarAtestadoEntity();
         pageDocumentos = DocumentoBuilder.criarPageDeDocumento();
-        pageDocumentosEntity = pageDocumentos.map(mapper::paraEntity);
+        pageDocumentosEntity = DocumentoBuilder.criarPageDeDocumentoEntity();
+        pacienteTeste = documentoDomain.getPaciente();
 
         pageable = PageRequest.of(0,10);
     }
 
     @Test
     void testeSalvarDocumento(){
-        documentoDomain.setId(null);
-
         Mockito.when(repository.save(Mockito.any())).thenReturn(documentoEntity);
+        Mockito.when(mapper.paraEntity(Mockito.any())).thenReturn(documentoEntity);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(documentoDomain);
 
         Documento documento = dataProvider.salvar(documentoDomain);
 
@@ -63,8 +67,9 @@ class DocumentoDataProviderTest {
     }
 
     @Test
-    void testeErroSalvarDocumento(){
-        Mockito.when(repository.save(Mockito.any())).thenThrow(Exception.class);
+    void testeExceptionSalvarDocumento(){
+        Mockito.when(repository.save(Mockito.any())).thenThrow(RuntimeException.class);
+        Mockito.when(mapper.paraEntity(Mockito.any())).thenReturn(documentoEntity);
 
         DataProviderException exception = Assertions.assertThrows(
                 DataProviderException.class,
@@ -75,10 +80,11 @@ class DocumentoDataProviderTest {
     }
 
     @Test
-    void testeListarDocumentos(){
-        Mockito.when(repository.findAll()).thenReturn(pageDocumentosEntity);
+    void testeListarDocumentosPorPaciente(){
+        Mockito.when(repository.findAllByPacienteId(Mockito.any(), Mockito.any())).thenReturn(pageDocumentosEntity);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(documentoDomain);
 
-        Page<Documento> documentos = dataProvider.listar(pageable);
+        Page<Documento> documentos = dataProvider.listarPorPaciente(pacienteTeste.getId(), pageable);
 
         documentos.map(documento -> {
             Assertions.assertNotNull(documento.getId());
@@ -88,12 +94,12 @@ class DocumentoDataProviderTest {
     }
 
     @Test
-    void testeErroListarDocumentos(){
-        Mockito.when(repository.findAll()).thenThrow(Exception.class);
+    void testeExceptionListarDocumentosPorPaciente(){
+        Mockito.when(repository.findAllByPacienteId(Mockito.any(), Mockito.any())).thenThrow(RuntimeException.class);
 
         DataProviderException exception = Assertions.assertThrows(
                 DataProviderException.class,
-                () -> dataProvider.listar(pageable)
+                () -> dataProvider.listarPorPaciente(pacienteTeste.getId(), pageable)
         );
 
         Assertions.assertEquals(MENSAGEM_ERRO_LISTAR, exception.getMessage());

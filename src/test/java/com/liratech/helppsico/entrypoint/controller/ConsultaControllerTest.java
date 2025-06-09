@@ -2,20 +2,18 @@ package com.liratech.helppsico.entrypoint.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liratech.helppsico.builders.ConsultaBuilder;
+import com.liratech.helppsico.builders.HorarioBuilder;
+import com.liratech.helppsico.builders.VinculoBuilder;
 import com.liratech.helppsico.entrypoint.dto.EnderecoDto;
 import com.liratech.helppsico.entrypoint.dto.PacienteDto;
 import com.liratech.helppsico.entrypoint.dto.consulta.ConsultaDto;
+import com.liratech.helppsico.entrypoint.dto.psicologo.HorarioDto;
 import com.liratech.helppsico.entrypoint.dto.psicologo.PsicologoDto;
 import com.liratech.helppsico.entrypoint.mapper.ConsultaMapper;
-import com.liratech.helppsico.infrastructure.repositories.ConsultaRepository;
-import com.liratech.helppsico.infrastructure.repositories.EnderecoRepository;
-import com.liratech.helppsico.infrastructure.repositories.PacienteRepository;
-import com.liratech.helppsico.infrastructure.repositories.PsicologoRepository;
-import com.liratech.helppsico.infrastructure.repositories.entities.ConsultaEntity;
-import com.liratech.helppsico.infrastructure.repositories.entities.EnderecoEntity;
-import com.liratech.helppsico.infrastructure.repositories.entities.PacienteEntity;
-import com.liratech.helppsico.infrastructure.repositories.entities.PsicologoEntity;
+import com.liratech.helppsico.infrastructure.repositories.*;
+import com.liratech.helppsico.infrastructure.repositories.entities.*;
 import com.liratech.helppsico.validators.json.ConsultaValidatorJson;
+import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -29,6 +27,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -39,42 +38,44 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@AllArgsConstructor
 public class ConsultaControllerTest {
 
-    private final MockMvc mockMvc;
-    private final ObjectMapper objectMapper;
+    private MockMvc mockMvc;
+    private ObjectMapper objectMapper;
 
     @MockitoSpyBean
-    private final ConsultaRepository repository;
+    private ConsultaRepository repository;
 
     @MockitoSpyBean
-    private final PsicologoRepository psicologoRepository;
+    private PsicologoRepository psicologoRepository;
 
     @MockitoSpyBean
-    private final PacienteRepository pacienteRepository;
+    private HorarioRepository horarioRepository;
+
+    @MockitoSpyBean
+    private PacienteRepository pacienteRepository;
+
+    @MockitoSpyBean
+    private VinculoRepository vinculoRepository;
 
     private ConsultaDto consultaDtoEntrada;
     private ConsultaEntity consultaRetorno;
     private PacienteEntity pacienteEntity;
     private PsicologoEntity psicologoEntity;
     private EnderecoEntity enderecoEntity;
+    private HorarioEntity horarioEntity;
+    private VinculoEntity vinculoRetorno;
     private Page<ConsultaEntity> pageConsulta;
-
-    public ConsultaControllerTest(MockMvc mockMvc, ObjectMapper objectMapper, ConsultaRepository repository, PsicologoRepository psicologoRepository,
-                                  PacienteRepository pacienteRepository) {
-        this.mockMvc = mockMvc;
-        this.objectMapper = objectMapper;
-        this.repository = repository;
-        this.psicologoRepository = psicologoRepository;
-        this.pacienteRepository = pacienteRepository;
-    }
 
     @BeforeEach
     void setUp() {
         consultaRetorno = ConsultaBuilder.criarConsultaEntity();
+        vinculoRetorno = VinculoBuilder.criarVinculoEntity();
 
         pacienteEntity = consultaRetorno.getPaciente();
         psicologoEntity = consultaRetorno.getPsicologo();
+        horarioEntity = consultaRetorno.getHorario();
         enderecoEntity = consultaRetorno.getEndereco();
 
         PacienteDto pacienteTeste = new PacienteDto();
@@ -86,12 +87,19 @@ public class ConsultaControllerTest {
         EnderecoDto enderecoTeste = new EnderecoDto();
         enderecoTeste.setId(enderecoEntity.getId());
 
+        HorarioDto horarioTeste = new HorarioDto();
+        horarioTeste.setId(horarioEntity.getId());
+
         consultaDtoEntrada = new ConsultaDto();
-        consultaDtoEntrada.setDataHora(consultaRetorno.getDataHora());
+        consultaDtoEntrada.setData(consultaRetorno.getData());
+        consultaDtoEntrada.setHorario(horarioTeste);
         consultaDtoEntrada.setPaciente(pacienteTeste);
         consultaDtoEntrada.setPsicologo(psicologoTeste);
         consultaDtoEntrada.setValor(consultaRetorno.getValor());
         consultaDtoEntrada.setEndereco(enderecoTeste);
+
+        vinculoRetorno.setPsicologo(psicologoEntity);
+        vinculoRetorno.setPaciente(pacienteEntity);
 
         pageConsulta = ConsultaBuilder.criarPageConsultaEntity();
     }
@@ -99,9 +107,12 @@ public class ConsultaControllerTest {
     @Test
     void deveAgendarConsultaComSucesso() throws Exception {
         Mockito.when(repository.save(Mockito.any())).thenReturn(consultaRetorno);
-        Mockito.when(pacienteRepository.findById(Mockito.any(UUID.class))).thenReturn(Optional.of(pacienteEntity));
-        Mockito.when(psicologoRepository.findById(Mockito.any(UUID.class))).thenReturn(Optional.of(psicologoEntity));
-        Mockito.when(repository.consultarConsultasMesmoDia(Mockito.any(UUID.class))).thenReturn(Collections.emptyList());
+        Mockito.when(pacienteRepository.findById(Mockito.any())).thenReturn(Optional.of(pacienteEntity));
+        Mockito.when(psicologoRepository.findById(Mockito.any())).thenReturn(Optional.of(psicologoEntity));
+        Mockito.when(horarioRepository.findById(Mockito.any())).thenReturn(Optional.of(horarioEntity));
+        Mockito.when(vinculoRepository.consultarAtivoPorPaciente(Mockito.any())).thenReturn(Optional.of(vinculoRetorno));
+        Mockito.when(repository.consultarConsultasMesmoDia(Mockito.any(), Mockito.any())).thenReturn(Collections.emptyList());
+        Mockito.doNothing().when(horarioRepository).save(Mockito.any());
 
         ResultActions resultActions = mockMvc.perform(post("/consultas")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -115,8 +126,9 @@ public class ConsultaControllerTest {
     void deveCancelarConsultaComSucesso() throws Exception {
         UUID idConsulta = UUID.randomUUID();
 
-        Mockito.when(repository.findById(Mockito.any(UUID.class))).thenReturn(Optional.of(consultaRetorno));
-        Mockito.doNothing().when(repository).deleteById(idConsulta);
+        Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(consultaRetorno));
+        Mockito.doNothing().when(horarioRepository).save(Mockito.any());
+        Mockito.doNothing().when(repository).deleteById(Mockito.any());
 
         mockMvc.perform(delete("/consultas/" + idConsulta))
                 .andExpect(status().isNoContent());
@@ -125,43 +137,70 @@ public class ConsultaControllerTest {
     }
 
     @Test
-    void deveConsultarConsultasFuturasComSucesso() throws Exception {
+    void deveConsultarConsultasFuturasComSucessoPorPaciente() throws Exception {
+        Mockito.when(pacienteRepository.findById(Mockito.any())).thenReturn(Optional.of(pacienteEntity));
+        Mockito.when(vinculoRepository.consultarAtivoPorPaciente(Mockito.any())).thenReturn(Optional.of(vinculoRetorno));
+        Mockito.when(repository.consultarConsultasFuturasPaciente(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(pageConsulta);
 
-        Mockito.when(repository.consultarConsultasFuturas(Mockito.any(), Mockito.any(), Mockito.any(Pageable.class)))
-                .thenReturn(pageConsulta);
-
-        ResultActions resultActions = mockMvc.perform(get("/consultas/futuras/" + pacienteEntity.getId() + "/" + psicologoEntity.getId())
+        ResultActions resultActions = mockMvc.perform(get("/consultas/paciente/futuras/" + pacienteEntity.getId())
                         .param("page", "0")
-                        .param("size", "10")
-                        .param("sort", "dataConsulta,asc"))
+                        .param("size", "10"))
                 .andExpect(status().isOk());
 
         ConsultaValidatorJson.validaPageConsultas(resultActions, pageConsulta);
     }
 
     @Test
-    void deveConsultarHistoricoComSucesso() throws Exception {
-        Mockito.when(repository.consultarHistorico(Mockito.any(), Mockito.any(), Mockito.any(Pageable.class)))
-                .thenReturn(pageConsulta);
+    void deveConsultarHistoricoPacienteComSucesso() throws Exception {
+        Mockito.when(pacienteRepository.findById(Mockito.any())).thenReturn(Optional.of(pacienteEntity));
+        Mockito.when(vinculoRepository.consultarAtivoPorPaciente(Mockito.any())).thenReturn(Optional.of(vinculoRetorno));
+        Mockito.when(repository.consultarHistoricoPaciente(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(pageConsulta);
 
-        ResultActions resultActions = mockMvc.perform(get("/consultas/historico/" + pacienteEntity.getId() + "/" + psicologoEntity.getId())
+        ResultActions resultActions = mockMvc.perform(get("/consultas/paciente/historico/" + pacienteEntity.getId())
                         .param("page", "0")
-                        .param("size", "10")
-                        .param("sort", "dataConsulta,asc"))
+                        .param("size", "10"))
                 .andExpect(status().isOk());
 
         ConsultaValidatorJson.validaPageConsultas(resultActions, pageConsulta);
     }
 
     @Test
-    void deveAlterarDataDaConsultaComSucesso() throws Exception {
-        LocalDateTime novaData = LocalDateTime.now().plusDays(5);
+    void deveConsultarConsultasFuturasComSucessoPorPsicologo() throws Exception {
+        Mockito.when(psicologoRepository.findById(Mockito.any())).thenReturn(Optional.of(psicologoEntity));
+        Mockito.when(repository.consultarConsultasFuturasPsicologo(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(pageConsulta);
 
-        consultaRetorno.setDataHora(novaData);
+        ResultActions resultActions = mockMvc.perform(get("/consultas/psicologo/futuras/" + psicologoEntity.getId())
+                        .param("page", "0")
+                        .param("size", "10"))
+                .andExpect(status().isOk());
+
+        ConsultaValidatorJson.validaPageConsultas(resultActions, pageConsulta);
+    }
+
+    @Test
+    void deveConsultarHistoricoPsicologoComSucesso() throws Exception {
+        Mockito.when(pacienteRepository.findById(Mockito.any())).thenReturn(Optional.of(pacienteEntity));
+        Mockito.when(vinculoRepository.consultarAtivoPorPaciente(Mockito.any())).thenReturn(Optional.of(vinculoRetorno));
+        Mockito.when(repository.consultarHistoricoPsicologo(Mockito.any(), Mockito.any())).thenReturn(pageConsulta);
+
+        ResultActions resultActions = mockMvc.perform(get("/consultas/psicologo/historico/" + psicologoEntity.getId())
+                        .param("page", "0")
+                        .param("size", "10"))
+                .andExpect(status().isOk());
+
+        ConsultaValidatorJson.validaPageConsultas(resultActions, pageConsulta);
+    }
+
+    @Test
+    void deveAlterarDataDaConsultaPsicologoComSucesso() throws Exception {
+        ConsultaDto novaData = ConsultaDto.builder()
+                .horario(HorarioBuilder.criarHorarioDto())
+                .data(LocalDate.now())
+                .build();
 
         Mockito.when(repository.findById(Mockito.any(UUID.class)))
                 .thenReturn(Optional.of(consultaRetorno));
-
+        Mockito.when(repository.consultarConsultasMesmoDia(Mockito.any(), Mockito.any())).thenReturn(Collections.emptyList());
         Mockito.when(repository.save(Mockito.any(ConsultaEntity.class)))
                 .thenReturn(consultaRetorno);
 

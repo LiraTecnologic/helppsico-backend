@@ -3,15 +3,13 @@ package com.liratech.helppsico.entrypoint.dto.psicologo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.liratech.helppsico.domain.DiaSemana;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalTime;
 import java.util.UUID;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Builder
