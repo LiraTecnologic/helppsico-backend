@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liratech.helppsico.builders.SolicitacaoDocumentoBuilder;
 import com.liratech.helppsico.domain.documento.SolicitacaoDocumento;
 import com.liratech.helppsico.entrypoint.dto.documento.SolicitacaoDocumentoDto;
+import com.liratech.helppsico.entrypoint.mapper.SolicitacaoDocumentoMapper;
 import com.liratech.helppsico.infrastructure.mapper.PacienteMapperInfra;
 import com.liratech.helppsico.infrastructure.mapper.PsicologoMapperInfra;
 import com.liratech.helppsico.infrastructure.mapper.SolicitacaoDocumentoMapperInfra;
@@ -14,6 +15,7 @@ import com.liratech.helppsico.infrastructure.repositories.entities.PacienteEntit
 import com.liratech.helppsico.infrastructure.repositories.entities.PsicologoEntity;
 import com.liratech.helppsico.infrastructure.repositories.entities.documento.SolicitacaoDocumentoEntity;
 import com.liratech.helppsico.validators.json.SolicitacaoDocumentoValidatorJson;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,19 +34,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 class SolicitacaoDocumentoControllerTest {
 
-    private final MockMvc mockMvc;
-    private final ObjectMapper objectMapper;
+    private MockMvc mockMvc;
+    private ObjectMapper objectMapper;
 
-    private final PsicologoMapperInfra mapperPsicologo;
-    private final PacienteMapperInfra mapperPaciente;
-    private final SolicitacaoDocumentoMapper mapperEntry;
-    private final SolicitacaoDocumentoMapperInfra mapperInfra;
+    private PsicologoMapperInfra mapperPsicologo;
+    private PacienteMapperInfra mapperPaciente;
+    private SolicitacaoDocumentoMapper mapperEntry;
+    private SolicitacaoDocumentoMapperInfra mapperInfra;
 
     @MockitoSpyBean
     private SolicitacaoDocumentoRepository repository;
@@ -63,22 +65,6 @@ class SolicitacaoDocumentoControllerTest {
 
     private PacienteEntity pacienteEntity;
     private PsicologoEntity psicologoEntity;
-
-    public SolicitacaoDocumentoControllerTest(MockMvc mockMvc, ObjectMapper objectMapper, PsicologoMapperInfra mapperPsicologo,
-                                              PacienteMapperInfra mapperPaciente, SolicitacaoDocumentoMapper mapperEntry,
-                                              SolicitacaoDocumentoMapperInfra mapperInfra,
-                                              SolicitacaoDocumentoDto solicitacaoDtoEntrada, SolicitacaoDocumento solicitacaoDomain,
-                                              SolicitacaoDocumentoEntity solicitacaoEntity) {
-        this.mockMvc = mockMvc;
-        this.objectMapper = objectMapper;
-        this.mapperPsicologo = mapperPsicologo;
-        this.mapperPaciente = mapperPaciente;
-        this.mapperEntry = mapperEntry;
-        this.mapperInfra = mapperInfra;
-        this.solicitacaoDtoEntrada = solicitacaoDtoEntrada;
-        this.solicitacaoDomain = solicitacaoDomain;
-        this.solicitacaoEntity = solicitacaoEntity;
-    }
 
     @BeforeEach
     void inicializarAtributos(){

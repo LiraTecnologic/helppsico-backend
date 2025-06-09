@@ -96,6 +96,7 @@ class ConsultaUseCaseTest {
         Mockito.when(vinculoUseCase.consultarAtivoPorPaciente(Mockito.any())).thenReturn(vinculoTeste);
         Mockito.when(gateway.consultarConsultasMesmoDia(Mockito.any(), Mockito.any())).thenReturn(new ArrayList<>());
         Mockito.when(gateway.salvar(captor.capture())).thenReturn(consultaTeste);
+        Mockito.doNothing().when(horarioUseCase).cadastrar(Mockito.any());
 
         consultaTeste.setId(null);
         useCase.agendar(consultaTeste);

@@ -3,9 +3,7 @@ package com.liratech.helppsico.builders;
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.TipoGenero;
 import com.liratech.helppsico.entrypoint.dto.PacienteDto;
-import com.liratech.helppsico.entrypoint.dto.TipoGeneroDto;
 import com.liratech.helppsico.infrastructure.repositories.entities.PacienteEntity;
-import com.liratech.helppsico.infrastructure.repositories.entities.TipoGeneroEntity;
 
 import java.time.LocalDate;
 import java.util.UUID;

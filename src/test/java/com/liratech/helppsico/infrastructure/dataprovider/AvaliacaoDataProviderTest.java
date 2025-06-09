@@ -8,6 +8,7 @@ import com.liratech.helppsico.infrastructure.repositories.AvaliacaoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.AvaliacaoEntity;
 import com.liratech.helppsico.validators.AvaliacaoValidator;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,16 +27,17 @@ import java.util.UUID;
 import static com.liratech.helppsico.infrastructure.dataprovider.AvaliacaoDataProvider.MENSAGEM_ERRO_CONSULTAR_POR_PACIENTE;
 
 @ExtendWith(MockitoExtension.class)
-@AllArgsConstructor
 public class AvaliacaoDataProviderTest {
 
     @Mock
     private AvaliacaoRepository repository;
 
+    @Mock
+    private AvaliacaoMapperInfra mapper;
+
     @InjectMocks
     private AvaliacaoDataProvider dataProvider;
 
-    private AvaliacaoMapperInfra mapper;
     private Avaliacao avaliacaoTeste;
     private AvaliacaoEntity avaliacaoEntityTeste;
     private Page<Avaliacao> avaliacaoPage;
@@ -55,6 +57,8 @@ public class AvaliacaoDataProviderTest {
         avaliacaoTeste.setId(null);
 
         Mockito.when(repository.save(Mockito.any())).thenReturn(avaliacaoEntityTeste);
+        Mockito.when(mapper.paraEntity(Mockito.any())).thenReturn(avaliacaoEntityTeste);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(avaliacaoTeste);
 
         Avaliacao avaliacaoResultado = dataProvider.salvar(avaliacaoTeste);
         AvaliacaoValidator.validaAvaliacaoDomain(mapper.paraDomain(avaliacaoEntityTeste), avaliacaoResultado);

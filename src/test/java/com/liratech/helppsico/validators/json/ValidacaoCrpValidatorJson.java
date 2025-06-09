@@ -1,5 +1,6 @@
 package com.liratech.helppsico.validators.json;
 
+import com.liratech.helppsico.entrypoint.dto.ValidacaoCrpDto;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -8,8 +9,8 @@ public class ValidacaoCrpValidatorJson {
     public static void verificaValidacaoJson(ResultActions resultado, ValidacaoCrpDto esperado) throws Exception{
         resultado.andExpect(jsonPath("$.dado.id").value(esperado.getId().toString()))
                 .andExpect(jsonPath("$.dado.psicologo").value(esperado.getPsicologo().toString()))
-                .andExpect(jsonPath("$.dado.crp").value(esperado.getPaciente().toString()))
-                .andExpect(jsonPath("$.dado.motivoReprova").value(esperado.getPaciente().toString()))
+                .andExpect(jsonPath("$.dado.crp").value(esperado.getPsicologo().toString()))
+                .andExpect(jsonPath("$.dado.motivoReprova").value(esperado.getPsicologo().toString()))
                 .andExpect(jsonPath("$.dado.psicologo.id").value(esperado.getId().toString()))
                 .andExpect(jsonPath("$.dado.psicologo.nome").value(esperado.getPsicologo().getNome()))
                 .andExpect(jsonPath("$.dado.psicologo.crp").value(esperado.getPsicologo().getCrp()))

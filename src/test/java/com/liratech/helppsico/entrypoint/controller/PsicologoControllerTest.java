@@ -132,7 +132,7 @@ public class PsicologoControllerTest {
         Page<Psicologo> paginaDomain = PsicologoBuilder.criarPageDePsicologos();
         Page<PsicologoEntity> paginaEntity = paginaDomain.map(mapperInfra::paraEntity);
 
-        Mockito.when(repository.findByNome(Mockito.any())).thenReturn(paginaEntity);
+        Mockito.when(repository.findAllByNome(Mockito.any(), Mockito.any())).thenReturn(paginaEntity);
 
         ResultActions resultado = mockMvc.perform(get("/psicologos/nome")
                         .param("nome", "joão-silva")

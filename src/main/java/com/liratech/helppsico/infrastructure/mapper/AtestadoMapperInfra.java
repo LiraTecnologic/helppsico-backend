@@ -2,16 +2,19 @@ package com.liratech.helppsico.infrastructure.mapper;
 
 import com.liratech.helppsico.domain.documento.Atestado;
 import com.liratech.helppsico.infrastructure.repositories.entities.documento.AtestadoEntity;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class AtestadoMapperInfra {
 
-    private final PacienteMapperInfra pacienteMapper;
-    private final PsicologoMapperInfra psicologoMapper;
-    private final EnderecoMapperInfra enderecoMapper;
+    private PacienteMapperInfra pacienteMapper;
+    private PsicologoMapperInfra psicologoMapper;
+    private EnderecoMapperInfra enderecoMapper;
 
     public Atestado paraDomain(AtestadoEntity entity){
         return new Atestado(

@@ -8,9 +8,12 @@ import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.entrypoint.dto.PacienteDto;
 import com.liratech.helppsico.entrypoint.mapper.EnderecoMapper;
 import com.liratech.helppsico.entrypoint.mapper.PacienteMapper;
+import com.liratech.helppsico.infrastructure.mapper.EnderecoMapperInfra;
 import com.liratech.helppsico.infrastructure.mapper.PacienteMapperInfra;
+import com.liratech.helppsico.infrastructure.repositories.EnderecoRepository;
 import com.liratech.helppsico.infrastructure.repositories.PacienteRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.EnderecoEntity;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,23 +33,23 @@ import java.util.UUID;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 class PacienteControllerTest {
 
-    private final MockMvc mockMvc;
-    private final ObjectMapper objectMapper;
-    private final PacienteMapper mapperEntry;
-    private final PacienteMapperInfra mapperInfra;
-    private final EnderecoMapper enderecoMapper;
+    private MockMvc mockMvc;
+    private ObjectMapper objectMapper;
+    private PacienteMapper mapperEntry;
+    private PacienteMapperInfra mapperInfra;
+    private EnderecoMapperInfra enderecoMapper;
 
     @MockitoSpyBean
-    private final PacienteRepository repository;
+    private PacienteRepository repository;
 
     @MockitoSpyBean
-    private final EnderecoRepository repositoryEndereco;
+    private EnderecoRepository repositoryEndereco;
 
     private PacienteDto pacienteDtoEntrada;
     private Paciente pacienteDomain;

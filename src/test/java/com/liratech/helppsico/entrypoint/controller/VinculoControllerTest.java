@@ -7,12 +7,11 @@ import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.domain.Vinculo;
 import com.liratech.helppsico.entrypoint.dto.VinculoDto;
 import com.liratech.helppsico.entrypoint.mapper.VinculoMapper;
-import com.liratech.helppsico.infrastructure.mapper.PacienteMapper;
-import com.liratech.helppsico.infrastructure.mapper.PsicologoMapper;
+import com.liratech.helppsico.infrastructure.mapper.PacienteMapperInfra;
+import com.liratech.helppsico.infrastructure.mapper.PsicologoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.PacienteRepository;
 import com.liratech.helppsico.infrastructure.repositories.PsicologoRepository;
 import com.liratech.helppsico.infrastructure.repositories.VinculoRepository;
-import com.liratech.helppsico.validators.VinculoValidator;
 import com.liratech.helppsico.validators.json.VinculoValidatorJson;
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,9 +41,9 @@ public class VinculoControllerTest {
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
     private VinculoMapper mapperEntry;
-    private com.liratech.helppsico.infrastructure.mapper.VinculoMapper mapperInfra;
-    private PacienteMapper pacienteMapper;
-    private PsicologoMapper psicologoMapper;
+    private com.liratech.helppsico.infrastructure.mapper.VinculoMapperInfra mapperInfra;
+    private PacienteMapperInfra pacienteMapper;
+    private PsicologoMapperInfra psicologoMapper;
 
     @MockitoSpyBean
     private PacienteRepository pacienteRepository;
@@ -121,7 +120,7 @@ public class VinculoControllerTest {
         int size = 0;
         String sort = "paciente.nome,asc";
 
-        Mockito.when(repository.findAllByPsicologo_Id(Mockito.any(), Mockito.any())).thenReturn(vinculoPage.map(mapperInfra::paraEntity));
+        Mockito.when(repository.findAllByPsicologoId(Mockito.any(), Mockito.any())).thenReturn(vinculoPage.map(mapperInfra::paraEntity));
 
         ResultActions resultActions = mockMvc.perform(get("/vinculos/{id}", psicologoTeste.getId())
                         .param("page", String.valueOf(page))
@@ -134,7 +133,7 @@ public class VinculoControllerTest {
 
     @Test
     void testeConsultarVinculoPorIdPaciente() throws Exception{
-        Mockito.when(repository.findByPaciente_Id(Mockito.any())).thenReturn(Optional.of(mapperInfra.paraEntity(vinculoTeste)));
+        Mockito.when(repository.findAllByPacienteId(Mockito.any(), Mockito.any())).thenReturn(vinculoPage.map(mapperInfra::paraEntity));
 
         ResultActions resultActions = mockMvc.perform(get("/vinculos/{id}", pacienteTeste.getId()))
                 .andExpect(status().isOk());

@@ -8,9 +8,17 @@ import com.liratech.helppsico.validators.DocumentoValidator;
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@AllArgsConstructor
+@ExtendWith(MockitoExtension.class)
 public class DocumentoMapperInfraTest {
+
+    @Mock
+
+    @InjectMocks
     private DocumentoMapperInfra mapper;
     private Documento domainTest;
     private DocumentoEntity entityTest;
