@@ -1,14 +1,12 @@
 package com.liratech.helppsico.infrastructure.dataprovider;
 
 import com.liratech.helppsico.builders.HorarioBuilder;
-import com.liratech.helppsico.builders.PacienteBuilder;
 import com.liratech.helppsico.domain.Horario;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
 import com.liratech.helppsico.infrastructure.mapper.HorarioMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.HorarioRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.HorarioEntity;
 import com.liratech.helppsico.validators.HorarioValidator;
-import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +23,7 @@ import java.util.Optional;
 public class HorarioDataProviderTest {
 
     @Mock
-    private HorarioMapperInfra horarioMapperInfra;
+    private HorarioMapperInfra mapper;
 
     @Mock
     private HorarioRepository repository;
@@ -35,31 +33,30 @@ public class HorarioDataProviderTest {
 
     private Horario horarioDomain;
     private HorarioEntity horarioEntity;
-    private List<Horario> horarioList;
-    private HorarioMapperInfra mapper;
+    private List<HorarioEntity> horarioEntityList;
 
     @BeforeEach
     void inicializarAtributos(){
         horarioDomain = HorarioBuilder.criarHorario();
-        horarioEntity = mapper.paraEntity(horarioDomain);
-        horarioList = HorarioBuilder.criarListaHorarioDomain();
+        horarioEntity = HorarioBuilder.criarHorarioEntity();
+        horarioEntityList = HorarioBuilder.criarListaHorarioEntity();
     }
 
     @Test
     void testeSalvarHorario(){
-        horarioDomain.setId(null);
-
         Mockito.when(repository.save(Mockito.any())).thenReturn(horarioEntity);
+        Mockito.when(mapper.paraEntity(Mockito.any())).thenReturn(horarioEntity);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(horarioDomain);
 
         Horario horarioResultado = dataProvider.salvar(horarioDomain);
 
-        Assertions.assertEquals(horarioResultado.getId(), horarioEntity.getId());
         HorarioValidator.validaHorarioDomain(horarioDomain, horarioResultado);
     }
 
     @Test
     void testeExceptionSalvarHorario(){
         Mockito.when(repository.save(Mockito.any())).thenThrow(RuntimeException.class);
+        Mockito.when(mapper.paraEntity(Mockito.any())).thenReturn(horarioEntity);
 
         DataProviderException exception = Assertions
                 .assertThrows(DataProviderException.class, () -> dataProvider.salvar(horarioDomain));
@@ -69,7 +66,8 @@ public class HorarioDataProviderTest {
 
     @Test
     void testeListarHorariosPorPsicologo(){
-        Mockito.when(repository.findAllByPsicologoId(Mockito.any())).thenReturn(horarioList.stream().map(mapper::paraEntity).toList());
+        Mockito.when(repository.findAllByPsicologoId(Mockito.any())).thenReturn(horarioEntityList);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(horarioDomain);
 
         List<Horario> horariosResultado = dataProvider.listarPorPsicologo(horarioDomain.getPsicologo().getId());
 
@@ -92,6 +90,7 @@ public class HorarioDataProviderTest {
     @Test
     void testeConsultarHorarioPorId(){
         Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(horarioEntity));
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(horarioDomain);
 
         Optional<Horario> horarioResultado = dataProvider.consultarPorId(horarioDomain.getId());
 

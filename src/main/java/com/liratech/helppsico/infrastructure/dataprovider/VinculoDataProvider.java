@@ -103,8 +103,8 @@ public class VinculoDataProvider implements VinculoGateway {
         try {
             vinculoEntity = repository.consultarAtivoPorPaciente(idPaciente);
         }catch (Exception exception){
-            log.error(MENSAGEM_ERRO_CONSULTAR_ID, exception);
-            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_ID, exception.getCause());
+            log.error(MENSAGEM_ERRO_CONSULTAR_POR_PACIENTE, exception);
+            throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_PACIENTE, exception.getCause());
         }
 
         return vinculoEntity.map(mapper::paraDomain);

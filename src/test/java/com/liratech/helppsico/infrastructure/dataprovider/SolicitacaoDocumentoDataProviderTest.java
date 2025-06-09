@@ -1,15 +1,12 @@
 package com.liratech.helppsico.infrastructure.dataprovider;
 
 import com.liratech.helppsico.builders.SolicitacaoDocumentoBuilder;
-import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.domain.documento.SolicitacaoDocumento;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
 import com.liratech.helppsico.infrastructure.mapper.SolicitacaoDocumentoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.SolicitacaoDocumentoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.documento.SolicitacaoDocumentoEntity;
 import com.liratech.helppsico.validators.SolicitacaoDocumentoValidator;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,11 +22,11 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(MockitoExtension.class)
-@AllArgsConstructor
 class SolicitacaoDocumentoDataProviderTest {
+
+    @Mock
+    private SolicitacaoDocumentoMapperInfra mapper;
 
     @Mock
     private SolicitacaoDocumentoRepository repository;
@@ -39,8 +36,7 @@ class SolicitacaoDocumentoDataProviderTest {
 
     private SolicitacaoDocumento domainTest;
     private SolicitacaoDocumentoEntity entityTest;
-    private Page<SolicitacaoDocumento> solicitacaoDocumentoPage;
-    private SolicitacaoDocumentoMapperInfra mapper;
+    private Page<SolicitacaoDocumentoEntity> solicitacaoDocumentoPageEntity;
     private Pageable pageable;
 
     @BeforeEach
@@ -48,14 +44,15 @@ class SolicitacaoDocumentoDataProviderTest {
         domainTest = SolicitacaoDocumentoBuilder.criarSolicitacaoDocumento();
         entityTest = SolicitacaoDocumentoBuilder.criarSolicitacaoDocumentoEntity();
 
-        solicitacaoDocumentoPage = SolicitacaoDocumentoBuilder.criarPageDeSolicitacaoDocumento();
+        solicitacaoDocumentoPageEntity = SolicitacaoDocumentoBuilder.criarPageDeSolicitacaoDocumentoEntity();
         pageable = PageRequest.of(0,10);
     }
 
     @Test
     void testeSalvarSolicitacaoDocumento() {
-        domainTest.setId(null);
         Mockito.when(repository.save(Mockito.any())).thenReturn(entityTest);
+        Mockito.when(mapper.paraEntity(Mockito.any())).thenReturn(entityTest);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(domainTest);
 
         SolicitacaoDocumento resultado = dataProvider.salvar(domainTest);
 
@@ -66,6 +63,7 @@ class SolicitacaoDocumentoDataProviderTest {
     @Test
     void testeExceptionSalvarSolicitacaoDocumento() {
         Mockito.when(repository.save(Mockito.any())).thenThrow(RuntimeException.class);
+        Mockito.when(mapper.paraEntity(Mockito.any())).thenReturn(entityTest);
 
         DataProviderException ex = Assertions.assertThrows(DataProviderException.class, () -> dataProvider.salvar(domainTest));
         Assertions.assertEquals(ex.getMessage(), SolicitacaoDocumentoDataProvider.MENSAGEM_ERRO_SALVAR);
@@ -73,7 +71,8 @@ class SolicitacaoDocumentoDataProviderTest {
 
     @Test
     void testeConsultarSolicitacaoDocumentoPorId() {
-        Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(mapper.paraEntity(domainTest)));
+        Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(entityTest));
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(domainTest);
 
         Optional<SolicitacaoDocumento> resultado = dataProvider.consultarPorId(domainTest.getId());
 
@@ -95,7 +94,8 @@ class SolicitacaoDocumentoDataProviderTest {
 
     @Test
     void testeListarSolicitacoesPorPsicologo() {
-        Mockito.when(repository.findAllByPsicologoId(Mockito.any(), Mockito.any())).thenReturn(solicitacaoDocumentoPage.map(mapper::paraEntity));
+        Mockito.when(repository.findAllByPsicologoId(Mockito.any(), Mockito.any())).thenReturn(solicitacaoDocumentoPageEntity);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(domainTest);
 
         Page<SolicitacaoDocumento> solicitacaoDocumentosResultado = dataProvider.listarPorPsicologo(domainTest.getPsicologo().getId(), pageable);
 
@@ -111,7 +111,7 @@ class SolicitacaoDocumentoDataProviderTest {
         DataProviderException ex = Assertions.assertThrows(DataProviderException.class,
                 () -> dataProvider.listarPorPsicologo(domainTest.getId(), pageable));
 
-        Assertions.assertEquals(ex.getMessage(), SolicitacaoDocumentoDataProvider.MENSAGEM_ERRO_CONSULTAR_POR_ID);
+        Assertions.assertEquals(ex.getMessage(), SolicitacaoDocumentoDataProvider.MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO);
     }
 
     @Test

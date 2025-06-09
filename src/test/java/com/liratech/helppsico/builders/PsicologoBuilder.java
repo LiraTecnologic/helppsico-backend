@@ -103,6 +103,16 @@ public class PsicologoBuilder {
         return transformarListaEmPaginaDto(psicologoDtoList, PageRequest.of(0,10));
     }
 
+    public static Page<PsicologoEntity> criarPageDePsicologosEntity() {
+        List<PsicologoEntity> psicologoEntityList = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            psicologoEntityList.add(criarPsicologoEntity());
+        }
+
+        return transformarListaEmPaginaEntity(psicologoEntityList, PageRequest.of(0,10));
+    }
+
     private static Page<Psicologo> transformarListaEmPagina(List<Psicologo> lista, Pageable pageable) {
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), lista.size());
@@ -116,6 +126,15 @@ public class PsicologoBuilder {
         int end = Math.min((start + pageable.getPageSize()), lista.size());
 
         List<PsicologoDto> sublist = lista.subList(start, end);
+
+        return new PageImpl<>(sublist, pageable, lista.size());
+    }
+
+    private static Page<PsicologoEntity> transformarListaEmPaginaEntity(List<PsicologoEntity> lista, Pageable pageable) {
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), lista.size());
+
+        List<PsicologoEntity> sublist = lista.subList(start, end);
 
         return new PageImpl<>(sublist, pageable, lista.size());
     }

@@ -3,15 +3,15 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.builders.PacienteBuilder;
 import com.liratech.helppsico.builders.ProntuarioBuilder;
 import com.liratech.helppsico.builders.PsicologoBuilder;
-import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.Prontuario;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
 import com.liratech.helppsico.infrastructure.mapper.ProntuarioMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.ProntuarioRepository;
+import com.liratech.helppsico.infrastructure.repositories.entities.ProntuarioEntity;
 import com.liratech.helppsico.validators.ProntuarioValidator;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,23 +27,33 @@ import java.util.UUID;
 import java.util.stream.IntStream;
 
 @ExtendWith(MockitoExtension.class)
-@RequiredArgsConstructor
 class ProntuarioDataProviderTest {
 
     @Mock
     private ProntuarioRepository repository;
 
+    @Mock
+    private ProntuarioMapperInfra mapper;
+
     @InjectMocks
     private ProntuarioDataProvider dataProvider;
 
-    private final ProntuarioMapperInfra mapper;
+    private Prontuario prontuarioTeste;
+    private ProntuarioEntity prontuarioEntityTeste;
+    private Page<ProntuarioEntity> prontuarioEntityPage;
+
+    @BeforeEach
+    void inicializar() {
+        prontuarioEntityTeste = ProntuarioBuilder.criarProntuarioEntity();
+        prontuarioTeste = ProntuarioBuilder.criarProntuario();
+        prontuarioEntityPage = ProntuarioBuilder.criarPageProntuarioEntity();
+    }
 
     @Test
     void testeSalvarProntuario() {
-        Prontuario prontuarioTeste = ProntuarioBuilder.criarProntuario();
-        Mockito.when(repository.save(Mockito.any())).thenReturn(mapper.paraEntity(prontuarioTeste));
-
-        prontuarioTeste.setId(null);
+        Mockito.when(repository.save(Mockito.any())).thenReturn(prontuarioEntityTeste);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(prontuarioTeste);
+        Mockito.when(mapper.paraEntity(Mockito.any())).thenReturn(prontuarioEntityTeste);
 
         Prontuario resultado = dataProvider.salvar(prontuarioTeste);
 
@@ -53,19 +63,18 @@ class ProntuarioDataProviderTest {
 
     @Test
     void testeExceptionSalvarProntuario() {
-        Prontuario prontuario = ProntuarioBuilder.criarProntuario();
         Mockito.when(repository.save(Mockito.any())).thenThrow(RuntimeException.class);
 
         DataProviderException exception = Assertions.assertThrows(DataProviderException.class,
-                () -> dataProvider.salvar(prontuario));
+                () -> dataProvider.salvar(prontuarioTeste));
 
         Assertions.assertEquals(dataProvider.MENSAGEM_ERRO_SALVAR, exception.getMessage());
     }
 
     @Test
     void testeConsultaProntuarioPeloId() {
-        Prontuario prontuarioTeste = ProntuarioBuilder.criarProntuario();
-        Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(mapper.paraEntity(prontuarioTeste)));
+        Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(prontuarioEntityTeste));
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(prontuarioTeste);
 
         Optional<Prontuario> resultado = dataProvider.consultarPorId(prontuarioTeste.getId());
 
@@ -86,42 +95,40 @@ class ProntuarioDataProviderTest {
 
     @Test
     void testeListagemProntuarioPorPaciente() {
-        Page<Prontuario> prontuarioTeste = ProntuarioBuilder.criarPageProntuarioEntity().map(mapper::paraDomain);
-        Mockito.when(repository.findAllByPacienteId(Mockito.any(), Mockito.any())).thenReturn(prontuarioTeste.map(mapper::paraEntity));
+        Mockito.when(repository.findAllByPacienteId(Mockito.any(), Mockito.any())).thenReturn(prontuarioEntityPage);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(prontuarioTeste);
 
         List<Prontuario> resultado = dataProvider
                 .listarPorPaciente(PacienteBuilder.criarPaciente().getId(), PageRequest.of(0, 10)).getContent();
 
         IntStream.range(0, resultado.size())
                 .forEach(i -> ProntuarioValidator.validaProntuarioDomain(
-                        prontuarioTeste.getContent().get(i),
+                        prontuarioTeste,
                         resultado.get(i)
                 ));
     }
 
     @Test
     void testeExceptionListagemProntuarioPorPaciente() {
-        Paciente pacienteTeste = PacienteBuilder.criarPaciente();
-
         Mockito.when(repository.findAllByPacienteId(Mockito.any(), Mockito.any())).thenThrow(RuntimeException.class);
 
         DataProviderException exception = Assertions.assertThrows(DataProviderException.class,
-                () -> dataProvider.listarPorPaciente(pacienteTeste.getId(), PageRequest.of(0, 10)));
+                () -> dataProvider.listarPorPaciente(PacienteBuilder.criarPaciente().getId(), PageRequest.of(0, 10)));
 
         Assertions.assertEquals(dataProvider.MENSAGEM_ERRO_LISTAR_PACIENTE, exception.getMessage());
     }
 
     @Test
     void testeListagemProntuarioPorPsicologo() {
-        Page<Prontuario> prontuarioTeste = ProntuarioBuilder.criarPageProntuarioEntity().map(mapper::paraDomain);
-        Mockito.when(repository.findAllByPsicologoId(Mockito.any(), Mockito.any())).thenReturn(prontuarioTeste.map(mapper::paraEntity));
+        Mockito.when(repository.findAllByPsicologoId(Mockito.any(), Mockito.any())).thenReturn(prontuarioEntityPage);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(prontuarioTeste);
 
         List<Prontuario> resultado = dataProvider
                 .listarPorPsicologo(PsicologoBuilder.criarPsicologo().getId(), PageRequest.of(0, 10)).getContent();
 
         IntStream.range(0, resultado.size())
                 .forEach(i -> ProntuarioValidator.validaProntuarioDomain(
-                        prontuarioTeste.getContent().get(i),
+                        prontuarioTeste,
                         resultado.get(i)
                 ));
     }

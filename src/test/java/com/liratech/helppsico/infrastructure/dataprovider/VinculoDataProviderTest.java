@@ -7,8 +7,6 @@ import com.liratech.helppsico.infrastructure.mapper.VinculoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.VinculoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.VinculoEntity;
 import com.liratech.helppsico.validators.VinculoValidator;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,38 +24,40 @@ import java.util.UUID;
 
 import static com.liratech.helppsico.infrastructure.dataprovider.VinculoDataProvider.*;
 
-@AllArgsConstructor
 @ExtendWith(MockitoExtension.class)
 public class VinculoDataProviderTest {
+
+    @Mock
+    private VinculoMapperInfra mapper;
+
     @Mock
     private VinculoRepository repository;
 
     @InjectMocks
     private VinculoDataProvider dataProvider;
 
-    private VinculoMapperInfra mapper;
     private Vinculo vinculoDomain;
     private VinculoEntity vinculoEntity;
     private UUID id;
-    private Page<Vinculo> vinculoPage;
+    private Page<VinculoEntity> vinculoPage;
     private Pageable pageable;
 
     @BeforeEach
     void inicializarAtributos(){
         vinculoDomain = VinculoBuilder.criarVinculo();
-        vinculoEntity = mapper.paraEntity(vinculoDomain);
+        vinculoEntity = VinculoBuilder.criarVinculoEntity();
 
         id = vinculoDomain.getId();
 
-        vinculoPage = VinculoBuilder.criarPageDeVinculos();
+        vinculoPage = VinculoBuilder.criarPageDeVinculosEntity();
         pageable = PageRequest.of(0, 10);
     }
 
     @Test
     void testeSalvarVinculo(){
-        vinculoDomain.setId(null);
-
         Mockito.when(repository.save(Mockito.any())).thenReturn(vinculoEntity);
+        Mockito.when(mapper.paraEntity(Mockito.any())).thenReturn(vinculoEntity);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(vinculoDomain);
 
         Vinculo vinculoTeste = dataProvider.salvar(vinculoDomain);
 
@@ -68,6 +68,7 @@ public class VinculoDataProviderTest {
     @Test
     void testeExceptionSalvarVinculo(){
         Mockito.when(repository.save(Mockito.any())).thenThrow(DataProviderException.class);
+        Mockito.when(mapper.paraEntity(Mockito.any())).thenReturn(vinculoEntity);
 
         DataProviderException exception = Assertions.assertThrows(
                 DataProviderException.class,
@@ -80,6 +81,7 @@ public class VinculoDataProviderTest {
     @Test
     void testeConsultarVinculoPorId(){
         Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(vinculoEntity));
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(vinculoDomain);
 
         Optional<Vinculo> optionalVinculo = dataProvider.consultarPorId(id);
 
@@ -124,7 +126,8 @@ public class VinculoDataProviderTest {
 
     @Test
     void testeListarVinculoPorIdPsicologo(){
-        Mockito.when(repository.findAllByPsicologoId(Mockito.any(), Mockito.any())).thenReturn(vinculoPage.map(mapper::paraEntity));
+        Mockito.when(repository.findAllByPsicologoId(Mockito.any(), Mockito.any())).thenReturn(vinculoPage);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(vinculoDomain);
 
         Page<Vinculo> vinculoPageResultado = dataProvider.listarPorIdPsicologo(vinculoDomain.getPsicologo().getId(), pageable);
 
@@ -149,7 +152,8 @@ public class VinculoDataProviderTest {
 
     @Test
     void testeListarVinculoPorIdPaciente(){
-        Mockito.when(repository.findAllByPacienteId(Mockito.any(), Mockito.any())).thenReturn(vinculoPage.map(mapper::paraEntity));
+        Mockito.when(repository.findAllByPacienteId(Mockito.any(), Mockito.any())).thenReturn(vinculoPage);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(vinculoDomain);
 
         Page<Vinculo> vinculoPage = dataProvider.listarPorIdPaciente(vinculoDomain.getPaciente().getId(), pageable);
 
@@ -188,7 +192,7 @@ public class VinculoDataProviderTest {
 
         DataProviderException exception = Assertions.assertThrows(
                 DataProviderException.class,
-                () -> dataProvider.listarPorIdPaciente(id, pageable)
+                () -> dataProvider.consultarAtivoPorPaciente(id)
         );
 
         Assertions.assertEquals(MENSAGEM_ERRO_CONSULTAR_POR_PACIENTE, exception.getMessage());

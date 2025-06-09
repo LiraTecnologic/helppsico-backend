@@ -50,11 +50,30 @@ public class ValidacaoCrpBuilder {
         return transformarListaEmPage(validacaoCrpList, PageRequest.of(0,10));
     }
 
+    public static Page<ValidacaoCrpEntity> criarPageValidacaoCrpEntity(){
+        List<ValidacaoCrpEntity> validacaoCrpList = new ArrayList<>();
+
+        for(int i = 0; i < 3; i++){
+            validacaoCrpList.add(criarValidacaoCrpEntity());
+        }
+
+        return transformarListaEmPageEntity(validacaoCrpList, PageRequest.of(0,10));
+    }
+
     private static Page<ValidacaoCrp> transformarListaEmPage(List<ValidacaoCrp> lista, Pageable pageable){
         int start = (int) pageable.getOffset();
         int end = Math.min((start+pageable.getPageSize()), lista.size());
 
         List<ValidacaoCrp> subLista = lista.subList(start, end);
+
+        return new PageImpl<>(subLista, pageable, lista.size());
+    }
+
+    private static Page<ValidacaoCrpEntity> transformarListaEmPageEntity(List<ValidacaoCrpEntity> lista, Pageable pageable){
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start+pageable.getPageSize()), lista.size());
+
+        List<ValidacaoCrpEntity> subLista = lista.subList(start, end);
 
         return new PageImpl<>(subLista, pageable, lista.size());
     }
