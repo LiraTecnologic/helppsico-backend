@@ -7,8 +7,6 @@ import com.liratech.helppsico.infrastructure.mapper.AvaliacaoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.AvaliacaoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.AvaliacaoEntity;
 import com.liratech.helppsico.validators.AvaliacaoValidator;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,13 +39,21 @@ public class AvaliacaoDataProviderTest {
     private Avaliacao avaliacaoTeste;
     private AvaliacaoEntity avaliacaoEntityTeste;
     private Page<Avaliacao> avaliacaoPage;
+    private Page<AvaliacaoEntity> avaliacaoEntityPage;
     private Pageable pageable;
 
     @BeforeEach
     void inicializarAtributos() {
         avaliacaoTeste = AvaliacaoBuilder.criarAvaliacao();
-        avaliacaoEntityTeste = mapper.paraEntity(avaliacaoTeste);
+
+        avaliacaoEntityTeste = AvaliacaoBuilder.criarAvaliacaoEntity();
+        avaliacaoEntityTeste.setId(avaliacaoTeste.getId());
+        avaliacaoEntityTeste.getPsicologo().setId(avaliacaoTeste.getPsicologo().getId());
+        avaliacaoEntityTeste.getPaciente().setId(avaliacaoTeste.getPaciente().getId());
+
         avaliacaoPage = AvaliacaoBuilder.criarPageDeAvaliacoes();
+
+        avaliacaoEntityPage = AvaliacaoBuilder.criarPageDeAvaliacoesEntity();
 
         pageable = PageRequest.of(0,10);
     }
@@ -77,6 +83,7 @@ public class AvaliacaoDataProviderTest {
     @Test
     void testeBuscarPorId(){
         Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(avaliacaoEntityTeste));
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(avaliacaoTeste);
 
         Optional<Avaliacao> avaliacaoResultado = dataProvider.buscarPorId(avaliacaoTeste.getId());
 
@@ -99,7 +106,8 @@ public class AvaliacaoDataProviderTest {
     void testeListarPorPsicologo(){
         UUID idProcurado = avaliacaoPage.getContent().get(1).getPsicologo().getId();
 
-        Mockito.when(repository.findAllByPsicologoId(Mockito.any(), Mockito.any())).thenReturn(avaliacaoPage.map(mapper::paraEntity));
+        Mockito.when(repository.findAllByPsicologoId(Mockito.any(), Mockito.any())).thenReturn(avaliacaoEntityPage);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(avaliacaoTeste);
 
         Page<Avaliacao> avaliacaoResultado = dataProvider.listarPorPsicologo(idProcurado, pageable);
 

@@ -22,8 +22,10 @@ import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-@AllArgsConstructor
 public class HorarioDataProviderTest {
+
+    @Mock
+    private HorarioMapperInfra horarioMapperInfra;
 
     @Mock
     private HorarioRepository repository;

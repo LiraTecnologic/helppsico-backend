@@ -35,7 +35,6 @@ public class ConsultaDataProvider implements ConsultaGateway {
     @Override
     public Consulta salvar(Consulta consulta) {
         ConsultaEntity consultaEntity = mapper.paraEntity(consulta);
-        System.out.println(consultaEntity.toString());
 
         try {
             consultaEntity = repository.save(consultaEntity);

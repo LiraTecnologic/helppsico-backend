@@ -372,11 +372,30 @@ public class DocumentoBuilder {
 
         return transformarListaEmPagina(documentolist, PageRequest.of(0,10));
     }
+
+    public static Page<DocumentoEntity> criarPageDeDocumentoEntity() {
+        List<DocumentoEntity> documentolist = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            documentolist.add(criarAtestadoEntity());
+        }
+
+        return transformarListaEmPaginaEntity(documentolist, PageRequest.of(0,10));
+    }
     private static Page<Documento> transformarListaEmPagina(List<Documento> lista, Pageable pageable) {
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), lista.size());
 
         List<Documento> sublist = lista.subList(start, end);
+
+        return new PageImpl<>(sublist, pageable, lista.size());
+    }
+
+    private static Page<DocumentoEntity> transformarListaEmPaginaEntity(List<DocumentoEntity> lista, Pageable pageable) {
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), lista.size());
+
+        List<DocumentoEntity> sublist = lista.subList(start, end);
 
         return new PageImpl<>(sublist, pageable, lista.size());
     }

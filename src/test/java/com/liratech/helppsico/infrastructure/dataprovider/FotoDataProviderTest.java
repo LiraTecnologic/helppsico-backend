@@ -1,19 +1,15 @@
 package com.liratech.helppsico.infrastructure.dataprovider;
 
-import com.liratech.helppsico.builders.FotoBuilder;
-import com.liratech.helppsico.domain.Foto;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,7 +21,6 @@ import java.util.UUID;
 import static com.liratech.helppsico.infrastructure.dataprovider.FotoDataProvider.*;
 
 @ExtendWith(MockitoExtension.class)
-@AllArgsConstructor
 class FotoDataProviderTest {
 
     @Mock

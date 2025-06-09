@@ -4,13 +4,10 @@ import com.liratech.helppsico.builders.DocumentoBuilder;
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.documento.Documento;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-
 import com.liratech.helppsico.infrastructure.mapper.DocumentoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.DocumentoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.documento.DocumentoEntity;
 import com.liratech.helppsico.validators.DocumentoValidator;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,18 +25,19 @@ import static com.liratech.helppsico.infrastructure.dataprovider.DocumentoDataPr
 
 
 @ExtendWith(MockitoExtension.class)
-@AllArgsConstructor
 class DocumentoDataProviderTest {
 
     @Mock
-    private final DocumentoRepository repository;
+    private DocumentoMapperInfra mapper;
+
+    @Mock
+    private DocumentoRepository repository;
 
     @InjectMocks
-    private final DocumentoDataProvider dataProvider;
+    private DocumentoDataProvider dataProvider;
 
     private Documento documentoDomain;
     private DocumentoEntity documentoEntity;
-    private DocumentoMapperInfra mapper;
     private Page<Documento> pageDocumentos;
     private Page<DocumentoEntity> pageDocumentosEntity;
     private Pageable pageable;
@@ -50,7 +48,7 @@ class DocumentoDataProviderTest {
         documentoDomain = DocumentoBuilder.criarAtestado();
         documentoEntity = DocumentoBuilder.criarAtestadoEntity();
         pageDocumentos = DocumentoBuilder.criarPageDeDocumento();
-        pageDocumentosEntity = pageDocumentos.map(mapper::paraEntity);
+        pageDocumentosEntity = DocumentoBuilder.criarPageDeDocumentoEntity();
         pacienteTeste = documentoDomain.getPaciente();
 
         pageable = PageRequest.of(0,10);
@@ -59,6 +57,8 @@ class DocumentoDataProviderTest {
     @Test
     void testeSalvarDocumento(){
         Mockito.when(repository.save(Mockito.any())).thenReturn(documentoEntity);
+        Mockito.when(mapper.paraEntity(Mockito.any())).thenReturn(documentoEntity);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(documentoDomain);
 
         Documento documento = dataProvider.salvar(documentoDomain);
 
@@ -68,7 +68,8 @@ class DocumentoDataProviderTest {
 
     @Test
     void testeExceptionSalvarDocumento(){
-        Mockito.when(repository.save(Mockito.any())).thenThrow(Exception.class);
+        Mockito.when(repository.save(Mockito.any())).thenThrow(RuntimeException.class);
+        Mockito.when(mapper.paraEntity(Mockito.any())).thenReturn(documentoEntity);
 
         DataProviderException exception = Assertions.assertThrows(
                 DataProviderException.class,
@@ -81,6 +82,7 @@ class DocumentoDataProviderTest {
     @Test
     void testeListarDocumentosPorPaciente(){
         Mockito.when(repository.findAllByPacienteId(Mockito.any(), Mockito.any())).thenReturn(pageDocumentosEntity);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(documentoDomain);
 
         Page<Documento> documentos = dataProvider.listarPorPaciente(pacienteTeste.getId(), pageable);
 
@@ -93,7 +95,7 @@ class DocumentoDataProviderTest {
 
     @Test
     void testeExceptionListarDocumentosPorPaciente(){
-        Mockito.when(repository.findAll()).thenThrow(Exception.class);
+        Mockito.when(repository.findAllByPacienteId(Mockito.any(), Mockito.any())).thenThrow(RuntimeException.class);
 
         DataProviderException exception = Assertions.assertThrows(
                 DataProviderException.class,

@@ -1,8 +1,6 @@
 package com.liratech.helppsico.infrastructure.dataprovider;
 
 import com.liratech.helppsico.builders.ConsultaBuilder;
-import com.liratech.helppsico.builders.PacienteBuilder;
-import com.liratech.helppsico.builders.PsicologoBuilder;
 import com.liratech.helppsico.domain.Consulta;
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.Psicologo;
@@ -11,9 +9,8 @@ import com.liratech.helppsico.infrastructure.mapper.ConsultaMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.ConsultaRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.ConsultaEntity;
 import com.liratech.helppsico.validators.ConsultaValidator;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,27 +27,39 @@ import java.util.UUID;
 import java.util.stream.IntStream;
 
 @ExtendWith(MockitoExtension.class)
-@RequiredArgsConstructor
 class ConsultaDataProviderTest {
 
     @Mock
     private ConsultaRepository repository;
 
+    @Mock
+    private ConsultaMapperInfra mapper;
+
     @InjectMocks
     private ConsultaDataProvider dataProvider;
 
-    private final ConsultaEntity consultaEntityTeste = ConsultaBuilder.criarConsultaEntity();
-    private final Consulta consultaDomainTeste = ConsultaBuilder.criarConsulta();
-    private final Page<ConsultaEntity> pageConsultaEntitiesTeste = ConsultaBuilder.criarPageConsultaEntity();
-    private final Paciente pacienteDomainTeste = consultaDomainTeste.getPaciente();
-    private final Psicologo psicologoDomainTeste = consultaDomainTeste.getPsicologo();
-    private final ConsultaMapperInfra mapper;
-    private final Pageable pageable = PageRequest.of(0, 10);
+    private ConsultaEntity consultaEntityTeste;
+    private Consulta consultaDomainTeste;
+    private Page<ConsultaEntity> pageConsultaEntitiesTeste;
+    private Paciente pacienteDomainTeste;
+    private Psicologo psicologoDomainTeste;
+    private Pageable pageable;
+
+    @BeforeEach
+    void inicializar(){
+        consultaEntityTeste = ConsultaBuilder.criarConsultaEntity();
+        consultaDomainTeste = ConsultaBuilder.criarConsulta();
+        pageConsultaEntitiesTeste = ConsultaBuilder.criarPageConsultaEntity();
+        pacienteDomainTeste = consultaDomainTeste.getPaciente();
+        psicologoDomainTeste = consultaDomainTeste.getPsicologo();
+        pageable = PageRequest.of(0, 10);
+    }
 
     @Test
     void testeSalvar() {
-        consultaDomainTeste.setId(null);
         Mockito.when(repository.save(Mockito.any())).thenReturn(consultaEntityTeste);
+        Mockito.when(mapper.paraEntity(Mockito.any())).thenReturn(consultaEntityTeste);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(consultaDomainTeste);
 
         Consulta resultado = dataProvider.salvar(consultaDomainTeste);
 
@@ -61,15 +70,18 @@ class ConsultaDataProviderTest {
     @Test
     void testaExceptionSalvar() {
         Mockito.when(repository.save(Mockito.any())).thenThrow(RuntimeException.class);
+        Mockito.when(mapper.paraEntity(Mockito.any())).thenReturn(consultaEntityTeste);
 
-        DataProviderException exception = Assertions.assertThrows(DataProviderException.class,
+        DataProviderException exception = Assertions.assertThrows(
+                DataProviderException.class,
                 () -> dataProvider.salvar(consultaDomainTeste));
         Assertions.assertEquals(exception.getMessage(), ConsultaDataProvider.MENSAGEM_ERRO_SALVAR);
     }
 
     @Test
     void testeConsultaPorId() {
-        Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(mapper.paraEntity(consultaDomainTeste)));
+        Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(consultaEntityTeste));
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(consultaDomainTeste);
 
         Optional<Consulta> resultado = dataProvider.consultarPorId(consultaDomainTeste.getId());
 
@@ -92,6 +104,7 @@ class ConsultaDataProviderTest {
     @Test
     void testeConsultarConsultasFuturasPorPaciente() {
         Mockito.when(repository.consultarConsultasFuturasPaciente(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(pageConsultaEntitiesTeste);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(consultaDomainTeste);
 
         Page<Consulta> resultado = dataProvider.consultarConsultasFuturasPaciente(
                         pacienteDomainTeste.getId(), psicologoDomainTeste.getId(), pageable
@@ -121,6 +134,7 @@ class ConsultaDataProviderTest {
     @Test
     void testeConsultarConsultasFuturasPorPsicologo() {
         Mockito.when(repository.consultarConsultasFuturasPsicologo(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(pageConsultaEntitiesTeste);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(consultaDomainTeste);
 
         Page<Consulta> resultado = dataProvider.consultarConsultasFuturasPsicologo(
                 psicologoDomainTeste.getId(), pageable
@@ -150,6 +164,7 @@ class ConsultaDataProviderTest {
     @Test
     void testeConsultarHistoricoPorPaciente() {
         Mockito.when(repository.consultarHistoricoPaciente(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(pageConsultaEntitiesTeste);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(consultaDomainTeste);
 
         Page<Consulta> resultado = dataProvider.consultarHistoricoPaciente(
                 pacienteDomainTeste.getId(), psicologoDomainTeste.getId(), pageable
@@ -179,6 +194,7 @@ class ConsultaDataProviderTest {
     @Test
     void testeConsultarHistoricoPorPsicologo() {
         Mockito.when(repository.consultarHistoricoPsicologo(Mockito.any(), Mockito.any())).thenReturn(pageConsultaEntitiesTeste);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(consultaDomainTeste);
 
         Page<Consulta> resultado = dataProvider.consultarHistoricoPsicologo(
                 psicologoDomainTeste.getId(), pageable
@@ -208,8 +224,10 @@ class ConsultaDataProviderTest {
     @Test
     void testeConsultarSessoesDoMesmoDia() {
         List<ConsultaEntity> listTeste = ConsultaBuilder.criarListaConsultaEntity();
+        List<Consulta> listDomain = ConsultaBuilder.criarListaConslta();
 
-        Mockito.when(repository.consultarConsultasMesmoDia(Mockito.any(), Mockito.any())).thenReturn(listTeste);
+        Mockito.when(repository.consultarConsultasMesmoDia(Mockito.any(Integer.class), Mockito.any())).thenReturn(listTeste);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(consultaDomainTeste);
 
         List<Consulta> resultado = dataProvider.consultarConsultasMesmoDia(12, consultaDomainTeste.getPsicologo().getId());
 
@@ -217,14 +235,14 @@ class ConsultaDataProviderTest {
 
         IntStream.range(0, resultado.size())
                 .forEach(i -> ConsultaValidator.validaConsultaDomain(
-                        mapper.paraDomain(listTeste.get(i)),
+                        listDomain.get(i),
                         resultado.get(i)
                 ));
     }
 
     @Test
     void testeExceptionConsultaSessoesDoMesmoDia() {
-        Mockito.when(repository.consultarConsultasMesmoDia(Mockito.any(), Mockito.any())).thenThrow(RuntimeException.class);
+        Mockito.when(repository.consultarConsultasMesmoDia(Mockito.any(Integer.class), Mockito.any())).thenThrow(RuntimeException.class);
 
         DataProviderException exception = Assertions.assertThrows(DataProviderException.class,
                 () -> dataProvider.consultarConsultasMesmoDia(12, consultaDomainTeste.getPsicologo().getId()));

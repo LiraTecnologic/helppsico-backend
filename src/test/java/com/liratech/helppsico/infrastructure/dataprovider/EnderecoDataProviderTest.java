@@ -7,8 +7,8 @@ import com.liratech.helppsico.infrastructure.mapper.EnderecoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.EnderecoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.EnderecoEntity;
 import com.liratech.helppsico.validators.EnderecoValidator;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,11 +17,12 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
-@RequiredArgsConstructor
 class EnderecoDataProviderTest {
+
+    @Mock
+    private EnderecoMapperInfra mapper;
 
     @Mock
     private EnderecoRepository repository;
@@ -29,26 +30,29 @@ class EnderecoDataProviderTest {
     @InjectMocks
     private EnderecoDataProvider dataProvider;
 
-    private final EnderecoMapperInfra mapper;
+    private Endereco enderecoDomainTeste;
+    private EnderecoEntity enderecoEntityTeste;
+
+    @BeforeEach
+    void inicializar() {
+        enderecoDomainTeste = EnderecoBuilder.criarEndereco();
+        enderecoEntityTeste = EnderecoBuilder.criarEnderecoEntity();
+    }
 
     @Test
     void testeSalvarEndereco() {
-        Endereco endereco = EnderecoBuilder.criarEndereco();
-        endereco.setId(null);
+        Mockito.when(repository.save(Mockito.any())).thenReturn(enderecoEntityTeste);
+        Mockito.when(mapper.paraEntity(Mockito.any())).thenReturn(enderecoEntityTeste);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(enderecoDomainTeste);
 
-        EnderecoEntity enderecoSalvo = mapper.paraEntity(endereco);
-        UUID id = UUID.randomUUID();
-        endereco.setId(id);
-
-        Mockito.when(repository.save(Mockito.any())).thenReturn(enderecoSalvo);
-
-        Endereco enderecoResultado = dataProvider.salvar(endereco);
-        EnderecoValidator.validaEnderecoDomain(mapper.paraDomain(enderecoSalvo), enderecoResultado);
+        Endereco enderecoResultado = dataProvider.salvar(enderecoDomainTeste);
+        EnderecoValidator.validaEnderecoDomain(enderecoDomainTeste, enderecoResultado);
     }
 
     @Test
     void testeExceptionSalvarEndereco() {
         Mockito.when(repository.save(Mockito.any())).thenThrow(RuntimeException.class);
+        Mockito.when(mapper.paraEntity(Mockito.any())).thenReturn(enderecoEntityTeste);
 
         DataProviderException exception = Assertions
                 .assertThrows(DataProviderException.class, () -> dataProvider.salvar(EnderecoBuilder.criarEndereco()));
@@ -57,14 +61,12 @@ class EnderecoDataProviderTest {
 
     @Test
     void testeConsultarEnderecoPorId() {
-        Endereco enderecoTeste = EnderecoBuilder.criarEndereco();
+        Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(enderecoEntityTeste));
 
-        Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(mapper.paraEntity(enderecoTeste)));
-
-        Optional<Endereco> enderecoResultado = dataProvider.consultarPorId(enderecoTeste.getId());
+        Optional<Endereco> enderecoResultado = dataProvider.consultarPorId(enderecoDomainTeste.getId());
 
         enderecoResultado.ifPresent(endereco -> {
-            EnderecoValidator.validaEnderecoDomain(enderecoTeste, endereco);
+            EnderecoValidator.validaEnderecoDomain(enderecoDomainTeste, endereco);
         });
     }
 
