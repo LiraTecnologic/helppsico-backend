@@ -11,6 +11,7 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
+@ToString
 @Getter
 public class AtestadoDto extends DocumentoDto{
     @NotNull(message = "A data do atendimento é obrigatória")

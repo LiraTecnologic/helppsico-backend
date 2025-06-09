@@ -14,4 +14,6 @@ import org.mapstruct.ReportingPolicy;
 public interface PsicologoMapper {
     Psicologo paraDomain (PsicologoDto dto);
     PsicologoDto paraDto (Psicologo domain);
+
+    Object paraEntity(Object any);
 }
