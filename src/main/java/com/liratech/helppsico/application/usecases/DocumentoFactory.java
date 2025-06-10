@@ -19,6 +19,7 @@ public class DocumentoFactory {
     public final String MENSAGEM_TIPO_DOCUMENTO_INVALIDO = "Tipo do documento inválido";
 
     public Documento criar(DadosGeraisDocumentoDto dadosGeraisDocumentoDto, TipoDocumento tipoDocumento) {
+        System.out.println(pacienteMapper.paraDomain(dadosGeraisDocumentoDto.getPaciente()).toString());
         switch (tipoDocumento.getCodigo()){
             case 1:
                 return new Atestado(

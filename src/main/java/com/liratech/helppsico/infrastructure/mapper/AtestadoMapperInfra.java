@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-@NoArgsConstructor
 public class AtestadoMapperInfra {
 
     private PacienteMapperInfra pacienteMapper;
