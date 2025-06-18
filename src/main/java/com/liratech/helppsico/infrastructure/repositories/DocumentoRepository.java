@@ -1,0 +1,14 @@
+package com.liratech.helppsico.infrastructure.repositories;
+
+import com.liratech.helppsico.infrastructure.repositories.entities.documento.DocumentoEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.UUID;
+
+@Repository
+public interface DocumentoRepository extends JpaRepository<DocumentoEntity, UUID> {
+    Page<DocumentoEntity> findAllByPacienteId(UUID idPaciente, Pageable pageable);
+}

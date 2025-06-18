@@ -1,0 +1,17 @@
+package com.liratech.helppsico.entrypoint.mapper;
+
+import com.liratech.helppsico.domain.Paciente;
+import com.liratech.helppsico.entrypoint.dto.PacienteDto;
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+
+@Mapper(
+        componentModel = "spring",
+        implementationName = "PacienteMapperImpl",
+        unmappedTargetPolicy = ReportingPolicy.ERROR,
+        uses = {EnderecoMapper.class}
+)
+public interface PacienteMapper {
+    Paciente paraDomain(PacienteDto dto);
+    PacienteDto paraDto(Paciente domain);
+}
