@@ -14,17 +14,8 @@ import java.util.UUID;
 
 @Repository
 public interface PsicologoRepository extends JpaRepository<PsicologoEntity, UUID> {
-
-    @Query(value = """
-        SELECT p
-        FROM Psicologo p
-        WHERE p.nome LIKE CONCAT('%', :nome, '%')
-    """, countQuery = """
-        SELECT COUNT(p)
-        FROM Psicologo p
-        WHERE p.nome LIKE CONCAT('%', :nome, '%')
-    """)
-    Page<PsicologoEntity> findAllByNome(@Param("nome") String nome, Pageable pageable);
+    Page<PsicologoEntity> findByNome(String nome);
+    Optional<PsicologoEntity> findByEmail(String email);
 
     @Query("""
             SELECT p

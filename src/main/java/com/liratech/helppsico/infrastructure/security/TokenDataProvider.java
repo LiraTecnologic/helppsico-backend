@@ -111,6 +111,14 @@ public class TokenDataProvider implements TokenGateway {
         }
     }
 
+    public Claims extrairClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(Keys.hmacShaKeyFor(chaveSecreta.getBytes()))
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
     private Instant gerarDataDeExpiracao() {
         return Instant.now().plus(1, ChronoUnit.DAYS);
     }
