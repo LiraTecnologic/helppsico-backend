@@ -11,6 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Builder
 public class VinculoEntity {
     @Id
@@ -18,7 +19,7 @@ public class VinculoEntity {
     @Column(name = "id_vinculo")
     private UUID id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_paciente")
     private PacienteEntity paciente;
 

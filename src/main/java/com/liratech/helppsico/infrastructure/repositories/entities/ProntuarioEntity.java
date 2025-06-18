@@ -2,6 +2,8 @@ package com.liratech.helppsico.infrastructure.repositories.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity(name = "Prontuario")
@@ -10,6 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Builder
 public class ProntuarioEntity {
 
@@ -26,8 +29,16 @@ public class ProntuarioEntity {
     @JoinColumn(name = "id_paciente")
     private PacienteEntity paciente;
 
+    @ManyToOne
+    @JoinColumn(name = "id_consulta")
+    private ConsultaEntity consulta;
+
     private String titulo;
     private String conteudo;
 
+    @Column(name = "data_criacao")
+    private LocalDate dataCriacao;
 
+    @Column(name = "data_edicao")
+    private LocalDate dataEdicao;
 }

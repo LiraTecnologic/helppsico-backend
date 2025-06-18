@@ -7,7 +7,9 @@ import com.liratech.helppsico.builders.EnderecoBuilder;
 import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.entrypoint.dto.EnderecoDto;
 import com.liratech.helppsico.entrypoint.mapper.EnderecoMapper;
+import com.liratech.helppsico.infrastructure.mapper.EnderecoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.EnderecoRepository;
+import com.liratech.helppsico.validators.json.EnderecoValidatorJson;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +36,7 @@ class EnderecoControllerTest {
 
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
-    private final com.liratech.helppsico.infrastructure.mapper.EnderecoMapper mapperInfra;
+    private final EnderecoMapperInfra mapperInfra;
     private final EnderecoMapper mapperEntry;
 
     @MockitoSpyBean

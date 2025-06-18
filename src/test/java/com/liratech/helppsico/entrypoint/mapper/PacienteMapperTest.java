@@ -1,35 +1,51 @@
 package com.liratech.helppsico.entrypoint.mapper;
 
+import com.liratech.helppsico.builders.EnderecoBuilder;
 import com.liratech.helppsico.builders.PacienteBuilder;
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.entrypoint.dto.PacienteDto;
+import com.liratech.helppsico.infrastructure.mapper.PacienteMapperInfraImpl;
 import com.liratech.helppsico.validators.PacienteValidator;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mapstruct.factory.Mappers;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class PacienteMapperTest {
 
-    private final PacienteMapper pacienteMapper = Mappers.getMapper(PacienteMapper.class);
+    @Mock
+    private EnderecoMapper enderecoMapper;
+
+    @InjectMocks
+    private PacienteMapperImpl mapper;
+    private Paciente domainTest;
+    private PacienteDto dtoTest;
 
     @Test
-    @DisplayName("Caso de sucesso na tranformação de DTO para Domain")
-    void testeTransformacaoPacienteDeDtoParaDomain() {
-        PacienteDto pacienteDto = PacienteBuilder.criarPacienteDto();
-        Paciente paciente = pacienteMapper.paraDomain(pacienteDto);
+    void testePacienteDomainParaDto() {
+        domainTest = PacienteBuilder.criarPaciente();
 
-        Assertions.assertNotNull(paciente.getEndereco());
-        PacienteValidator.validaPacienteDtoParaDomain(pacienteDto, paciente);
+        Mockito.when(enderecoMapper.paraDto(Mockito.any())).thenReturn(EnderecoBuilder.criarEnderecoDto());
+
+        dtoTest = mapper.paraDto(domainTest);
+
+        Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
+        PacienteValidator.validaPacienteMapperEntry(domainTest, dtoTest);
     }
 
     @Test
-    @DisplayName("Caso de sucesso na tranformação de Domain para Dto")
-    void testeTransformacaoPacienteDeDomainParaDto() {
-        Paciente paciente = PacienteBuilder.criarPaciente();
-        PacienteDto pacienteDto = pacienteMapper.paraDto(paciente);
+    void testePacienteDtoParaDomain() {
+        dtoTest = PacienteBuilder.criarPacienteDto();
 
-        Assertions.assertNotNull(pacienteDto);
-        PacienteValidator.validaPacienteDomainParaDto(paciente, pacienteDto);
+        Mockito.when(enderecoMapper.paraDomain(Mockito.any())).thenReturn(EnderecoBuilder.criarEndereco());
+
+        domainTest = mapper.paraDomain(dtoTest);
+
+        Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
+        PacienteValidator.validaPacienteMapperEntry(domainTest, dtoTest);
     }
 }

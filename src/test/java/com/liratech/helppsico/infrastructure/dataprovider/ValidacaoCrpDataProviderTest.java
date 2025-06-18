@@ -3,10 +3,12 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.builders.ValidacaoCrpBuilder;
 import com.liratech.helppsico.domain.ValidacaoCrp;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
+import com.liratech.helppsico.infrastructure.mapper.ValidacaoCrpMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.ValidacaoCrpRepository;
+import com.liratech.helppsico.infrastructure.repositories.entities.ValidacaoCrpEntity;
 import com.liratech.helppsico.validators.ValidacaoCrpValidator;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,35 +24,43 @@ import java.util.UUID;
 import java.util.stream.IntStream;
 
 @ExtendWith(MockitoExtension.class)
-@RequiredArgsConstructor
 class ValidacaoCrpDataProviderTest {
 
     @Mock
-    private final ValidacaoCrpRepository repository;
+    private ValidacaoCrpMapperInfra mapper;
+
+    @Mock
+    private ValidacaoCrpRepository repository;
 
     @InjectMocks
-    private final ValidacaoCrpDataProvider dataProvider;
+    private ValidacaoCrpDataProvider dataProvider;
 
-    private final ValidacaoCrpMapper mapper;
+    private ValidacaoCrp validacaoCrpTeste;
+    private ValidacaoCrpEntity validacaoCrpEntityTeste;
+    private Page<ValidacaoCrpEntity> validacaoCrpEntityPage;
 
-    @Test
-    void testeSalvarValidacaoCrp() {
-        ValidacaoCrp validacaoCrp = ValidacaoCrpBuilder.criarValidacaoCrp();
-        validacaoCrp.setId(null);
-
-        ValidacaoCrpEntity validacaoSalva = mapper.paraEntity(validacaoCrp);
-        UUID idGerado = UUID.randomUUID();
-        validacaoSalva.setId(idGerado);
-
-        Mockito.when(repository.save(Mockito.any())).thenReturn(validacaoSalva);
-
-        ValidacaoCrp validacaoResultado = dataProvider.salvar(validacaoCrp);
-        ValidacaoCrpValidator.validaValidacaoCrpDomain(mapper.paraDomain(validacaoSalva), validacaoResultado);
+    @BeforeEach
+    void inicializar() {
+        validacaoCrpTeste = ValidacaoCrpBuilder.criarValidacaoCrp();
+        validacaoCrpEntityTeste = ValidacaoCrpBuilder.criarValidacaoCrpEntity();
+        validacaoCrpEntityPage = ValidacaoCrpBuilder.criarPageValidacaoCrpEntity();
     }
 
     @Test
-    void testeErroSalvarValidacaoCrp() {
+    void testeSalvarValidacaoCrp() {
+        Mockito.when(repository.save(Mockito.any())).thenReturn(validacaoCrpEntityTeste);
+        Mockito.when(mapper.paraEntity(Mockito.any())).thenReturn(validacaoCrpEntityTeste);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(validacaoCrpTeste);
+
+        ValidacaoCrp validacaoResultado = dataProvider.salvar(validacaoCrpTeste);
+
+        ValidacaoCrpValidator.validaValidacaoCrpDomain(validacaoCrpTeste, validacaoResultado);
+    }
+
+    @Test
+    void testeExceptionSalvarValidacaoCrp() {
         Mockito.when(repository.save(Mockito.any())).thenThrow(DataProviderException.class);
+        Mockito.when(mapper.paraEntity(Mockito.any())).thenReturn(validacaoCrpEntityTeste);
 
         DataProviderException exception = Assertions
                 .assertThrows(DataProviderException.class, () -> dataProvider.salvar(ValidacaoCrpBuilder.criarValidacaoCrp()));
@@ -60,19 +70,18 @@ class ValidacaoCrpDataProviderTest {
 
     @Test
     void testeConsultarValidacaoCrpPorId() {
-        ValidacaoCrp validacaoTeste = ValidacaoCrpBuilder.criarValidacaoCrp();
+        Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(validacaoCrpEntityTeste));
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(validacaoCrpTeste);
 
-        Mockito.when(repository.findById(Mockito.any())).thenReturn(Optional.of(mapper.paraEntity(validacaoTeste)));
-
-        Optional<ValidacaoCrp> validacaoResultado = dataProvider.consultarPorId(validacaoTeste.getId());
+        Optional<ValidacaoCrp> validacaoResultado = dataProvider.consultarPorId(validacaoCrpEntityTeste.getId());
 
         validacaoResultado.ifPresent(validacaoCrp -> {
-            ValidacaoCrpValidator.validaValidacaoCrpDomain(validacaoTeste, validacaoCrp);
+            ValidacaoCrpValidator.validaValidacaoCrpDomain(validacaoCrpTeste, validacaoCrp);
         });
     }
 
     @Test
-    void testeErroConsultarValidacaoCrpPorId() {
+    void testeExceptionConsultarValidacaoCrpPorId() {
         Mockito.when(repository.findById(Mockito.any())).thenThrow(DataProviderException.class);
 
         DataProviderException exception = Assertions
@@ -83,24 +92,24 @@ class ValidacaoCrpDataProviderTest {
 
     @Test
     void testeListarValidacaoCrp() {
-        Page<ValidacaoCrp> validacaoCrpPage = ValidacaoCrpBuilder.criarPageValidacaoCrp();
         Pageable pageable = PageRequest.of(0, 10);
 
-        Mockito.when(repository.findAll()).thenReturn(mapper.paraEntitiesPage(validacaoCrpPage));
+        Mockito.when(repository.findAll(pageable)).thenReturn(validacaoCrpEntityPage);
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(validacaoCrpTeste);
 
         Page<ValidacaoCrp> validacaoCrpResultado = dataProvider.listar(pageable);
 
-        Assertions.assertEquals(validacaoCrpPage.getTotalElements(), validacaoCrpResultado.getTotalElements());
-        Assertions.assertEquals(validacaoCrpPage.getSize(), validacaoCrpResultado.getSize());
-        IntStream.range(0, validacaoCrpPage.getContent().size())
+        Assertions.assertEquals(validacaoCrpEntityPage.getTotalElements(), validacaoCrpResultado.getTotalElements());
+        Assertions.assertEquals(validacaoCrpEntityPage.getSize(), validacaoCrpResultado.getSize());
+        IntStream.range(0, validacaoCrpEntityPage.getContent().size())
                 .forEach(i -> ValidacaoCrpValidator.validaValidacaoCrpDomain(
-                        validacaoCrpPage.getContent().get(i),
+                        validacaoCrpTeste,
                         validacaoCrpResultado.getContent().get(i)
                 ));
     }
 
     @Test
-    void testeErroListarValidacaoCrp() {
+    void testeExceptionListarValidacaoCrp() {
         Mockito.when(repository.findAll()).thenThrow(RuntimeException.class);
         Pageable pageable = PageRequest.of(0, 10);
 
@@ -108,6 +117,29 @@ class ValidacaoCrpDataProviderTest {
                 .assertThrows(DataProviderException.class, () -> dataProvider.listar(pageable));
 
         Assertions.assertEquals(ValidacaoCrpDataProvider.MENSAGEM_ERRO_LISTAR, exception.getMessage());
+    }
+
+
+    @Test
+    void testeConsultarPorPsicologo(){
+        Mockito.when(repository.findByPsicologoId(Mockito.any())).thenReturn(Optional.of(validacaoCrpEntityTeste));
+        Mockito.when(mapper.paraDomain(Mockito.any())).thenReturn(validacaoCrpTeste);
+
+        Optional<ValidacaoCrp> validacaoResultado = dataProvider.consultarPorPsicologo(validacaoCrpTeste.getPsicologo().getId());
+
+        validacaoResultado.ifPresent(validacaoCrp -> {
+            ValidacaoCrpValidator.validaValidacaoCrpDomain(validacaoCrp, validacaoCrp);
+        });
+    }
+
+    @Test
+    void testeExceptionConsultarPorPsicologoId(){
+        Mockito.when(repository.findByPsicologoId(Mockito.any())).thenThrow(RuntimeException.class);
+
+        DataProviderException exception = Assertions
+                .assertThrows(DataProviderException.class, () -> dataProvider.consultarPorPsicologo(ValidacaoCrpBuilder.criarValidacaoCrp().getPsicologo().getId()));
+
+        Assertions.assertEquals(ValidacaoCrpDataProvider.MENSAGEM_ERRO_CONSULTAR_POR_PSICOLOGO, exception.getMessage());
     }
 
     @Test
@@ -122,7 +154,7 @@ class ValidacaoCrpDataProviderTest {
     }
 
     @Test
-    void testeErroDeletarValidacaoCrp() {
+    void testeExceptionDeletarValidacaoCrp() {
         Mockito.doThrow(DataProviderException.class).when(repository).deleteById(Mockito.any());
 
         DataProviderException exception = Assertions

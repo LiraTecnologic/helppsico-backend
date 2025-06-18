@@ -3,6 +3,7 @@ package com.liratech.helppsico.application.usecases;
 import com.liratech.helppsico.application.exceptions.prontuarios.ErroAtualizarCamposEspecificosExcpetion;
 import com.liratech.helppsico.application.exceptions.prontuarios.ProntuarioNaoEncontradoException;
 import com.liratech.helppsico.application.gateways.ProntuarioGateway;
+import com.liratech.helppsico.domain.Consulta;
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.Prontuario;
 import com.liratech.helppsico.domain.Psicologo;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,15 +27,18 @@ public class ProntuarioUseCase {
     private final ProntuarioGateway gateway;
     private final PsicologoUseCase psicologoUseCase;
     private final PacienteUseCase pacienteUseCase;
+    private final ConsultaUseCase consultaUseCase;
 
     public Prontuario registrar(Prontuario novoProntuario) {
         log.info("Registrando novo prontuário. Prontuario: {}", novoProntuario);
 
         Psicologo psicologo = psicologoUseCase.consultarPorId(novoProntuario.getPsicologo().getId());
         Paciente paciente = pacienteUseCase.consultarPorId(novoProntuario.getPaciente().getId());
+        Consulta consulta = consultaUseCase.consultarPorId(novoProntuario.getConsulta().getId());
 
         novoProntuario.setPsicologo(psicologo);
         novoProntuario.setPaciente(paciente);
+        novoProntuario.setConsulta(consulta);
 
         Prontuario prontuarioSalvo = gateway.salvar(novoProntuario);
 
@@ -42,20 +47,20 @@ public class ProntuarioUseCase {
         return prontuarioSalvo;
     }
 
-    public Page<Prontuario> listarPorPaciente(Paciente paciente, Pageable pageable) {
-        log.info("Listando prontuários pelo paciente. Paciente: {}", paciente);
+    public Page<Prontuario> listarPorPaciente(UUID id, Pageable pageable) {
+        log.info("Listando prontuários pelo paciente. Id do paciente: {}", id);
 
-        Page<Prontuario> prontuarios = gateway.listarPorPaciente(paciente, pageable);
+        Page<Prontuario> prontuarios = gateway.listarPorPaciente(id, pageable);
 
         log.info("Listagem de prontuários realizada com sucesso. Prontuarios: {}", prontuarios);
 
         return prontuarios;
     }
 
-    public Page<Prontuario> listarPorPsicologo(Psicologo psicologo, Pageable pageable) {
-        log.info("Listando prontuários pelo psicólogo. Psicólogo: {}", psicologo);
+    public Page<Prontuario> listarPorPsicologo(UUID id, Pageable pageable) {
+        log.info("Listando prontuários pelo psicólogo. Id do psicologo: {}", id);
 
-        Page<Prontuario> prontuarios = gateway.listarPorPsicologo(psicologo, pageable);
+        Page<Prontuario> prontuarios = gateway.listarPorPsicologo(id, pageable);
 
         log.info("Listagem de prontuários pelo psicólogo realizada com sucesso. Prontuarios: {}", prontuarios);
 
@@ -90,6 +95,7 @@ public class ProntuarioUseCase {
             }
         });
 
+        prontuario.setDataEdicao(LocalDate.now());
         Prontuario prontuarioSalvo = gateway.salvar(prontuario);
 
         log.info("Alteração parcial de prontuário realizada com sucesso. Prontuario: {}", prontuario);
@@ -106,7 +112,7 @@ public class ProntuarioUseCase {
         log.info("Deleção de prontuário realizada com sucesso.");
     }
 
-    private Prontuario consultarPorId(UUID idProntuario) {
+    public Prontuario consultarPorId(UUID idProntuario) {
         log.info("Consultando prontuário pelo id. Id: {}", idProntuario);
 
         Optional<Prontuario> prontuario = gateway.consultarPorId(idProntuario);
@@ -115,6 +121,7 @@ public class ProntuarioUseCase {
             throw new ProntuarioNaoEncontradoException("Prontuario não encontrado pelo seu id.");
         }
 
+        log.info("Prontuario consultado com sucesso. Prontuario: {}", prontuario.get());
         return prontuario.get();
     }
 }

@@ -2,18 +2,15 @@ package com.liratech.helppsico.application.usecases;
 
 import com.liratech.helppsico.application.exceptions.prontuarios.ErroAtualizarCamposEspecificosExcpetion;
 import com.liratech.helppsico.application.gateways.ProntuarioGateway;
-import com.liratech.helppsico.builders.ConsultaBuilder;
 import com.liratech.helppsico.builders.PacienteBuilder;
 import com.liratech.helppsico.builders.ProntuarioBuilder;
 import com.liratech.helppsico.builders.PsicologoBuilder;
-import com.liratech.helppsico.domain.Consulta;
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.Prontuario;
 import com.liratech.helppsico.domain.Psicologo;
-import com.liratech.helppsico.infrastructure.mapper.ProntuarioMapper;
-import com.liratech.helppsico.validators.ConsultaValidator;
+import com.liratech.helppsico.infrastructure.mapper.ProntuarioMapperInfra;
+import com.liratech.helppsico.validators.ProntuarioValidator;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,7 +49,7 @@ class ProntuarioUseCaseTest {
     private Psicologo psicologoTeste;
     private Paciente pacienteTeste;
     private Page<Prontuario> prontuarioPage;
-    private final ProntuarioMapper mapper;
+    private final ProntuarioMapperInfra mapper;
 
     @BeforeEach
     void inicializarAtributos() {
@@ -82,7 +79,7 @@ class ProntuarioUseCaseTest {
     void testeListagemDeProntuarioPorPaciente() {
         Mockito.when(gateway.listarPorPaciente(Mockito.any(), Mockito.any())).thenReturn(prontuarioPage);
 
-        Page<Prontuario> resultado = useCase.listarPorPaciente(pacienteTeste, PageRequest.of(0, 10));
+        Page<Prontuario> resultado = useCase.listarPorPaciente(pacienteTeste.getId(), PageRequest.of(0, 10));
 
         resultado.forEach(prontuario -> ProntuarioValidator.validaProntuarioDomain(prontuario, mapper.paraDomain(ProntuarioBuilder.criarProntuarioEntity())));
     }
@@ -91,7 +88,7 @@ class ProntuarioUseCaseTest {
     void testeListagemDeProntuariosPorPsicologo() {
         Mockito.when(gateway.listarPorPsicologo(Mockito.any(), Mockito.any())).thenReturn(prontuarioPage);
 
-        Page<Prontuario> resultado = useCase.listarPorPsicologo(psicologoTeste, PageRequest.of(0, 10));
+        Page<Prontuario> resultado = useCase.listarPorPsicologo(psicologoTeste.getId(), PageRequest.of(0, 10));
 
         resultado.forEach(prontuario -> ProntuarioValidator.validaProntuarioDomain(prontuario, mapper.paraDomain(ProntuarioBuilder.criarProntuarioEntity())));
     }

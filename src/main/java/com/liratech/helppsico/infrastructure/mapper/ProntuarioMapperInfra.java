@@ -1,0 +1,17 @@
+package com.liratech.helppsico.infrastructure.mapper;
+
+import com.liratech.helppsico.domain.Prontuario;
+import com.liratech.helppsico.infrastructure.repositories.entities.ProntuarioEntity;
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+
+@Mapper(
+        componentModel = "spring",
+        implementationName = "ProntuarioMapperInfraImpl",
+        unmappedTargetPolicy = ReportingPolicy.ERROR,
+        uses = {PsicologoMapperInfra.class, PacienteMapperInfra.class, ConsultaMapperInfra.class}
+)
+public interface ProntuarioMapperInfra {
+    ProntuarioEntity paraEntity (Prontuario prontuario);
+    Prontuario paraDomain (ProntuarioEntity prontuarioEntity);
+}

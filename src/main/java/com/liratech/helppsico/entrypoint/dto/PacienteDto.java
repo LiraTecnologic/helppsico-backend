@@ -62,6 +62,6 @@ public class PacienteDto {
     @JsonProperty("endereco")
     private EnderecoDto endereco;
 
-    @JsonProperty("urlFoto")
-    private String urlFoto;
+    @JsonProperty("fotoUrl")
+    private String fotoUrl;
 }

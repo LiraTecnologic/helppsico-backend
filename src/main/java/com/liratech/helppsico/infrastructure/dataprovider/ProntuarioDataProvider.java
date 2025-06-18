@@ -1,13 +1,11 @@
 package com.liratech.helppsico.infrastructure.dataprovider;
 
 import com.liratech.helppsico.application.gateways.ProntuarioGateway;
-import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.domain.Prontuario;
-import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.PacienteMapper;
-import com.liratech.helppsico.infrastructure.mapper.ProntuarioMapper;
-import com.liratech.helppsico.infrastructure.mapper.PsicologoMapper;
+import com.liratech.helppsico.infrastructure.mapper.PacienteMapperInfra;
+import com.liratech.helppsico.infrastructure.mapper.ProntuarioMapperInfra;
+import com.liratech.helppsico.infrastructure.mapper.PsicologoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.ProntuarioRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.ProntuarioEntity;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +23,7 @@ import java.util.UUID;
 public class ProntuarioDataProvider implements ProntuarioGateway {
 
     private final ProntuarioRepository repository;
-    private final ProntuarioMapper mapper;
-    private final PacienteMapper pacienteMapper;
-    private final PsicologoMapper psicologoMapper;
+    private final ProntuarioMapperInfra mapper;
     public final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar prontuário.";
     public final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar prontuário pelo id.";
     public final String MENSAGEM_ERRO_LISTAR_PACIENTE = "Erro ao listar prontuários pelo paciente.";
@@ -63,11 +59,11 @@ public class ProntuarioDataProvider implements ProntuarioGateway {
     }
 
     @Override
-    public Page<Prontuario> listarPorPaciente(Paciente paciente, Pageable pageable) {
+    public Page<Prontuario> listarPorPaciente(UUID idPaciente, Pageable pageable) {
         Page<ProntuarioEntity> prontuarioEntities;
 
         try {
-            prontuarioEntities = repository.findByPaciente(pacienteMapper.paraEntity(paciente), pageable);
+            prontuarioEntities = repository.findAllByPacienteId(idPaciente, pageable);
         } catch (Exception ex) {
             log.error(MENSAGEM_ERRO_LISTAR_PACIENTE, ex);
             throw new DataProviderException(MENSAGEM_ERRO_LISTAR_PACIENTE, ex.getCause());
@@ -77,11 +73,11 @@ public class ProntuarioDataProvider implements ProntuarioGateway {
     }
 
     @Override
-    public Page<Prontuario> listarPorPsicologo(Psicologo psicologo, Pageable pageable) {
+    public Page<Prontuario> listarPorPsicologo(UUID idPsicologo, Pageable pageable) {
         Page<ProntuarioEntity> prontuarioEntities;
 
         try {
-            prontuarioEntities = repository.findByPsicologo(psicologoMapper.paraEntity(psicologo), pageable);
+            prontuarioEntities = repository.findAllByPsicologoId(idPsicologo, pageable);
         } catch (Exception ex) {
             log.error(MENSAGEM_ERRO_LISTAR_PSICOLOGO, ex);
             throw new DataProviderException(MENSAGEM_ERRO_LISTAR_PSICOLOGO, ex.getCause());

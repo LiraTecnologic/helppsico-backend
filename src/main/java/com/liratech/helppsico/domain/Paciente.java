@@ -10,6 +10,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@ToString
 public class Paciente {
     private UUID id;
     private String nome;

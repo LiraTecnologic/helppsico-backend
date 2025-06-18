@@ -38,6 +38,6 @@ public class DadosGeraisDocumentoDto {
     private String respostaDemanda;
     private LocalDate dataAtendimento;
     private EnderecoDto local;
-    private String descrcaoEstadoPsicologico;
-    private String peridoAfastamento;
+    private String descricaoEstadoPsicologico;
+    private String periodoAfastamento;
 }

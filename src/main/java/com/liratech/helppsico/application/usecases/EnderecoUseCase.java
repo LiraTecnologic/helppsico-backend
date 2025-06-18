@@ -16,7 +16,6 @@ import java.util.UUID;
 public class EnderecoUseCase {
 
     private final EnderecoGateway gateway;
-
     public static final String MENSAGEM_ENDERECO_NAO_ENCONTRADO = "Endereco não encontrado";
 
     public Endereco cadastrar(Endereco novoEndereco){

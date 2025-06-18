@@ -5,31 +5,35 @@ import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.entrypoint.dto.EnderecoDto;
 import com.liratech.helppsico.validators.EnderecoValidator;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mapstruct.factory.Mappers;
 
 class EnderecoMapperTest {
 
-    private final EnderecoMapper enderecoMapper = Mappers.getMapper(EnderecoMapper.class);
+    private EnderecoMapperImpl mapper;
+    private Endereco domainTest;
+    private EnderecoDto dtoTest;
 
-    @Test
-    @DisplayName("Caso de sucesso na tranformação de DTO para Domain")
-    void testeTransformacaoEnderecoDtoParaDomain() {
-        EnderecoDto enderecoDto = EnderecoBuilder.criarEnderecoDto();
-        Endereco endereco = enderecoMapper.paraDomain(enderecoDto);
-
-        Assertions.assertNotNull(endereco);
-        EnderecoValidator.validaEnderecoDtoParaDomain(enderecoDto, endereco);
+    @BeforeEach
+    void inicializar(){
+        mapper = new EnderecoMapperImpl();
     }
 
     @Test
-    @DisplayName("Caso de sucesso na tranformação de Domain para DTO")
-    void testeTransformacaoEnderecoDomainParaDto() {
-        Endereco endereco = EnderecoBuilder.criarEndereco();
-        EnderecoDto enderecoDto = enderecoMapper.paraDto(endereco);
+    void testeEnderecoDtoParaDomain() {
+        dtoTest = EnderecoBuilder.criarEnderecoDto();
+        domainTest = mapper.paraDomain(dtoTest);
 
-        Assertions.assertNotNull(enderecoDto);
-        EnderecoValidator.validaEnderecoDomainParaDto(endereco, enderecoDto);
+        Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
+        EnderecoValidator.validaEnderecoMapperEntry(domainTest, dtoTest);
+    }
+
+    @Test
+    void testeEnderecoDomainParaDto() {
+        domainTest = EnderecoBuilder.criarEndereco();
+        dtoTest = mapper.paraDto(domainTest);
+
+        Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
+        EnderecoValidator.validaEnderecoMapperEntry(domainTest, dtoTest);
     }
 }

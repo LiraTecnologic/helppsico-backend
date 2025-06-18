@@ -3,13 +3,15 @@ package com.liratech.helppsico.entrypoint.mapper;
 import com.liratech.helppsico.domain.Paciente;
 import com.liratech.helppsico.entrypoint.dto.PacienteDto;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
+@Mapper(
+        componentModel = "spring",
+        implementationName = "PacienteMapperImpl",
+        unmappedTargetPolicy = ReportingPolicy.ERROR,
+        uses = {EnderecoMapper.class}
+)
 public interface PacienteMapper {
-    Paciente paraDomain(PacienteDto pacienteDto);
-
-    @Mapping(target = "foto", ignore = true)
-    PacienteDto paraDto(Paciente paciente);
+    Paciente paraDomain(PacienteDto dto);
+    PacienteDto paraDto(Paciente domain);
 }

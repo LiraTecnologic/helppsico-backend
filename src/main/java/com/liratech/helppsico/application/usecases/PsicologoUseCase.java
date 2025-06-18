@@ -1,10 +1,12 @@
 package com.liratech.helppsico.application.usecases;
 
 import com.liratech.helppsico.application.gateways.PsicologoGateway;
+import com.liratech.helppsico.application.gateways.ValidacaoCrpGateway;
 import com.liratech.helppsico.domain.Endereco;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.application.exceptions.psicologo.PsicologoExistenteException;
 import com.liratech.helppsico.application.exceptions.psicologo.PsicologoNaoEncontradoException;
+import com.liratech.helppsico.domain.ValidacaoCrp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,11 +21,10 @@ import java.util.UUID;
 @Slf4j
 public class PsicologoUseCase {
 
-    private final AvaliacaoUseCase avaliacaoUseCase;
     private final PsicologoGateway gateway;
     private final CriptografiaUseCase criptografiaUseCase;
-    private final FotoUseCase fotoUseCase;
     private final EnderecoUseCase enderecoUseCase;
+    private final ValidacaoCrpGateway validacaoCrpGateway;
     public static final String MENSAGEM_PSICOLOGO_JA_EXISTE = "Psicologo já está cadastrado";
     public static final String MENSAGEM_PSICOLOGO_NAO_ENCONTRADO = "Psicologo não encontrado";
 
@@ -33,21 +34,20 @@ public class PsicologoUseCase {
         Optional<Psicologo> psicologoExistente = gateway.consultarPorCrp(novoPsicologo.getCrp());
         psicologoExistente.ifPresent(psicologo -> {throw new PsicologoExistenteException(MENSAGEM_PSICOLOGO_JA_EXISTE);});
 
-        /*
-            * Criar e valida crp
-        */
-
-        String urlFoto = fotoUseCase.salvarImagem(novoPsicologo.getFoto());
-        novoPsicologo.setFotoUrl(urlFoto);
-
         String senhaCriptografada = criptografiaUseCase.criptografar(novoPsicologo.getSenha());
         novoPsicologo.setSenha(senhaCriptografada);
 
         Endereco endereco = enderecoUseCase.cadastrar(novoPsicologo.getEnderecoAtendimento());
-
         novoPsicologo.setEnderecoAtendimento(endereco);
 
         Psicologo psicologoSalvo = gateway.salvar(novoPsicologo);
+
+        ValidacaoCrp validacaoCrp = ValidacaoCrp.builder()
+                .psicologo(psicologoSalvo)
+                .crp(psicologoSalvo.getCrp())
+                .build();
+
+        validacaoCrpGateway.salvar(validacaoCrp);
 
         log.info("Psicólogo cadastrado com sucesso. Psicólogo salvo: {}", psicologoSalvo);
 
@@ -70,11 +70,11 @@ public class PsicologoUseCase {
         return psicologoEncontrado;
     }
 
-    public Page<Psicologo> consultarPorNome(String nome) {
+    public Page<Psicologo> consultarPorNome(String nome, Pageable pageable) {
 
         log.info("Consultando psicólogos pelo nome. Nome a ser buscado: {}", nome);
 
-        Page<Psicologo> psicologoList = gateway.consultarPorNome(nome);
+        Page<Psicologo> psicologoList = gateway.consultarPorNome(nome, pageable);
 
 
         log.info("Psicólogo consultados com sucesso. Psicólogos: {}", psicologoList);
@@ -128,9 +128,8 @@ public class PsicologoUseCase {
 
         Psicologo psicologoExistente = this.consultarPorId(id);
 
-        /*
-            Salvar novo endereço.
-         */
+        Endereco enderecoNovo = enderecoUseCase.cadastrar(novosDados.getEnderecoAtendimento());
+        novosDados.setEnderecoAtendimento(enderecoNovo);
 
         psicologoExistente.alterarDados(novosDados);
 

@@ -1,22 +1,25 @@
 package com.liratech.helppsico.entrypoint.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.liratech.helppsico.application.usecases.VinculoUseCase;
 import com.liratech.helppsico.builders.AvaliacaoBuilder;
-import com.liratech.helppsico.builders.PsicologoBuilder;
+import com.liratech.helppsico.builders.VinculoBuilder;
 import com.liratech.helppsico.domain.Avaliacao;
-import com.liratech.helppsico.domain.Psicologo;
+import com.liratech.helppsico.domain.Vinculo;
 import com.liratech.helppsico.entrypoint.dto.psicologo.AvaliacaoDto;
 import com.liratech.helppsico.entrypoint.mapper.AvaliacaoMapper;
-import com.liratech.helppsico.infrastructure.mapper.PacienteMapper;
-import com.liratech.helppsico.infrastructure.mapper.PsicologoMapper;
+import com.liratech.helppsico.infrastructure.mapper.AvaliacaoMapperInfra;
+import com.liratech.helppsico.infrastructure.mapper.PacienteMapperInfra;
+import com.liratech.helppsico.infrastructure.mapper.PsicologoMapperInfra;
+import com.liratech.helppsico.infrastructure.mapper.VinculoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.AvaliacaoRepository;
 import com.liratech.helppsico.infrastructure.repositories.PacienteRepository;
 import com.liratech.helppsico.infrastructure.repositories.PsicologoRepository;
+import com.liratech.helppsico.infrastructure.repositories.VinculoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.AvaliacaoEntity;
-import com.liratech.helppsico.validators.AvaliacaoValidator;
 import com.liratech.helppsico.validators.json.AvaliacaoValidatorJson;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -35,37 +38,46 @@ import java.util.UUID;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class AvaliacaoControllerTest {
 
-    private final MockMvc mockMvc;
-    private final ObjectMapper objectMapper;
-    private final AvaliacaoMapper mapperEntry;
-    private final com.liratech.helppsico.infrastructure.mapper.AvaliacaoMapper mapperInfra;
-    private final PsicologoMapper mapperPsicologo;
-    private final PacienteMapper mapperPaciente;
+    private MockMvc mockMvc;
+    private ObjectMapper objectMapper;
+    private AvaliacaoMapper mapperEntry;
+    private AvaliacaoMapperInfra mapperInfra;
+    private PsicologoMapperInfra mapperPsicologo;
+    private PacienteMapperInfra mapperPaciente;
+    private VinculoMapperInfra mapperVinculo;
 
     @MockitoSpyBean
-    private final AvaliacaoRepository repository;
+    private AvaliacaoRepository repository;
 
     @MockitoSpyBean
-    private final PsicologoRepository psicologoRepository;
+    private PsicologoRepository psicologoRepository;
 
     @MockitoSpyBean
-    private final PacienteRepository pacienteRepository;
+    private PacienteRepository pacienteRepository;
+
+    @MockitoSpyBean
+    private VinculoRepository vinculoRepository;
 
     private AvaliacaoDto avaliacaoDtoEntrada;
     private Avaliacao avaliacaoDomain;
     private AvaliacaoEntity avaliacaoEntity;
+    private Vinculo vinculoTeste;
 
     @BeforeEach
     void inicializarAtributos(){
-        this.avaliacaoDtoEntrada = AvaliacaoBuilder.criarAvaliacaoDto();
-        this.avaliacaoDomain = mapperEntry.paraDomain(avaliacaoDtoEntrada);
-        this.avaliacaoEntity = mapperInfra.paraEntity(avaliacaoDomain);
+        avaliacaoDtoEntrada = AvaliacaoBuilder.criarAvaliacaoDto();
+        avaliacaoDomain = mapperEntry.paraDomain(avaliacaoDtoEntrada);
+        avaliacaoEntity = mapperInfra.paraEntity(avaliacaoDomain);
+
+        vinculoTeste = VinculoBuilder.criarVinculo();
+        vinculoTeste.setPsicologo(avaliacaoDomain.getPsicologo());
+        vinculoTeste.setPaciente(avaliacaoDomain.getPaciente());
     }
 
     @Test
@@ -74,7 +86,8 @@ public class AvaliacaoControllerTest {
 
         Mockito.when(psicologoRepository.findById(Mockito.any())).thenReturn(Optional.of(mapperPsicologo.paraEntity(avaliacaoDomain.getPsicologo())));
         Mockito.when(pacienteRepository.findById(Mockito.any())).thenReturn(Optional.of(mapperPaciente.paraEntity(avaliacaoDomain.getPaciente())));
-        Mockito.when(repository.consultarPorPacientePsicologo(Mockito.any(), Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(vinculoRepository.consultarAtivoPorPaciente(Mockito.any())).thenReturn(Optional.of(mapperVinculo.paraEntity(vinculoTeste)));
+        Mockito.when(repository.findByPacienteIdAndPsicologoId(Mockito.any(), Mockito.any())).thenReturn(Optional.empty());
         Mockito.when(repository.save(Mockito.any())).thenReturn(avaliacaoEntity);
 
         String avaliacaoJson = objectMapper.writeValueAsString(avaliacaoDtoEntrada);
@@ -107,7 +120,7 @@ public class AvaliacaoControllerTest {
         avaliacaoPageTeste.forEach(avaliacao -> avaliacao.setPsicologo(avaliacaoEntity.getPsicologo()));
 
         Mockito.when(psicologoRepository.findById(Mockito.any())).thenReturn(Optional.of(avaliacaoEntity.getPsicologo()));
-        Mockito.when(repository.listarPorPsicologo(Mockito.any())).thenReturn(avaliacaoPageTeste);
+        Mockito.when(repository.findAllByPsicologoId(Mockito.any(), Mockito.any())).thenReturn(avaliacaoPageTeste);
 
         ResultActions resultado = mockMvc.perform(get("/avaliacoes/psicologo/{id}", idPsicologo))
                 .andExpect(status().isOk());

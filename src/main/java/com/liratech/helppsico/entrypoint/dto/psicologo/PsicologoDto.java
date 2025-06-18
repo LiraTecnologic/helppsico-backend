@@ -1,6 +1,7 @@
 package com.liratech.helppsico.entrypoint.dto.psicologo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.liratech.helppsico.domain.StatusPsicologo;
 import com.liratech.helppsico.domain.TipoGenero;
 import com.liratech.helppsico.entrypoint.dto.EnderecoDto;
 import jakarta.persistence.EnumType;
@@ -8,6 +9,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -68,13 +71,22 @@ public class PsicologoDto {
     private TipoGenero genero;
 
     @NotNull(message = "O endereço é obrigatório")
-    @JsonProperty("endereco")
+    @JsonProperty("enderecoAtendimento")
     private EnderecoDto enderecoAtendimento;
 
-    @NotBlank(message = "A biografia é obrigatória")
     @JsonProperty("biografia")
     private String biografia;
 
-    @JsonProperty("urlFoto")
-    private String urlFoto;
+    @JsonProperty("fotoUrl")
+    private String fotoUrl;
+
+    @JsonProperty("statusPsicologo")
+    @Enumerated(EnumType.STRING)
+    private StatusPsicologo statusPsicologo;
+
+    @JsonProperty("valorSessao")
+    private BigDecimal valorSessao;
+
+    @JsonProperty("tempoSessao")
+    private Integer tempoSessao;
 }

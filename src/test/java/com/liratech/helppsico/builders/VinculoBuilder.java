@@ -51,11 +51,30 @@ public class VinculoBuilder {
         return transformarListaEmPagina(vinculoList, PageRequest.of(0,10));
     }
 
+    public static Page<VinculoEntity> criarPageDeVinculosEntity () {
+        List<VinculoEntity> vinculoList = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            vinculoList.add(criarVinculoEntity());
+        }
+
+        return transformarListaEmPaginaEntity(vinculoList, PageRequest.of(0,10));
+    }
+
     private static Page<Vinculo> transformarListaEmPagina(List<Vinculo> lista, Pageable pageable) {
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), lista.size());
 
         List<Vinculo> sublist = lista.subList(start, end);
+
+        return new PageImpl<>(sublist, pageable, lista.size());
+    }
+
+    private static Page<VinculoEntity> transformarListaEmPaginaEntity(List<VinculoEntity> lista, Pageable pageable) {
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), lista.size());
+
+        List<VinculoEntity> sublist = lista.subList(start, end);
 
         return new PageImpl<>(sublist, pageable, lista.size());
     }

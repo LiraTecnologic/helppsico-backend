@@ -8,12 +8,12 @@ import com.liratech.helppsico.builders.FotoBuilder;
 import com.liratech.helppsico.entrypoint.dto.FotoDto;
 import com.liratech.helppsico.entrypoint.mapper.FotoMapper;
 import com.liratech.helppsico.infrastructure.dataprovider.FotoDataProvider;
-import com.liratech.helppsico.infrastructure.mapper.PacienteMapper;
-import com.liratech.helppsico.infrastructure.mapper.PsicologoMapper;
-import com.liratech.helppsico.infrastructure.repositories.FotoRepository;
+import com.liratech.helppsico.infrastructure.mapper.PacienteMapperInfra;
+import com.liratech.helppsico.infrastructure.mapper.PsicologoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.PacienteRepository;
 import com.liratech.helppsico.infrastructure.repositories.PsicologoRepository;
 import com.liratech.helppsico.validators.json.FotoValidatorJson;
+import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -37,17 +37,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@AllArgsConstructor
 class FotoControllerTest {
 
-    private final MockMvc mockMvc;
-    private final ObjectMapper objectMapper;
-    private final FotoMapper mapperEntry;
-    private final com.liratech.helppsico.infrastructure.mapper.FotoMapper mapperInfra;
-    private final PacienteMapper pacienteMapper;
-    private final PsicologoMapper psicologoMapper;
+    private MockMvc mockMvc;
+    private ObjectMapper objectMapper;
+    private FotoMapper mapperEntry;
+    private PacienteMapperInfra pacienteMapper;
+    private PsicologoMapperInfra psicologoMapper;
 
-    @MockitoSpyBean
-    private FotoRepository fotoRepository;
 
     @MockitoSpyBean
     private FotoDataProvider fotoDataProvider;
@@ -63,20 +61,6 @@ class FotoControllerTest {
     private Foto fotoDomainPaciente;
     private Foto fotoDomainPsicologo;
     private MockMultipartFile arquivoFoto;
-
-    public FotoControllerTest(MockMvc mockMvc, ObjectMapper objectMapper, FotoMapper mapper, FotoMapper mapperEntry, com.liratech.helppsico.infrastructure.mapper.FotoMapper mapperInfra, PacienteMapper pacienteMapper, PsicologoMapper psicologoMapper, MockMultipartFile arquivoFoto, Foto fotoDomainPaciente, FotoDto fotoDtoPaciente, FotoDto fotoDtoPsicologo, Foto fotoDomainPsicologo) {
-        this.mockMvc = mockMvc;
-        this.objectMapper = objectMapper;
-        this.mapperEntry = mapperEntry;
-        this.mapperInfra = mapperInfra;
-        this.pacienteMapper = pacienteMapper;
-        this.psicologoMapper = psicologoMapper;
-        this.arquivoFoto = arquivoFoto;
-        this.fotoDomainPaciente = fotoDomainPaciente;
-        this.fotoDtoPaciente = fotoDtoPaciente;
-        this.fotoDtoPsicologo = fotoDtoPsicologo;
-        this.fotoDomainPsicologo = fotoDomainPsicologo;
-    }
 
     @BeforeEach
     void inicializarAtributos() throws Exception {
@@ -102,7 +86,6 @@ class FotoControllerTest {
         Mockito.when(fotoDataProvider.salvarLocal(Mockito.any())).thenReturn("url-local");
         Mockito.when(pacienteRepository.findById(Mockito.any())).thenReturn(Optional.of(pacienteMapper.paraEntity(fotoDomainPaciente.getPaciente())));
         Mockito.when(pacienteRepository.save(Mockito.any())).thenReturn(pacienteMapper.paraEntity(fotoDomainPaciente.getPaciente()));
-        Mockito.when(fotoRepository.save(Mockito.any())).thenReturn(mapperInfra.paraEntity(fotoDomainPaciente));
 
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
@@ -130,7 +113,6 @@ class FotoControllerTest {
         Mockito.when(fotoDataProvider.salvarLocal(Mockito.any())).thenReturn("url-local");
         Mockito.when(psicologoRepository.findById(Mockito.any())).thenReturn(Optional.of(psicologoMapper.paraEntity(fotoDomainPsicologo.getPsicologo())));
         Mockito.when(psicologoRepository.save(Mockito.any())).thenReturn(psicologoMapper.paraEntity(fotoDomainPsicologo.getPsicologo()));
-        Mockito.when(fotoRepository.save(Mockito.any())).thenReturn(mapperInfra.paraEntity(fotoDomainPsicologo));
 
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);

@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum StatusVinculo {
     PENDENTE(1, "Pendente"),
     ATIVO(2, "Ativo"),
-    INATIVO(3, "Inativo");
+    RECUSADO(3, "Recusado");
 
     private final Integer codigo;
     private final String descricao;

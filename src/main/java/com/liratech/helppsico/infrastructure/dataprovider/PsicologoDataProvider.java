@@ -3,7 +3,7 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.application.gateways.PsicologoGateway;
 import com.liratech.helppsico.domain.Psicologo;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.PsicologoMapper;
+import com.liratech.helppsico.infrastructure.mapper.PsicologoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.PsicologoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.PsicologoEntity;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -23,7 +21,7 @@ import java.util.stream.Collectors;
 public class PsicologoDataProvider implements PsicologoGateway {
 
     private final PsicologoRepository repository;
-    private final PsicologoMapper mapper;
+    private final PsicologoMapperInfra mapper;
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar psicologo.";
     public static final String MENSAGEM_ERRO_CONSULTAR_POR_ID = "Erro ao consultar psicologo pelo id.";
     public static final String MENSAGEM_ERRO_CONSULTAR_POR_NOME = "Erro ao consultar psicologos pelo nome.";
@@ -60,11 +58,11 @@ public class PsicologoDataProvider implements PsicologoGateway {
     }
 
     @Override
-    public Page<Psicologo> consultarPorNome(String nome) {
+    public Page<Psicologo> consultarPorNome(String nome, Pageable pageable) {
         Page<PsicologoEntity> psicologosEntities;
 
         try {
-            psicologosEntities = repository.findByNome(nome);
+            psicologosEntities = repository.findAllByNome(nome, pageable);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_CONSULTAR_POR_NOME, ex);
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_NOME, ex.getCause());
@@ -106,7 +104,7 @@ public class PsicologoDataProvider implements PsicologoGateway {
         Page<PsicologoEntity> psicologosEntities;
 
         try {
-            psicologosEntities = repository.findAll(pageable);
+            psicologosEntities = repository.consultarPsicologosAprovados(pageable);
         }catch (Exception ex){
             log.error(MENSAGEM_ERRO_LISTAR, ex);
             throw new DataProviderException(MENSAGEM_ERRO_LISTAR, ex.getCause());

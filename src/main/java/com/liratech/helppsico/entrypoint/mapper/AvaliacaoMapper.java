@@ -3,14 +3,15 @@ package com.liratech.helppsico.entrypoint.mapper;
 import com.liratech.helppsico.domain.Avaliacao;
 import com.liratech.helppsico.entrypoint.dto.psicologo.AvaliacaoDto;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
+@Mapper(
+        componentModel = "spring",
+        implementationName = "AvaliacaoMapperImpl",
+        unmappedTargetPolicy = ReportingPolicy.ERROR,
+        uses = {PsicologoMapper.class, PacienteMapper.class}
+)
 public interface AvaliacaoMapper {
-    Avaliacao paraDomain (AvaliacaoDto avaliacaoDto);
-
-    @Mapping(target = "psicologo.foto", ignore = true)
-    @Mapping(target = "paciente.foto", ignore = true)
-    AvaliacaoDto paraDto (Avaliacao avaliacao);
+    Avaliacao paraDomain (AvaliacaoDto dto);
+    AvaliacaoDto paraDto (Avaliacao domain);
 }

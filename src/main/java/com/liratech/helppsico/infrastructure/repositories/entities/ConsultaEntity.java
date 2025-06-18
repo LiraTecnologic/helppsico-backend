@@ -3,6 +3,7 @@ package com.liratech.helppsico.infrastructure.repositories.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Builder
 public class ConsultaEntity {
     @Id
@@ -19,20 +21,22 @@ public class ConsultaEntity {
     @Column(name = "id_consulta")
     private UUID id;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "id_psicologo")
     private PsicologoEntity psicologo;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "id_paciente")
     private PacienteEntity paciente;
 
-    @Column(name = "data_hora")
-    private LocalDateTime dataHora;
+    @ManyToOne
+    @JoinColumn(name = "id_horario")
+    private HorarioEntity horario;
 
+    private LocalDate data;
     private BigDecimal valor;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_endereco")
     private EnderecoEntity endereco;
 

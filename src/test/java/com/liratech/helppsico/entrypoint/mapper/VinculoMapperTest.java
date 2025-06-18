@@ -1,48 +1,56 @@
 package com.liratech.helppsico.entrypoint.mapper;
 
+import com.liratech.helppsico.builders.PacienteBuilder;
+import com.liratech.helppsico.builders.PsicologoBuilder;
 import com.liratech.helppsico.builders.VinculoBuilder;
-import com.liratech.helppsico.domain.StatusVinculo;
 import com.liratech.helppsico.domain.Vinculo;
-import com.liratech.helppsico.entrypoint.dto.StatusVinculoDto;
 import com.liratech.helppsico.entrypoint.dto.VinculoDto;
-import com.liratech.helppsico.validators.PacienteValidator;
-import com.liratech.helppsico.validators.PsicologoValidator;
+import com.liratech.helppsico.validators.VinculoValidator;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mapstruct.factory.Mappers;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class VinculoMapperTest {
 
-    private final VinculoMapper vinculoMapper = Mappers.getMapper(VinculoMapper.class);
+    @Mock
+    private PacienteMapper pacienteMapper;
+
+    @Mock
+    private PsicologoMapper psicologoMapper;
+
+    @InjectMocks
+    private VinculoMapperImpl mapper;
+    private Vinculo domainTest;
+    private VinculoDto dtoTest;
 
     @Test
-    @DisplayName("Caso de sucesso na transformação de DTO para Domain")
-    void testeTransformacaoVinculoDtoParaDomain() {
-        VinculoDto vinculoDto = VinculoBuilder.criarVinculoDto();
-        Vinculo vinculo = vinculoMapper.paraDomain(vinculoDto);
+    void testeVinculoDomainParaDto() {
+        domainTest = VinculoBuilder.criarVinculo();
 
-        Assertions.assertNotNull(vinculo);
-        Assertions.assertEquals(vinculoDto.getId(), vinculo.getId());
-        Assertions.assertNotNull(vinculo.getPaciente());
-        PacienteValidator.validaPacienteDtoParaDomain(vinculoDto.getPaciente(), vinculo.getPaciente());
-        Assertions.assertNotNull(vinculo.getPsicologo());
-        PsicologoValidator.validaPsicologoDtoParaDomain(vinculoDto.getPsicologo(), vinculo.getPsicologo());
-        Assertions.assertEquals(StatusVinculo.valueOf(vinculoDto.getStatus().name()), vinculo.getStatus());
+        Mockito.when(pacienteMapper.paraDto(Mockito.any())).thenReturn(PacienteBuilder.criarPacienteDto());
+        Mockito.when(psicologoMapper.paraDto(Mockito.any())).thenReturn(PsicologoBuilder.criarPsicologoDto());
+
+        dtoTest = mapper.paraDto(domainTest);
+
+        Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
+        VinculoValidator.validaVinculoMapperEntry(domainTest, dtoTest);
     }
 
     @Test
-    @DisplayName("Caso de sucesso na transformação de Doamin para Dto")
-    void testeTransformacaoVinculoDomainParaDto() {
-        Vinculo vinculo = VinculoBuilder.criarVinculo();
-        VinculoDto vinculoDto = vinculoMapper.paraDto(vinculo);
+    void testeVinculoDtoParaDomain() {
+        dtoTest = VinculoBuilder.criarVinculoDto();
 
-        Assertions.assertNotNull(vinculoDto);
-        Assertions.assertEquals(vinculo.getId(), vinculoDto.getId());
-        Assertions.assertNotNull(vinculoDto.getPaciente());
-        PacienteValidator.validaPacienteDomainParaDto(vinculo.getPaciente(), vinculoDto.getPaciente());
-        Assertions.assertNotNull(vinculoDto.getPsicologo());
-        PsicologoValidator.validaPsicologoDomainParaDto(vinculo.getPsicologo(), vinculoDto.getPsicologo());
-        Assertions.assertEquals(StatusVinculoDto.valueOf(vinculo.getStatus().name()), vinculoDto.getStatus());
+        Mockito.when(pacienteMapper.paraDomain(Mockito.any())).thenReturn(PacienteBuilder.criarPaciente());
+        Mockito.when(psicologoMapper.paraDomain(Mockito.any())).thenReturn(PsicologoBuilder.criarPsicologo());
+
+        domainTest = mapper.paraDomain(dtoTest);
+
+        Assertions.assertEquals(domainTest.getId(), dtoTest.getId());
+        VinculoValidator.validaVinculoMapperEntry(domainTest, dtoTest);
     }
 }

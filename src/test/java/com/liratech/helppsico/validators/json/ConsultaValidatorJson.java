@@ -1,13 +1,9 @@
 package com.liratech.helppsico.validators.json;
 
-import com.liratech.helppsico.domain.Consulta;
-import com.liratech.helppsico.domain.TipoGenero;
 import com.liratech.helppsico.entrypoint.dto.consulta.ConsultaDto;
 import com.liratech.helppsico.infrastructure.repositories.entities.ConsultaEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.test.web.servlet.ResultActions;
-
-import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -17,7 +13,8 @@ public class ConsultaValidatorJson {
                 .andExpect(jsonPath("$.dado.psicologo").value(esperado.getPsicologo().toString()))
                 .andExpect(jsonPath("$.dado.paciente").value(esperado.getPaciente().toString()))
                 .andExpect(jsonPath("$.dado.valor").value(esperado.getValor().toString()))
-                .andExpect(jsonPath("$.dado.dataHora").value(esperado.getDataHora().toString()))
+                .andExpect(jsonPath("$.dado.data").value(esperado.getData().toString()))
+                .andExpect(jsonPath("$.dado.horario").value(esperado.getHorario().toString()))
                 .andExpect(jsonPath("$.dado.endereco").value(esperado.getEndereco().toString()))
                 .andExpect(jsonPath("$.dado.finalizada").value(esperado.getFinalizada().toString()))
                 .andExpect(jsonPath("$.erro").doesNotExist());
@@ -45,9 +42,9 @@ public class ConsultaValidatorJson {
 
             resultado.andExpect(jsonPath(jsonPathBase + "id").exists())
                     .andExpect(jsonPath(jsonPathBase + "valor").value(esperado.getContent().get(i).getValor()))
-                    .andExpect(jsonPath(jsonPathBase + "dataHora").value(esperado.getContent().get(i).getDataHora()))
+                    .andExpect(jsonPath(jsonPathBase + "data").value(esperado.getContent().get(i).getData()))
+                    .andExpect(jsonPath(jsonPathBase + "horario").value(esperado.getContent().get(i).getHorario()))
                     .andExpect(jsonPath(jsonPathBase + "finalizada").value(esperado.getContent().get(i).getFinalizada()))
-                    .andExpect(jsonPath(jsonPathBase + "dataHora").value("Bom psicologo"))
                     .andExpect(jsonPath("$.erro").doesNotExist())
                     .andExpect(jsonPath(jsonPathBase + "psicologo.nome").value(esperado.getContent().get(i).getPsicologo().getNome()))
                     .andExpect(jsonPath(jsonPathBase + "psicologo.crp").value(esperado.getContent().get(i).getPsicologo().getCrp()))

@@ -3,7 +3,7 @@ package com.liratech.helppsico.infrastructure.dataprovider;
 import com.liratech.helppsico.application.gateways.VinculoGateway;
 import com.liratech.helppsico.domain.Vinculo;
 import com.liratech.helppsico.infrastructure.dataprovider.exceptions.DataProviderException;
-import com.liratech.helppsico.infrastructure.mapper.VinculoMapper;
+import com.liratech.helppsico.infrastructure.mapper.VinculoMapperInfra;
 import com.liratech.helppsico.infrastructure.repositories.VinculoRepository;
 import com.liratech.helppsico.infrastructure.repositories.entities.VinculoEntity;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +22,12 @@ import java.util.UUID;
 public class VinculoDataProvider implements VinculoGateway {
 
     private final VinculoRepository repository;
-    private final VinculoMapper mapper;
+    private final VinculoMapperInfra mapper;
     public static final String MENSAGEM_ERRO_SALVAR = "Erro ao salvar o vinculo.";
     public static final String MENSAGEM_ERRO_CONSULTAR_ID = "Erro ao consultar vinculo por id.";
     public static final String MENSAGEM_ERRO_DELETAR = "Erro ao deletar o vinculo.";
     public static final String MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO = "Erro ao listar vinculo por psicologo.";
+    public static final String MENSAGEM_ERRO_LISTAR_POR_PACIENTE = "Erro ao listar vinculo por paciente.";
     public static final String MENSAGEM_ERRO_CONSULTAR_POR_PACIENTE = "Erro ao consultar vinculo por paciente.";
 
     @Override
@@ -72,7 +73,7 @@ public class VinculoDataProvider implements VinculoGateway {
         Page<VinculoEntity> vinculoEntityPage;
 
         try{
-            vinculoEntityPage = repository.findAllByPsicologo_Id(idPsicologo, pageable);
+            vinculoEntityPage = repository.findAllByPsicologoId(idPsicologo, pageable);
         }catch (Exception exception){
             log.error(MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO, exception);
             throw new DataProviderException(MENSAGEM_ERRO_LISTAR_POR_PSICOLOGO, exception.getCause());
@@ -82,12 +83,26 @@ public class VinculoDataProvider implements VinculoGateway {
     }
 
     @Override
-    public Optional<Vinculo> consultarPorIdPaciente(UUID idPaciente) {
+    public Page<Vinculo> listarPorIdPaciente(UUID idPaciente, Pageable pageable) {
+        Page<VinculoEntity> vinculoEntityPage;
+
+        try{
+            vinculoEntityPage = repository.findAllByPacienteId(idPaciente, pageable);
+        }catch (Exception exception){
+            log.error(MENSAGEM_ERRO_LISTAR_POR_PACIENTE, exception);
+            throw new DataProviderException(MENSAGEM_ERRO_LISTAR_POR_PACIENTE, exception.getCause());
+        }
+
+        return vinculoEntityPage.map(mapper::paraDomain);
+    }
+
+    @Override
+    public Optional<Vinculo> consultarAtivoPorPaciente(UUID idPaciente) {
         Optional<VinculoEntity> vinculoEntity;
 
         try {
-            vinculoEntity = repository.findByPaciente_Id(idPaciente);
-        }catch (DataProviderException exception){
+            vinculoEntity = repository.consultarAtivoPorPaciente(idPaciente);
+        }catch (Exception exception){
             log.error(MENSAGEM_ERRO_CONSULTAR_POR_PACIENTE, exception);
             throw new DataProviderException(MENSAGEM_ERRO_CONSULTAR_POR_PACIENTE, exception.getCause());
         }

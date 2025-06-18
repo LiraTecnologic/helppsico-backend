@@ -11,8 +11,10 @@ import java.util.UUID;
 public interface ConsultaGateway {
     Consulta salvar(Consulta consulta);
     Optional<Consulta> consultarPorId(UUID id);
-    Page<Consulta> consultarConsultasFuturas(UUID idPsicologo, UUID idPaciente, Pageable pageable);
-    Page<Consulta> consultarHistorico(UUID idPsicologo, UUID idPaciente, Pageable pageable);
-    List<Consulta> consultarConsultasMesmoDia(int dayOfMonth);
+    Page<Consulta> consultarConsultasFuturasPaciente(UUID idPaciente, UUID idPsicologo, Pageable pageable);
+    Page<Consulta> consultarHistoricoPaciente(UUID idPaciente, UUID idPsicologo, Pageable pageable);
+    Page<Consulta> consultarConsultasFuturasPsicologo(UUID idPsicologo, Pageable pageable);
+    Page<Consulta> consultarHistoricoPsicologo(UUID idPsicologo, Pageable pageable);
+    List<Consulta> consultarConsultasMesmoDia(int dayOfMonth, UUID idPsicologo);
     void deletar(UUID id);
 }

@@ -4,8 +4,10 @@ import com.liratech.helppsico.infrastructure.repositories.entities.ValidacaoCrpE
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface ValidacaoCrpRepository extends JpaRepository<ValidacaoCrpEntity, UUID> {
+    Optional<ValidacaoCrpEntity> findByPsicologoId(UUID id);
 }

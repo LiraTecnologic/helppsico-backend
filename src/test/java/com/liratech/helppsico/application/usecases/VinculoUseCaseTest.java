@@ -95,6 +95,9 @@ public class VinculoUseCaseTest {
     }
 
     @Test
+    void testeVinculoJaAtivoException(){}
+
+    @Test
     void testeAceitarSolicitacao(){
         Mockito.when(gateway.consultarPorId(Mockito.any())).thenReturn(Optional.of(vinculoTeste));
         Mockito.when(gateway.salvar(captor.capture())).thenReturn(vinculoAtivoTeste);
@@ -105,6 +108,9 @@ public class VinculoUseCaseTest {
         Assertions.assertNotNull(vinculoSalvo.getId());
         VinculoValidator.validaVinculoDomain(vinculoAtivoTeste, vinculoSalvo);
     }
+
+    @Test
+    void testeRecusarSolicitacao(){}
 
     @Test
     void testeDesvincular(){
@@ -128,10 +134,22 @@ public class VinculoUseCaseTest {
     }
 
     @Test
-    void testeConsultarVinculoPorIdPaciente(){
-        Mockito.when(gateway.consultarPorIdPaciente(Mockito.any())).thenReturn(Optional.of(vinculoTeste));
+    void testeListarSolicitacoesPorIdPaciente(){
+        Mockito.when(gateway.listarPorIdPaciente(Mockito.any(), Mockito.any())).thenReturn(vinculoPageTeste);
 
-        Vinculo vinculoResultado = useCase.consultarPorIdPaciente(pacienteTeste.getId());
+        Page<Vinculo> vinculoPageResultado = useCase.listarPorIdPaciente(pacienteTeste.getId(), PageRequest.of(0,10));
+
+        vinculoPageResultado.forEach(vinculo -> {
+            Assertions.assertNotNull(vinculo.getId());
+            VinculoValidator.validaVinculoDomain(vinculoTeste, vinculo);
+        });
+    }
+
+    @Test
+    void testeConsultarVinculosAtivosPorIdPaciente(){
+        Mockito.when(gateway.consultarAtivoPorPaciente(Mockito.any())).thenReturn(Optional.of(vinculoTeste));
+
+        Vinculo vinculoResultado = useCase.consultarAtivoPorPaciente(pacienteTeste.getId());
 
         Assertions.assertNotNull(vinculoResultado.getId());
         VinculoValidator.validaVinculoDomain(vinculoTeste, vinculoResultado);
@@ -139,11 +157,11 @@ public class VinculoUseCaseTest {
 
     @Test
     void testeVinculoNaoEncontradoException(){
-        Mockito.when(gateway.consultarPorIdPaciente(Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(gateway.consultarAtivoPorPaciente(Mockito.any())).thenReturn(Optional.empty());
 
         VinculoNaoEncontradoException exception = Assertions.assertThrows(
                 VinculoNaoEncontradoException.class,
-                () -> useCase.consultarPorIdPaciente(pacienteTeste.getId())
+                () -> useCase.consultarAtivoPorPaciente(pacienteTeste.getId())
         );
 
         Assertions.assertEquals(ERRO_VINCULO_NAO_ENCONRADO, exception.getMessage());
